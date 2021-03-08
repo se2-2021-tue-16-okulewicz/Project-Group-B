@@ -8,7 +8,7 @@ Expo app link:
 Backend ip:
 
 ----
-## Working o the project
+## Working on the project
 ### Creating new issue
 * Create issue, describe the thing
 * Add one of 4 labels
