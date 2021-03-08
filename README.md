@@ -39,7 +39,7 @@ When you start working on something, create new PR and mark it as draft (from yo
 * PR must have at least one review and they must be approving ones
 
 ----
-##Stack:
+## Stack:
 Backend: java with spring and hibernate, junit for unit tests and mysql as database
 
 Webapp: react with redux and reduxtoolkit, written with typescript
