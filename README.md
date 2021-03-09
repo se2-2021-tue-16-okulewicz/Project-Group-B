@@ -13,6 +13,7 @@ Backend ip:
 * Create issue, describe the thing
 * Add one of 4 labels
 * If the label is not a `question`, add one of 4 projects
+* Add estimated time in the description
 
 ### Working on the issue
 * Assign yourself to the issue
