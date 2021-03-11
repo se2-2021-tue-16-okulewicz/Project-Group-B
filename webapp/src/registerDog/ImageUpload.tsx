@@ -11,7 +11,7 @@ const ImageUpload = (props: any) => {
     const handleChange = (event: any) => {
         setFile(event.target.files[0]);
         setNewImage(true);
-        const f = event.target.files[0];
+        let  f = event.target.files[0];
         props.handlePicturesChange(f);
     };
     return (
@@ -24,14 +24,14 @@ const ImageUpload = (props: any) => {
                     )}
 
                 <div className="space"></div>
-                <InputLabel id="pic-label" style={{marginTop:"88%",alignSelf:"center", marginLeft:"30%"}}>
+                <InputLabel shrink id="pic-label" style={{marginTop:"65%", marginLeft:"35%", fontSize:"20px"}}>
                 <Input
                     type="file"
                     style={{ display: "none" }}
                     onChange={handleChange}
                 />
                 
-                    Upload an image
+                    Upload images
                         </InputLabel>
 
             </div>

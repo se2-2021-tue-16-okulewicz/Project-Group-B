@@ -1,7 +1,7 @@
 import 'date-fns';
 import React, { useState } from "react";
 import Grid from '@material-ui/core/Grid';
-import { Card, CardHeader, CardMedia, Container, Select } from '@material-ui/core';
+import { Button, Card, CardHeader, CardMedia, Container, Input, MenuItem, Select } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -33,12 +33,13 @@ export default function AddCarForm(props: any) {
     const [picture, setPictures] = useState('');
     const [hair, setHair] = useState('');
     const [color, setColor] = useState('');
-    const [height, setHeight] = useState('');
+    const [size, setSize] = useState('');
     const [ears, setEars] = useState('');
     const [tail, setTail] = useState('');
     const [specialMark, setSpecialMark] = useState('');
     const [behaviour, setBehaviour] = useState('');
-    const [location, setLocation] = useState("");
+    const [city, setCity] = useState("");
+    const [district, setDistrict] = useState("");
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date());
     const [dailyPrice, setDailyPrice] = useState("");
     const [description, setDescription] = useState("");
@@ -49,14 +50,15 @@ export default function AddCarForm(props: any) {
     const canSave = [
         name,
         hair,
-        location,
+        city,
         color,
-        height,
+        size,
         ears,
         tail,
         specialMark,
         behaviour,
         selectedDate,
+        city, district
         //dailyPrice,
         //plateNumber,
     ].every(Boolean);
@@ -70,12 +72,12 @@ export default function AddCarForm(props: any) {
                     name: name,
                     hair: hair,
                     color: color,
-                    height: height,
+                    size: size,
                     ears: ears,
                     tail: tail,
                     specialMark: specialMark,
                     behaviour: behaviour,
-                    location: location,
+                    location: { city, district },
                     selectedDate: selectedDate,
                     //status: "Free",
                     //startDateTime: formatDateTime(startDateTime),
@@ -123,8 +125,8 @@ export default function AddCarForm(props: any) {
     const handleColorChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setColor(event.target.value as string);
     };
-    const handleHeightChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setHeight(event.target.value as string);
+    const handleSizeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setSize(event.target.value as string);
     };
     const handleEarsChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setEars(event.target.value as string);
@@ -139,10 +141,17 @@ export default function AddCarForm(props: any) {
         setBehaviour(event.target.value as string);
     };
     const handlePicturesChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        if (event) {
+        if (event.target) {
             setPictures(event.target.value as string);
         }
-    };/*<DisplayImage
+    };
+    const handleCityChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setCity(event.target.value as string);
+    };
+    const handleDistrictChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setDistrict(event.target.value as string);
+    };
+    /*<DisplayImage
   handleToUpdate={(file) => handleToUpdate(file)}
 ></DisplayImage>*/
 
@@ -150,26 +159,25 @@ export default function AddCarForm(props: any) {
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid container xs={12} alignContent="space-between" spacing={5}>
-                <Grid container item xs={4} direction="column" alignContent="stretch" spacing={1}>
+                <Grid container item xs={5} direction="column" alignContent="stretch" spacing={1}>
                     <FormControl className={classes.formControl}>
                         <InputLabel shrink id="name-label">
                             Name
                         </InputLabel>
-                        <Select
-                            labelId="name-label"
+                        <Input
                             id="name"
                             value={name}
                             onChange={handleNameChange}
-                            displayEmpty
-                        />
-                        
+                            required />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
                         <Card >
                             <CardHeader title="" />
-                            <ImageUpload handlePicturesChange={(file: React.ChangeEvent<{ value: unknown; }>) => handlePicturesChange(file)}/>
+                            <ImageUpload handlePicturesChange={(file: React.ChangeEvent<{ value: unknown; }>) => handlePicturesChange(file)} />
                         </Card>
                     </FormControl>
                 </Grid>
-                <Grid container item xs={4} direction="column" alignContent="stretch" spacing={1}>
+                <Grid container item xs={3} direction="column" alignContent="stretch" spacing={1}>
                     <FormControl className={classes.formControl}>
                         <InputLabel shrink id="color-label">
                             Color
@@ -181,6 +189,9 @@ export default function AddCarForm(props: any) {
                             onChange={handleColorChange}
                             displayEmpty
                         />
+                        <MenuItem value="black">Black</MenuItem>
+                        <MenuItem value="brown">Brown</MenuItem>
+                        <MenuItem value="white">White</MenuItem>
                     </FormControl>
                     <FormControl className={classes.formControl}>
                         <InputLabel shrink id="hair-label">
@@ -193,18 +204,25 @@ export default function AddCarForm(props: any) {
                             onChange={handleHairChange}
                             displayEmpty
                         />
+                        <MenuItem value="short">Short</MenuItem>
+                        <MenuItem value="medium">Medium</MenuItem>
+                        <MenuItem value="long">Long</MenuItem>
                     </FormControl>
                     <FormControl className={classes.formControl}>
-                        <InputLabel shrink id="height-label">
-                            Height
+                        <InputLabel shrink id="size-label">
+                            Size
                         </InputLabel>
                         <Select
-                            labelId="height-label"
-                            id="height"
-                            value={height}
-                            onChange={handleHeightChange}
+                            labelId="size-label"
+                            id="size"
+                            value={size}
+                            onChange={handleSizeChange}
                             displayEmpty
                         />
+                        <MenuItem value="small">Small</MenuItem>
+                        <MenuItem value="medium">Medium</MenuItem>
+                        <MenuItem value="large">Large</MenuItem>
+                        <MenuItem value="giant">Giant</MenuItem>
                     </FormControl>
                     <FormControl className={classes.formControl}>
                         <InputLabel shrink id="ears-label">
@@ -255,19 +273,44 @@ export default function AddCarForm(props: any) {
                     </FormControl>
                 </Grid>
                 <Grid container item xs={4} direction="column" alignContent="stretch" spacing={1}>
-                    <KeyboardDatePicker
-                        disableToolbar
-                        variant="inline"
-                        format="MM/dd/yyyy"
-                        margin="normal"
-                        id="date-picker-inline"
-                        label="Dog was lost on"
-                        value={selectedDate}
-                        onChange={(date) => setSelectedDate(date)}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
+                    <FormControl className={classes.formControl}>
+                        <KeyboardDatePicker
+                            disableToolbar
+                            variant="inline"
+                            format="dd/MM/yyyy"
+                            margin="normal"
+                            id="date-picker-inline"
+                            label="Dog was lost on"
+                            value={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                            }}
+                        />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel shrink id="city-label">
+                            City
+                        </InputLabel>
+                        <Input
+                            id="city"
+                            value={city}
+                            onChange={handleCityChange}
+                        />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel shrink id="district-label">
+                            District
+                        </InputLabel>
+                        <Input
+                            id="district"
+                            value={district}
+                            onChange={handleDistrictChange}
+                        />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <Button variant="contained" onSubmit={onSavePostClicked} color="primary" disabled={canSave}>Submit</Button>
+                    </FormControl>
                 </Grid>
             </Grid>
         </MuiPickersUtilsProvider >
