@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: 14.15
       - name: Cache dependencies
-          uses: actions/cache@v2
-          with:
-            path: webapp/node_modules
-            key: ${{ runner.os }}-${{ hashFiles('webapp/package-lock.json') }}
+        uses: actions/cache@v2
+        with:
+          path: webapp/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('webapp/package-lock.json') }}
       - name: Install npm dependencies
         run: npm install
         working-directory: webapp
