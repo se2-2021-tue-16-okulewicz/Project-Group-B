@@ -5,7 +5,22 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest --maxWorkers=2 --passWithNoTests"
+  },
+  "jest": {
+    "preset": "jest-expo/universal",
+    "transformIgnorePatterns": [
+    "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@unimodules/.*|jest-expo/.*|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base))"
+  ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/jest.setup.js"
+    ]
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
@@ -23,6 +38,10 @@
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
     "@types/react-redux": "^7.1.16",
+    "babel-jest": "^20.0.3",
+    "jest": "^20.0.4",
+    "jest-expo": "^40.0.2",
+    "react-test-renderer": "^16.13.1",
     "typescript": "~4.0.0"
   },
   "private": true
