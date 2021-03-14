@@ -1,6 +1,6 @@
 --hibernate will start sequence with id = 1, so use high ids to make sure, that hibernate won't break unique id
 
-insert into lost_dogs (id, age, breed, color, ears_type, hair_length, name, size, special_marks, tail_length, date_lost, lost_location) values (10001, 12, 'unknown', 'blue', 'long', 'long', 'Pinky', 'big', 'none', 'long', null, 'Lublin');
-insert into lost_dogs (id, age, breed, color, ears_type, hair_length, name, size, special_marks, tail_length, date_lost, lost_location) values (10002, 13, 'random', 'brown', 'long', 'short', 'Borys', 'big', 'none', 'short', null, 'Lublin');
-insert into lost_dogs (id, age, breed, color, ears_type, hair_length, name, size, special_marks, tail_length, date_lost, lost_location) values (10003, 14, 'bulldog', 'blonde', 'long', 'short', 'Warus', 'small', 'gray ears', 'long', null, 'Lublin');
-insert into lost_dogs (id, age, breed, color, ears_type, hair_length, name, size, special_marks, tail_length, date_lost, lost_location) values (10004, 15, 'unknown', 'pink', 'short', 'long', 'Pimpek', 'small', 'none', 'long', null, 'Warsaw');
+insert into lost_dogs (id, age, breed, color, ears_type, hair_length, name, size, special_marks, tail_length, date_lost, lost_location, user_id, is_found) values (10001, 12, 'unknown', 'blue', 'long', 'long', 'Pinky', 'big', 'none', 'long', null, 'Lublin', 10001, 0);
+insert into lost_dogs (id, age, breed, color, ears_type, hair_length, name, size, special_marks, tail_length, date_lost, lost_location, user_id, is_found) values (10002, 13, 'random', 'brown', 'long', 'short', 'Borys', 'big', 'none', 'short', null, 'Lublin', 10001, 1);
+insert into lost_dogs (id, age, breed, color, ears_type, hair_length, name, size, special_marks, tail_length, date_lost, lost_location, user_id, is_found) values (10003, 14, 'bulldog', 'blonde', 'long', 'short', 'Warus', 'small', 'gray ears', 'long', null, 'Lublin', 10002, 0);
+insert into lost_dogs (id, age, breed, color, ears_type, hair_length, name, size, special_marks, tail_length, date_lost, lost_location, user_id, is_found) values (10004, 15, 'unknown', 'pink', 'short', 'long', 'Pimpek', 'small', 'none', 'long', null, 'Warsaw', 10003, 1);
