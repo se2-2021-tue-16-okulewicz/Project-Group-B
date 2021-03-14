@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LostDog extends Dog {
     private String lostLocation;
+    private long userId;
 
     @Column(name = "date_lost")
     @JsonDeserialize(using = JsonDateDeserializer.class)
