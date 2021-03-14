@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
@@ -33,7 +36,7 @@ public class LostDogServiceTest {
     public void AddLostDogTest() {
 
         //Checking initial size
-        var allDogs = service.GetLostDogs(Specification.where(null));
+        var allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
         assertEquals(allDogs.size(), 4);
 
         //Adding dogs
@@ -56,15 +59,15 @@ public class LostDogServiceTest {
         assertEquals("Warsaw", result3.getLostLocation());
 
         //Getting all dogs again
-        allDogs = service.GetLostDogs(Specification.where(null));
+        allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
         assertEquals(allDogs.size(), 7);
     }
 
     @Test
     public void FilteredDogsTests() {
-        var lublinDogs = service.GetLostDogs(Specification.where(isFromLublin()));
-        var warsawDogs = service.GetLostDogs(Specification.where(isFromWarsaw()));
-        var allDogsWithOr = service.GetLostDogs(Specification.where(isFromLublin()).or(isFromWarsaw()));
+        var lublinDogs = service.GetLostDogs(Specification.where(isFromLublin()), PageRequest.of(0, 15));
+        var warsawDogs = service.GetLostDogs(Specification.where(isFromWarsaw()), PageRequest.of(0, 15));
+        var allDogsWithOr = service.GetLostDogs(Specification.where(isFromLublin()).or(isFromWarsaw()), PageRequest.of(0, 15));
 
         assertEquals(3, lublinDogs.size());
         assertEquals(1, warsawDogs.size());

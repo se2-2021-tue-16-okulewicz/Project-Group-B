@@ -3,6 +3,7 @@ package se.backend.service.lostdogs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import se.backend.dao.LostDogRepository;
@@ -23,8 +24,8 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
-    public List<LostDog> GetLostDogs(Specification<LostDog> filters) {
-        return repository.findAll(filters);
+    public List<LostDog> GetLostDogs(Specification<LostDog> filters, Pageable page) {
+        return repository.findAll(filters, page).getContent();
     }
 
     @Override
