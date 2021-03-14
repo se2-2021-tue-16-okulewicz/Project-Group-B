@@ -3,12 +3,11 @@ package se.backend.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Dog {
     private String breed;
     private int age;
@@ -21,8 +20,4 @@ public class Dog {
     private String earsType;
     private String tailLength;
     //TODO: Add behaviours
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 }
