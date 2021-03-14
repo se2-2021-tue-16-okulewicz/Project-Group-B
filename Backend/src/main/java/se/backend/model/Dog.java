@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@MappedSuperclass
 public class Dog {
     private String breed;
     private int age;
