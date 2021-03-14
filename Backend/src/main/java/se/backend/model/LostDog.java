@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 public class LostDog extends Dog {
     private String lostLocation;
     private long userId;
+    private boolean isFound;
 
     @Column(name = "date_lost")
     @JsonDeserialize(using = JsonDateDeserializer.class)
