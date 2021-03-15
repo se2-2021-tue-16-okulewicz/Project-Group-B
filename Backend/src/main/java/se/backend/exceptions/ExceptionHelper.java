@@ -6,16 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.backend.exceptions.types.*;
-import se.backend.utils.MessageResponse;
+import se.backend.utils.Response;
 
 @ControllerAdvice(annotations = RestController.class)
 public class ExceptionHelper {
     private final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
     @ExceptionHandler(value = { GenericBadRequestException.class })
-    public ResponseEntity<MessageResponse> handleGenericBadRequestException(GenericBadRequestException ex) {
+    public ResponseEntity<Response<Object>> handleGenericBadRequestException(GenericBadRequestException ex) {
         logger.error("GenericBadRequestException: {}", ex.getMessage());
-        return new ResponseEntity<>(new MessageResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null), HttpStatus.BAD_REQUEST);
     }
 
 }
