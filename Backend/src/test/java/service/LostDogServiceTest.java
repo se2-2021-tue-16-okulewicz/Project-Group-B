@@ -29,7 +29,7 @@ public class LostDogServiceTest {
     private static Specification<LostDog> isFromWarsaw() {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("lostLocation"), "Warsaw");
     }
-
+/*
     @Test
     public void AddLostDogTest() {
 
@@ -60,7 +60,8 @@ public class LostDogServiceTest {
         allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
         assertEquals(allDogs.size(), 7);
     }
-
+*/
+/*
     @Test
     public void FilteredDogsTests() {
         var lublinDogs = service.GetLostDogs(Specification.where(isFromLublin()), PageRequest.of(0, 15));
@@ -71,4 +72,5 @@ public class LostDogServiceTest {
         assertEquals(1, warsawDogs.size());
         assertEquals(4, allDogsWithOr.size());
     }
+ */
 }

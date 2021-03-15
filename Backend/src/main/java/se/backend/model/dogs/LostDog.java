@@ -5,26 +5,27 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import se.backend.model.Location;
 import se.backend.utils.JsonDateDeserializer;
 import se.backend.utils.JsonDateSerializer;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "lost_dogs")
+@Table(name = "lost_dog")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LostDog extends Dog {
-    private String lostLocation;
+    @Embedded
+    private Location location;
     private long userId;
     private boolean isFound;
 
-    @Column(name = "date_lost")
-    @JsonDeserialize(using = JsonDateDeserializer.class)
-    @JsonSerialize(using = JsonDateSerializer.class)
-    private LocalDateTime dateLost;
+    private LocalDate dateLost;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
