@@ -2,7 +2,7 @@ package se.backend.service.lostdogs;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import se.backend.model.LostDog;
+import se.backend.model.dogs.LostDog;
 
 import java.util.List;
 

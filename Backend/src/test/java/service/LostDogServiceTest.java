@@ -4,13 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
-import se.backend.model.LostDog;
+import se.backend.model.dogs.LostDog;
 import se.backend.service.lostdogs.LostDogService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

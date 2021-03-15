@@ -1,4 +1,4 @@
-package se.backend.model;
+package se.backend.model.dogs;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

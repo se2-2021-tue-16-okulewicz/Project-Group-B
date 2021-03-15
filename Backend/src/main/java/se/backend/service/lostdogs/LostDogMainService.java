@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import se.backend.dao.LostDogRepository;
-import se.backend.model.LostDog;
+import se.backend.model.dogs.LostDog;
 
 import java.util.List;
 
