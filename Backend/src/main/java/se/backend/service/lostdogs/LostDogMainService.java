@@ -59,9 +59,7 @@ public class LostDogMainService implements LostDogService{
         var picture = pictureRepository.save(lostDogAndPicture.getPicture());
         LostDog dog = lostDogAndPicture.getDog().LostDogWithoutBehaviors();
         dog.setPictureId(picture.getId());
-        System.out.println("XDDD");
         var savedDog = lostDogRepository.save(dog);
-        System.out.println("XDDD");
         var behaviors = new ArrayList<DogBehavior>();
         for (var behaviorName : lostDogAndPicture.getDog().getBehaviors() ) {
             var behavior = new DogBehavior();
