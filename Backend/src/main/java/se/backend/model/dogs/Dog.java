@@ -19,5 +19,5 @@ public class Dog {
     private String hairLength;
     private String earsType;
     private String tailLength;
-    //TODO: Add behaviours
+    //TODO: Add behaviors
 }

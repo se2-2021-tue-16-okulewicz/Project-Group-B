@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "dog_behaviour")
+@Table(name = "dog_behavior")
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class DogBehaviour {
+public class DogBehavior {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private long dogId;
-    private String behaviour;
+    private String behavior;
 }
