@@ -9,6 +9,8 @@ import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 import java.util.List;
 
 //TODO: Uncomment and implement the rest of the functions
+//TODO: Update signatures to use proper wrappers
+//TODO: Add comments to the dogs
 public interface LostDogService {
     List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page);
     //LostDog GetDogDetails(long dogId);

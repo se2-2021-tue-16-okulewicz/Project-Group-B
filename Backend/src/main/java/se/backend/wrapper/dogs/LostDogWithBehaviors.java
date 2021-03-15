@@ -24,7 +24,7 @@ public class LostDogWithBehaviors extends LostDog {
         behaviors = new ArrayList<String>();
     }
 
-    public LostDog LostDogWithoutBehaviors  (){
+    public LostDog LostDogWithoutBehaviors(){
         var lostDog = new LostDog();
         lostDog.setDateLost(this.getDateLost());
         lostDog.setIsFound(this.isIsFound());
