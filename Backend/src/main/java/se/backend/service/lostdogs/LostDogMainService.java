@@ -13,7 +13,6 @@ import se.backend.model.Picture;
 import se.backend.model.dogs.DogBehavior;
 import se.backend.model.dogs.LostDog;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
-import se.backend.wrapper.dogs.LostDogWithBehaviorsAndPicture;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
 import java.util.ArrayList;
@@ -55,20 +54,19 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
-    public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviorsAndPicture lostDogAndPicture) {
-        var picture = pictureRepository.save(lostDogAndPicture.getPicture());
-        LostDog dog = lostDogAndPicture.getDog().LostDogWithoutBehaviors();
+    public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture) {
+        LostDog dog = newDog.LostDogWithoutBehaviors();
         dog.setPictureId(picture.getId());
         var savedDog = lostDogRepository.save(dog);
         var behaviors = new ArrayList<DogBehavior>();
-        for (var behaviorName : lostDogAndPicture.getDog().getBehaviors() ) {
+        for (var behaviorName : newDog.getBehaviors() ) {
             var behavior = new DogBehavior();
             behavior.setDogId(savedDog.getId());
             behavior.setBehavior(behaviorName);
             behaviors.add(dogBehaviorRepository.save(behavior));
         }
 
-        var returnedDog = new LostDogWithBehaviorsAndWithPicture(lostDogAndPicture.getDog());
+        var returnedDog = new LostDogWithBehaviorsAndWithPicture(newDog);
         returnedDog.setPicture(picture);
 
         return returnedDog;

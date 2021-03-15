@@ -19,7 +19,6 @@ import se.backend.model.dogs.LostDog;
 import se.backend.service.lostdogs.LostDogService;
 import se.backend.utils.Response;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
-import se.backend.wrapper.dogs.LostDogWithBehaviorsAndPicture;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
 import java.util.Collection;
@@ -79,12 +78,7 @@ public class DogsController {
             newPicture.setFileType(picture.getContentType());
             newPicture.setData(picture.getBytes());
 
-            var newDogAndPicture = new LostDogWithBehaviorsAndPicture();
-            newDogAndPicture.setDog(newDog);
-            newDogAndPicture.setPicture(newPicture);
-
-
-            savedDog = lostDogService.AddLostDog(newDogAndPicture);
+            savedDog = lostDogService.AddLostDog(newDog, newPicture);
         } catch (Exception e) {
             throw new GenericBadRequestException("Failed to save the dog");
         }

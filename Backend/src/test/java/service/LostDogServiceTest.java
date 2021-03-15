@@ -12,7 +12,6 @@ import se.backend.model.Picture;
 import se.backend.model.dogs.LostDog;
 import se.backend.service.lostdogs.LostDogService;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
-import se.backend.wrapper.dogs.LostDogWithBehaviorsAndPicture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -62,19 +61,9 @@ public class LostDogServiceTest {
         Picture pic3 = new Picture();
         pic3.setFileName("exampleFile3");
 
-        LostDogWithBehaviorsAndPicture dogAndPicture1 = new LostDogWithBehaviorsAndPicture();
-        dogAndPicture1.setDog(newDogBeh1);
-        dogAndPicture1.setPicture(pic1);
-        LostDogWithBehaviorsAndPicture dogAndPicture2 = new LostDogWithBehaviorsAndPicture();
-        dogAndPicture2.setDog(newDogBeh2);
-        dogAndPicture2.setPicture(pic2);
-        LostDogWithBehaviorsAndPicture dogAndPicture3 = new LostDogWithBehaviorsAndPicture();
-        dogAndPicture3.setDog(newDogBeh3);
-        dogAndPicture3.setPicture(pic3);
-
-        var result1 = service.AddLostDog(dogAndPicture1);
-        var result2 = service.AddLostDog(dogAndPicture2);
-        var result3 = service.AddLostDog(dogAndPicture3);
+        var result1 = service.AddLostDog(newDogBeh1, pic1);
+        var result2 = service.AddLostDog(newDogBeh2, pic2);
+        var result3 = service.AddLostDog(newDogBeh3, pic3);
 
         //Checking results of adding
         assertEquals("Name1", result1.getName());

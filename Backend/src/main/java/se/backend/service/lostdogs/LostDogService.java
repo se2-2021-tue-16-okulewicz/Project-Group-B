@@ -2,8 +2,9 @@ package se.backend.service.lostdogs;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import se.backend.model.Picture;
 import se.backend.model.dogs.LostDog;
-import se.backend.wrapper.dogs.LostDogWithBehaviorsAndPicture;
+import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface LostDogService {
     List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page);
     //LostDog GetDogDetails(long dogId);
-    LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviorsAndPicture dog);
+    LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture);
     //LostDog UpdateDog(LostDog updatedVersion);
     //boolean DeleteDog(long dogId);
 
