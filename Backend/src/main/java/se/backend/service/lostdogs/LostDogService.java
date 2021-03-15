@@ -3,14 +3,16 @@ package se.backend.service.lostdogs;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import se.backend.model.dogs.LostDog;
+import se.backend.wrapper.dogs.LostDogWithBehaviorsAndPicture;
+import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
 import java.util.List;
 
 //TODO: Uncomment and implement the rest of the functions
 public interface LostDogService {
-    List<LostDog> GetLostDogs(Specification<LostDog> filters, Pageable page);
+    List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page);
     //LostDog GetDogDetails(long dogId);
-    LostDog AddLostDog(LostDog dog);
+    LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviorsAndPicture dog);
     //LostDog UpdateDog(LostDog updatedVersion);
     //boolean DeleteDog(long dogId);
 

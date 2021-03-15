@@ -6,9 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import se.backend.dao.DogBehaviorRepository;
 import se.backend.dao.LostDogRepository;
+import se.backend.dao.PictureRepository;
+import se.backend.model.Picture;
+import se.backend.model.dogs.DogBehavior;
 import se.backend.model.dogs.LostDog;
+import se.backend.wrapper.dogs.LostDogWithBehaviors;
+import se.backend.wrapper.dogs.LostDogWithBehaviorsAndPicture;
+import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,20 +24,55 @@ import java.util.List;
 public class LostDogMainService implements LostDogService{
     private final Logger logger = LoggerFactory.getLogger(LostDogMainService.class);
 
-    private final LostDogRepository repository;
+    private final LostDogRepository lostDogRepository;
+    private final PictureRepository pictureRepository;
+    private final DogBehaviorRepository dogBehaviorRepository;
 
     @Autowired
-    public LostDogMainService(LostDogRepository repository) {
-        this.repository = repository;
+    public LostDogMainService(LostDogRepository lostDogRepository, PictureRepository pictureRepository, DogBehaviorRepository dogBehaviorRepository) {
+        this.lostDogRepository = lostDogRepository;
+        this.pictureRepository = pictureRepository;
+        this.dogBehaviorRepository = dogBehaviorRepository;
     }
 
     @Override
-    public List<LostDog> GetLostDogs(Specification<LostDog> filters, Pageable page) {
-        return repository.findAll(filters, page).getContent();
+    public List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page) {
+        var dogs = lostDogRepository.findAll(filters, page).getContent();
+        var dogsWithBehaviorsAndPictures = new ArrayList<LostDogWithBehaviorsAndWithPicture>();
+        for(var dog : dogs){
+            var dogWithBehavior = new LostDogWithBehaviors(dog);
+            var behaviors = dogBehaviorRepository.findAllByDogId(dog.getId());
+            for(var behavior : behaviors) {
+                dogWithBehavior.getBehaviors().add(behavior.getBehavior());
+            }
+            //
+            var dogWithBehaviorAndWithPicture = new LostDogWithBehaviorsAndWithPicture(dogWithBehavior);
+            var picture = pictureRepository.findById(dog.getPictureId());
+            dogWithBehaviorAndWithPicture.setPicture(picture.orElse(new Picture(-1, "", "", new byte[0])));
+            dogsWithBehaviorsAndPictures.add(dogWithBehaviorAndWithPicture);
+        }
+        return dogsWithBehaviorsAndPictures;
     }
 
     @Override
-    public LostDog AddLostDog(LostDog dog) {
-        return repository.save(dog);
+    public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviorsAndPicture lostDogAndPicture) {
+        var picture = pictureRepository.save(lostDogAndPicture.getPicture());
+        LostDog dog = lostDogAndPicture.getDog().LostDogWithoutBehaviors();
+        dog.setPictureId(picture.getId());
+        System.out.println("XDDD");
+        var savedDog = lostDogRepository.save(dog);
+        System.out.println("XDDD");
+        var behaviors = new ArrayList<DogBehavior>();
+        for (var behaviorName : lostDogAndPicture.getDog().getBehaviors() ) {
+            var behavior = new DogBehavior();
+            behavior.setDogId(savedDog.getId());
+            behavior.setBehavior(behaviorName);
+            behaviors.add(dogBehaviorRepository.save(behavior));
+        }
+
+        var returnedDog = new LostDogWithBehaviorsAndWithPicture(lostDogAndPicture.getDog());
+        returnedDog.setPicture(picture);
+
+        return returnedDog;
     }
 }

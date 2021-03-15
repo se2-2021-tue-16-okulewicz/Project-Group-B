@@ -5,6 +5,6 @@ import se.backend.model.Picture;
 
 @Data
 public class LostDogWithBehaviorsAndPicture {
-    private LostDogWithBehaviors lostDog;
+    private LostDogWithBehaviors dog;
     private Picture picture;
 }

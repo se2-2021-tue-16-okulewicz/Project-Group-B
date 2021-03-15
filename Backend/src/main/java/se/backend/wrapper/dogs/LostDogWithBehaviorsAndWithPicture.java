@@ -9,4 +9,8 @@ import se.backend.model.Picture;
 @Data
 public class LostDogWithBehaviorsAndWithPicture extends LostDogWithBehaviors {
     private Picture picture;
+
+    public LostDogWithBehaviorsAndWithPicture(LostDogWithBehaviors lostDogWithBehaviors) {
+        super(lostDogWithBehaviors);
+    }
 }

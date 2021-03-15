@@ -1,33 +1,38 @@
 package se.backend.model.dogs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import se.backend.model.Location;
-import se.backend.utils.JsonDateDeserializer;
-import se.backend.utils.JsonDateSerializer;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "lost_dog")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LostDog extends Dog {
-    @Embedded
-    private Location location;
-    private long userId;
-    private boolean isFound;
+    private long ownerId;
+    private boolean isIsFound = false;
 
     private LocalDate dateLost;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    public LostDog(LostDog another) {
+        super((Dog)another);
+        ownerId = another.ownerId;
+        isIsFound = another.isIsFound; //Json field should be 'isFound', so simple fix is to rename field to 'isIsFound'
+        dateLost = another.dateLost;
+        id = another.id;
+    }
+
+    public LostDog(Dog parent) {
+        super(parent);
+    }
 }
