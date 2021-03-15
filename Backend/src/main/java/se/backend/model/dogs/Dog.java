@@ -15,9 +15,7 @@ public class Dog {
     private String color;
     private String specialMarks;
     private String name;
-    //TODO: Add images
     private String hairLength;
     private String earsType;
     private String tailLength;
-    //TODO: Add behaviors
 }
