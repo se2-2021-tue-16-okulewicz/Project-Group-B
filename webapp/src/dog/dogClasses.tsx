@@ -1,113 +1,10 @@
 import "date-fns";
-import React, { Props, useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardMedia,
-  Container,
-  Input,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
-import InputLabel from "@material-ui/core/InputLabel";
-import DateFnsUtils from "@date-io/date-fns";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import React, { } from "react";
+import { ColorTypes, HairTypes, SizeTypes, TailTypes, EarsTypes, SpecialMarkTypes, BehavioursTypes } from "./dogEnums";
+import { IDogProps, IDogState, ILostDogProps, ILostDogState } from "./dogInterfaces";
 
-export enum BreedTypes {
-  "Labrador",
-  "German Shepherd",
-  "Bulldog",
-}
-export enum ColorTypes {
-  "Black",
-  "White",
-  "Brown",
-  "Ginger",
-  "Gold",
-  "Blue",
-  "Gray",
-  "Cream",
-  "Yellow",
-  "Other",
-}
-export enum HairTypes {
-  "Short",
-  "Medium",
-  "Long",
-}
-export enum SizeTypes {
-  "Small",
-  "Medium",
-  "Large",
-}
-export enum HeightTypes {
-  "Low",
-  "Medium",
-  "Tall",
-}
-export enum EarsTypes {
-  "Standing",
-  "Hanging",
-}
-export enum TailTypes {
-  "Long",
-  "Short",
-}
-export enum SpecialMarkTypes {
-  "Tattoo",
-  "Collar",
-  "Scar",
-  "None",
-}
-export enum BehavioursTypes {
-  "Shy",
-  "Energetic",
-  "Friendly",
-}
 
-export interface IDogState {
-  name: string;
-  age: number;
-  hair: string;
-  color: string;
-  size: string;
-  ears: string;
-  tail: string;
-  specialMark: string;
-  behaviour: string[];
-  location: { city: string; district: string };
-  lostDate: Date | null;
-  picture: { filename: string; filetype: string; data: [] };
-}
 
-export interface ILostDogState extends IDogState {
-  id: number;
-  dogId: number;
-}
-//const [dog, setDog] = useState<IDogState|undefined>(undefined)
-
-export interface IDogProps {
-  name?: string;
-  age?: number;
-  hair?: string;
-  color?: string;
-  size?: string;
-  ears?: string;
-  tail?: string;
-  specialMark?: string;
-  behaviour?: string[];
-  location?: { city?: string; district?: string };
-  selectedDate?: Date | null;
-  picture?: { filename?: string; filetype?: string; data?: [] };
-}
 
 export const defaultProps = {
   name: "",
@@ -126,8 +23,7 @@ export const defaultProps = {
 
 export class Dog extends React.Component<
   Partial<IDogProps>,
-  Partial<IDogState>
-> {
+  Partial<IDogState>> {
   constructor(props: IDogProps) {
     super(props);
     this.state = {
@@ -141,8 +37,7 @@ export class Dog extends React.Component<
       specialMark: "",
       behaviour: [],
       location: { city: "", district: "" },
-      lostDate: new Date(),
-      picture: { filename: "", filetype: "", data: [] },
+      //picture: { filename: "", filetype: "", data: [] },
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -156,10 +51,7 @@ export class Dog extends React.Component<
         }
       }*/
 
-  handleChange = (e: {
-    persist: () => void;
-    target: { name: any; value: any };
-  }) => {
+  handleChange = (e: { persist: () => void; target: { name: any; value: any }; }) => {
     //e.persist();
     var el = e.target.name;
 
@@ -169,5 +61,30 @@ export class Dog extends React.Component<
   };
 }
 
-export class LostDog extends React.Component<{}, Partial<ILostDogState>> {}
-export class FoundDog extends Dog {}
+export class LostDog extends React.Component<Partial<ILostDogProps>, Partial<ILostDogState>> {
+  constructor(props: ILostDogProps) {
+    super(props);
+    this.state = {
+      lostDate: new Date(),
+    };
+  }
+  handleChange = (e: { persist: () => void; target: { name: any; value: any }; }) => {
+    //e.persist();
+    var el = e.target.name;
+    this.setState((state) => ({ ...state, el: e.target.value }));
+    console.log(this.state.name);
+    console.log([e.target.name]);
+  };
+  
+}
+
+export class Picture extends React.Component{
+  public state={
+    filename: "",
+    filetype: "",
+    data: []
+  }
+}
+
+
+export class FoundDog extends Dog { }
