@@ -1,4 +1,4 @@
-package se.backend.model;
+package se.backend.model.account;
 
 public class Address {
     private String country;

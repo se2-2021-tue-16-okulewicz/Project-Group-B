@@ -1,4 +1,6 @@
-package se.backend.model;
+package se.backend.model.account;
+
+import se.backend.model.account.Address;
 
 public class Shelter {
     private String name;
