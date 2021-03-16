@@ -2,8 +2,7 @@ package se.backend.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import se.backend.model.EmptyModel;
+import se.backend.model.Picture;
 
-public interface EmptyRepository extends JpaRepository<EmptyModel, Long>, JpaSpecificationExecutor<EmptyModel> {
-
+public interface PictureRepository extends JpaRepository<Picture, Long>, JpaSpecificationExecutor<Picture> {
 }
