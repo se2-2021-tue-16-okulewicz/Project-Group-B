@@ -1,8 +1,6 @@
 //import {Dog, IDogProps, IDogState, ILostDogState} from "../src/dog/dogClasses"
 
-describe("Dog", ()=>{
-
-})
+describe("Dog", () => {});
 
 describe("Dog", () => {});
 
