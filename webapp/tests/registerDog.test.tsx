@@ -1,10 +1,9 @@
 //const registerDog = require('../src/registerDog/registerDog');
 
-import RegisterDogForm from "../src/registerDog/registerDog"
+import RegisterDogForm from "../src/registerDog/registerDog";
 
-
-test('name input', ()=>{
-     expect(RegisterDogForm)
+test("name input", () => {
+  expect(RegisterDogForm);
 });
 
 /*describe('SomeComponent' () => {

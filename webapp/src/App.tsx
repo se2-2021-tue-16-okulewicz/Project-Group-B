@@ -1,8 +1,8 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
-import RegisterDogForm from './registerDog/registerDog'
+import React from "react";
+import logo from "./logo.svg";
+import { Counter } from "./features/counter/Counter";
+import "./App.css";
+import RegisterDogForm from "./registerDog/registerDog";
 
 function App() {
   return (

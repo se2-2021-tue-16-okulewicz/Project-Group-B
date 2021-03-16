@@ -1,4 +1,4 @@
-var requestify = require('requestify'); 
+var requestify = require("requestify");
 //import config from "../config/config";
 import * as Utility from "./utility";
 //import axios from "axios";
@@ -17,9 +17,6 @@ const http = require("http");
  * @typedef {Object} ErrorMessage
  * @typedef {Object} ImageData
  */
-
-
-
 
 /**
  * Post(register) an account
@@ -64,8 +61,6 @@ export async function addDogs(dog, picture) {
       return { code: response.getCode(), body: response.getBody() };
     });
 } */
-
-
 
 /**
  * Uploads a car image
@@ -118,4 +113,3 @@ export async function uploadCarImage(file, id, token) {
       };
     });
 }*/
-
