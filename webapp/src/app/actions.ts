@@ -7,7 +7,7 @@ import * as Utility from "./utility";
 
 /**
  * Thunk for adding selected cars
- */
+ 
 export const addCarThunk = createAsyncThunk(
   "cars/add",
   async (args, { rejectWithValue }) => {
@@ -17,12 +17,12 @@ export const addCarThunk = createAsyncThunk(
     args.afterAddition(response.body);
     return response;
   }
-);
+);*/
 
 /**
  * Thunk for uploading car image
  * @param {Object} data - object with two properties: file and id of car
- */
+ 
 export const uploadCarImageThunk = createAsyncThunk(
   "cars/uploadCarImage",
   async (data, { rejectWithValue }) => {
@@ -36,4 +36,4 @@ export const uploadCarImageThunk = createAsyncThunk(
 
     return response;
   }
-);
+);*/

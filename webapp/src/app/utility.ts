@@ -51,6 +51,43 @@
       }
     });
   }
+
+  /**
+   * Returns a promise to convert the byte array
+   * @param {File} file
+   */
+   export function fileToByteArray(file: Blob) {
+    return new Promise((resolve, reject) => {
+        try {
+            let reader = new FileReader();
+            let fileByteArray: any = [];
+            reader.readAsArrayBuffer(file);
+            reader.onloadend = (evt) => {
+              if(evt.target){
+                if (evt.target.readyState == FileReader.DONE) {
+                    let arrayBuffer = evt.target.result;
+                    let array = new Uint8Array(arrayBuffer as any);
+                        fileByteArray.push(array.buffer);
+                }
+              }
+                resolve(fileByteArray);
+            }
+        }
+        catch (e) {
+            reject(e);
+        } 
+    })
+}
+   /*export function fileToByteArray(file: Blob) {
+    return new Promise((resolve) => {
+      const fileReader = new FileReader();
+      fileReader.onload = () => resolve(fileReader.result);
+      if (file) {
+        fileReader.readAsDataURL(file);
+      }
+    });
+  }*/
+
   /**
    * Converts Date object or string formatted like "2020-12-18T00:00:00" to
    * string formatted like "18-12-2020"
@@ -62,7 +99,7 @@
     if (typeof date === "string") {
       date_ = new Date(date);
     } else {
-      date_ = date;
+      date_ = new Date(date);
     }
     return `${date_.toLocaleDateString("pl-PL", {
       day: "numeric",

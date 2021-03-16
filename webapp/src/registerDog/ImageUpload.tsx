@@ -9,6 +9,7 @@ const ImageUpload = (props: any) => {
     const [newImage, setNewImage] = useState(false);
 
     const handleChange = (event: any) => {
+        
         setFile(event.target.files[0]);
         setNewImage(true);
         let  f = event.target.files[0];

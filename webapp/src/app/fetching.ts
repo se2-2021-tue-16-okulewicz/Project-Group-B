@@ -1,7 +1,7 @@
-import requestify from "requestify";
+var requestify = require('requestify'); 
 //import config from "../config/config";
 import * as Utility from "./utility";
-import axios from "axios";
+//import axios from "axios";
 import _ from "lodash";
 const http = require("http");
 //Doc for response
@@ -13,7 +13,7 @@ const http = require("http");
 
 //Typedefs for body types of the responses
 /**
- * @typedef {Object} Car
+ * @typedef {Object} Dog
  * @typedef {Object} ErrorMessage
  * @typedef {Object} ImageData
  */
@@ -23,10 +23,10 @@ const http = require("http");
 
 /**
  * Post(register) an account
- */
-export async function addCars(car, token) {
+
+export async function addDogs(dog, picture) {
   return requestify
-    .request(`http://${config("backend.ip")}:${config("backend.port")}/cars`, {
+    .request(`http://${config("backend.ip")}:${config("backend.port")}/${id}`, {
       method: `POST`,
       headers: {
         password: `Why we have to do this`,
@@ -34,18 +34,16 @@ export async function addCars(car, token) {
       },
       body: [
         {
-          name: car.name,
-          model: car.model,
-          location: car.location,
-          startDateTime: car.startDateTime,
-          endDateTime: car.endDateTime,
-          status: car.status,
-          dailyPrice: car.dailyPrice,
-          description: car.description,
-          tags: car.tags,
-          plateNumber: car.plateNumber,
+          name: dog.name,
+          size: dog.size,
+          
         },
       ],
+      [
+        filename: picture.filename,
+        filetype: picture.filetype,
+        data: picture.filedata
+      ]
     })
     .then((response) => {
       return {
@@ -65,7 +63,7 @@ export async function addCars(car, token) {
 
       return { code: response.getCode(), body: response.getBody() };
     });
-}
+} */
 
 
 
@@ -74,7 +72,7 @@ export async function addCars(car, token) {
  * @param {File} file
  * @param {BigInt} id - id of the car
  * @param {string} token
- */
+ 
 export async function uploadCarImage(file, id, token) {
   const fd = new FormData();
   fd.append("file", file);
@@ -119,5 +117,5 @@ export async function uploadCarImage(file, id, token) {
         },
       };
     });
-}
+}*/
 

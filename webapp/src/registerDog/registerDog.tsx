@@ -1,7 +1,7 @@
 import 'date-fns';
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Grid from '@material-ui/core/Grid';
-import { Button, Card, CardHeader, CardMedia, Container, Input, MenuItem, Select } from '@material-ui/core';
+import { Button, Card, CardHeader, CardMedia, Container, Input, MenuItem, Select, TextField } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -10,6 +10,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import ImageUpload from "./ImageUpload";
 import { Dog, IDogState, defaultProps, BreedTypes, ColorTypes, HairTypes, SizeTypes, EarsTypes, TailTypes, SpecialMarkTypes, BehavioursTypes } from "../dog/dogClasses"
+import { ModeComment } from '@material-ui/icons';
+import { wait } from '@testing-library/dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -24,21 +26,26 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function RegisterDogForm() {
-    let dog = new Dog(defaultProps);
-    const [name, setName] = useState('');
-    const [age, setAge] = useState('');
-    const [picture, setPictures] = useState('');
-    const [hair, setHair] = useState('');
-    const [color, setColor] = useState('');
-    const [size, setSize] = useState('');
-    const [ears, setEars] = useState('');
-    const [tail, setTail] = useState('');
-    const [specialMark, setSpecialMark] = useState('');
+    //let dog = new Dog(defaultProps);
+    //const [myState, setMyState] = useState<Partial<IDogState>>(defaultProps);
+    //localStorage.setItem('enable', 'false');
+    const [name, setName] = useState(localStorage.getItem('name'));
+    const [age, setAge] = useState(localStorage.getItem('age'));
+    const [picture, setPictures] = useState(localStorage.getItem('picture'));
+    const [hair, setHair] = useState(localStorage.getItem('hair'));
+    const [color, setColor] = useState(localStorage.getItem('color'));
+    const [size, setSize] = useState(localStorage.getItem('size'));
+    const [ears, setEars] = useState(localStorage.getItem('ears'));
+    const [tail, setTail] = useState(localStorage.getItem('tail'));
+    const [specialMark, setSpecialMark] = useState(localStorage.getItem('mark'));
     const [behaviour, setBehaviour] = React.useState<string[]>([]);
-    const [city, setCity] = useState("");
-    const [district, setDistrict] = useState("");
+    const [city, setCity] = useState(localStorage.getItem('city'));
+    const [district, setDistrict] = useState(localStorage.getItem('district'));
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date());
-    const [registerEnabled, setRegisterEnabled] = useState(false);
+    var enable = (localStorage.getItem('enable')=='true');
+    const [registerEnabled, setRegisterEnabled] = useState(enable);
+    //if(!registerEnabled)
+    //{localStorage.clear(); }
     const canSave = [
         name,
         hair,
@@ -98,44 +105,64 @@ export default function RegisterDogForm() {
       })
     );
   } */
+    /*const onChange=(e: any): void => {
+      const { name, value } = e.currentTarget;
+        const newLocal = { ...myState, [name]: value };
+      setMyState(newLocal);
+      console.log(name, value);
+      console.log(myState.name);
+      console.log(dog.state.name);
+  }*/
     const handleNameChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setName(event.target.value as string);
+        localStorage.setItem('name', event.target.value as string);
     };
     const handleAgeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setAge(event.target.value as string);
+        localStorage.setItem('age', event.target.value as string);
     };
     const handleHairChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setHair(event.target.value as string);
+        localStorage.setItem('hair', event.target.value as string);
     };
     const handleColorChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setColor(event.target.value as string);
+        localStorage.setItem('color', event.target.value as string);
     };
     const handleSizeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSize(event.target.value as string);
+        localStorage.setItem('size', event.target.value as string);
     };
     const handleEarsChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setEars(event.target.value as string);
+        localStorage.setItem('ears', event.target.value as string);
     };
     const handleTailChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setTail(event.target.value as string);
+        localStorage.setItem('tail', event.target.value as string);
     };
     const handleMarkChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSpecialMark(event.target.value as string);
+        localStorage.setItem('mark', event.target.value as string);
     };
     const handleBehaviourChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setBehaviour(event.target.value as string[]);
+        //localStorage.setItem('behaviour', event.target.value as string[]);
     };
     const handlePicturesChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         if (event.target) {
             setPictures(event.target.value as string);
+            localStorage.setItem('picture', event.target.value as string);
         }
     };
     const handleCityChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setCity(event.target.value as string);
-        console.log(event.target.value);
+        localStorage.setItem('city', event.target.value as string);
+        //console.log(event.target.value);
     };
     const handleDistrictChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setDistrict(event.target.value as string);
+        localStorage.setItem('district', event.target.value as string);
     };
     /*<DisplayImage
   handleToUpdate={(file) => handleToUpdate(file)}
@@ -145,7 +172,7 @@ export default function RegisterDogForm() {
     return (
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            {!registerEnabled && (<Button disabled={registerEnabled} onClick={() => setRegisterEnabled(true)}>Register Dog</Button>)}
+            {!registerEnabled  && (<Button disabled={registerEnabled} onClick={()=>{localStorage.setItem('enable','true'); setRegisterEnabled(true); }}>Register Dog</Button>)}
             {registerEnabled && (
                 <Grid container xs={12} alignContent="space-between" spacing={5}>
                     <Grid container item xs={5} direction="column" alignContent="stretch" spacing={1}>
@@ -168,11 +195,13 @@ export default function RegisterDogForm() {
                         </FormControl>
                     </Grid>
                     <Grid container item xs={3} direction="column" alignContent="stretch" spacing={1}>
-                        <FormControl className={classes.formControl}>
+                        <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel shrink id="age-label">
                                 Age
                             </InputLabel>
-                            <Input
+                            <TextField
+                                type="number"
+
                                 id="age"
                                 name="age"
                                 value={age}
@@ -182,14 +211,15 @@ export default function RegisterDogForm() {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel htmlFor="color-label">Color</InputLabel>
                             <Select
-                                native
                                 label="Color"
                                 labelId="color-label"
                                 id="color"
                                 value={color}
                                 onChange={handleColorChange}
                                 displayEmpty
+                                
                             >
+
                                 {Object.values(ColorTypes).filter(k => isNaN(Number(k))).map((type: string | ColorTypes) => (
                                     <option id={typeof type} value={type}>
                                         {type}
@@ -200,7 +230,7 @@ export default function RegisterDogForm() {
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel htmlFor="hair-label">Hair</InputLabel>
                             <Select
-                                native
+                                
                                 label="hair"
                                 labelId="hair-label"
                                 id="hair"
@@ -214,14 +244,14 @@ export default function RegisterDogForm() {
                                     </option>))}
                             </Select>
                         </FormControl>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel shrink id="size-label">
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel htmlFor="size-label">
                                 Size
                         </InputLabel>
                             <Select
-                                native
+                                
                                 labelId="size-label"
-                                id="size"
+                                label="size"
                                 value={size}
                                 onChange={handleSizeChange}
                                 displayEmpty
@@ -232,13 +262,14 @@ export default function RegisterDogForm() {
                                     </option>))}
                             </Select>
                         </FormControl>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel shrink id="ears-label">
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel  htmlFor="ears-label">
                                 Ears
                         </InputLabel>
                             <Select
+                                
                                 labelId="ears-label"
-                                id="ears"
+                                label="ears"
                                 value={ears}
                                 onChange={handleEarsChange}
                                 displayEmpty
@@ -250,13 +281,14 @@ export default function RegisterDogForm() {
                                     </option>))}
                             </Select>
                         </FormControl>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel shrink id="tail-label">
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel htmlFor="tail-label">
                                 Tail
                         </InputLabel>
                             <Select
+                                
                                 labelId="tail-label"
-                                id="tail"
+                                label="tail"
                                 value={tail}
                                 onChange={handleTailChange}
                                 displayEmpty
@@ -267,13 +299,15 @@ export default function RegisterDogForm() {
                                     </option>))}
                             </Select>
 
-                        </FormControl><FormControl className={classes.formControl}>
-                            <InputLabel shrink id="mark-label">
+                        </FormControl>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel htmlFor="mark-label">
                                 Special Mark
                         </InputLabel>
                             <Select
+                            
                                 labelId="mark-label"
-                                id="mark"
+                                label="specialmark "
                                 value={specialMark}
                                 onChange={handleMarkChange}
                                 displayEmpty
@@ -284,14 +318,14 @@ export default function RegisterDogForm() {
                                     </option>))}
                             </Select>
                         </FormControl>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel shrink id="behaviour-label">
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel htmlFor="behaviour-label">
                                 Behaviour
                         </InputLabel>
                             <Select
                                 multiple
                                 labelId="behaviour-label"
-                                id="behaviour"
+                                label="behaviour"
                                 value={behaviour}
                                 onChange={handleBehaviourChange}
                                 input={<Input />}
@@ -314,6 +348,7 @@ export default function RegisterDogForm() {
                                 id="date-picker-inline"
                                 label="Dog was lost on"
                                 value={selectedDate}
+                                maxDate={new Date()}
                                 onChange={(date) => setSelectedDate(date)}
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
@@ -341,7 +376,10 @@ export default function RegisterDogForm() {
                             />
                         </FormControl>
                         <FormControl className={classes.formControl}>
-                            <Button variant="contained" onSubmit={onSavePostClicked} color="primary" disabled={canSave}>Submit</Button>
+                            <Button variant="contained" onSubmit={onSavePostClicked} color="primary" disabled={!canSave}>Submit</Button>
+                        </FormControl>
+                        <FormControl className={classes.formControl}>
+                            <Button variant="contained" onClick={()=>{ localStorage.setItem('enable', 'false'); setRegisterEnabled(false); }} color="primary">Cancel</Button>
                         </FormControl>
                     </Grid>
                 </Grid>
@@ -349,4 +387,5 @@ export default function RegisterDogForm() {
 
     )
 }
+
 

@@ -17,7 +17,7 @@ const init = {
   token: null,
 };
 
-  [Actions.addCarThunk.pending]: (state, action) => {
+  /*[Actions.addCarThunk.pending]: (state, action) => {
     let newState = _.cloneDeep(state);
     newState.status = "adding";
     return newState;
@@ -63,4 +63,4 @@ const init = {
     newState.error = action.payload.code;
     newState.errorBody = action.payload.body;
     return newState;
-  }
+  }*/
