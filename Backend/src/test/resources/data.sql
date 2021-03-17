@@ -20,3 +20,14 @@ insert into dog_behavior (id, dog_id, behavior) values (10006, 10003, 'Sprints v
 insert into dog_behavior (id, dog_id, behavior) values (10007, 10004, 'Barks');
 insert into dog_behavior (id, dog_id, behavior) values (10008, 10004, 'Drinks milk');
 insert into dog_behavior (id, dog_id, behavior) values (10009, 10004, 'Eats');
+
+insert into user_account (id, username, password, name, phone_number) values (10001, 'e.musk@mail.com', 'xea-12Musk', 'Elon Musk', '+9123456789');
+insert into user_account (id, username, password, name, phone_number) values (10002, 'b.gates@mail.com', 'MicrosoftTheBest', 'Bill Gates', '+9123456780');
+
+insert into shelter (id, name, country, town, street, house_number) values (10001, 'Hope', 'Poland', 'Warsaw', 'Koszykowa', '75');
+insert into dog_shelter_account (id, username, password, shelter_id) values (10001, 'hopeShelter', '12345678', 10001);
+insert into shelter (id, name, country, town, street, house_number) values (10002, 'Green Peace', 'Poland', 'Warsaw', 'plac Politechniki', '1B');
+insert into dog_shelter_account (id, username, password, shelter_id) values (10002, 'greenPeace', '12345678', 10002);
+
+insert into admin_account (id, username, password) values (10001, 'admin007', 'admin007123');
+insert into admin_account (id, username, password) values (10002, 'admin008', 'admin008123');

@@ -1,9 +1,11 @@
 package se.backend.service.login;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.stereotype.Service;
 import se.backend.dao.AdminAccountRepository;
-import se.backend.dao.DogShelterRepository;
+import se.backend.dao.DogShelterAccountRepository;
 import se.backend.dao.UserAccountRepository;
 import se.backend.model.account.Account;
 import se.backend.model.account.AdminAccount;
@@ -14,10 +16,11 @@ import se.backend.wrapper.account.UserType;
 
 import java.util.List;
 
+@Service
 public class LoginMainService implements LoginService {
 
     private UserAccountRepository userAccountRepository;
-    private DogShelterRepository dogShelterRepository;
+    private DogShelterAccountRepository dogShelterAccountRepository;
     private AdminAccountRepository adminAccountRepository;
 
     ExampleMatcher LOGIN_INFORMATION_MATCHER = ExampleMatcher.matching()
@@ -25,9 +28,10 @@ public class LoginMainService implements LoginService {
             .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
             .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
 
-    public LoginMainService (UserAccountRepository userAccountRepository, DogShelterRepository dogShelterRepository, AdminAccountRepository adminAccountRepository) {
+    @Autowired
+    public LoginMainService (UserAccountRepository userAccountRepository, DogShelterAccountRepository dogShelterAccountRepository, AdminAccountRepository adminAccountRepository) {
         this.userAccountRepository = userAccountRepository;
-        this.dogShelterRepository = dogShelterRepository;
+        this.dogShelterAccountRepository = dogShelterAccountRepository;
         this.adminAccountRepository = adminAccountRepository;
     }
 
@@ -45,7 +49,7 @@ public class LoginMainService implements LoginService {
         dogShelterProbe.setPassword(password);
         dogShelterProbe.setAssociatedEmail(username);
         Example<DogShelterAccount> dogExample = Example.of(dogShelterProbe, LOGIN_INFORMATION_MATCHER);
-        exists = this.dogShelterRepository.exists(dogExample);
+        exists = this.dogShelterAccountRepository.exists(dogExample);
         if(exists){
             return new AuthenticationResults(UserType.Shelter);
         }

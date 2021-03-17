@@ -21,5 +21,7 @@ public class UserAccount extends Account implements Serializable{
         private long id;
 
         private String name;
+
+        @Column(name = "phone_number")
         private String phoneNumber;
 }
