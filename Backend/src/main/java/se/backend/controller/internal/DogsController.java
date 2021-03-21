@@ -1,6 +1,5 @@
 package se.backend.controller.internal;
 
-import com.sun.istack.NotNull;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,8 +73,8 @@ public class DogsController {
     @SneakyThrows
     @PostMapping(path = "")
     public ResponseEntity<Response<LostDog>> AddLostDog(@RequestHeader HttpHeaders headers,
-                                                        @RequestPart("dog") @NotNull LostDogWithBehaviors newDog,
-                                                        @RequestPart("picture") @NotNull MultipartFile picture) {
+                                                        @RequestPart("dog") LostDogWithBehaviors newDog,
+                                                        @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
         if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
             throw new UnauthorizedException();
