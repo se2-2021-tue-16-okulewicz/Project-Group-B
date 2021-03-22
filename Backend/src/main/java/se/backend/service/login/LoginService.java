@@ -14,5 +14,5 @@ public interface LoginService {
     AuthenticationResults CreateAccount(Account user);
     boolean UpdateUser(Account user);
     List<Account> GetUsers(String username);
-    boolean IsAuthorized(HttpHeaders httpHeaders, UserType permissions);
+    boolean IsAuthorized(HttpHeaders httpHeaders, List<UserType> requiredPermissions);
 }
