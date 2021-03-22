@@ -1,8 +1,5 @@
 import "date-fns";
-import {
-  IDog,
-  ILostDog,
-} from "./dogInterfaces";
+import { IDog, ILostDog } from "./dogInterfaces";
 
 export const initPicture = {
   id: 0,

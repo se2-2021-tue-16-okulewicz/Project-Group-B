@@ -26,10 +26,7 @@ import {
   BehaviorsTypes,
   BreedTypes,
 } from "../dog/dogEnums";
-import {
-  initLostDogProps,
-  initPicture,
-} from "../dog/dogClasses";
+import { initLostDogProps, initPicture } from "../dog/dogClasses";
 import { ILostDog, IPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
@@ -245,15 +242,13 @@ export default function RegisterDogForm() {
                 displayEmpty
               >
                 <option key={"hair-type"} aria-label="None" value="" />
-                {
-                  Object.values(HairTypes)
-                    .filter((k) => isNaN(Number(k)))
-                    .map((type: string | HairTypes) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))
-                }
+                {Object.values(HairTypes)
+                  .filter((k) => isNaN(Number(k)))
+                  .map((type: string | HairTypes) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
               </Select>
             </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
