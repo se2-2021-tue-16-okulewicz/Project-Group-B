@@ -13,7 +13,7 @@ import {
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import InputLabel from "@material-ui/core/InputLabel";
+import InputLabel from '@material-ui/core/InputLabel';
 import DateFnsUtils from "@date-io/date-fns";
 import ImageUpload from "./ImageUpload";
 import {
@@ -35,9 +35,6 @@ import {
 import { ILostDogState, IPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { dateFormat, dateUnFormat, fileToBase64 } from "../app/utility";
-import { store } from "../app/store";
-import { token } from "../app/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,7 +68,7 @@ export default function RegisterDogForm() {
     !isRegisterEnabled && isInputNotNull ? x : initLostDogProps
   );
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
-  const [picture, setPictures] = useState<IPicture>(initPicture);
+  const [picture, setPicture] = useState<IPicture>(initPicture);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     var newField = { ...lostDogFields, [e.target.name]: e.target.value };
@@ -80,7 +77,6 @@ export default function RegisterDogForm() {
   };
 
   function calendarHandler(date: MaterialUiPickersDate): void {
-    //setSelectedDate(date);
     var newField = { ...lostDogFields, lostDate: date as Date };
     setLostDogFields(newField);
     sessionStorage.setItem("inputField", JSON.stringify(newField));
@@ -110,14 +106,14 @@ export default function RegisterDogForm() {
 
   const onSavePostClicked = async () => {
     try {
-      registerDog(lostDogFields, picture, token);
+      registerDog(lostDogFields, picture);
       //setName("");
     } catch (err) {
       console.error("Failed to save the post: ", err);
     }
   };
 
-  function registerDog(dog: ILostDogState, picture: IPicture, token: any) {
+  function registerDog(dog: ILostDogState, picture: IPicture) {
     /*store.dispatch(
       Actions.addDogThunk({
         dog,
@@ -137,6 +133,7 @@ export default function RegisterDogForm() {
       //sessionStorage.setItem("picture", event.value as string);
     }
   };
+
   if (registerEnabled) {
     return (
       <Button
@@ -392,7 +389,7 @@ export default function RegisterDogForm() {
                 data-testid="date-select"
                 disableToolbar
                 variant="inline"
-                format="yyyy/MM/dd"
+                format="yyyy-MM-dd"
                 margin="normal"
                 id="date-picker-inline"
                 value={lostDogFields.lostDate}

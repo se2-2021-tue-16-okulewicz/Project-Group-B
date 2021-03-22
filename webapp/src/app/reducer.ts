@@ -7,6 +7,9 @@ const init = {
   token: null,
 };
 
+export const reducer = createReducer(init, {
+
+});
 /*
 [Actions.addDogThunk.pending]: (state, action) => {
     let newState = _.cloneDeep(state);

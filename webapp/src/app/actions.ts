@@ -3,8 +3,6 @@ import { LostDog } from "../dog/dogClasses";
 import * as Fetching from "./fetching";
 import * as Utility from "./utility";
 
-//We are not using this anymore:
-export const token = `8df62db8-b296-440e-a23f-9ed58dcd2ba5`;
 
 /**
  * Thunk for adding new lost dog
