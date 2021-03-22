@@ -3,6 +3,7 @@ package se.backend.service.lostdogs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -77,7 +78,7 @@ public class LostDogMainService implements LostDogService{
     @Transactional
     @Override
     public boolean DeleteDog(long dogId) {
-        if(dogId < 0) return false;
+        if(!IsValidDogId(dogId)) return false;
 
         LostDog dog = lostDogRepository.getOne(dogId);
         if(dog == null) return false; // Here we fail to delete because the dog is not in the database.
@@ -92,6 +93,22 @@ public class LostDogMainService implements LostDogService{
         lostDogRepository.delete(dog);
         return true;
     }
+
+    // method to check if the id exists in the database and if its not less then 0.
+    private boolean IsValidDogId(long dogId)
+    {
+        if(dogId < 0) return false;
+        var dogs = lostDogRepository.findAll(Specification.where(null), PageRequest.of(0, 15)).getContent();
+        for(var dog : dogs)
+        {
+            if(dog.getId() == dogId)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 /*
     @Override
     public LostDog UpdateDog(LostDog updatedVersion)
