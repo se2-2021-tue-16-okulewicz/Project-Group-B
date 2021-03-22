@@ -8,7 +8,7 @@ export const initPicture = {
   data: new Uint8Array(),
 };
 
-export const initLostDogProps : ILostDog = {
+export const initLostDogProps: ILostDog = {
   id: 0,
   ownerId: 0,
   pictureId: 0,
