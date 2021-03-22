@@ -17,7 +17,7 @@ public interface LostDogService {
     LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture);
     //LostDog GetDogDetails(long dogId);
     //LostDog UpdateDog(LostDog updatedVersion);
-    //boolean DeleteDog(long dogId);
+    boolean DeleteDog(long dogId);
 
     //List<LostDog> GetUserDogs(long userId);
 
