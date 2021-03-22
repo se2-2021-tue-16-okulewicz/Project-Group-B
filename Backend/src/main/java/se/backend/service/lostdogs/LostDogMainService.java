@@ -74,30 +74,24 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
-    public boolean DeleteDog(long guid) {
-        LostDog dog = lostDogRepository.getOne(guid);
+    public boolean DeleteDog(long dogId) {
+        LostDog dog = lostDogRepository.getOne(dogId);
         if(dog == null) return false; // Here we fail to delete because the dog is not in the database.
 
         // Deletes behaviors
-        if(dog instanceof LostDogWithBehaviors) {
-            LostDogWithBehaviors LDWB = (LostDogWithBehaviors) dog;
-            var behaviors = dogBehaviorRepository.findAllByDogId(LDWB.getId());
-            for(var behavior : behaviors) {
-                dogBehaviorRepository.deleteById(behavior.getId());
-            }
+        var behaviors = dogBehaviorRepository.findAllByDogId(dog.getId());
+        for(var behavior : behaviors) {
+            dogBehaviorRepository.deleteById(behavior.getId());
         }
-        // Deletes behaviors and picture
-        if(dog instanceof LostDogWithBehaviorsAndWithPicture) {
-            LostDogWithBehaviorsAndWithPicture LDWBAWP = (LostDogWithBehaviorsAndWithPicture) dog;
-            var behaviors = dogBehaviorRepository.findAllByDogId(LDWBAWP.getId());
-            for(var behavior : behaviors) {
-                dogBehaviorRepository.deleteById(behavior.getId());
-            }
-            pictureRepository.deleteById(LDWBAWP.getPictureId());
-        }
-
         // Deletes dog.
+        pictureRepository.deleteById(dog.getPictureId());
         lostDogRepository.delete(dog);
         return true;
     }
+/*
+    @Override
+    public LostDog UpdateDog(LostDog updatedVersion)
+    {
+
+    }*/
 }

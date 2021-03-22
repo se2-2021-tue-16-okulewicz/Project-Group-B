@@ -85,4 +85,26 @@ public class DogsController {
         return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
     }
     //</editor-fold>
+    /*
+    @PostMapping(path = "/{dogId}")
+    public ResponseEntity<Response<Boolean>> DeleteLostDog(@RequestHeader HttpHeaders headers, @PathVariable("dogId") long dogId) {
+        logHeaders(headers);
+        //Check authorization with token
+
+        LostDog savedDog;
+        try {
+            var newPicture = new Picture();
+            newPicture.setFileName(picture.getOriginalFilename());
+            newPicture.setFileType(picture.getContentType());
+            newPicture.setData(picture.getBytes());
+
+            savedDog = lostDogService.AddLostDog(newDog, newPicture);
+        } catch (Exception e) {
+            throw new GenericBadRequestException("Failed to save the dog");
+        }
+
+        return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+    }
+    */
+
 }
