@@ -4,7 +4,6 @@ import javassist.compiler.ast.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import se.backend.dao.AdminAccountRepository;
 import se.backend.dao.DogShelterAccountRepository;
@@ -17,6 +16,7 @@ import se.backend.wrapper.account.AuthenticationResults;
 import se.backend.wrapper.account.UserType;
 
 import javax.xml.bind.DatatypeConverter;
+import java.net.http.HttpHeaders;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class LoginMainService implements LoginService {
     private final DogShelterAccountRepository dogShelterAccountRepository;
     private final AdminAccountRepository adminAccountRepository;
 
-    private static final HashMap<String,UserType> sessions = new HashMap<>();
+    private static final HashMap<String, UserType> sessions = new HashMap<>();
 
     ExampleMatcher LOGIN_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id")
@@ -102,10 +102,16 @@ public class LoginMainService implements LoginService {
     }
 
     @Override
-    public boolean IsAuthorized(String token, UserType permissions) {
+    public boolean IsAuthorized(HttpHeaders httpHeaders, UserType permissions) {
+        if(!httpHeaders.map().containsKey("token"))
+            return false;
+
+        var token = httpHeaders.map().get("token").get(0);
+
         if(sessions.containsKey(token)){
             return sessions.get(token).equals(permissions);
         }
+
         return false;
     }
 

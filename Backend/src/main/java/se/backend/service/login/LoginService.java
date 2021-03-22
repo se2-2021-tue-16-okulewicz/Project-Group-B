@@ -6,6 +6,7 @@ import se.backend.model.account.UserAccount;
 import se.backend.wrapper.account.AuthenticationResults;
 import se.backend.wrapper.account.UserType;
 
+import java.net.http.HttpHeaders;
 import java.util.List;
 
 public interface LoginService {
@@ -13,5 +14,5 @@ public interface LoginService {
     AuthenticationResults CreateAccount(Account user);
     boolean UpdateUser(Account user);
     List<Account> GetUsers(String username);
-    boolean IsAuthorized(String token, UserType permissions);
+    boolean IsAuthorized(HttpHeaders httpHeaders, UserType permissions);
 }
