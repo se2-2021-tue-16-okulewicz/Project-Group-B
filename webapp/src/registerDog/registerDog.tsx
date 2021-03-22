@@ -239,7 +239,7 @@ export default function RegisterDogForm() {
                 native
                 label="hair"
                 labelId="hair-label"
-                value={lostDogFields.hair}
+                value={lostDogFields.hairLength}
                 name="hair"
                 onChange={selectsHandler}
                 displayEmpty
@@ -286,7 +286,7 @@ export default function RegisterDogForm() {
                 labelId="ears-label"
                 label="ears"
                 name="ears"
-                value={lostDogFields.ears}
+                value={lostDogFields.earsType}
                 onChange={selectsHandler}
                 displayEmpty
               >
@@ -308,7 +308,7 @@ export default function RegisterDogForm() {
                 labelId="tail-label"
                 label="tail"
                 name="tail"
-                value={lostDogFields.tail}
+                value={lostDogFields.tailLength}
                 onChange={selectsHandler}
                 displayEmpty
               >
@@ -423,7 +423,7 @@ export default function RegisterDogForm() {
                 labelId="behavior-label"
                 label="Behavior"
                 name="behavior"
-                value={lostDogFields.behavior}
+                value={lostDogFields.behaviors}
                 onChange={selectsHandler}
                 input={<Input />}
                 displayEmpty
