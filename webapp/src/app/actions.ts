@@ -19,4 +19,3 @@ export const addDogThunk = createAsyncThunk(
     return response;
   }
 );*/
-

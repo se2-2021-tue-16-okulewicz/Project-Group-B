@@ -27,4 +27,3 @@ const init = {
     newState.errorBody = action.payload.body;
     return newState;
   },*/
-
