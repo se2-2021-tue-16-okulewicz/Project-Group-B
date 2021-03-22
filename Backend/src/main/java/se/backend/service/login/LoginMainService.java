@@ -1,9 +1,9 @@
 package se.backend.service.login;
 
-import javassist.compiler.ast.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import se.backend.dao.AdminAccountRepository;
 import se.backend.dao.DogShelterAccountRepository;
@@ -16,13 +16,11 @@ import se.backend.wrapper.account.AuthenticationResults;
 import se.backend.wrapper.account.UserType;
 
 import javax.xml.bind.DatatypeConverter;
-import java.net.http.HttpHeaders;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
 
 @Service
 public class LoginMainService implements LoginService {
@@ -107,10 +105,10 @@ public class LoginMainService implements LoginService {
 
     @Override
     public boolean IsAuthorized(HttpHeaders httpHeaders, List<UserType> requiredPermissions) {
-        if(!httpHeaders.map().containsKey("token"))
+        if(!httpHeaders.containsKey("token"))
             return false;
 
-        var token = httpHeaders.map().get("token").get(0);
+        var token = Objects.requireNonNull(httpHeaders.get("token")).get(0);
 
         if(sessions.containsKey(token)){
             return requiredPermissions.contains(sessions.get(token));
