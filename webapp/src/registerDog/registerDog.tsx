@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function RegisterDogForm() {
   var isRegisterEnabled = sessionStorage.getItem("enable") === "true";
   var isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  const [registerEnabled, setRegisterEnabled] = useState(isRegisterEnabled);
+  const [registerEnabled, setRegisterEnabled] = useState(isRegisterEnabled as Boolean);
   if (!isRegisterEnabled && isInputNotNull) {
     var x = JSON.parse(sessionStorage.getItem("lostDogFields") as string);
   }
@@ -226,7 +226,7 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 displayEmpty
               >
-                <option aria-label="None" value="" />
+                <option key={"color-key"} aria-label="None" value="" />
                 {Object.values(ColorTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | ColorTypes) => (
@@ -248,7 +248,7 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 displayEmpty
               >
-                <option aria-label="None" value="" />
+                <option key={"hair-type"} aria-label="None" value="" />
                 {
                   /*Object.keys(HairTypes).filter((k) => !isNaN(Number(k))).map((index:string) =>(
                     <option value={Number(index)} id="hair">{HairTypes[Number(index)]}</option>
@@ -256,7 +256,7 @@ export default function RegisterDogForm() {
                   Object.values(HairTypes)
                     .filter((k) => isNaN(Number(k)))
                     .map((type: string | HairTypes) => (
-                      <option value={type}>{type}</option>
+                      <option key={type} value={type}>{type}</option>
                     ))
                 }
               </Select>
@@ -273,11 +273,11 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 displayEmpty
               >
-                <option aria-label="None" value="" />
+                <option key={"size-type"} aria-label="None" value="" />
                 {Object.values(SizeTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | SizeTypes) => (
-                    <option value={type}>{type}</option>
+                    <option key={type} value={type}>{type}</option>
                   ))}
               </Select>
             </FormControl>
@@ -293,11 +293,11 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 displayEmpty
               >
-                <option aria-label="None" value="" />
+                <option key={"ears-type"} aria-label="None" value="" />
                 {Object.values(EarsTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | EarsTypes) => (
-                    <option value={type}>{type}</option>
+                    <option key={type} value={type}>{type}</option>
                   ))}
               </Select>
             </FormControl>
@@ -313,11 +313,11 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 displayEmpty
               >
-                <option aria-label="None" value="" />
+                <option key={"tail-type"} aria-label="None" value="" />
                 {Object.values(TailTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | TailTypes) => (
-                    <option value={type}>{type}</option>
+                    <option key={type} value={type}>{type}</option>
                   ))}
               </Select>
             </FormControl>
@@ -333,11 +333,11 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 displayEmpty
               >
-                <option aria-label="None" value="" />
+                <option key={"mark-type"} aria-label="None" value="" />
                 {Object.values(SpecialMarkTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | SpecialMarkTypes) => (
-                    <option value={type}>{type}</option>
+                    <option key={type} value={type}>{type}</option>
                   ))}
               </Select>
             </FormControl>
@@ -353,11 +353,11 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 displayEmpty
               >
-                <option aria-label="None" value="" />
+                <option key={"breed-type"} aria-label="None" value="" />
                 {Object.values(BreedTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | BreedTypes) => (
-                    <option value={type}>{type}</option>
+                    <option key={type} value={type}>{type}</option>
                   ))}
               </Select>
             </FormControl>
