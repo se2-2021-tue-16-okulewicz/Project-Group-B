@@ -61,15 +61,6 @@ export class Dog extends React.Component<IDogProps,IDogState> {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  //location: { city, district },
-  //
-  /*componentDidUpdate(prevProps: { userID: any; }) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.userID !== prevProps.userID) {
-          this.fetchData(this.props.userID);
-        }
-      }*/
-
   handleChange = (e: { persist: () => void; target: { name: any; value: any }; }) => {
     //e.persist();
     var el = e.target.name;
@@ -108,9 +99,7 @@ export class LostDog extends React.Component<ILostDogProps,ILostDogState> {
       behavior: [],
       location: { city: "", district: "" },
       lostDate: new Date(),
-      //picture: { filename: "", filetype: "", data: new Uint8Array() }
     };
-    //this.handleChange = this.handleChange.bind(this);
     
      
   }
@@ -130,14 +119,5 @@ export class LostDog extends React.Component<ILostDogProps,ILostDogState> {
   }
   
 }
-
-/*export class Picture extends React.Component{
-  public state={
-    filename: "",
-    filetype: "",
-    data: []
-  }
-}*/
-
 
 export class FoundDog extends Dog { }
