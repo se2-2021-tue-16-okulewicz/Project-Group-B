@@ -56,7 +56,8 @@ public class LostDogMainService implements LostDogService{
     @Override
     public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture) {
         LostDog dog = newDog.LostDogWithoutBehaviors();
-        dog.setPictureId(picture.getId());
+        var savedPicture = pictureRepository.save(picture);
+        dog.setPictureId(savedPicture.getId());
         var savedDog = lostDogRepository.save(dog);
         var behaviors = new ArrayList<DogBehavior>();
         for (var behaviorName : newDog.getBehaviors() ) {
@@ -66,8 +67,10 @@ public class LostDogMainService implements LostDogService{
             behaviors.add(dogBehaviorRepository.save(behavior));
         }
 
-        var returnedDog = new LostDogWithBehaviorsAndWithPicture(newDog);
-        returnedDog.setPicture(picture);
+        LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(savedDog);
+        savedDogWithBehaviors.setBehaviors(newDog.getBehaviors());
+        var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
+        returnedDog.setPicture(savedPicture);
 
         return returnedDog;
     }

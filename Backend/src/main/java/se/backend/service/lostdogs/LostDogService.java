@@ -14,8 +14,8 @@ import java.util.List;
 //TODO: Add comments to the dogs
 public interface LostDogService {
     List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page);
-    //LostDog GetDogDetails(long dogId);
     LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture);
+    //LostDog GetDogDetails(long dogId);
     //LostDog UpdateDog(LostDog updatedVersion);
     //boolean DeleteDog(long dogId);
 

@@ -1,6 +1,5 @@
 package se.backend.controller.internal;
 
-import com.sun.istack.NotNull;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +13,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import se.backend.exceptions.types.GenericBadRequestException;
+import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.dogs.LostDog;
+import se.backend.service.login.LoginService;
 import se.backend.service.lostdogs.LostDogService;
 import se.backend.utils.Response;
+import se.backend.wrapper.account.UserType;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
 import java.util.Collection;
+import java.util.List;
 
 import static java.util.stream.Collectors.joining;
 
@@ -40,10 +43,12 @@ public class DogsController {
     }
 
     private final LostDogService lostDogService;
+    private final LoginService loginService;
 
     @Autowired
-    public DogsController(LostDogService lostDogService) {
+    public DogsController(LostDogService lostDogService, LoginService loginService) {
         this.lostDogService = lostDogService;
+        this.loginService = loginService;
     }
 
     //<editor-fold desc="/lostdogs">
@@ -55,7 +60,9 @@ public class DogsController {
                                                                                                    value=15
                                                                                                ) Pageable pageable) {
         logHeaders(headers);
-        //Check authorization with token
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter))) {
+            throw new UnauthorizedException();
+        }
 
         //TODO: Filters
         var result = lostDogService.GetLostDogs(Specification.where(null), pageable);
@@ -66,10 +73,12 @@ public class DogsController {
     @SneakyThrows
     @PostMapping(path = "")
     public ResponseEntity<Response<LostDog>> AddLostDog(@RequestHeader HttpHeaders headers,
-                                                        @RequestPart("dog") @NotNull LostDogWithBehaviors newDog,
-                                                        @RequestPart("picture") @NotNull MultipartFile picture) {
+                                                        @RequestPart("dog") LostDogWithBehaviors newDog,
+                                                        @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
-        //Check authorization with token
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
+            throw new UnauthorizedException();
+        }
 
         LostDog savedDog;
         try {

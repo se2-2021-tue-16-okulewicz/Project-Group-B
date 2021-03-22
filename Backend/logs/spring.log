@@ -1,0 +1,251 @@
+2021-03-21 22:54:16 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-21 22:54:16 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-21 22:54:17 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-21 22:54:17 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 71ms. Found 3 JPA repository interfaces.
+2021-03-21 22:54:17 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-21 22:54:18 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1945 ms
+2021-03-21 22:54:18 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-21 22:54:18 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-21 22:54:18 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-21 22:54:19 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-21 22:54:19 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-21 22:54:22 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-21 22:54:22 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-21 22:54:22 [WARN ] [restartedMain] letWebServerApplicationContext: Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lostDogRepository' defined in se.backend.dao.LostDogRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaMappingContext' while setting bean property 'mappingContext'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaMappingContext': Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.SQLGrammarException: Unable to open JDBC Connection for DDL execution
+2021-03-21 22:54:22 [INFO ] [restartedMain] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-03-21 22:54:22 [WARN ] [restartedMain] .support.DisposableBeanAdapter: Invocation of destroy method failed on bean with name 'entityManagerFactory': javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.SQLGrammarException: Unable to open JDBC Connection for DDL execution
+2021-03-21 22:54:22 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-03-21 22:54:22 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-03-21 22:54:22 [INFO ] [restartedMain] valuationReportLoggingListener: 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2021-03-21 22:54:22 [ERROR] [restartedMain] amework.boot.SpringApplication: Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lostDogRepository' defined in se.backend.dao.LostDogRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaMappingContext' while setting bean property 'mappingContext'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaMappingContext': Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.SQLGrammarException: Unable to open JDBC Connection for DDL execution
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:342)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:113)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1697)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1442)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:516)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:322)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:624)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:612)
+	at org.springframework.data.repository.config.DeferredRepositoryInitializationListener.onApplicationEvent(DeferredRepositoryInitializationListener.java:51)
+	at org.springframework.data.repository.config.DeferredRepositoryInitializationListener.onApplicationEvent(DeferredRepositoryInitializationListener.java:36)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:172)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:165)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:139)
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:404)
+	at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:361)
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:898)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:554)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:750)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:405)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1237)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at se.backend.SEBackend.main(SEBackend.java:10)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaMappingContext': Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.SQLGrammarException: Unable to open JDBC Connection for DDL execution
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1794)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:516)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:322)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:330)
+	... 33 common frames omitted
+Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.SQLGrammarException: Unable to open JDBC Connection for DDL execution
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:403)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: org.hibernate.exception.SQLGrammarException: Unable to open JDBC Connection for DDL execution
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:63)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:113)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:99)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:69)
+	at org.hibernate.tool.schema.internal.exec.ImprovedExtractionContextImpl.getJdbcConnection(ImprovedExtractionContextImpl.java:60)
+	at org.hibernate.tool.schema.internal.exec.ImprovedExtractionContextImpl.getJdbcDatabaseMetaData(ImprovedExtractionContextImpl.java:67)
+	at org.hibernate.tool.schema.extract.internal.InformationExtractorJdbcDatabaseMetaDataImpl.getTables(InformationExtractorJdbcDatabaseMetaDataImpl.java:333)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.getTablesInformation(DatabaseInformationImpl.java:120)
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:65)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:207)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:391)
+	... 4 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Access denied for user 'lucas'@'%' to database 'seproject'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:120)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:836)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:456)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:246)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:198)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:358)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:477)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:560)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:180)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:43)
+	... 19 common frames omitted
+2021-03-21 23:07:38 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-21 23:07:38 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-21 23:07:39 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-21 23:07:39 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 70ms. Found 3 JPA repository interfaces.
+2021-03-21 23:07:40 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-21 23:07:40 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 2058 ms
+2021-03-21 23:07:40 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-21 23:07:40 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-21 23:07:41 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-21 23:07:42 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-21 23:07:42 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-21 23:07:42 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-21 23:07:42 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-21 23:07:42 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-21 23:07:43 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-03-21 23:12:15 [INFO ] [http-nio-8080-exec-2] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-03-21 23:12:15 [INFO ] [http-nio-8080-exec-2] .web.servlet.DispatcherServlet: Completed initialization in 10 ms
+2021-03-21 23:19:41 [INFO ] [SpringContextShutdownHook] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-03-21 23:19:41 [INFO ] [SpringContextShutdownHook] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-03-21 23:19:41 [INFO ] [SpringContextShutdownHook] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-03-22 23:00:48 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-22 23:00:48 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-22 23:00:48 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-22 23:00:48 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 43ms. Found 7 JPA repository interfaces.
+2021-03-22 23:00:49 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-22 23:00:49 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1187 ms
+2021-03-22 23:00:49 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-22 23:00:49 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-22 23:00:49 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-22 23:00:50 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-22 23:00:50 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-22 23:00:50 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-22 23:00:50 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-22 23:00:50 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-22 23:00:50 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-03-22 23:03:37 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-22 23:03:37 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-22 23:03:38 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-22 23:03:38 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 51ms. Found 7 JPA repository interfaces.
+2021-03-22 23:03:39 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-22 23:03:39 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1187 ms
+2021-03-22 23:03:39 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-22 23:03:39 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-22 23:03:39 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-22 23:03:39 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-22 23:03:39 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-22 23:03:40 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-22 23:03:40 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-22 23:03:40 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-22 23:03:40 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-03-22 23:08:42 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-03-22 23:08:42 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Completed initialization in 8 ms
+2021-03-22 23:24:00 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-22 23:24:00 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-22 23:24:01 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-22 23:24:01 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 48ms. Found 7 JPA repository interfaces.
+2021-03-22 23:24:01 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-22 23:24:01 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1093 ms
+2021-03-22 23:24:01 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-22 23:24:01 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-22 23:24:02 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-22 23:24:02 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-22 23:24:02 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-22 23:24:02 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-22 23:24:02 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-22 23:24:02 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-22 23:24:03 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-03-22 23:24:05 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-03-22 23:24:05 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Completed initialization in 4 ms
+2021-03-22 23:24:40 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-22 23:24:40 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-22 23:24:40 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-22 23:24:40 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 47ms. Found 7 JPA repository interfaces.
+2021-03-22 23:24:41 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-22 23:24:41 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1122 ms
+2021-03-22 23:24:41 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-22 23:24:41 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-22 23:24:41 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-22 23:24:42 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-22 23:24:42 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-22 23:24:42 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-22 23:24:42 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-22 23:24:42 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-22 23:24:42 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-03-22 23:24:45 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-03-22 23:24:45 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Completed initialization in 7 ms
+2021-03-22 23:25:21 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-22 23:25:21 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-22 23:25:21 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-22 23:25:21 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 45ms. Found 7 JPA repository interfaces.
+2021-03-22 23:25:22 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-22 23:25:22 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1128 ms
+2021-03-22 23:25:22 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-22 23:25:22 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-22 23:25:22 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-22 23:25:22 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-22 23:25:22 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-22 23:25:23 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-22 23:25:23 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-22 23:25:23 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-22 23:25:23 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-03-22 23:25:26 [INFO ] [http-nio-8080-exec-2] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-03-22 23:25:26 [INFO ] [http-nio-8080-exec-2] .web.servlet.DispatcherServlet: Completed initialization in 6 ms
+2021-03-22 23:26:55 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-22 23:26:55 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-22 23:26:55 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-22 23:26:55 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 44ms. Found 7 JPA repository interfaces.
+2021-03-22 23:26:56 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-22 23:26:56 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1124 ms
+2021-03-22 23:26:56 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-22 23:26:56 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-22 23:26:56 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-22 23:26:57 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-22 23:26:57 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-22 23:26:57 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-22 23:26:57 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-22 23:26:57 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-22 23:26:57 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-03-22 23:27:00 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-03-22 23:27:00 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Completed initialization in 7 ms
+2021-03-22 23:30:02 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-22 23:30:02 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-22 23:30:02 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-22 23:30:02 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 51ms. Found 7 JPA repository interfaces.
+2021-03-22 23:30:03 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-03-22 23:30:03 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 1178 ms
+2021-03-22 23:30:03 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-22 23:30:03 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-03-22 23:30:03 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-22 23:30:03 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-03-22 23:30:03 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-22 23:30:04 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-22 23:30:04 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-03-22 23:30:04 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-03-22 23:30:04 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-03-22 23:30:07 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-03-22 23:30:07 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Completed initialization in 5 ms
