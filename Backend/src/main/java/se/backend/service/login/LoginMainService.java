@@ -46,7 +46,7 @@ public class LoginMainService implements LoginService {
     }
 
     @Override
-    public AuthenticationResults authenticate(String username, String password) {
+    public AuthenticationResults Authenticate(String username, String password) {
         UserAccount userProbe = new UserAccount();
         userProbe.setPassword(getSHA256Hash(password));
         userProbe.setAssociatedEmail(username);
@@ -81,22 +81,22 @@ public class LoginMainService implements LoginService {
     }
 
     @Override
-    public AuthenticationResults createAccount(Account user) {
+    public AuthenticationResults CreateAccount(Account user) {
         return null;
     }
 
     @Override
-    public boolean updateUser(Account user) {
+    public boolean UpdateUser(Account user) {
         return false;
     }
 
     @Override
-    public List<Account> getUsers(String username) {
+    public List<Account> GetUsers(String username) {
         return null;
     }
 
     @Override
-    public boolean isAuthorized(String token, UserType permissions) {
+    public boolean IsAuthorized(String token, UserType permissions) {
         if(this.sessions.containsKey(token)){
             return this.sessions.get(token).equals(permissions);
         }

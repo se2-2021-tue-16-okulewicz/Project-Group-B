@@ -6,16 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.backend.dao.UserAccountRepository;
 import se.backend.exceptions.types.GenericBadRequestException;
-import se.backend.model.account.Account;
 import se.backend.model.account.UserAccount;
 import se.backend.service.login.LoginService;
-import se.backend.service.lostdogs.LostDogService;
 import se.backend.utils.Response;
 import se.backend.wrapper.account.AuthenticationResults;
-
-import java.net.http.HttpResponse;
 
 import static java.util.stream.Collectors.joining;
 
@@ -55,7 +50,7 @@ public class UserController {
                                                                         @RequestPart("password") String password) {
         logHeaders(headers);
 
-        var result = this.loginService.authenticate(username, password);
+        var result = this.loginService.Authenticate(username, password);
 
         if(result == null){
             throw new GenericBadRequestException("Login failed.");

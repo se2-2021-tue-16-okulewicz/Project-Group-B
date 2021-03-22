@@ -9,10 +9,6 @@ import se.backend.SEBackend;
 import se.backend.service.login.LoginService;
 import se.backend.wrapper.account.UserType;
 
-import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = SEBackend.class)
@@ -24,16 +20,16 @@ public class LoginServiceTest {
 
     @Test
     public void authenticateTest() {
-        var authenticationResult = service.authenticate("e.musk@mail.com", "xea-12Musk");
+        var authenticationResult = service.Authenticate("e.musk@mail.com", "xea-12Musk");
         assertEquals(authenticationResult.getUserType(), UserType.Regular);
 
-        var authenticationResult1 = service.authenticate("b.gates@mail.com", "MicrosoftTheBest");
+        var authenticationResult1 = service.Authenticate("b.gates@mail.com", "MicrosoftTheBest");
         assertEquals(authenticationResult1.getUserType(),UserType.Regular);
 
-        var authenticationResult2 = service.authenticate("hopeShelter", "12345678");
+        var authenticationResult2 = service.Authenticate("hopeShelter", "12345678");
         assertEquals(authenticationResult2.getUserType(),UserType.Shelter);
 
-        var authenticationResult3 = service. authenticate("admin007", "admin007123");
+        var authenticationResult3 = service.Authenticate("admin007", "admin007123");
         assertEquals(authenticationResult3.getUserType(),UserType.Admin);
     }
 }
