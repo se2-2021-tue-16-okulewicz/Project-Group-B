@@ -1,5 +1,7 @@
 package se.backend.controller.internal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,22 @@ import se.backend.wrapper.account.AuthenticationResults;
 
 import java.net.http.HttpResponse;
 
+import static java.util.stream.Collectors.joining;
+
 @RestController
 @RequestMapping(path = "")
 public class UserController {
+
+    private final Logger logger = LoggerFactory.getLogger(DogsController.class);
+    private void logHeaders(@RequestHeader HttpHeaders headers) {
+        logger.info("Controller request headers {}",
+                headers.entrySet()
+                        .stream()
+                        .map(entry -> String.format("%s->[%s]", entry.getKey(), String.join(",", entry.getValue())))
+                        .collect(joining(","))
+        );
+    }
+
     private final LoginService loginService;
 
     @Autowired
@@ -38,10 +53,14 @@ public class UserController {
     public ResponseEntity<Response<AuthenticationResults>> Authenticate(@RequestHeader HttpHeaders headers,
                                                                         @RequestPart("username") String username,
                                                                         @RequestPart("password") String password) {
-        var result = this.loginService.authenticate(username,password);
+        logHeaders(headers);
+
+        var result = this.loginService.authenticate(username, password);
+
         if(result == null){
             throw new GenericBadRequestException("Login failed.");
         }
+
         return ResponseEntity.ok(new Response<>(String.format("Token: %s", result.getToken()), true, result));
     }
 
