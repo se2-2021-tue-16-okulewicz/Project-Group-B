@@ -1,8 +1,5 @@
 import "date-fns";
-import {
-  IDog,
-  ILostDog,
-} from "./dogInterfaces";
+import { IDog, ILostDog } from "./dogInterfaces";
 
 export const initPicture = {
   filename: "",
@@ -10,7 +7,7 @@ export const initPicture = {
   data: new Uint8Array(),
 };
 
-export const initLostDogProps : ILostDog = {
+export const initLostDogProps: ILostDog = {
   name: "",
   breed: "",
   age: 0,
