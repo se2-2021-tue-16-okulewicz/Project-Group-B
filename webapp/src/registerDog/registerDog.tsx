@@ -27,12 +27,10 @@ import {
   BreedTypes,
 } from "../dog/dogEnums";
 import {
-  LostDog,
-  defaultProps,
   initLostDogProps,
   initPicture,
 } from "../dog/dogClasses";
-import { ILostDogState, IPicture } from "../dog/dogInterfaces";
+import { ILostDog, IPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 
@@ -64,7 +62,7 @@ export default function RegisterDogForm() {
   if (!isRegisterEnabled && isInputNotNull) {
     var x = JSON.parse(sessionStorage.getItem("lostDogFields") as string);
   }
-  const [lostDogFields, setLostDogFields] = useState<ILostDogState>(
+  const [lostDogFields, setLostDogFields] = useState<ILostDog>(
     !isRegisterEnabled && isInputNotNull ? x : initLostDogProps
   );
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
@@ -107,13 +105,12 @@ export default function RegisterDogForm() {
   const onSavePostClicked = async () => {
     try {
       registerDog(lostDogFields, picture);
-      //setName("");
     } catch (err) {
-      console.error("Failed to save the post: ", err);
+      console.error("Failed to save the dog: ", err);
     }
   };
 
-  function registerDog(dog: ILostDogState, picture: IPicture) {
+  function registerDog(dog: ILostDog, picture: IPicture) {
     /*store.dispatch(
       Actions.addDogThunk({
         dog,
@@ -249,9 +246,6 @@ export default function RegisterDogForm() {
               >
                 <option key={"hair-type"} aria-label="None" value="" />
                 {
-                  /*Object.keys(HairTypes).filter((k) => !isNaN(Number(k))).map((index:string) =>(
-                    <option value={Number(index)} id="hair">{HairTypes[Number(index)]}</option>
-                ))*/
                   Object.values(HairTypes)
                     .filter((k) => isNaN(Number(k)))
                     .map((type: string | HairTypes) => (

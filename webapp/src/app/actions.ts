@@ -1,5 +1,4 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { LostDog } from "../dog/dogClasses";
 import * as Fetching from "./fetching";
 import * as Utility from "./utility";
 

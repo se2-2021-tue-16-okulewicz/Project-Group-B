@@ -4,7 +4,7 @@ import RegisterDogForm from "./registerDog/registerDog";
 function App() {
   return (
     <div>
-        <RegisterDogForm></RegisterDogForm>
+        <RegisterDogForm />
     </div>
   );
 }

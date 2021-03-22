@@ -1,5 +1,6 @@
 import "date-fns";
 import {
+  BreedTypes,
   BehaviorsTypes,
   ColorTypes,
   EarsTypes,
@@ -15,40 +16,22 @@ export interface IPicture {
   data: Uint8Array;
 }
 
-export interface IDogState {
+export interface IDog {
   name: string;
-  breed: string;
+  breed: BreedTypes | "";
   age: number;
-  hair: string;
-  color: string;
-  size: string;
-  ears: string;
-  tail: string;
-  specialMark: string;
-  behavior: string[];
+  hair: HairTypes | "";
+  color: ColorTypes | "";
+  size: SizeTypes | "";
+  ears: EarsTypes | "";
+  tail: TailTypes | "";
+  specialMark: SpecialMarkTypes | "";
+  behavior: BehaviorsTypes[];
   location: { city: string; district: string };
 }
 
-export interface ILostDogState extends IDogState {
+export interface ILostDog extends IDog {
   lostDate: Date | null;
+  isFound: boolean;
   //picture: { filename: string; filetype: string; data: Uint8Array };
-}
-
-export interface IDogProps {
-  name?: string;
-  breed?: string;
-  age?: number;
-  hair?: string;
-  color?: string;
-  size?: string;
-  ears?: string;
-  tail?: string;
-  specialMark?: string;
-  behavior?: string[];
-  location?: { city?: string; district?: string };
-}
-
-export interface ILostDogProps extends IDogProps {
-  lostDate: Date | null;
-  picture?: { filename?: string; filetype?: string; data?: Uint8Array };
 }
