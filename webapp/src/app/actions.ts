@@ -1,17 +1,18 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
+import type { APIResponse } from "./response";
 import * as Fetching from "./fetching";
-import * as Utility from "./utility";
 
-/**
- * Thunk for adding new lost dog
- 
+
 export const addDogThunk = createAsyncThunk(
   "lostdogs",
-  async (args, { rejectWithValue }) => {
-    const response = await Fetching.addDogs(args.dog : LostDog, args.picture, token);
+  async (dogAndPicture : {dog: ILostDog, picture: IPicture}, { rejectWithValue }) => {
+    const response : APIResponse<ILostDogWithPicture> = await Fetching.addDog(dogAndPicture.dog, dogAndPicture.picture);
 
-    if (response.code !== 200) return rejectWithValue(response);
-    //args.afterAddition(response.body);
+    console.log(response);
+
+    if (response.successful !== true) return rejectWithValue(response);
+
     return response;
   }
-);*/
+);

@@ -1,45 +1,44 @@
-var requestify = require("requestify");
-import * as Utility from "./utility";
-//import axios from "axios";
+import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
+import type { APIResponse } from "./response";
+import config from "../config/config";
 import _ from "lodash";
-const http = require("http");
+import axios from 'axios';
+import FormData from 'form-data';
+import { formDataToBuffer } from "./utility";
 
-/**
- * Add dog
+const getToken : () => string = () => {
+  return config("tokens.regular");
+}
+
 //ip and port should be in service worker file
-export async function addDogs(dog : LostDog, picture : Picture, token:any) {
-  return requestify
-    .request(`http://${config("backend.ip")}:${config("backend.port")}/${id}`, {
-      method: `POST`,
-      body: [
-        {
-            dog
-        },
-        {
-          filename: picture.state.filename,
-          filetype: picture.state.filetype,
-           data: picture.state.data
-        }
-      ],
+export async function addDog(dog : ILostDog, picture : IPicture) : Promise<APIResponse<ILostDogWithPicture>> {
 
-    })
-    .then((response) => {
-      return {
-        code: response.getCode(),
-        body: response
-          .getBody()
-          .split(",")
-          .map((id) => parseInt(id)),
-      };
+  let formData = new FormData();
+  formData.append( 'dog', JSON.stringify(dog), {
+    filename: "",
+    contentType: 'application/json'
+  } );
+  formData.append( 'picture', new Blob([picture.data.buffer]), {
+    filename: picture.fileName,
+    contentType: 'application/octet-stream'
+   });
+
+   let formDataToBufferObject = formDataToBuffer(formData);
+
+  return axios.post(`http://${config("backend.ip")}:${config("backend.port")}/lostdogs`, 
+    formDataToBufferObject,
+    formData.getHeaders()
+    ).then((response) => {
+      return response.data as APIResponse<ILostDogWithPicture>;
     })
     .catch((response) => {
       if (response instanceof TypeError)
         return {
-          code: 0,
-          body: { errorMessage: `${response.name} - ${response.message}` },
+          message: "Connection error",
+          successful: false,
+          data: null
         };
 
-      return { code: response.getCode(), body: response.getBody() };
+      return response.data as APIResponse<ILostDogWithPicture>;
     });
 } 
-*/
