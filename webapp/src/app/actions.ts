@@ -3,7 +3,6 @@ import { LostDog } from "../dog/dogClasses";
 import * as Fetching from "./fetching";
 import * as Utility from "./utility";
 
-
 /**
  * Thunk for adding new lost dog
  

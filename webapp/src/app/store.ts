@@ -2,7 +2,7 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { reducer } from "./reducer";
 
 export const store = configureStore({
-  reducer: reducer
+  reducer: reducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
