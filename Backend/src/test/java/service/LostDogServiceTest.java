@@ -82,6 +82,22 @@ public class LostDogServiceTest {
         allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
         assertEquals(allDogs.size(), 7);
     }
+    @Test
+    public void DeleteDogTest() {
+        // Checking initial size
+        var allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.size(), 4);
+
+        var res = service.DeleteDog(10001);
+        assertEquals(res,true);
+
+        var res2 = service.DeleteDog(-1);
+        assertEquals(res2,false);
+
+        // Getting all dogs one final time
+        allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.size(), 3);
+    }
 
     @Test
     public void FilteredDogsTests() {

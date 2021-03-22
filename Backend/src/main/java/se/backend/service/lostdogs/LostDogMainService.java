@@ -15,6 +15,7 @@ import se.backend.model.dogs.LostDog;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +74,11 @@ public class LostDogMainService implements LostDogService{
         return returnedDog;
     }
 
+    @Transactional
     @Override
     public boolean DeleteDog(long dogId) {
+        if(dogId < 0) return false;
+
         LostDog dog = lostDogRepository.getOne(dogId);
         if(dog == null) return false; // Here we fail to delete because the dog is not in the database.
 
