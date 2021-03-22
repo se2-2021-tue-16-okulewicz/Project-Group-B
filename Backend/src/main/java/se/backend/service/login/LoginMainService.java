@@ -31,7 +31,11 @@ public class LoginMainService implements LoginService {
     private final DogShelterAccountRepository dogShelterAccountRepository;
     private final AdminAccountRepository adminAccountRepository;
 
-    private static final HashMap<String, UserType> sessions = new HashMap<>();
+    private static final HashMap<String, UserType> sessions = new HashMap<>() {{
+        put("regularUserTestToken", UserType.Regular);
+        put("testTokenForAdmins", UserType.Admin);
+        put("shelterSecretTestToken", UserType.Shelter);
+    }};
 
     ExampleMatcher LOGIN_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id")
