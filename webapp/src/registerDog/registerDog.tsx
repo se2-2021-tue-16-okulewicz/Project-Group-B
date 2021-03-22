@@ -118,19 +118,17 @@ export default function RegisterDogForm() {
     );
   }
 
-  const handlePicturesChange = (
-    event: any
-  ) => {
-    if(event) {
-      (event as File).arrayBuffer().then(fileBuffer => {
+  const handlePicturesChange = (event: any) => {
+    if (event) {
+      (event as File).arrayBuffer().then((fileBuffer) => {
         console.log(fileBuffer);
         setPicture({
           id: 0,
-          fileName: event.name,//event.name,
+          fileName: event.name, //event.name,
           fileType: event.type,
-          data: fileBuffer
-        } as IPicture)
-      })
+          data: fileBuffer,
+        } as IPicture);
+      });
     }
   };
 
@@ -390,7 +388,7 @@ export default function RegisterDogForm() {
                 value={lostDogFields.lostDate}
                 maxDate={new Date()}
                 name="lostDate"
-                onChange={(date : any) => calendarHandler(date)}
+                onChange={(date: any) => calendarHandler(date)}
               />
             </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
@@ -428,7 +426,7 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 input={<Input />}
                 displayEmpty
-                renderValue={(selected : any) => (
+                renderValue={(selected: any) => (
                   <div className={classes.chips}>
                     {(selected as string[]).map((value) => (
                       <Chip

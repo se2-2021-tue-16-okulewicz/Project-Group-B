@@ -13,10 +13,17 @@ export async function addDog(
   dog: ILostDog,
   picture: IPicture
 ): Promise<APIResponse<ILostDogWithPicture>> {
-
   let formData = new FormData();
-  formData.append("dog", new Blob([JSON.stringify(dog)], {type: 'application/json'}), "");
-  formData.append("picture", new Blob([picture.data], {type: picture.fileType}), picture.fileName );
+  formData.append(
+    "dog",
+    new Blob([JSON.stringify(dog)], { type: "application/json" }),
+    ""
+  );
+  formData.append(
+    "picture",
+    new Blob([picture.data], { type: picture.fileType }),
+    picture.fileName
+  );
 
   return axios
     .post(
