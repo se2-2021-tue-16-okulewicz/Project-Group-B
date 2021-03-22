@@ -421,7 +421,7 @@ export default function RegisterDogForm() {
                 multiple
                 labelId="behavior-label"
                 label="Behavior"
-                name="behavior"
+                name="behaviors"
                 value={lostDogFields.behaviors}
                 onChange={selectsHandler}
                 input={<Input />}

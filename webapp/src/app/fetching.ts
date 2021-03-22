@@ -8,15 +8,23 @@ const getToken: () => string = () => {
   return config("tokens.regular");
 };
 
-//ip and port should be in service worker file
+//Reimplement stringifing date
+Date.prototype.toJSON = function (key? : any) : string {
+  return this.getFullYear() + "-" + this.getMonth() + "-" + this.getDate();
+}
+
 export async function addDog(
   dog: ILostDog,
   picture: IPicture
 ): Promise<APIResponse<ILostDogWithPicture>> {
   let formData = new FormData();
+
+  const privateProperties = ["id", "pictureId", "ownerId"];
+  const excludePrivateProperties = (key : string, value : any) => privateProperties.includes(key) ? undefined : value;
+  console.log(dog.lostDate?.toJSON());
   formData.append(
     "dog",
-    new Blob([JSON.stringify(dog)], { type: "application/json" }),
+    new Blob([JSON.stringify(dog, excludePrivateProperties)], { type: "application/json" }),
     ""
   );
   formData.append(
