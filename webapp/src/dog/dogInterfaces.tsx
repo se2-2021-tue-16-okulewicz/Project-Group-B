@@ -11,27 +11,34 @@ import {
 } from "./dogEnums";
 
 export interface IPicture {
-  filename: string;
-  filetype: string;
+  id: number;
+  fileName: string;
+  fileType: string;
   data: Uint8Array;
 }
 
 export interface IDog {
+  id: number;
   name: string;
   breed: BreedTypes | "";
   age: number;
-  hair: HairTypes | "";
+  pictureId: number;
+  hairLength: HairTypes | "";
   color: ColorTypes | "";
   size: SizeTypes | "";
-  ears: EarsTypes | "";
-  tail: TailTypes | "";
+  earsType: EarsTypes | "";
+  tailLength: TailTypes | "";
   specialMark: SpecialMarkTypes | "";
-  behavior: BehaviorsTypes[];
+  behaviors: BehaviorsTypes[];
   location: { city: string; district: string };
 }
 
 export interface ILostDog extends IDog {
   lostDate: Date | null;
   isFound: boolean;
-  //picture: { filename: string; filetype: string; data: Uint8Array };
+  ownerId: number;
+}
+
+export interface ILostDogWithPicture extends ILostDog {
+  picture: IPicture;
 }

@@ -26,7 +26,7 @@ const ImageUpload = (props: any) => {
         <InputLabel
           shrink
           id="pic-label"
-          style={{ marginTop: "73%", marginLeft: "42%", fontSize: "20px" }}
+          style={{ marginTop: "440px", marginLeft: "42%", fontSize: "20px" }}
         >
           <Input
             type="file"

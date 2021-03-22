@@ -5,22 +5,26 @@ import {
 } from "./dogInterfaces";
 
 export const initPicture = {
-  filename: "",
-  filetype: "",
+  id: 0,
+  fileName: "",
+  fileType: "",
   data: new Uint8Array(),
 };
 
 export const initLostDogProps : ILostDog = {
+  id: 0,
+  ownerId: 0,
+  pictureId: 0,
   name: "",
   breed: "",
   age: 0,
-  hair: "",
+  hairLength: "",
   color: "",
   size: "",
-  ears: "",
-  tail: "",
+  earsType: "",
+  tailLength: "",
   specialMark: "",
-  behavior: [],
+  behaviors: [],
   location: { city: "", district: "" },
   lostDate: new Date(),
   isFound: false,
