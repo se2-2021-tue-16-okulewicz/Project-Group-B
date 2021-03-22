@@ -2,7 +2,6 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import * as Fetching from "./fetching";
 import * as Utility from "./utility";
 
-
 /**
  * Thunk for adding new lost dog
  
