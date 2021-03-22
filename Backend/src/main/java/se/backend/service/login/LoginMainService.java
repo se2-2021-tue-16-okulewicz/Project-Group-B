@@ -27,9 +27,9 @@ import java.util.UUID;
 @Service
 public class LoginMainService implements LoginService {
 
-    private UserAccountRepository userAccountRepository;
-    private DogShelterAccountRepository dogShelterAccountRepository;
-    private AdminAccountRepository adminAccountRepository;
+    private final UserAccountRepository userAccountRepository;
+    private final DogShelterAccountRepository dogShelterAccountRepository;
+    private final AdminAccountRepository adminAccountRepository;
 
     private static final HashMap<String,UserType> sessions = new HashMap<>();
 
@@ -47,6 +47,7 @@ public class LoginMainService implements LoginService {
 
     @Override
     public AuthenticationResults Authenticate(String username, String password) {
+        //Normal account
         UserAccount userProbe = new UserAccount();
         userProbe.setPassword(getSHA256Hash(password));
         userProbe.setAssociatedEmail(username);
@@ -57,6 +58,8 @@ public class LoginMainService implements LoginService {
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }
+
+        //Dog shelter account
         DogShelterAccount dogShelterProbe = new DogShelterAccount();
         dogShelterProbe.setPassword(getSHA256Hash(password));
         dogShelterProbe.setAssociatedEmail(username);
@@ -67,6 +70,8 @@ public class LoginMainService implements LoginService {
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }
+
+        //Admin account
         AdminAccount adminProbe = new AdminAccount();
         adminProbe.setPassword(getSHA256Hash(password));
         adminProbe.setAssociatedEmail(username);
@@ -77,6 +82,7 @@ public class LoginMainService implements LoginService {
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }
+
         return null;
     }
 
@@ -97,8 +103,8 @@ public class LoginMainService implements LoginService {
 
     @Override
     public boolean IsAuthorized(String token, UserType permissions) {
-        if(this.sessions.containsKey(token)){
-            return this.sessions.get(token).equals(permissions);
+        if(sessions.containsKey(token)){
+            return sessions.get(token).equals(permissions);
         }
         return false;
     }
