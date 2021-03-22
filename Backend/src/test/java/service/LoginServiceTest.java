@@ -9,11 +9,8 @@ import se.backend.SEBackend;
 import se.backend.service.login.LoginService;
 import se.backend.wrapper.account.UserType;
 
-import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest(classes = SEBackend.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -24,16 +21,19 @@ public class LoginServiceTest {
 
     @Test
     public void authenticateTest() {
-        var authenticationResult = service.authenticate("e.musk@mail.com", "xea-12Musk");
-        assertEquals(authenticationResult.getUserType(), UserType.Regular);
+        var authenticationResult1 = service.Authenticate("e.musk@mail.com", "xea-12Musk");
+        assertEquals(authenticationResult1.getUserType(), UserType.Regular);
 
-        var authenticationResult1 = service.authenticate("b.gates@mail.com", "MicrosoftTheBest");
-        assertEquals(authenticationResult1.getUserType(),UserType.Regular);
+        var authenticationResult2 = service.Authenticate("b.gates@mail.com", "MicrosoftTheBest");
+        assertEquals(authenticationResult2.getUserType(),UserType.Regular);
 
-        var authenticationResult2 = service.authenticate("hopeShelter", "12345678");
-        assertEquals(authenticationResult2.getUserType(),UserType.Shelter);
+        var authenticationResult3 = service.Authenticate("hopeShelter", "12345678");
+        assertEquals(authenticationResult3.getUserType(),UserType.Shelter);
 
-        var authenticationResult3 = service. authenticate("admin007", "admin007123");
-        assertEquals(authenticationResult3.getUserType(),UserType.Admin);
+        var authenticationResult4 = service.Authenticate("admin007", "admin007123");
+        assertEquals(authenticationResult4.getUserType(),UserType.Admin);
+
+        var failedResults = service.Authenticate("not-existing-acc", "not-existing-pwd");
+        assertNull(failedResults);
     }
 }

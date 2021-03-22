@@ -1,25 +1,33 @@
 package se.backend.controller.internal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import se.backend.dao.UserAccountRepository;
+import org.springframework.web.bind.annotation.*;
 import se.backend.exceptions.types.GenericBadRequestException;
-import se.backend.model.account.Account;
 import se.backend.model.account.UserAccount;
 import se.backend.service.login.LoginService;
-import se.backend.service.lostdogs.LostDogService;
 import se.backend.utils.Response;
 import se.backend.wrapper.account.AuthenticationResults;
 
-import java.net.http.HttpResponse;
+import static java.util.stream.Collectors.joining;
 
 @RestController
 @RequestMapping(path = "")
 public class UserController {
-    private UserAccountRepository userAccountRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(DogsController.class);
+    private void logHeaders(@RequestHeader HttpHeaders headers) {
+        logger.info("Controller request headers {}",
+                headers.entrySet()
+                        .stream()
+                        .map(entry -> String.format("%s->[%s]", entry.getKey(), String.join(",", entry.getValue())))
+                        .collect(joining(","))
+        );
+    }
+
     private final LoginService loginService;
 
     @Autowired
@@ -27,19 +35,28 @@ public class UserController {
         this.loginService = loginService;
     }
 
-    public ResponseEntity<Response<UserAccount>> createUserAccount(UserAccount user, String password){
+    @PostMapping(path = "/register")
+    public ResponseEntity<Response<UserAccount>> CreateUserAccount(@RequestHeader HttpHeaders headers,
+                                                                   @RequestPart("username") String username,
+                                                                   @RequestPart("password") String password,
+                                                                   @RequestPart("phone_number") String phoneNumber,
+                                                                   @RequestPart("email") String email) {
         return null;
     }
-    public ResponseEntity<Response<UserAccount>> updateUser(UserAccount user) {
-        return null;
-    }
+
     @PostMapping(path = "/login")
-    public ResponseEntity<Response<AuthenticationResults>> authenticate(String username, String password){
-        var result = this.loginService.authenticate(username,password);
+    public ResponseEntity<Response<AuthenticationResults>> Authenticate(@RequestHeader HttpHeaders headers,
+                                                                        @RequestPart("username") String username,
+                                                                        @RequestPart("password") String password) {
+        logHeaders(headers);
+
+        var result = this.loginService.Authenticate(username, password);
+
         if(result == null){
             throw new GenericBadRequestException("Login failed.");
         }
-        return ResponseEntity.ok(new Response<AuthenticationResults>(String.format("Token: %s", result.getToken()), true, result));
+
+        return ResponseEntity.ok(new Response<>(String.format("Token: %s", result.getToken()), true, result));
     }
 
 }

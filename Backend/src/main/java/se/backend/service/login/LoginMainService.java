@@ -1,6 +1,5 @@
 package se.backend.service.login;
 
-import javassist.compiler.ast.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -19,19 +18,22 @@ import se.backend.wrapper.account.UserType;
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
 
 @Service
 public class LoginMainService implements LoginService {
 
-    private UserAccountRepository userAccountRepository;
-    private DogShelterAccountRepository dogShelterAccountRepository;
-    private AdminAccountRepository adminAccountRepository;
+    private final UserAccountRepository userAccountRepository;
+    private final DogShelterAccountRepository dogShelterAccountRepository;
+    private final AdminAccountRepository adminAccountRepository;
 
-    private static final HashMap<String,UserType> sessions = new HashMap<>();
+    private static final HashMap<String, UserType> sessions = new HashMap<>() {{
+        put("regularUserTestToken", UserType.Regular);
+        put("testTokenForAdmins", UserType.Admin);
+        put("shelterSecretTestToken", UserType.Shelter);
+    }};
 
     ExampleMatcher LOGIN_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id")
@@ -46,7 +48,8 @@ public class LoginMainService implements LoginService {
     }
 
     @Override
-    public AuthenticationResults authenticate(String username, String password) {
+    public AuthenticationResults Authenticate(String username, String password) {
+        //Normal account
         UserAccount userProbe = new UserAccount();
         userProbe.setPassword(getSHA256Hash(password));
         userProbe.setAssociatedEmail(username);
@@ -57,6 +60,8 @@ public class LoginMainService implements LoginService {
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }
+
+        //Dog shelter account
         DogShelterAccount dogShelterProbe = new DogShelterAccount();
         dogShelterProbe.setPassword(getSHA256Hash(password));
         dogShelterProbe.setAssociatedEmail(username);
@@ -67,6 +72,8 @@ public class LoginMainService implements LoginService {
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }
+
+        //Admin account
         AdminAccount adminProbe = new AdminAccount();
         adminProbe.setPassword(getSHA256Hash(password));
         adminProbe.setAssociatedEmail(username);
@@ -77,29 +84,36 @@ public class LoginMainService implements LoginService {
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }
+
         return null;
     }
 
     @Override
-    public AuthenticationResults createAccount(Account user) {
+    public AuthenticationResults CreateAccount(Account user) {
         return null;
     }
 
     @Override
-    public boolean updateUser(Account user) {
+    public boolean UpdateUser(Account user) {
         return false;
     }
 
     @Override
-    public List<Account> getUsers(String username) {
+    public List<Account> GetUsers(String username) {
         return null;
     }
 
     @Override
-    public boolean isAuthorized(String token, UserType permissions) {
-        if(this.sessions.containsKey(token)){
-            return this.sessions.get(token).equals(permissions);
+    public boolean IsAuthorized(HttpHeaders httpHeaders, List<UserType> requiredPermissions) {
+        if(!httpHeaders.containsKey("token"))
+            return false;
+
+        var token = Objects.requireNonNull(httpHeaders.get("token")).get(0);
+
+        if(sessions.containsKey(token)){
+            return requiredPermissions.contains(sessions.get(token));
         }
+
         return false;
     }
 
