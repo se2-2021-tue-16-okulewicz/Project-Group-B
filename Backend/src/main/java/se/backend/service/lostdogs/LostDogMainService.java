@@ -109,10 +109,37 @@ public class LostDogMainService implements LostDogService{
         return false;
     }
 
-/*
+    @Transactional
     @Override
-    public LostDog UpdateDog(LostDog updatedVersion)
+    public LostDogWithBehaviorsAndWithPicture UpdateDog(LostDogWithBehaviors updatedDog, Picture picture)
     {
+        // Check if the dog is in the database.
+        if(!IsValidDogId(updatedDog.getId())) return null;
+        
+        // Get the old stuff.
+        LostDog oldDog = lostDogRepository.getOne(updatedDog.getId());
+        Picture oldPicture = pictureRepository.getOne(oldDog.getPictureId());
+        var oldBehaviors = dogBehaviorRepository.findAllByDogId(oldDog.getId());
 
-    }*/
+
+
+
+        LostDog dog = updatedDog.LostDogWithoutBehaviors();
+        var savedDog = lostDogRepository.save(dog);
+
+
+
+        var savedPicture = pictureRepository.save(picture);
+        savedDog.setPictureId(savedPicture.getId());
+        var behaviors = new ArrayList<DogBehavior>();
+        for (var behaviorName : updatedDog.getBehaviors() ) {
+            var behavior = new DogBehavior();
+            behavior.setDogId(savedDog.getId());
+            behavior.setBehavior(behaviorName);
+            behaviors.add(dogBehaviorRepository.save(behavior));
+        }
+        var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDog);
+        returnedDog.setPicture(savedPicture);
+        return returnedDog;
+    }
 }
