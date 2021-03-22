@@ -12,6 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import se.backend.SEBackend;
 import se.backend.wrapper.account.LoginInfo;
+import se.backend.wrapper.account.UserType;
+
+import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -31,10 +36,12 @@ public class UserControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(new LoginInfo("e.musk@mail.com", "xea-12Musk"));
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/account/login")
+                MockMvcRequestBuilders.post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                         .characterEncoding("utf-8"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.userType", is(UserType.Regular.toString())));
     }
 }

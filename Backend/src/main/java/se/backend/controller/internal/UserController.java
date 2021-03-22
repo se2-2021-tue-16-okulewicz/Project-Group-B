@@ -17,7 +17,7 @@ import se.backend.wrapper.account.AuthenticationResults;
 import java.net.http.HttpResponse;
 
 @RestController
-@RequestMapping(path = "/account")
+@RequestMapping(path = "")
 public class UserController {
     private UserAccountRepository userAccountRepository;
     private final LoginService loginService;
@@ -37,9 +37,9 @@ public class UserController {
     public ResponseEntity<Response<AuthenticationResults>> authenticate(String username, String password){
         var result = this.loginService.authenticate(username,password);
         if(result == null){
-            throw new GenericBadRequestException("Invalid credentials");
+            throw new GenericBadRequestException("Login failed.");
         }
-        return ResponseEntity.ok(new Response<>(String.format("Token: %s", result.getToken()), true, result));
+        return ResponseEntity.ok(new Response<AuthenticationResults>(String.format("Token: %s", result.getToken()), true, result));
     }
 
 }

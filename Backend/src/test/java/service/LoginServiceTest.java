@@ -9,6 +9,10 @@ import se.backend.SEBackend;
 import se.backend.service.login.LoginService;
 import se.backend.wrapper.account.UserType;
 
+import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = SEBackend.class)

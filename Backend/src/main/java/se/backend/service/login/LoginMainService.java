@@ -16,6 +16,9 @@ import se.backend.model.account.UserAccount;
 import se.backend.wrapper.account.AuthenticationResults;
 import se.backend.wrapper.account.UserType;
 
+import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +48,7 @@ public class LoginMainService implements LoginService {
     @Override
     public AuthenticationResults authenticate(String username, String password) {
         UserAccount userProbe = new UserAccount();
-        userProbe.setPassword(password);
+        userProbe.setPassword(getSHA256Hash(password));
         userProbe.setAssociatedEmail(username);
         Example<UserAccount> userExample = Example.of(userProbe, LOGIN_INFORMATION_MATCHER);
         boolean exists = this.userAccountRepository.exists(userExample);
@@ -55,7 +58,7 @@ public class LoginMainService implements LoginService {
             return result;
         }
         DogShelterAccount dogShelterProbe = new DogShelterAccount();
-        dogShelterProbe.setPassword(password);
+        dogShelterProbe.setPassword(getSHA256Hash(password));
         dogShelterProbe.setAssociatedEmail(username);
         Example<DogShelterAccount> dogExample = Example.of(dogShelterProbe, LOGIN_INFORMATION_MATCHER);
         exists = this.dogShelterAccountRepository.exists(dogExample);
@@ -65,7 +68,7 @@ public class LoginMainService implements LoginService {
             return result;
         }
         AdminAccount adminProbe = new AdminAccount();
-        adminProbe.setPassword(password);
+        adminProbe.setPassword(getSHA256Hash(password));
         adminProbe.setAssociatedEmail(username);
         Example<AdminAccount> adminExample = Example.of(adminProbe, LOGIN_INFORMATION_MATCHER);
         exists = this.adminAccountRepository.exists(adminExample);
@@ -98,5 +101,20 @@ public class LoginMainService implements LoginService {
             return this.sessions.get(token).equals(permissions);
         }
         return false;
+    }
+
+    private String getSHA256Hash(String data) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(data.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hash); // make it printable
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    private String bytesToHex(byte[] hash) {
+        return DatatypeConverter.printHexBinary(hash);
     }
 }
