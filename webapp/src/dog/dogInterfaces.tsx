@@ -19,14 +19,12 @@ export interface IDogState {
     specialMark: string;
     behavior: string[];
     location: { city: string; district: string };
-    //picture: { filename: string; filetype: string; data: [] };
   }
   
   export interface ILostDogState extends IDogState {
     lostDate: Date | null;
     //picture: { filename: string; filetype: string; data: Uint8Array };
   }
-  //const [dog, setDog] = useState<IDogState|undefined>(undefined)
   
   export interface IDogProps {
     name?: string;
@@ -40,7 +38,6 @@ export interface IDogState {
     specialMark?: string;
     behavior?: string[];
     location?: { city?: string; district?: string };
-    //picture?: { filename?: string; filetype?: string; data?: [] };
   }
 
   export interface ILostDogProps extends IDogProps {
