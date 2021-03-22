@@ -3,8 +3,6 @@ import type { APIResponse } from "./response";
 import config from "../config/config";
 import _ from "lodash";
 import axios from "axios";
-import FormData from "form-data";
-import { formDataToBuffer } from "./utility";
 
 const getToken: () => string = () => {
   return config("tokens.regular");
@@ -15,27 +13,20 @@ export async function addDog(
   dog: ILostDog,
   picture: IPicture
 ): Promise<APIResponse<ILostDogWithPicture>> {
-  let formData = new FormData();
-  formData.append("dog", JSON.stringify(dog), {
-    filename: "",
-    contentType: "application/json",
-  });
-  formData.append("picture", new Blob([picture.data.buffer]), {
-    filename: picture.fileName,
-    contentType: "application/octet-stream",
-  });
 
-  let formDataToBufferObject = formDataToBuffer(formData);
+  let formData = new FormData();
+  formData.append("dog", new Blob([JSON.stringify(dog)], {type: 'application/json'}), "");
+  formData.append("picture", new Blob([picture.data], {type: picture.fileType}), picture.fileName );
 
   return axios
     .post(
       `http://${config("backend.ip")}:${config("backend.port")}/lostdogs`,
-      formDataToBufferObject,
+      formData,
       {
         headers: {
           token: getToken(),
           Accept: "application/json",
-          "Content-Type": formData.getHeaders()["content-type"],
+          "Content-Type": "multipart/form-data",
         },
       }
     )

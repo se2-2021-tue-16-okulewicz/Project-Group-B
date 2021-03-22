@@ -14,7 +14,7 @@ export interface IPicture {
   id: number;
   fileName: string;
   fileType: string;
-  data: Uint8Array;
+  data: ArrayBuffer;
 }
 
 export interface IDog {

@@ -30,6 +30,8 @@ import { initLostDogProps, initPicture } from "../dog/dogClasses";
 import { ILostDog, IPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import * as Actions from "../app/actions";
+import { store } from "../app/store";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -99,7 +101,7 @@ export default function RegisterDogForm() {
   const canSave = true;
   const classes = useStyles();
 
-  const onSavePostClicked = async () => {
+  const onSavePostClicked = () => {
     try {
       registerDog(lostDogFields, picture);
     } catch (err) {
@@ -108,23 +110,27 @@ export default function RegisterDogForm() {
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
-    /*store.dispatch(
+    store.dispatch(
       Actions.addDogThunk({
-        dog,
-        picture,
-        token,
+        dog: dog,
+        picture: picture,
       })
     );
-    )*/
   }
 
   const handlePicturesChange = (
-    event: React.ChangeEvent<{ value: unknown }>
+    event: any
   ) => {
-    if (event.target) {
-      //setPictures()
-      //let x = fileToBase64(event.value as Blob);
-      //sessionStorage.setItem("picture", event.value as string);
+    if(event) {
+      (event as File).arrayBuffer().then(fileBuffer => {
+        console.log(fileBuffer);
+        setPicture({
+          id: 0,
+          fileName: event.name,//event.name,
+          fileType: event.type,
+          data: fileBuffer
+        } as IPicture)
+      })
     }
   };
 
@@ -384,7 +390,7 @@ export default function RegisterDogForm() {
                 value={lostDogFields.lostDate}
                 maxDate={new Date()}
                 name="lostDate"
-                onChange={(date) => calendarHandler(date)}
+                onChange={(date : any) => calendarHandler(date)}
               />
             </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
@@ -422,7 +428,7 @@ export default function RegisterDogForm() {
                 onChange={selectsHandler}
                 input={<Input />}
                 displayEmpty
-                renderValue={(selected) => (
+                renderValue={(selected : any) => (
                   <div className={classes.chips}>
                     {(selected as string[]).map((value) => (
                       <Chip
@@ -448,7 +454,7 @@ export default function RegisterDogForm() {
               <Button
                 data-testid="submit-button"
                 variant="contained"
-                onSubmit={onSavePostClicked}
+                onClick={() => onSavePostClicked()}
                 color="primary"
                 disabled={!canSave}
               >

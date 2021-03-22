@@ -9,6 +9,9 @@ export const addDogThunk = createAsyncThunk(
     dogAndPicture: { dog: ILostDog; picture: IPicture },
     { rejectWithValue }
   ) => {
+
+    console.log(dogAndPicture);
+
     const response: APIResponse<ILostDogWithPicture> = await Fetching.addDog(
       dogAndPicture.dog,
       dogAndPicture.picture

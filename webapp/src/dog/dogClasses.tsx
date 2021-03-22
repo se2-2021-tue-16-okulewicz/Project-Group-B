@@ -5,7 +5,7 @@ export const initPicture = {
   id: 0,
   fileName: "",
   fileType: "",
-  data: new Uint8Array(),
+  data: new ArrayBuffer(8),
 };
 
 export const initLostDogProps: ILostDog = {
