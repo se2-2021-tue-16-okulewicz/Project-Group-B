@@ -83,15 +83,6 @@ export function fileToByteArray(file: Blob) {
     }
   });
 }
-/*export function fileToByteArray(file: Blob) {
-    return new Promise((resolve) => {
-      const fileReader = new FileReader();
-      fileReader.onload = () => resolve(fileReader.result);
-      if (file) {
-        fileReader.readAsDataURL(file);
-      }
-    });
-  }*/
 
 /**
  * Converts Date object or string formatted like "2020-12-18T00:00:00" to
@@ -139,6 +130,10 @@ export function dateUnFormat(date: string | number | Date) {
   }
   return date_;
 }
+
+
+
+//useful for login webapp
 
 /**
  * Returns encrypted string

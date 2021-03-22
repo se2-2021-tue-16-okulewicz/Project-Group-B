@@ -20,21 +20,3 @@ export const addDogThunk = createAsyncThunk(
   }
 );*/
 
-/**
- * Thunk for uploading car image
- * @param {Object} data - object with two properties: file and id of car
- 
-export const uploadCarImageThunk = createAsyncThunk(
-  "cars/uploadCarImage",
-  async (data, { rejectWithValue }) => {
-    const response = await Fetching.uploadCarImage(
-      data.file,
-      data.id,
-      data.token
-    );
-
-    if (response.code !== 200) return rejectWithValue(response);
-
-    return response;
-  }
-);*/

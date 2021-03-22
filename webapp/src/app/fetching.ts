@@ -1,5 +1,4 @@
 var requestify = require("requestify");
-//import config from "../config/config";
 import * as Utility from "./utility";
 //import axios from "axios";
 import _ from "lodash";
@@ -21,7 +20,7 @@ const http = require("http");
 
 /**
  * Add dog
-
+//ip and port should be in service worker file
 export async function addDogs(dog : LostDog, picture : Picture, token:any) {
   return requestify
     .request(`http://${config("backend.ip")}:${config("backend.port")}/${id}`, {
