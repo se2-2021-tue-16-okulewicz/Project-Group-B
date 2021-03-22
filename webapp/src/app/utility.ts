@@ -95,7 +95,7 @@ export function fileToByteArray(file: Blob) {
 
 /**
  * Converts Date object or string formatted like "2020-12-18T00:00:00" to
- * string formatted like "18-12-2020"
+ * string formatted like "2020-12-18"
  * @param {string} date
  */
 export function dateFormat(date: string | number | Date) {
@@ -107,9 +107,9 @@ export function dateFormat(date: string | number | Date) {
     date_ = new Date(date);
   }
   return `${date_.toLocaleDateString("pl-PL", {
-    day: "numeric",
-    month: "numeric",
     year: "numeric",
+    month: "numeric",
+    day: "numeric",
   })}`;
 }
 

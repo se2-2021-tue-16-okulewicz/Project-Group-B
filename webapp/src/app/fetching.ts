@@ -3,6 +3,7 @@ var requestify = require("requestify");
 import * as Utility from "./utility";
 //import axios from "axios";
 import _ from "lodash";
+import { LostDog } from "../dog/dogClasses";
 const http = require("http");
 //Doc for response
 /**
@@ -19,28 +20,23 @@ const http = require("http");
  */
 
 /**
- * Post(register) an account
+ * Add dog
 
-export async function addDogs(dog, picture) {
+export async function addDogs(dog : LostDog, picture : Picture, token:any) {
   return requestify
     .request(`http://${config("backend.ip")}:${config("backend.port")}/${id}`, {
       method: `POST`,
-      headers: {
-        password: `Why we have to do this`,
-        token: token,
-      },
       body: [
         {
-          name: dog.name,
-          size: dog.size,
-          
+            dog
         },
+        {
+          filename: picture.state.filename,
+          filetype: picture.state.filetype,
+           data: picture.state.data
+        }
       ],
-      [
-        filename: picture.filename,
-        filetype: picture.filetype,
-        data: picture.filedata
-      ]
+
     })
     .then((response) => {
       return {
@@ -60,10 +56,10 @@ export async function addDogs(dog, picture) {
 
       return { code: response.getCode(), body: response.getBody() };
     });
-} */
-
+} 
+*/
 /**
- * Uploads a car image
+ * Uploads a dog image
  * @param {File} file
  * @param {BigInt} id - id of the car
  * @param {string} token

@@ -47,7 +47,7 @@ export enum BreedTypes {
     "Scar",
     "None",
   }
-  export enum BehavioursTypes {
+  export enum BehaviorsTypes {
     "Shy",
     "Energetic",
     "Friendly",

@@ -1,20 +1,21 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import * as Fetching from "./actions";
+import { LostDog } from "../dog/dogClasses";
+import * as Fetching from "./fetching";
 import * as Utility from "./utility";
 
 //We are not using this anymore:
-//const token = `8df62db8-b296-440e-a23f-9ed58dcd2ba5`;
+export const token = `8df62db8-b296-440e-a23f-9ed58dcd2ba5`;
 
 /**
- * Thunk for adding selected cars
+ * Thunk for adding new lost dog
  
-export const addCarThunk = createAsyncThunk(
-  "cars/add",
+export const addDogThunk = createAsyncThunk(
+  "lostdogs",
   async (args, { rejectWithValue }) => {
-    const response = await Fetching.addCars(args.car, args.token);
+    const response = await Fetching.addDogs(args.dog : LostDog, args.picture, token);
 
     if (response.code !== 200) return rejectWithValue(response);
-    args.afterAddition(response.body);
+    //args.afterAddition(response.body);
     return response;
   }
 );*/

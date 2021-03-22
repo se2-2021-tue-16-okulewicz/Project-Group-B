@@ -1,13 +1,35 @@
 import "date-fns";
 import React, { } from "react";
-import { ColorTypes, HairTypes, SizeTypes, TailTypes, EarsTypes, SpecialMarkTypes, BehavioursTypes } from "./dogEnums";
+import { ColorTypes, HairTypes, SizeTypes, TailTypes, EarsTypes, SpecialMarkTypes, BehaviorsTypes, BreedTypes } from "./dogEnums";
 import { IDogProps, IDogState, ILostDogProps, ILostDogState } from "./dogInterfaces";
 
 
+export const initPicture ={
+  filename: '',
+  filetype: '',
+  data: new Uint8Array()
+}
+
+export const initLostDogProps = {
+  name: '',
+  breed:'',
+  age: 0,
+  hair: '',
+  color: '',
+  size: '',
+  ears: '',
+  tail: '',
+  specialMark: '',
+  behavior: [],
+  location: { city: "", district: "" },
+  lostDate: new Date(),
+  //picture: { filename: "", filetype: "", data: new Uint8Array() },
+};
 
 
 export const defaultProps = {
   name: "",
+  breed:BreedTypes[0],
   age: 0,
   hair: HairTypes[0],
   color: ColorTypes[0],
@@ -15,19 +37,16 @@ export const defaultProps = {
   ears: EarsTypes[0],
   tail: TailTypes[0],
   specialMark: SpecialMarkTypes[0],
-  behaviour: [BehavioursTypes[0], BehavioursTypes[1]],
+  behavior: [BehaviorsTypes[0], BehaviorsTypes[1]],
   location: { city: "", district: "" },
-  lostDate: new Date(),
-  picture: { filename: "", filetype: "", data: [] },
 };
 
-export class Dog extends React.Component<
-  Partial<IDogProps>,
-  Partial<IDogState>> {
+export class Dog extends React.Component<IDogProps,IDogState> {
   constructor(props: IDogProps) {
     super(props);
     this.state = {
       name: "",
+      breed:"",
       age: 0,
       hair: "",
       color: "",
@@ -35,7 +54,7 @@ export class Dog extends React.Component<
       ears: "",
       tail: "",
       specialMark: "",
-      behaviour: [],
+      behavior: [],
       location: { city: "", district: "" },
       //picture: { filename: "", filetype: "", data: [] },
     };
@@ -59,32 +78,66 @@ export class Dog extends React.Component<
     console.log(this.state.name);
     console.log([e.target.name]);
   };
-}
-
-export class LostDog extends React.Component<Partial<ILostDogProps>, Partial<ILostDogState>> {
-  constructor(props: ILostDogProps) {
-    super(props);
-    this.state = {
-      lostDate: new Date(),
-    };
+  render(){
+    return (null);
   }
-  handleChange = (e: { persist: () => void; target: { name: any; value: any }; }) => {
+
+  /*handleChange = (index:number, value ) => {
     //e.persist();
     var el = e.target.name;
+
     this.setState((state) => ({ ...state, el: e.target.value }));
     console.log(this.state.name);
     console.log([e.target.name]);
+  };*/
+}
+
+export class LostDog extends React.Component<ILostDogProps,ILostDogState> {
+  constructor(props: ILostDogProps) {
+    super(props);
+    this.state = {
+      name: "",
+      breed:"",
+      age: 0,
+      hair: "",
+      color: "",
+      size: "",
+      ears: "",
+      tail: "",
+      specialMark: "",
+      behavior: [],
+      location: { city: "", district: "" },
+      lostDate: new Date(),
+      //picture: { filename: "", filetype: "", data: new Uint8Array() }
+    };
+    //this.handleChange = this.handleChange.bind(this);
+    
+     
+  }
+  componentDidMount(){
+    this.setState(defaultProps);
+  }
+
+  handleChange = (e: { persist: () => void; target: { name?: any; value: any }; }) => {
+    e.persist();
+    var el = e.target.name;
+    this.setState((state)=>({ ...state, hair: e.target.value }));
+    console.log(this.state);
+    console.log([e.target.name]);
   };
+  render(){
+    return (null);
+  }
   
 }
 
-export class Picture extends React.Component{
+/*export class Picture extends React.Component{
   public state={
     filename: "",
     filetype: "",
     data: []
   }
-}
+}*/
 
 
 export class FoundDog extends Dog { }
