@@ -61,7 +61,9 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function RegisterDogForm() {
   var isRegisterEnabled = sessionStorage.getItem("enable") === "true";
   var isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  const [registerEnabled, setRegisterEnabled] = useState(isRegisterEnabled as Boolean);
+  const [registerEnabled, setRegisterEnabled] = useState(
+    isRegisterEnabled as Boolean
+  );
   if (!isRegisterEnabled && isInputNotNull) {
     var x = JSON.parse(sessionStorage.getItem("lostDogFields") as string);
   }
@@ -256,7 +258,9 @@ export default function RegisterDogForm() {
                   Object.values(HairTypes)
                     .filter((k) => isNaN(Number(k)))
                     .map((type: string | HairTypes) => (
-                      <option key={type} value={type}>{type}</option>
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
                     ))
                 }
               </Select>
@@ -277,7 +281,9 @@ export default function RegisterDogForm() {
                 {Object.values(SizeTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | SizeTypes) => (
-                    <option key={type} value={type}>{type}</option>
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
                   ))}
               </Select>
             </FormControl>
@@ -297,7 +303,9 @@ export default function RegisterDogForm() {
                 {Object.values(EarsTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | EarsTypes) => (
-                    <option key={type} value={type}>{type}</option>
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
                   ))}
               </Select>
             </FormControl>
@@ -317,7 +325,9 @@ export default function RegisterDogForm() {
                 {Object.values(TailTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | TailTypes) => (
-                    <option key={type} value={type}>{type}</option>
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
                   ))}
               </Select>
             </FormControl>
@@ -337,7 +347,9 @@ export default function RegisterDogForm() {
                 {Object.values(SpecialMarkTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | SpecialMarkTypes) => (
-                    <option key={type} value={type}>{type}</option>
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
                   ))}
               </Select>
             </FormControl>
@@ -357,7 +369,9 @@ export default function RegisterDogForm() {
                 {Object.values(BreedTypes)
                   .filter((k) => isNaN(Number(k)))
                   .map((type: string | BreedTypes) => (
-                    <option key={type} value={type}>{type}</option>
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
                   ))}
               </Select>
             </FormControl>
