@@ -9,9 +9,9 @@ const getToken: () => string = () => {
 };
 
 //Reimplement stringifing date
-Date.prototype.toJSON = function (key? : any) : string {
+Date.prototype.toJSON = function (key?: any): string {
   return this.getFullYear() + "-" + this.getMonth() + "-" + this.getDate();
-}
+};
 
 export async function addDog(
   dog: ILostDog,
@@ -20,11 +20,14 @@ export async function addDog(
   let formData = new FormData();
 
   const privateProperties = ["id", "pictureId", "ownerId"];
-  const excludePrivateProperties = (key : string, value : any) => privateProperties.includes(key) ? undefined : value;
+  const excludePrivateProperties = (key: string, value: any) =>
+    privateProperties.includes(key) ? undefined : value;
   console.log(dog.lostDate?.toJSON());
   formData.append(
     "dog",
-    new Blob([JSON.stringify(dog, excludePrivateProperties)], { type: "application/json" }),
+    new Blob([JSON.stringify(dog, excludePrivateProperties)], {
+      type: "application/json",
+    }),
     ""
   );
   formData.append(
