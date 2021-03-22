@@ -123,10 +123,6 @@ export default function RegisterDogForm() {
       //sessionStorage.setItem("picture", event.value as string);
     }
   };
-
-  /*<DisplayImage
-  handleToUpdate={(file) => handleToUpdate(file)}
-></DisplayImage>*/
   if (registerEnabled) {
     return (
       <Button
