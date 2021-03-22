@@ -1,10 +1,9 @@
 package se.backend.controller.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.backend.dao.UserAccountRepository;
 import se.backend.exceptions.types.GenericBadRequestException;
 import se.backend.model.account.Account;
@@ -19,7 +18,6 @@ import java.net.http.HttpResponse;
 @RestController
 @RequestMapping(path = "")
 public class UserController {
-    private UserAccountRepository userAccountRepository;
     private final LoginService loginService;
 
     @Autowired
@@ -27,19 +25,24 @@ public class UserController {
         this.loginService = loginService;
     }
 
-    public ResponseEntity<Response<UserAccount>> createUserAccount(UserAccount user, String password){
+    @PostMapping(path = "/register")
+    public ResponseEntity<Response<UserAccount>> CreateUserAccount(@RequestHeader HttpHeaders headers,
+                                                                   @RequestPart("username") String username,
+                                                                   @RequestPart("password") String password,
+                                                                   @RequestPart("phone_number") String phoneNumber,
+                                                                   @RequestPart("email") String email) {
         return null;
     }
-    public ResponseEntity<Response<UserAccount>> updateUser(UserAccount user) {
-        return null;
-    }
+
     @PostMapping(path = "/login")
-    public ResponseEntity<Response<AuthenticationResults>> authenticate(String username, String password){
+    public ResponseEntity<Response<AuthenticationResults>> Authenticate(@RequestHeader HttpHeaders headers,
+                                                                        @RequestPart("username") String username,
+                                                                        @RequestPart("password") String password) {
         var result = this.loginService.authenticate(username,password);
         if(result == null){
             throw new GenericBadRequestException("Login failed.");
         }
-        return ResponseEntity.ok(new Response<AuthenticationResults>(String.format("Token: %s", result.getToken()), true, result));
+        return ResponseEntity.ok(new Response<>(String.format("Token: %s", result.getToken()), true, result));
     }
 
 }
