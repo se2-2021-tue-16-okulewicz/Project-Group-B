@@ -1,7 +1,7 @@
 import "date-fns";
-import { IDog, ILostDog } from "./dogInterfaces";
+import { ILostDog, IPicture } from "./dogInterfaces";
 
-export const initPicture = {
+export const initPicture : IPicture = {
   id: 0,
   fileName: "",
   fileType: "",

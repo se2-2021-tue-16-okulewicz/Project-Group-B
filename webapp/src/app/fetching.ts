@@ -1,7 +1,6 @@
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import type { APIResponse } from "./response";
 import config from "../config/config";
-import _ from "lodash";
 import axios from "axios";
 
 const getToken: () => string = () => {
