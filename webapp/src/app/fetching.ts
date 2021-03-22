@@ -33,11 +33,11 @@ export async function addDog(
       formDataToBufferObject,
       {
         headers: {
-            'token': getToken(),
-            'Accept': 'application/json',
-            'Content-Type': formData.getHeaders()['content-type'],
+          token: getToken(),
+          Accept: "application/json",
+          "Content-Type": formData.getHeaders()["content-type"],
         },
-    }
+      }
     )
     .then((response) => {
       return response.data as APIResponse<ILostDogWithPicture>;
@@ -52,4 +52,4 @@ export async function addDog(
 
       return response.data as APIResponse<ILostDogWithPicture>;
     });
-};
+}
