@@ -106,14 +106,14 @@ public class LoginMainService implements LoginService {
     }
 
     @Override
-    public boolean IsAuthorized(HttpHeaders httpHeaders, UserType permissions) {
+    public boolean IsAuthorized(HttpHeaders httpHeaders, List<UserType> requiredPermissions) {
         if(!httpHeaders.map().containsKey("token"))
             return false;
 
         var token = httpHeaders.map().get("token").get(0);
 
         if(sessions.containsKey(token)){
-            return sessions.get(token).equals(permissions);
+            return requiredPermissions.contains(sessions.get(token));
         }
 
         return false;
