@@ -30,7 +30,6 @@ public class UserControllerTest {
     public void authenticateTest() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(new LoginInfo("e.musk@mail.com", "xea-12Musk"));
-        System.out.println(json);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/account/login")
                         .contentType(MediaType.APPLICATION_JSON)
