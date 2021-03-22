@@ -31,7 +31,13 @@ export async function addDog(
     .post(
       `http://${config("backend.ip")}:${config("backend.port")}/lostdogs`,
       formDataToBufferObject,
-      formData.getHeaders()
+      {
+        headers: {
+            'token': getToken(),
+            'Accept': 'application/json',
+            'Content-Type': formData.getHeaders()['content-type'],
+        },
+    }
     )
     .then((response) => {
       return response.data as APIResponse<ILostDogWithPicture>;
@@ -46,4 +52,4 @@ export async function addDog(
 
       return response.data as APIResponse<ILostDogWithPicture>;
     });
-}
+};
