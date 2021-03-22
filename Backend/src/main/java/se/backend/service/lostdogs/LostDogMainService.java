@@ -67,7 +67,9 @@ public class LostDogMainService implements LostDogService{
             behaviors.add(dogBehaviorRepository.save(behavior));
         }
 
-        var returnedDog = new LostDogWithBehaviorsAndWithPicture(newDog);
+        LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(savedDog);
+        savedDogWithBehaviors.setBehaviors(newDog.getBehaviors());
+        var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
         returnedDog.setPicture(savedPicture);
 
         return returnedDog;

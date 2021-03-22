@@ -28,10 +28,8 @@ public class LostDogWithBehaviors extends LostDog {
         var lostDog = new LostDog();
         lostDog.setDateLost(this.getDateLost());
         lostDog.setIsFound(this.isIsFound());
-        lostDog.setOwnerId(this.getOwnerId());
         lostDog.setBreed(this.getBreed());
         lostDog.setAge(this.getAge());
-        lostDog.setPictureId(this.getPictureId());
         lostDog.setSize(this.getSize());
         lostDog.setColor(this.getColor());
         lostDog.setSpecialMarks(this.getSpecialMarks());
@@ -40,7 +38,6 @@ public class LostDogWithBehaviors extends LostDog {
         lostDog.setEarsType(this.getEarsType());
         lostDog.setTailLength(this.getTailLength());
         lostDog.setLocation(this.getLocation());
-        lostDog.setId(this.getId());
         return lostDog;
     }
 }
