@@ -99,8 +99,9 @@ public class DogsController {
     @DeleteMapping(path = "/{dogId}")
     public ResponseEntity<Response<Boolean>> DeleteLostDog(@RequestHeader HttpHeaders headers, @PathVariable("dogId") long dogId) {
         logHeaders(headers);
-        //Check authorization with token
-
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
+            throw new UnauthorizedException();
+        }
 
         // If we successfully delete
         if(lostDogService.DeleteDog(dogId)) return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true));
@@ -112,8 +113,9 @@ public class DogsController {
     @GetMapping(path = "/{dogId}")
     public ResponseEntity<Response<LostDog>> GetLostDogDetails(@RequestHeader HttpHeaders headers, @PathVariable("dogId") long dogId) {
         logHeaders(headers);
-        //Check authorization with token
-
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
+            throw new UnauthorizedException();
+        }
 
         LostDog savedDog;
         savedDog = lostDogService.GetDogDetails(dogId);
@@ -123,7 +125,6 @@ public class DogsController {
 
         // fail get dog
         else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
-
     }
 
 
