@@ -29,18 +29,13 @@ it("Rendered register form button", () => {
   act(() => {
     render(<RegisterDogForm />, container);
   });
-   expect(container).toMatchSnapshot();
-     //main form is not rendered initially
-  expect(
-    container?.getElementsByClassName("mainForm").length
-  ).toBe(0);
-  expect(
-    container?.getElementsByClassName("registerButton").length
-  ).toBe(0);
+  expect(container).toMatchSnapshot();
+  //main form is not rendered initially
+  expect(container?.getElementsByClassName("mainForm").length).toBe(0);
+  expect(container?.getElementsByClassName("registerButton").length).toBe(0);
   expect(
     container?.getElementsByClassName("formControl").length
   ).toBeGreaterThanOrEqual(0);
-  
 });
 
 it("Render form for dog register", () => {
