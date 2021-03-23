@@ -8,10 +8,17 @@ const getToken: () => string = () => {
 };
 
 //Reimplement stringifing date
-const zeroPad = (num : number, places : number) => String(num).padStart(places, '0');
+const zeroPad = (num: number, places: number) =>
+  String(num).padStart(places, "0");
 
 Date.prototype.toJSON = function (key?: any): string {
-  return zeroPad(this.getFullYear(), 4) + "-" + zeroPad(this.getMonth() + 1, 2) + "-" + zeroPad(this.getDate(), 2);
+  return (
+    zeroPad(this.getFullYear(), 4) +
+    "-" +
+    zeroPad(this.getMonth() + 1, 2) +
+    "-" +
+    zeroPad(this.getDate(), 2)
+  );
 };
 
 export async function addDog(
