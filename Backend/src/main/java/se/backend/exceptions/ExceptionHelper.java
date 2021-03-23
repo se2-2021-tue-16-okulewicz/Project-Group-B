@@ -18,4 +18,10 @@ public class ExceptionHelper {
         return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = { UnauthorizedException.class })
+    public ResponseEntity<Response<Object>> handleUnauthorizedException(UnauthorizedException ex) {
+        logger.error("GenericBadRequestException: {}", ex.getMessage());
+        return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null), HttpStatus.FORBIDDEN);
+    }
+
 }

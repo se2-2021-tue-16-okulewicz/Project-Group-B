@@ -31,7 +31,7 @@ public class DogsControllerTest {
     public void GetAllDogsTest() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs")
-                        .header("token", "authorization_token")
+                        .header("token", "regularUserTestToken")
         ).andExpect(status().isOk())
             .andExpect(jsonPath("successful", is(true)))
             .andExpect(jsonPath("message", is("4 dog(s) found")))
@@ -51,7 +51,7 @@ public class DogsControllerTest {
                 MockMvcRequestBuilders.multipart("/lostdogs")
                         .file(dog)
                         .file(picture)
-                        .header("token", "authorization_token")
+                        .header("token", "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data.name", is("Pinky")))
