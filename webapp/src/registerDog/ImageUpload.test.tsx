@@ -28,7 +28,7 @@ afterEach(() => {
 it("Render upload image part of dog register", () => {
   act(() => {
     render(<ImageUpload />, container);
-  })
+  });
   //fireEvent.change(input, {target:{value=""}});
   expect(container?.getElementsByClassName("imageContainer").length).toBe(1);
   expect(container?.getElementsByClassName("image").length).toBe(1);
