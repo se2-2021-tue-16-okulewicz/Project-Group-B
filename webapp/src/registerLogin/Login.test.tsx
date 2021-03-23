@@ -7,6 +7,8 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import Login from "./Login";
 import { isNull } from "lodash";
+import { Provider } from "react-redux";
+import { store } from "../app/store";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -26,7 +28,12 @@ afterEach(() => {
 
 it("Test login view elements", () => {
   act(() => {
-    render(<Login />, container);
+    render(
+      <Provider store={store}>
+        <Login />
+      </Provider>,
+      container
+    );
   });
 
   expect(container?.getElementsByClassName("LowerText").length).toBe(2);
