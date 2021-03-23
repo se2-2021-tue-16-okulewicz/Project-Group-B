@@ -53,23 +53,26 @@ const useStyles = makeStyles((theme: Theme) =>
     registerButton: {
       display: "flex",
     },
-    cardContent:{
-      justifyContent:"center",
+    cardContent: {
+      justifyContent: "center",
       display: "flex",
-      alignItems:"center"
-    }
+      alignItems: "center",
+    },
   })
 );
 
 export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
-  let isRegisterEnabled = sessionStorage.getItem("enable") === "false" ? false : true;
+  let isRegisterEnabled =
+    sessionStorage.getItem("enable") === "false" ? false : true;
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [registerEnabled, setRegisterEnabled] = useState(
     isRegisterEnabled as Boolean
   );
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
-    !isRegisterEnabled && isInputNotNull ? JSON.parse(sessionStorage.getItem("lostDogFields") as string) : initLostDogProps
+    !isRegisterEnabled && isInputNotNull
+      ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
+      : initLostDogProps
   );
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
@@ -118,13 +121,10 @@ export default function RegisterDogForm() {
 
   const onRegisterClick = () => {
     setLostDogFields(initLostDogProps);
-    sessionStorage.setItem(
-      "inputField",
-      JSON.stringify(initLostDogProps)
-    );
+    sessionStorage.setItem("inputField", JSON.stringify(initLostDogProps));
     sessionStorage.setItem("enable", "false");
     setRegisterEnabled(false);
-  }
+  };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
     store.dispatch(
@@ -153,9 +153,7 @@ export default function RegisterDogForm() {
       <Button
         className={classes.registerButton}
         data-testid="register-button"
-        onClick={() =>
-          onRegisterClick()
-        }
+        onClick={() => onRegisterClick()}
         color="primary"
         variant="contained"
         size="large"
@@ -197,7 +195,7 @@ export default function RegisterDogForm() {
                       file: React.ChangeEvent<{ value: unknown }>
                     ) => handlePicturesChange(file)}
                   />
-                  </CardContent>
+                </CardContent>
               </Card>
             </FormControl>
           </Grid>
@@ -491,5 +489,3 @@ export default function RegisterDogForm() {
     );
   }
 }
-
-
