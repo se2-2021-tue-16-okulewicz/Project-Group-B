@@ -33,7 +33,7 @@ const ImageUpload = (props: any) => {
             style={{ display: "none" }}
             onChange={handleChange}
           />
-          Upload images
+          Upload image
         </InputLabel>
       </div>
     </>
