@@ -24,11 +24,11 @@ const Footer = () => {
           <span style={{ paddingRight: 5 }}>Copyright </span>
           <FontAwesomeIcon icon={faCopyright} />{" "}
           <span style={{ paddingLeft: 5 }}>
-            {new Date().getFullYear()} Ceeski Team. All Rights Reserved.
+            {new Date().getFullYear()} SE2 Group B. All Rights Reserved.
           </span>
         </div>
         <a
-          href="https://github.com/orgs/ceeski/"
+          href="https://github.com/se2-2021-tue-16-okulewicz/Project-Group-B"
           target="_blank"
           className="Github"
         >
