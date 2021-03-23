@@ -23,7 +23,6 @@ import { clearLoginInformation, loginThunk } from "../app/actions";
 import { State } from "../app/reducer";
 import { store } from "../app/store";
 import "./Login.css";
-import { ILoginInformation } from "./loginRegisterInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
