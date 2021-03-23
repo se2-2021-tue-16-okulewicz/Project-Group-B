@@ -121,7 +121,6 @@ export default function RegisterDogForm() {
   const handlePicturesChange = (event: any) => {
     if (event) {
       (event as File).arrayBuffer().then((fileBuffer) => {
-        console.log(fileBuffer);
         setPicture({
           id: 0,
           fileName: event.name, //event.name,

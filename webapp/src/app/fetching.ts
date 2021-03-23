@@ -10,7 +10,8 @@ const getToken: () => string = () => {
 //Reimplement stringifing date
 const zeroPad = (num: number, places: number) =>
   String(num).padStart(places, "0");
-
+  
+//eslint-disable-next-line no-extend-native
 Date.prototype.toJSON = function (key?: any): string {
   return (
     zeroPad(this.getFullYear(), 4) +
@@ -57,14 +58,14 @@ export async function addDog(
       }
     )
     .then((response) => {
-      console.log(response.data);
+      console.log(response);
       return {
         code: response.status,
         response: response.data as APIResponse<ILostDogWithPicture>,
       };
     })
-    .catch((response) => {
-      if (response instanceof TypeError)
+    .catch((error) => {
+      if (error instanceof TypeError)
         return {
           code: 0,
           response: {
@@ -74,6 +75,7 @@ export async function addDog(
           },
         };
 
+      let response = error.response;
       return {
         code: response.status,
         response: response.data as APIResponse<ILostDogWithPicture>,

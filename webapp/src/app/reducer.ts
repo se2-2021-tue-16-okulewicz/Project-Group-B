@@ -1,30 +1,50 @@
 import * as Actions from "./actions";
-import { createReducer } from "@reduxjs/toolkit";
+import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
-//import config from "../config/config";
+import { RequestResponse } from "./response";
+import { ILostDogWithPicture } from "../dog/dogInterfaces";
 
-const init = {
-  token: null,
+export type Error = {
+  hasError: boolean;
+  errorCode: number;
+  erorMessage: string;
+}
+
+export type State = {
+  loading: boolean;
+  error: Error;  
+}
+
+const init : State = {
+  loading: false,
+  error: {
+    hasError: false,
+    errorCode: 0,
+    erorMessage: "",
+  },
 };
 
-export const reducer = createReducer(init, {});
-/*
-[Actions.addDogThunk.pending]: (state, action) => {
+export const reducer = createReducer(init, {
+  [Actions.addDogThunk.pending.toString()]: (state : State, payload : PayloadAction<undefined>) => {
     let newState = _.cloneDeep(state);
-    newState.status = "adding";
+    newState.loading = true;
     return newState;
   },
-
-  [Actions.addDogThunk.fulfilled]: (state, action) => {
+  [Actions.addDogThunk.fulfilled.toString()]: (state : State, payload : PayloadAction<RequestResponse<ILostDogWithPicture>>) => {
     let newState = _.cloneDeep(state);
-    newState.status = "idle";
+    newState.loading = false;
     return newState;
   },
-
-  [Actions.addDogThunk.rejected]: (state, action) => {
+  [Actions.addDogThunk.rejected.toString()]: (state : State, payload : PayloadAction<RequestResponse<ILostDogWithPicture>>) => {
     let newState = _.cloneDeep(state);
-    newState.status = "error";
-    newState.error = action.payload.code;
-    newState.errorBody = action.payload.body;
+    let errorResponse = payload.payload;
+    console.log(errorResponse);
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message
+    }
     return newState;
-  },*/
+  },
+});
