@@ -34,6 +34,7 @@ import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,10 +52,6 @@ const useStyles = makeStyles((theme: Theme) =>
     chip: {
       margin: 2,
     },
-    registerButton: {
-      display: "flex",
-      marginTop: "50vh"
-    },
     cardContent: {
       justifyContent: "center",
       display: "flex",
@@ -67,14 +64,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
-  let isRegisterEnabled =
-    sessionStorage.getItem("enable") === "false" ? false : true;
+  const history = useHistory();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  const [registerEnabled, setRegisterEnabled] = useState(
-    isRegisterEnabled as Boolean
-  );
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
-    !isRegisterEnabled && isInputNotNull
+    isInputNotNull
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
   );
@@ -125,11 +118,8 @@ export default function RegisterDogForm() {
     }
   };
 
-  const onRegisterClick = () => {
-    setLostDogFields(initLostDogProps);
-    sessionStorage.setItem("inputField", JSON.stringify(initLostDogProps));
-    sessionStorage.setItem("enable", "false");
-    setRegisterEnabled(false);
+  const onCancelClick = () => {
+      history.push("/listDogs");
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
@@ -154,21 +144,6 @@ export default function RegisterDogForm() {
       });
     }
   };
-
-  if (registerEnabled) {
-    return (
-      <Button
-        className={classes.registerButton}
-        data-testid="register-button"
-        onClick={() => onRegisterClick()}
-        color="primary"
-        variant="contained"
-        size="large"
-      >
-        Register Dog
-      </Button>
-    );
-  } else {
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
         <Grid container alignContent="space-between" spacing={5}>
@@ -481,10 +456,9 @@ export default function RegisterDogForm() {
               <Button
                 data-testid="cancel-button"
                 variant="contained"
-                onClick={() => {
-                  sessionStorage.setItem("enable", "true");
-                  setRegisterEnabled(true);
-                }}
+                onClick={
+                  onCancelClick
+                }
                 color="secondary"
               >
                 Cancel
@@ -493,6 +467,5 @@ export default function RegisterDogForm() {
           </Grid>
         </Grid>
       </MuiPickersUtilsProvider>
-    );
-  }
+    )
 }

@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     registerButton: {
       display: "flex",
+      marginTop: "50vh"
     },
     cardContent: {
       justifyContent: "center",
@@ -70,6 +71,7 @@ export default function ListWithDogs() {
   const onRegisterClicked = () => {
       history.push("/addDog");
 }
+ const classes = useStyles();
   //if enable is session storage is null, the form has just been opened
   // let isRegisterEnabled =
   //   sessionStorage.getItem("enable") === "false" ? false : true;
@@ -162,6 +164,7 @@ export default function ListWithDogs() {
     return (
       <Grid>
       <Button
+        className={classes.registerButton}
         data-testid="register-button"
         color="primary"
         variant="contained"
