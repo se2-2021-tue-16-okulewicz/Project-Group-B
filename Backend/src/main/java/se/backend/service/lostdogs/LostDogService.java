@@ -15,16 +15,10 @@ import java.util.List;
 public interface LostDogService {
     List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page);
     LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture);
-<<<<<<< HEAD
 
     LostDogWithBehaviorsAndWithPicture GetDogDetails(long dogId);
     LostDogWithBehaviorsAndWithPicture UpdateDog(LostDogWithBehaviors updatedDog, Picture picture);
     boolean DeleteDog(long dogId);
-=======
-    //LostDog GetDogDetails(long dogId);
-    //LostDog UpdateDog(LostDog updatedVersion);
-    //boolean DeleteDog(long dogId);
->>>>>>> main
 
     //List<LostDog> GetUserDogs(long userId);
 
