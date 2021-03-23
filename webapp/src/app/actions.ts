@@ -26,4 +26,4 @@ export const addDogThunk = createAsyncThunk<
   }
 );
 
-export const clearError = createAction('clearError');
+export const clearError = createAction("clearError");
