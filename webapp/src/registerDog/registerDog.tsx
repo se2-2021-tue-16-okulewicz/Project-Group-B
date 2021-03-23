@@ -124,7 +124,7 @@ export default function RegisterDogForm() {
       Actions.addDogThunk({
         dog: dog,
         picture: picture,
-        cookies: cookies
+        cookies: cookies,
       })
     );
   }

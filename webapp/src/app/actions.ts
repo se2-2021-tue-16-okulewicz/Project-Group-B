@@ -9,12 +9,16 @@ import {
 
 export const addDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture>,
-  { dog: ILostDog; picture: IPicture, cookies: { [name: string]: any } },
+  { dog: ILostDog; picture: IPicture; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<ILostDogWithPicture> }
 >(
   "AddDog",
   async (
-    dogAndPictureAndCookies: { dog: ILostDog; picture: IPicture; cookies: { [name: string]: any } },
+    dogAndPictureAndCookies: {
+      dog: ILostDog;
+      picture: IPicture;
+      cookies: { [name: string]: any };
+    },
     { rejectWithValue }
   ) => {
     const response: RequestResponse<ILostDogWithPicture> = await Fetching.addDog(
