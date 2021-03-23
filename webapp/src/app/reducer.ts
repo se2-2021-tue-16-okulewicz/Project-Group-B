@@ -47,7 +47,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
-    console.log(errorResponse);
     newState.loading = false;
     newState.error = {
       hasError: true,

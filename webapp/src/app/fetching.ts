@@ -65,7 +65,7 @@ export async function addDog(
       };
     })
     .catch((error) => {
-      if (error instanceof TypeError)
+      if (error instanceof TypeError || error.message == 'Network Error') {
         return {
           code: 0,
           response: {
@@ -74,6 +74,8 @@ export async function addDog(
             data: null,
           },
         };
+      }
+        
 
       let response = error.response;
       return {
