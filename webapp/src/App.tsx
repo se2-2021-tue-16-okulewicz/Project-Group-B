@@ -16,7 +16,6 @@ import Login from "./registerLogin/Login";
 import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
-import "./App.css";
 import { useCookies } from "react-cookie";
 
 const useStyles = makeStyles((theme: Theme) =>
