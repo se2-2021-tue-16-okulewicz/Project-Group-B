@@ -5,15 +5,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { useCookies } from "react-cookie";
+import { store } from "../app/store";
+import { logoutThunk } from "../app/actions";
 
 const Footer = () => {
-  const isLoggedIn = false;
   const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
 
   const logOut = () => {
+    console.log(cookies);
     removeCookie("token", { path: "/" });
     removeCookie("userType", { path: "/" });
+    store.dispatch(logoutThunk());
     history.push("/");
   };
 
@@ -22,7 +25,7 @@ const Footer = () => {
       <div className="footer-container">
         <button
           className="LogoutButton"
-          disabled={!isLoggedIn}
+          disabled={cookies["userType"] === undefined}
           onClick={logOut}
         >
           Logout

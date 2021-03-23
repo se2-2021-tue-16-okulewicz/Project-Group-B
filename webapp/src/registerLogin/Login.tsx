@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { loginThunk } from "../app/actions";
+import { clearLoginInformation, loginThunk } from "../app/actions";
 import { State } from "../app/reducer";
 import { store } from "../app/store";
 import "./Login.css";
@@ -103,6 +103,7 @@ export default function Login() {
     if (loginInfo !== null) {
       setCookie("token", loginInfo?.token, { path: "/" });
       setCookie("userType", loginInfo?.userType, { path: "/" });
+      store.dispatch(clearLoginInformation());
       history.push("/addDog");
     }
   }, [loginInfo]);

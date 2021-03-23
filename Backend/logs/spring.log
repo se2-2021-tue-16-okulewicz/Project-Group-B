@@ -116,3 +116,7 @@
 2021-03-23 08:15:52 [WARN ] [http-nio-8080-exec-6] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.GenericBadRequestException: Login failed.]
 2021-03-23 08:43:45 [ERROR] [http-nio-8080-exec-8] nd.annotation.ExceptionHandler: GenericBadRequestException: Login failed.
 2021-03-23 08:43:45 [WARN ] [http-nio-8080-exec-8] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.GenericBadRequestException: Login failed.]
+2021-03-23 09:10:02 [ERROR] [http-nio-8080-exec-4] nd.annotation.ExceptionHandler: GenericBadRequestException: Login failed.
+2021-03-23 09:10:02 [WARN ] [http-nio-8080-exec-4] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.GenericBadRequestException: Login failed.]
+2021-03-23 09:25:51 [ERROR] [http-nio-8080-exec-5] nd.annotation.ExceptionHandler: GenericBadRequestException: Login failed.
+2021-03-23 09:25:51 [WARN ] [http-nio-8080-exec-5] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.GenericBadRequestException: Login failed.]

@@ -47,4 +47,9 @@ export const loginThunk = createAsyncThunk<
   return response as RequestResponse<ILoginResults>;
 });
 
+export const logoutThunk = createAsyncThunk("logout", async () => {
+  return;
+})
+
 export const clearError = createAction("clearError");
+export const clearLoginInformation = createAction("clearLoginInformation");

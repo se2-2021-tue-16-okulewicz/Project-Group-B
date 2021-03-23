@@ -7,7 +7,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import { clearError } from "./app/actions";
+import { clearError, logoutThunk } from "./app/actions";
 import { State } from "./app/reducer";
 import { store } from "./app/store";
 import RegisterDogForm from "./registerDog/registerDog";
@@ -38,6 +38,7 @@ function Layout() {
     if (error.errorCode === 403) {
       removeCookie("token", { path: "/" });
       removeCookie("userType", { path: "/" });
+      store.dispatch(logoutThunk());
       history.push("/");
     }
     store.dispatch(clearError());

@@ -38,6 +38,12 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
+  [Actions.clearLoginInformation.type]: (state: State) => {
+    let newState = _.cloneDeep(state);
+    newState.loginInformation = null;
+    return newState;
+  },
+
   [Actions.addDogThunk.pending.toString()]: (
     state: State,
     payload: PayloadAction<undefined>
@@ -98,6 +104,33 @@ export const reducer = createReducer(init, {
       errorCode: errorResponse.code,
       erorMessage: errorResponse.response.message,
     };
+    return newState;
+  },
+
+  [Actions.logoutThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.logoutThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.loginInformation = null;
+    return newState;
+  },
+  [Actions.logoutThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.loginInformation = null;
     return newState;
   },
 });
