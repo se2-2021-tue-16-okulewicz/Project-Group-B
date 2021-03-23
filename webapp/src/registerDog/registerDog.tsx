@@ -49,11 +49,15 @@ const useStyles = makeStyles((theme: Theme) =>
     chip: {
       margin: 2,
     },
+    registerButton:{
+      display:"flex", 
+    }
   })
 );
 
 export default function RegisterDogForm() {
-  var isRegisterEnabled = sessionStorage.getItem("enable") === "true";
+  //if enable is session storage is null, the form has just been opened
+  var isRegisterEnabled = sessionStorage.getItem("enable") === "false" ? false:true;
   var isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [registerEnabled, setRegisterEnabled] = useState(
     isRegisterEnabled as Boolean
@@ -134,6 +138,7 @@ export default function RegisterDogForm() {
   if (registerEnabled) {
     return (
       <Button
+        className={classes.registerButton}
         data-testid="register-button"
         onClick={() => {
           setLostDogFields(initLostDogProps);
@@ -146,6 +151,7 @@ export default function RegisterDogForm() {
         }}
         color="primary"
         variant="contained"
+        size="large"
       >
         Register Dog
       </Button>
