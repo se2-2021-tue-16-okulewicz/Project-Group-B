@@ -65,6 +65,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
+  const classes = useStyles();
+  const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
     isInputNotNull
@@ -104,11 +106,6 @@ export default function RegisterDogForm() {
     setLostDogFields(newField);
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
-
-  const canSave = true;
-  const classes = useStyles();
-
-  const [cookies, setCookie, removeCookie] = useCookies();
 
   const onSavePostClicked = () => {
     try {
@@ -447,7 +444,6 @@ export default function RegisterDogForm() {
                 variant="contained"
                 onClick={() => onSavePostClicked()}
                 color="primary"
-                disabled={!canSave}
               >
                 Submit
               </Button>

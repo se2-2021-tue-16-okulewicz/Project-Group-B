@@ -7,6 +7,10 @@ import {
   CardContent,
   CardHeader,
   Input,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
   MenuItem,
   Select,
   TextField,
@@ -61,7 +65,32 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "aliceblue",
       backgroundColor: "aliceblue",
     },
-  })
+    root: {
+      width: '100%',
+      backgroundColor: theme.palette.background.paper,
+      position: 'relative',
+      overflow: 'auto',
+      maxHeight: 300,
+    },
+    listSection: {
+      backgroundColor: 'inherit',
+    },
+    ul: {
+      backgroundColor: 'inherit',
+      padding: 0,
+    },
+    Card:{
+      minWidth:"30px",
+      minHeight:"40px"
+    },
+    main: {
+      justifyContent: "center",
+      display: "flex",
+      alignItems: "center",
+      marginTop:"2vh"
+    },
+  }
+  )
 );
 
 export default function ListWithDogs() {
@@ -69,60 +98,9 @@ export default function ListWithDogs() {
   const [cookies, setCookie, removeCookie] = useCookies();
 
   const onRegisterClicked = () => {
-      history.push("/addDog");
-}
- const classes = useStyles();
-  //if enable is session storage is null, the form has just been opened
-  // let isRegisterEnabled =
-  //   sessionStorage.getItem("enable") === "false" ? false : true;
-  // let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  // const [registerEnabled, setRegisterEnabled] = useState(
-  //   isRegisterEnabled as Boolean
-  // );
-  // const [lostDogFields, setLostDogFields] = useState<ILostDog>(
-  //   !isRegisterEnabled && isInputNotNull
-  //     ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
-  //     : initLostDogProps
-  // );
-  // sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
-  // const [picture, setPicture] = useState<IPicture>(initPicture);
-
-  // const inputsHandler = (e: { target: { name: any; value: any } }) => {
-  //   let newField = { ...lostDogFields, [e.target.name]: e.target.value };
-  //   setLostDogFields(newField);
-  //   sessionStorage.setItem("inputField", JSON.stringify(newField));
-  // };
-
-  // function calendarHandler(date: MaterialUiPickersDate): void {
-  //   let newField = { ...lostDogFields, dateLost: date as Date };
-  //   setLostDogFields(newField);
-  //   sessionStorage.setItem("inputField", JSON.stringify(newField));
-  // }
-
-  // const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
-  //   let newField = {
-  //     ...lostDogFields,
-  //     location: { ...lostDogFields.location, [e.target.name]: e.target.value },
-  //   };
-  //   setLostDogFields(newField);
-  //   sessionStorage.setItem("inputField", JSON.stringify(newField));
-  // };
-  // const selectsHandler = (
-  //   e: React.ChangeEvent<{ name?: string; value: unknown }>
-  // ) => {
-  //   let newField = {
-  //     ...lostDogFields,
-  //     [e.target.name as string]: e.target.value,
-  //   };
-  //   setLostDogFields(newField);
-  //   sessionStorage.setItem("inputField", JSON.stringify(newField));
-  // };
-
-  // const canSave = true;
-  // const classes = useStyles();
-
-  // const [cookies, setCookie, removeCookie] = useCookies();
-
+    history.push("/addDog");
+  }
+  const classes = useStyles();
   // const onSavePostClicked = () => {
   //   try {
   //     registerDog(lostDogFields, picture);
@@ -161,8 +139,8 @@ export default function ListWithDogs() {
   //   }
   // };
 
-    return (
-      <Grid>
+  return (
+    <div className={classes.main}>
       <Button
         className={classes.registerButton}
         data-testid="register-button"
@@ -173,7 +151,22 @@ export default function ListWithDogs() {
       >
         Register a Dog
       </Button>
-      </Grid>
-    );
-  }
+      {/*<List className={classes.root}>
+        {[0, 1, 2, 3, 4].map((sectionId) => (
+          <li key={`section-${sectionId}`} className={classes.listSection}>
+            <ul className={classes.ul}>
+              {[0, 1, 2].map((item) => (
+                <Card className={classes.Card}>
+                  <CardHeader>
+                    Item nr 
+                  </CardHeader>
+                </Card>
+              ))}
+            </ul>
+          </li>
+        ))}
+              </List>*/}
+    </div>
+  );
+}
 
