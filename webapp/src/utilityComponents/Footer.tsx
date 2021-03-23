@@ -4,12 +4,16 @@ import "./Footer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
+import { useCookies } from "react-cookie";
 
 const Footer = () => {
   const isLoggedIn = false;
+  const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
 
   const logOut = () => {
+    removeCookie("token", { path: "/" });
+    removeCookie("userType", { path: "/" });
     history.push("/");
   };
 

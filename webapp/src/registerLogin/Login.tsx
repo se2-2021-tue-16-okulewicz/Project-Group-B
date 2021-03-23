@@ -15,7 +15,13 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import clsx from "clsx";
 import "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { loginThunk } from "../app/actions";
+import { State } from "../app/reducer";
+import { store } from "../app/store";
 import "./Login.css";
 import { ILoginInformation } from "./loginRegisterInterfaces";
 
@@ -48,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface State {
+interface iternalState {
   username: string;
   password: string;
   showPassword: boolean;
@@ -56,13 +62,17 @@ interface State {
 
 export default function Login() {
   const classes = useStyles();
-  const [values, setValues] = useState<State>({
+  const [values, setValues] = useState<iternalState>({
     username: "",
     password: "",
     showPassword: false,
   });
 
-  const handleChange = (prop: keyof State) => (
+  const loginInfo = useSelector((state: State) => state.loginInformation);
+  const history = useHistory();
+  const [cookies, setCookie, removeCookie] = useCookies();
+
+  const handleChange = (prop: keyof iternalState) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -78,9 +88,30 @@ export default function Login() {
     event.preventDefault();
   };
 
-  const onLoginClicked = () => {};
+  const onLoginClicked = () => {
+    store.dispatch(
+      loginThunk({
+        username: values.username,
+        password: values.password,
+      })
+    );
+  };
   const goToUserRegister = () => {};
   const goToShelterRegister = () => {};
+
+  useEffect(() => {
+    if (loginInfo !== null) {
+      setCookie("token", loginInfo?.token, { path: "/" });
+      setCookie("userType", loginInfo?.userType, { path: "/" });
+      history.push("/addDog");
+    }
+  }, [loginInfo]);
+
+  useEffect(() => {
+    if (cookies["userType"] !== undefined) {
+      history.push("/addDog");
+    }
+  }, []);
 
   return (
     <div className="Login">

@@ -16,6 +16,7 @@ import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
 import "./App.css";
+import { useCookies } from "react-cookie";
 
 function App() {
   return (
@@ -31,9 +32,12 @@ function Layout() {
   const error = useSelector((state: State) => state.error);
   const loading = useSelector((state: State) => state.loading);
   const history = useHistory();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const errorOnClose = () => {
     if (error.errorCode === 403) {
+      removeCookie("token", { path: "/" });
+      removeCookie("userType", { path: "/" });
       history.push("/");
     }
     store.dispatch(clearError());
