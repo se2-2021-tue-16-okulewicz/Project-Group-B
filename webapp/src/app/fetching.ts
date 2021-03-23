@@ -2,6 +2,7 @@ import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
 import axios from "axios";
+import { ILoginInformation, ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 
 const getToken: () => string = () => {
   return config("tokens.regular");
@@ -65,7 +66,7 @@ export async function addDog(
       };
     })
     .catch((error) => {
-      if (error instanceof TypeError || error.message == "Network Error") {
+      if (error instanceof TypeError || error.message === 'Network Error') {
         return {
           code: 0,
           response: {
@@ -75,11 +76,69 @@ export async function addDog(
           },
         };
       }
+        
 
       let response = error.response;
       return {
         code: response.status,
         response: response.data as APIResponse<ILostDogWithPicture>,
+      };
+    });
+}
+
+export async function login(credentials: ILoginInformation) : Promise<RequestResponse<ILoginResults>> {
+  let formData = new FormData();
+  formData.append(
+    "username",
+    new Blob([credentials.username], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "password",
+    new Blob([credentials.password], {
+      type: "text/plain",
+    }),
+    ""
+  );
+
+  return axios
+    .post(
+      `http://${config("backend.ip")}:${config("backend.port")}/login`,
+      formData,
+      {
+        headers: {
+          token: getToken(),
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response);
+      return {
+        code: response.status,
+        response: response.data as APIResponse<ILoginResults>,
+      };
+    })
+    .catch((error) => {
+      if (error instanceof TypeError || error.message === 'Network Error') {
+        return {
+          code: 0,
+          response: {
+            message: "Connection error",
+            successful: false,
+            data: null,
+          },
+        };
+      }
+        
+
+      let response = error.response;
+      return {
+        code: response.status,
+        response: response.data as APIResponse<ILoginResults>,
       };
     });
 }

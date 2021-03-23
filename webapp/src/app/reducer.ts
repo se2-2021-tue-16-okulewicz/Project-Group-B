@@ -3,6 +3,7 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 
 export type Error = {
   hasError: boolean;
@@ -13,6 +14,7 @@ export type Error = {
 export type State = {
   loading: boolean;
   error: Error;
+  loginInformation: ILoginResults | null;
 };
 
 const init: State = {
@@ -22,6 +24,7 @@ const init: State = {
     errorCode: 0,
     erorMessage: "",
   },
+  loginInformation: null
 };
 
 export const reducer = createReducer(init, {
@@ -34,6 +37,7 @@ export const reducer = createReducer(init, {
     };
     return newState;
   },
+
   [Actions.addDogThunk.pending.toString()]: (
     state: State,
     payload: PayloadAction<undefined>
@@ -53,6 +57,38 @@ export const reducer = createReducer(init, {
   [Actions.addDogThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+
+  [Actions.loginThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.loginThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILoginResults>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.loginInformation = payload.payload.response.data;
+    return newState;
+  },
+  [Actions.loginThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILoginResults>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
