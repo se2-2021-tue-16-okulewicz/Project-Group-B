@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "center",
       display: "flex",
       alignItems: "center",
-      minHeight: "100vh",
+      marginTop:"2vh"
     },
   })
 );
@@ -71,8 +71,10 @@ function Layout() {
         <Route exact path="/">
           <Login />
         </Route>
+        <Route path="/listDogs">
+          <ListWithDogs />
+        </Route>
         <Route path="/addDog">
-          <ListWithDogs/>
           <RegisterDogForm />
         </Route>
         <Redirect to="/" />

@@ -32,6 +32,7 @@ import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,6 +64,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function ListWithDogs() {
+  const history = useHistory();
+  const [cookies, setCookie, removeCookie] = useCookies();
+
+  const onRegisterClicked = () => {
+      history.push("/addDog");
+}
   //if enable is session storage is null, the form has just been opened
   // let isRegisterEnabled =
   //   sessionStorage.getItem("enable") === "false" ? false : true;
@@ -159,9 +166,11 @@ export default function ListWithDogs() {
         color="primary"
         variant="contained"
         size="large"
+        onClick={onRegisterClicked}
       >
-        List with dogs
+        Register a Dog
       </Button>
       </Grid>
     );
   }
+

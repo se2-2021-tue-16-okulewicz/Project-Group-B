@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     registerButton: {
       display: "flex",
+      marginTop: "50vh"
     },
     cardContent: {
       justifyContent: "center",
