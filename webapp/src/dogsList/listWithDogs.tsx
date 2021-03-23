@@ -109,9 +109,7 @@ export default function ListWithDogs() {
             <ul className={classes.ul}>
               {[0, 1, 2].map((item) => (
                 <Card className={classes.Card}>
-                  <CardHeader>
-                    Item nr 
-                  </CardHeader>
+                  <CardHeader>Item nr</CardHeader>
                 </Card>
               ))}
             </ul>
