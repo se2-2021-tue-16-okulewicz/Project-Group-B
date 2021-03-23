@@ -74,7 +74,7 @@ export default function RegisterDogForm() {
   };
 
   function calendarHandler(date: MaterialUiPickersDate): void {
-    var newField = { ...lostDogFields, lostDate: date as Date };
+    var newField = { ...lostDogFields, dateLost: date as Date };
     setLostDogFields(newField);
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   }
@@ -241,7 +241,7 @@ export default function RegisterDogForm() {
                 label="hair"
                 labelId="hair-label"
                 value={lostDogFields.hairLength}
-                name="hair"
+                name="hairLength"
                 onChange={selectsHandler}
                 displayEmpty
               >
@@ -284,7 +284,7 @@ export default function RegisterDogForm() {
                 native
                 labelId="ears-label"
                 label="ears"
-                name="ears"
+                name="earsType"
                 value={lostDogFields.earsType}
                 onChange={selectsHandler}
                 displayEmpty
@@ -306,7 +306,7 @@ export default function RegisterDogForm() {
                 native
                 labelId="tail-label"
                 label="tail"
-                name="tail"
+                name="tailLength"
                 value={lostDogFields.tailLength}
                 onChange={selectsHandler}
                 displayEmpty
@@ -328,8 +328,8 @@ export default function RegisterDogForm() {
                 native
                 labelId="mark-label"
                 label="specialmark "
-                name="specialMark"
-                value={lostDogFields.specialMark}
+                name="specialMarks"
+                value={lostDogFields.specialMarks}
                 onChange={selectsHandler}
                 displayEmpty
               >
@@ -385,9 +385,9 @@ export default function RegisterDogForm() {
                 format="yyyy-MM-dd"
                 margin="normal"
                 id="date-picker-inline"
-                value={lostDogFields.lostDate}
+                value={lostDogFields.dateLost}
                 maxDate={new Date()}
-                name="lostDate"
+                name="dateLost"
                 onChange={(date: any) => calendarHandler(date)}
               />
             </FormControl>

@@ -8,8 +8,10 @@ const getToken: () => string = () => {
 };
 
 //Reimplement stringifing date
+const zeroPad = (num : number, places : number) => String(num).padStart(places, '0');
+
 Date.prototype.toJSON = function (key?: any): string {
-  return this.getFullYear() + "-" + this.getMonth() + "-" + this.getDate();
+  return zeroPad(this.getFullYear(), 4) + "-" + zeroPad(this.getMonth() + 1, 2) + "-" + zeroPad(this.getDate(), 2);
 };
 
 export async function addDog(
@@ -21,7 +23,7 @@ export async function addDog(
   const privateProperties = ["id", "pictureId", "ownerId"];
   const excludePrivateProperties = (key: string, value: any) =>
     privateProperties.includes(key) ? undefined : value;
-  console.log(dog.lostDate?.toJSON());
+
   formData.append(
     "dog",
     new Blob([JSON.stringify(dog, excludePrivateProperties)], {
@@ -48,6 +50,7 @@ export async function addDog(
       }
     )
     .then((response) => {
+      console.log(response.data);
       return response.data as APIResponse<ILostDogWithPicture>;
     })
     .catch((response) => {

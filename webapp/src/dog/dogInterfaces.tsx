@@ -28,13 +28,13 @@ export interface IDog {
   size: SizeTypes | "";
   earsType: EarsTypes | "";
   tailLength: TailTypes | "";
-  specialMark: SpecialMarkTypes | "";
+  specialMarks: SpecialMarkTypes | "";
   behaviors: BehaviorsTypes[];
   location: { city: string; district: string };
 }
 
 export interface ILostDog extends IDog {
-  lostDate: Date | null;
+  dateLost: Date | null;
   isFound: boolean;
   ownerId: number;
 }

@@ -1,4 +1,4 @@
-import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { APIResponse } from "./response";
 import * as Fetching from "./fetching";
