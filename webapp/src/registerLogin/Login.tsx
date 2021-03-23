@@ -153,25 +153,27 @@ export default function Login() {
       </div>
       <div className="LowerText">Do not have an account?</div>
       <div>
-          <Link className={classes.root}
-            component="button"
-            onClick={() => goToUserRegister()}
-            //color="inherit"
-            variant="body2"
-          >
-            Create an account
-          </Link>
+        <Link
+          className={classes.root}
+          component="button"
+          onClick={() => goToUserRegister()}
+          //color="inherit"
+          variant="body2"
+        >
+          Create an account
+        </Link>
       </div>
       <div className="LowerText">Want to regster new shelter?</div>
       <div>
-          <Link className={classes.root}
-            component="button"
-            onClick={() => goToShelterRegister()}
-            //color="inherit"
-            variant="body2"
-          >
-            Create new shelter
-          </Link>
+        <Link
+          className={classes.root}
+          component="button"
+          onClick={() => goToShelterRegister()}
+          //color="inherit"
+          variant="body2"
+        >
+          Create new shelter
+        </Link>
       </div>
     </div>
   );
