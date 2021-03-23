@@ -6,8 +6,12 @@
 .image {
   border-radius: 10px;
   height: 330px;
-  margin: 2px 2px 40px 2px;
-  display: fill;
+  width: 400px;
+  align-self: center;
+}
+
+.imageContainer{
+  justify-content: center;
   align-self: center;
 }
 

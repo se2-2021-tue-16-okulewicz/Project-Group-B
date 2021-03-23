@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import {
   Button,
   Card,
+  CardContent,
   CardHeader,
   Input,
   MenuItem,
@@ -49,15 +50,20 @@ const useStyles = makeStyles((theme: Theme) =>
     chip: {
       margin: 2,
     },
-    registerButton:{
-      display:"flex", 
+    registerButton: {
+      display: "flex",
+    },
+    cardContent:{
+      justifyContent:"center",
+      display: "flex",
+      alignItems:"center"
     }
   })
 );
 
 export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
-  let isRegisterEnabled = sessionStorage.getItem("enable") === "false" ? false:true;
+  let isRegisterEnabled = sessionStorage.getItem("enable") === "false" ? false : true;
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [registerEnabled, setRegisterEnabled] = useState(
     isRegisterEnabled as Boolean
@@ -110,14 +116,14 @@ export default function RegisterDogForm() {
     }
   };
 
-  const onRegisterClick = () =>  {
+  const onRegisterClick = () => {
     setLostDogFields(initLostDogProps);
-            sessionStorage.setItem(
-              "inputField",
-              JSON.stringify(initLostDogProps)
-            );
-            sessionStorage.setItem("enable", "false");
-            setRegisterEnabled(false);
+    sessionStorage.setItem(
+      "inputField",
+      JSON.stringify(initLostDogProps)
+    );
+    sessionStorage.setItem("enable", "false");
+    setRegisterEnabled(false);
   }
 
   function registerDog(dog: ILostDog, picture: IPicture) {
@@ -147,7 +153,7 @@ export default function RegisterDogForm() {
       <Button
         className={classes.registerButton}
         data-testid="register-button"
-        onClick={()=>
+        onClick={() =>
           onRegisterClick()
         }
         color="primary"
@@ -184,13 +190,14 @@ export default function RegisterDogForm() {
             </FormControl>
             <FormControl className={classes.formControl}>
               <Card>
-                <CardHeader title="" />
-                <ImageUpload
-                  data-testid="img-upload"
-                  handlePicturesChange={(
-                    file: React.ChangeEvent<{ value: unknown }>
-                  ) => handlePicturesChange(file)}
-                />
+                <CardContent className={classes.cardContent}>
+                  <ImageUpload
+                    data-testid="img-upload"
+                    handlePicturesChange={(
+                      file: React.ChangeEvent<{ value: unknown }>
+                    ) => handlePicturesChange(file)}
+                  />
+                  </CardContent>
               </Card>
             </FormControl>
           </Grid>

@@ -21,8 +21,6 @@ const ImageUpload = (props: any) => {
         ) : (
           <div className="image"> </div>
         )}
-
-        <div className="space"></div>
         <InputLabel
           shrink
           id="pic-label"
