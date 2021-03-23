@@ -25,6 +25,15 @@ const init: State = {
 };
 
 export const reducer = createReducer(init, {
+  [Actions.clearError.type]: (state: State) => {
+    let newState = _.cloneDeep(state);
+    newState.error = {
+      hasError: false,
+      errorCode: 0,
+      erorMessage: "",
+    };
+    return newState;
+  },
   [Actions.addDogThunk.pending.toString()]: (
     state: State,
     payload: PayloadAction<undefined>

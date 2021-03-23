@@ -27,7 +27,7 @@ function ErrorDialog(
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={() => onClose()} color="primary">
           {buttonText}
         </Button>
       </DialogActions>

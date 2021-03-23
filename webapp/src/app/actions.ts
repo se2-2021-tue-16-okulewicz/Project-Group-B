@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
@@ -25,3 +25,5 @@ export const addDogThunk = createAsyncThunk<
     return response as RequestResponse<ILostDogWithPicture>;
   }
 );
+
+export const clearError = createAction('clearError');
