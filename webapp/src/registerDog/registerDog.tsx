@@ -187,7 +187,7 @@ export default function RegisterDogForm() {
               />
             </FormControl>
             <FormControl className={classes.formControl}>
-              <Card>
+              <Card className={classes.cardContent}>
                 <CardContent className={classes.cardContent}>
                   <ImageUpload
                     data-testid="img-upload"
