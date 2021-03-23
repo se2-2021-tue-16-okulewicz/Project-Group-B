@@ -106,7 +106,7 @@ export default function ListWithDogs() {
       >
         Register a Dog
       </Button>
-      {/*<List className={classes.root}>
+      <List className={classes.root}>
         {[0, 1, 2, 3, 4].map((sectionId) => (
           <li key={`section-${sectionId}`} className={classes.listSection}>
             <ul className={classes.ul}>
@@ -120,7 +120,7 @@ export default function ListWithDogs() {
             </ul>
           </li>
         ))}
-              </List>*/}
+              </List>}
     </div>
   );
 }
