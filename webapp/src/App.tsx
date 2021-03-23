@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-//style={{margin:"1em", justifyContent:"center", display:"flex", alignItems:"center", minHeight: "100vh"}}
 function App() {
   const classes = useStyles();
   return (
