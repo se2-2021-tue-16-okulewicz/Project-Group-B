@@ -1,0 +1,11 @@
+{
+  "environment_name": "Production",
+  "backend": {
+    "ip": "52.3.250.46",
+    "port": 5050
+  },
+  "defaultFilters": {
+    "size": 10,
+    "page": 0
+  }
+}
