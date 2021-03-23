@@ -25,7 +25,6 @@ export default function LogInRegister({ navigation }: any) {
       }}
     >
       <Stack.Screen name="Log in" component={LogIn}></Stack.Screen>
-      <Stack.Screen name="Register" component={Register}></Stack.Screen>
     </Stack.Navigator>
   );
 }

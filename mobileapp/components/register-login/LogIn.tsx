@@ -102,12 +102,12 @@ const LogIn = ({ navigation }: any) => {
           <Text style={style.buttonText}>Log in</Text>
         </TouchableOpacity>
       </View>
-      <SafeAreaView style={styles.styles.bottomView}>
+      {/* <SafeAreaView style={styles.styles.bottomView}>
         <Text style={styles.styles.textStyle}>Don't have an account?</Text>
         <TouchableOpacity onPress={() => navigation.push("Register")}>
           <Text style={styles.styles.link}>Register now</Text>
         </TouchableOpacity>
-      </SafeAreaView>
+      </SafeAreaView> */}
     </KeyboardAvoidingView>
   );
 };
