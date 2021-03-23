@@ -8,7 +8,10 @@ import * as Utility from "./utility.js";
  */
 export const logInThunk = createAsyncThunk(
   "account/login",
-  async (loginData:{email: string, password: string}, { rejectWithValue }) => {
+  async (
+    loginData: { email: string; password: string },
+    { rejectWithValue }
+  ) => {
     const response = await Fetching.logIn(loginData.email, loginData.password);
 
     if (response.code !== 200) return rejectWithValue(response);

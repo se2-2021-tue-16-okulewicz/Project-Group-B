@@ -8,12 +8,8 @@ import Icon5 from "react-native-vector-icons/FontAwesome5";
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
-
   return (
-    <BottomTab.Navigator
-      initialRouteName="Cars"
-      tabBarOptions={{ }}
-    >
+    <BottomTab.Navigator initialRouteName="Cars" tabBarOptions={{}}>
       {/* <BottomTab.Screen
         name="Cars"
         component={CarsNavigator}

@@ -9,20 +9,17 @@ export async function logIn(email: string, encryptedPassword: string) {
   const url = `http://${config("backend.ip")}:${config(
     "backend.port"
   )}/account/login`;
-  return fetch(url,
-    {
-      method: 'POST',
-      headers: {
-        password: 'Why we have to do this',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        password: encryptedPassword,
-      })
-    }
-
-  )
+  return fetch(url, {
+    method: "POST",
+    headers: {
+      password: "Why we have to do this",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+      password: encryptedPassword,
+    }),
+  })
     .then((response: any) => {
       // get the response body
       return {
@@ -34,10 +31,11 @@ export async function logIn(email: string, encryptedPassword: string) {
       if (error.response)
         return {
           code: 0,
-          body: { errorMessage: `${error.response.name} - ${error.response.message}` },
+          body: {
+            errorMessage: `${error.response.name} - ${error.response.message}`,
+          },
         };
 
       return { code: error.response.status, body: error.response.data };
     });
 }
-
