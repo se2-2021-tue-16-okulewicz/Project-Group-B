@@ -6,7 +6,7 @@ html {
 *,
 *:before,
 *:after {
-    box-sizing: inherit;       /* enable the "border-box effect" everywhere */
+  box-sizing: inherit; /* enable the "border-box effect" everywhere */
 }
 
 body {
