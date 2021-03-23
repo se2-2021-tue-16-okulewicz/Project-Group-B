@@ -1,0 +1,31 @@
+.Login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.LowerText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 17px;
+  margin-top: 17px;
+  margin-bottom: 13px;
+}
+
+.AccountListWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
