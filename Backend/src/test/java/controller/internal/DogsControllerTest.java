@@ -59,4 +59,14 @@ public class DogsControllerTest {
                 .andExpect(jsonPath("data.behaviors", hasSize(2)))
                 .andExpect(jsonPath("data.picture.fileName", is("image_name.txt")));
     }
+
+    @Test
+    public void DeleteTest() throws Exception {
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/lostdogs/10001")
+                        .header("token", "authorization_token")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)));
+    }
 }

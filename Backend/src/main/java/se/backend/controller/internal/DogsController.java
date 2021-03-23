@@ -97,6 +97,7 @@ public class DogsController {
         }
         else
         {
+            //return ResponseEntity.badRequest(new Response<>(String.format("Deleted dog with id: %d", dogId), false, false));
             throw new GenericBadRequestException(String.format("Failed to delete dog with id: %d", dogId));
         }
     }
