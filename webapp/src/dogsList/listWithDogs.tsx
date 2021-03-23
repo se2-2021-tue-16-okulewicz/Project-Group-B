@@ -1,6 +1,6 @@
 import "date-fns";
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Card, CardHeader, List } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
@@ -117,7 +117,7 @@ export default function ListWithDogs() {
             </ul>
           </li>
         ))}
-              </List>}
+      </List>
     </div>
   );
 }
