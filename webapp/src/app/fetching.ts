@@ -2,7 +2,10 @@ import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
 import axios from "axios";
-import { ILoginInformation, ILoginResults } from "../registerLogin/loginRegisterInterfaces";
+import {
+  ILoginInformation,
+  ILoginResults,
+} from "../registerLogin/loginRegisterInterfaces";
 
 const getToken: () => string = () => {
   return config("tokens.regular");
@@ -66,7 +69,7 @@ export async function addDog(
       };
     })
     .catch((error) => {
-      if (error instanceof TypeError || error.message === 'Network Error') {
+      if (error instanceof TypeError || error.message === "Network Error") {
         return {
           code: 0,
           response: {
@@ -76,7 +79,6 @@ export async function addDog(
           },
         };
       }
-        
 
       let response = error.response;
       return {
@@ -86,7 +88,9 @@ export async function addDog(
     });
 }
 
-export async function login(credentials: ILoginInformation) : Promise<RequestResponse<ILoginResults>> {
+export async function login(
+  credentials: ILoginInformation
+): Promise<RequestResponse<ILoginResults>> {
   let formData = new FormData();
   formData.append(
     "username",
@@ -123,7 +127,7 @@ export async function login(credentials: ILoginInformation) : Promise<RequestRes
       };
     })
     .catch((error) => {
-      if (error instanceof TypeError || error.message === 'Network Error') {
+      if (error instanceof TypeError || error.message === "Network Error") {
         return {
           code: 0,
           response: {
@@ -133,7 +137,6 @@ export async function login(credentials: ILoginInformation) : Promise<RequestRes
           },
         };
       }
-        
 
       let response = error.response;
       return {

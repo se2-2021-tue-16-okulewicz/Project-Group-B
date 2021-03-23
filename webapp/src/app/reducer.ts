@@ -24,7 +24,7 @@ const init: State = {
     errorCode: 0,
     erorMessage: "",
   },
-  loginInformation: null
+  loginInformation: null,
 };
 
 export const reducer = createReducer(init, {
