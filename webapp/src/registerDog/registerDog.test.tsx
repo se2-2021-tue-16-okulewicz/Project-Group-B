@@ -47,7 +47,7 @@ it("Render form for dog register", () => {
   act(() => {
     render(<RegisterDogForm />, container);
   });
- 
+
   expect(
     container?.getElementsByClassName("MuiGrid-root").length
   ).toBeGreaterThanOrEqual(0);
@@ -69,4 +69,4 @@ it("test only register button", () => {
 
   // Snapshot demo
   //expect(mockedButton).toMatchSnapshot();
-  });
+});

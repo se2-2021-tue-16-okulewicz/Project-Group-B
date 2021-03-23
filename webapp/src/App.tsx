@@ -5,10 +5,10 @@ import RegisterDogForm from "./registerDog/registerDog";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     mainContainer: {
-      justifyContent:"center", 
-      display:"flex", 
-      alignItems:"center",
-      minHeight: "100vh"
+      justifyContent: "center",
+      display: "flex",
+      alignItems: "center",
+      minHeight: "100vh",
     },
   })
 );
