@@ -76,7 +76,7 @@ public class DogsController {
                                                         @RequestPart("dog") LostDogWithBehaviors newDog,
                                                         @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular,))) {
             throw new UnauthorizedException();
         }
 
@@ -99,7 +99,7 @@ public class DogsController {
     @DeleteMapping(path = "/{dogId}")
     public ResponseEntity<Response<Boolean>> DeleteLostDog(@RequestHeader HttpHeaders headers, @PathVariable("dogId") long dogId) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular))) {
             throw new UnauthorizedException();
         }
 
@@ -113,7 +113,7 @@ public class DogsController {
     @GetMapping(path = "/{dogId}")
     public ResponseEntity<Response<LostDog>> GetLostDogDetails(@RequestHeader HttpHeaders headers, @PathVariable("dogId") long dogId) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter))) {
             throw new UnauthorizedException();
         }
 
@@ -126,6 +126,29 @@ public class DogsController {
         // fail get dog
         else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
     }
+    /*
+    @PutMapping(path = "/{dogId}")
+    public ResponseEntity<Response<LostDog>> UpdateDog(@RequestHeader HttpHeaders headers,
+                                                       @PathVariable("dogID") long dogId,
+                                                       @RequestPart("dog") LostDogWithBehaviors updatedDog,
+                                                       @RequestPart("picture") MultipartFile picture) {
+        logHeaders(headers);
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular))) {
+            throw new UnauthorizedException();
+        }
+
+        LostDog oldDog = lostDogService.GetDogDetails(dogId);
+
+        if(oldDog.getId() == )
+
+        var savedDog = lostDogService.UpdateDog(updatedDog, picture);
+
+        // Successfully get dog
+        if(savedDog != null) return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+
+            // fail get dog
+        else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
+    }*/
 
 
 }
