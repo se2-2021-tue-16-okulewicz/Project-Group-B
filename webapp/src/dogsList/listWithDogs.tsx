@@ -152,8 +152,8 @@ export default function ListWithDogs() {
   //   }
   // };
 
-    return (
-      <Grid>
+  return (
+    <Grid>
       <Button
         data-testid="register-button"
         color="primary"
@@ -162,6 +162,6 @@ export default function ListWithDogs() {
       >
         List with dogs
       </Button>
-      </Grid>
-    );
-  }
+    </Grid>
+  );
+}

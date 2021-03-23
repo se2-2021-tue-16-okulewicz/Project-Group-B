@@ -72,7 +72,7 @@ function Layout() {
           <Login />
         </Route>
         <Route path="/addDog">
-          <ListWithDogs/>
+          <ListWithDogs />
           <RegisterDogForm />
         </Route>
         <Redirect to="/" />
