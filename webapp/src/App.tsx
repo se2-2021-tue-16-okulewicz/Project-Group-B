@@ -14,6 +14,7 @@ import RegisterDogForm from "./registerDog/registerDog";
 import Login from "./registerLogin/Login";
 import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
+import LoadingPopup from "./utilityComponents/LoadingPopup";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
 
 function Layout() {
   const error = useSelector((state: State) => state.error);
+  const loading = useSelector((state: State) => state.loading);
   const history = useHistory();
 
   const errorOnClose = () => {
@@ -45,6 +47,7 @@ function Layout() {
         error.erorMessage,
         "OK"
       )}
+      {loading && (<LoadingPopup />)}
       <Switch>
         <Route exact path="/">
           <Login />
