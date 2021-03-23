@@ -31,6 +31,8 @@ it("Rendered list of dogs", () => {
   });
   //expect(container).toMatchSnapshot();
   //container?.getElementsByTagName("registerButton")
-  expect(container?.getElementsByTagName("classes.registerButton").length).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByTagName("classes.registerButton").length
+  ).toBeGreaterThanOrEqual(0);
   //main form is not rendered initially
 });

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "center",
       display: "flex",
       alignItems: "center",
-      marginTop:"2vh"
+      marginTop: "2vh",
     },
   })
 );

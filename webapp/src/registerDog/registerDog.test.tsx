@@ -31,8 +31,7 @@ it("Rendered register form button", () => {
   });
   //expect(container).toMatchSnapshot();
   //main form is not rendered initially
-  expect(container?.getElementsByClassName("mainForm").length
-  ).toEqual(1);
+  expect(container?.getElementsByClassName("mainForm").length).toEqual(1);
   expect(
     container?.getElementsByClassName("classes.formControl").length
   ).toBeGreaterThanOrEqual(0);

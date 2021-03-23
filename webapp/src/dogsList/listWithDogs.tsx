@@ -1,8 +1,6 @@
 import "date-fns";
 import React from "react";
-import {
-  Button,
-} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
@@ -11,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     registerButton: {
       display: "flex",
-      marginTop: "50vh"
+      marginTop: "50vh",
     },
     cardContent: {
       justifyContent: "center",
@@ -21,31 +19,30 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: "aliceblue",
     },
     root: {
-      width: '100%',
+      width: "100%",
       backgroundColor: theme.palette.background.paper,
-      position: 'relative',
-      overflow: 'auto',
+      position: "relative",
+      overflow: "auto",
       maxHeight: 300,
     },
     listSection: {
-      backgroundColor: 'inherit',
+      backgroundColor: "inherit",
     },
     ul: {
-      backgroundColor: 'inherit',
+      backgroundColor: "inherit",
       padding: 0,
     },
-    Card:{
-      minWidth:"30px",
-      minHeight:"40px"
+    Card: {
+      minWidth: "30px",
+      minHeight: "40px",
     },
     main: {
       justifyContent: "center",
       display: "flex",
       alignItems: "center",
-      marginTop:"2vh"
+      marginTop: "2vh",
     },
-  }
-  )
+  })
 );
 
 export default function ListWithDogs() {
@@ -54,7 +51,7 @@ export default function ListWithDogs() {
 
   const onRegisterClicked = () => {
     history.push("/addDog");
-  }
+  };
   const classes = useStyles();
   // const onSavePostClicked = () => {
   //   try {
@@ -124,4 +121,3 @@ export default function ListWithDogs() {
     </div>
   );
 }
-
