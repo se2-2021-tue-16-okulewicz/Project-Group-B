@@ -133,15 +133,31 @@ public class LostDogServiceTest {
         assertEquals("Name2", result2.getName());
         assertEquals(0, result2.getBehaviors().size());
         assertEquals("exampleFile2", result2.getPicture().getFileName());
-
         assertEquals(null, result3);
-
-
-
 
         //Getting all dogs again
         allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
         assertEquals(allDogs.size(), 5);
+    }
+
+    @Test
+    public void GetDogDetailsTest()
+    {
+        // Checking initial size
+        var allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.size(), 4);
+
+        var result1 = service.GetDogDetails(10001);
+        var result2 = service.GetDogDetails(-1);
+
+        // Checks
+        assertEquals("Pinky", result1.getName());
+        assertEquals(10001, result1.getPictureId());
+        assertEquals(null, result2);
+
+        //Getting all dogs again
+        allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.size(), 4);
     }
 
     @Test

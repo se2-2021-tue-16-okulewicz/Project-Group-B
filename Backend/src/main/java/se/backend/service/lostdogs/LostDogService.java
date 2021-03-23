@@ -15,7 +15,8 @@ import java.util.List;
 public interface LostDogService {
     List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page);
     LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture);
-    //LostDog GetDogDetails(long dogId);
+
+    LostDogWithBehaviorsAndWithPicture GetDogDetails(long dogId);
     LostDogWithBehaviorsAndWithPicture UpdateDog(LostDogWithBehaviors updatedDog, Picture picture);
     boolean DeleteDog(long dogId);
 

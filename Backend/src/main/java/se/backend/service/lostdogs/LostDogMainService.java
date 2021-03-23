@@ -19,6 +19,7 @@ import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -146,6 +147,28 @@ public class LostDogMainService implements LostDogService{
         var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
 
         returnedDog.setPicture(savedPicture);
+        return returnedDog;
+    }
+
+    @Override
+    public LostDogWithBehaviorsAndWithPicture GetDogDetails(long dogId)
+    {
+        if(!IsValidDogId(dogId)) return null;
+
+        var dog = lostDogRepository.findById(dogId);
+        var picture = pictureRepository.findById(dog.get().getPictureId());
+        var behaviors = dogBehaviorRepository.findAllByDogId(dogId);
+        var behaviorStrings = new ArrayList<String>();
+
+        for(var b : behaviors)
+        {
+            behaviorStrings.add(b.getBehavior());
+        }
+
+        LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(dog.get());
+        savedDogWithBehaviors.setBehaviors(behaviorStrings);
+        var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
+        returnedDog.setPicture(picture.get());
         return returnedDog;
     }
 }
