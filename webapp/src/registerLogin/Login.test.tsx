@@ -24,7 +24,7 @@ afterEach(() => {
   }
 });
 
-it("Render form for dog register", () => {
+it("Test login view elements", () => {
   act(() => {
     render(<Login />, container);
   });
