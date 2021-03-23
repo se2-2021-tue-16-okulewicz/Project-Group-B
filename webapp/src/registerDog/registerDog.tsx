@@ -49,6 +49,13 @@ const useStyles = makeStyles((theme: Theme) =>
     chip: {
       margin: 2,
     },
+    card: {
+      color: 'aliceblue',
+      backgroundColor: 'aliceblue',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }
   })
 );
 
@@ -176,7 +183,7 @@ export default function RegisterDogForm() {
               />
             </FormControl>
             <FormControl className={classes.formControl}>
-              <Card>
+              <Card className={classes.card}>
                 <CardHeader title="" />
                 <ImageUpload
                   data-testid="img-upload"
