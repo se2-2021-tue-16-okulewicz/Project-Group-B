@@ -165,7 +165,7 @@ export default function RegisterDogForm() {
     );
   } else {
     return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
         <Grid container alignContent="space-between" spacing={5}>
           <Grid
             container

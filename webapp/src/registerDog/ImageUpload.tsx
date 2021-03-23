@@ -22,11 +22,13 @@ const ImageUpload = (props: any) => {
           <div className="image"> </div>
         )}
         <InputLabel
+          className="imageInputLabel"
           shrink
           id="pic-label"
           style={{ marginTop: "440px", marginLeft: "42%", fontSize: "20px" }}
         >
           <Input
+            className="imageInput"
             type="file"
             style={{ display: "none" }}
             onChange={handleChange}

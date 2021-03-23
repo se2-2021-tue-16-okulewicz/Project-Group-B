@@ -4,7 +4,7 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import { act, createRenderer } from "react-dom/test-utils";
 import RegisterDogForm from "./registerDog";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
@@ -29,11 +29,17 @@ it("Rendered register form button", () => {
   act(() => {
     render(<RegisterDogForm />, container);
   });
-
-  //form grid is not rendered initially
+   expect(container).toMatchSnapshot();
+     //main form is not rendered initially
   expect(
-    container?.getElementsByClassName("MuiGrid-root").length
-  ).toEqual(0);
+    container?.getElementsByClassName("mainForm").length
+  ).toBe(0);
+  expect(
+    container?.getElementsByClassName("registerButton").length
+  ).toBe(0);
+  expect(
+    container?.getElementsByClassName("formControl").length
+  ).toBeGreaterThanOrEqual(0);
   
 });
 
