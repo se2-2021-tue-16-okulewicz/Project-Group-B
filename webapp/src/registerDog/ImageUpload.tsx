@@ -23,18 +23,20 @@ const ImageUpload = (props: any) => {
         )}
 
         <div className="space"></div>
-        <InputLabel
-          shrink
-          id="pic-label"
-          style={{ marginTop: "440px", marginLeft: "42%", fontSize: "20px" }}
-        >
-          <Input
-            type="file"
-            style={{ display: "none" }}
-            onChange={handleChange}
-          />
-          Upload images
-        </InputLabel>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center"}}>
+          <InputLabel
+            shrink
+            id="pic-label"
+            style={{ marginTop: "440px", marginLeft: "44%", fontSize: "20px" }}
+          >
+            <Input
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleChange}
+            />
+            Upload image
+          </InputLabel>
+        </div>
       </div>
     </>
   );
