@@ -5,7 +5,7 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act, createRenderer } from "react-dom/test-utils";
-import ListWithDogs from "./listWithDogs"
+import ListWithDogs from "./listWithDogs";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
 

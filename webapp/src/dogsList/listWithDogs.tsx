@@ -1,59 +1,14 @@
 import "date-fns";
-import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
+import React from "react";
 import {
   Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Input,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
-  MenuItem,
-  Select,
-  TextField,
 } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import InputLabel from "@material-ui/core/InputLabel";
-import {
-  ColorTypes,
-  HairTypes,
-  SizeTypes,
-  EarsTypes,
-  TailTypes,
-  SpecialMarkTypes,
-  BehaviorsTypes,
-  BreedTypes,
-} from "../dog/dogEnums";
-import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture } from "../dog/dogInterfaces";
-import Chip from "@material-ui/core/Chip";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import * as Actions from "../app/actions";
-import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-    chips: {
-      display: "flex",
-      flexWrap: "wrap",
-    },
-    chip: {
-      margin: 2,
-    },
     registerButton: {
       display: "flex",
       marginTop: "50vh"
