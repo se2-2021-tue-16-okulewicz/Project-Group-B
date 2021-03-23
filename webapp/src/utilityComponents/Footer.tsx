@@ -16,7 +16,11 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
-        <button className="LogoutButton" disabled={!isLoggedIn} onClick={logOut}>
+        <button
+          className="LogoutButton"
+          disabled={!isLoggedIn}
+          onClick={logOut}
+        >
           Logout
         </button>
 
