@@ -23,7 +23,13 @@ const ImageUpload = (props: any) => {
         )}
 
         <div className="space"></div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <InputLabel
             shrink
             id="pic-label"

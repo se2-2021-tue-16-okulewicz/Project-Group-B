@@ -50,12 +50,12 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: 2,
     },
     card: {
-      color: 'aliceblue',
-      backgroundColor: 'aliceblue',
+      color: "aliceblue",
+      backgroundColor: "aliceblue",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-    }
+    },
   })
 );
 

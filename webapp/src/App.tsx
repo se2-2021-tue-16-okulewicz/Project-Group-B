@@ -48,7 +48,7 @@ function Layout() {
         error.erorMessage,
         "OK"
       )}
-      {loading && (<LoadingPopup />)}
+      {loading && <LoadingPopup />}
       <Switch>
         <Route exact path="/">
           <Login />
