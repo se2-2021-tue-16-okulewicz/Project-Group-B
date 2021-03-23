@@ -1,0 +1,16 @@
+{
+  "environment_name": "Development",
+  "backend": {
+    "ip": "localhost",
+    "port": 8080
+  },
+  "defaultFilters": {
+    "size": 15,
+    "page": 0
+  },
+  "tokens": {
+    "regular": "regularUserTestToken",
+    "admin": "testTokenForAdmins",
+    "shelter": "shelterSecretTestToken"
+  }
+}
