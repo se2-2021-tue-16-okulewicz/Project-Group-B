@@ -1,5 +1,3 @@
-import "date-fns";
-
 export enum BreedTypes {
   "Labrador",
   "German Shepherd",
