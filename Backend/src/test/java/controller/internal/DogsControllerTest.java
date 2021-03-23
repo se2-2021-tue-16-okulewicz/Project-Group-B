@@ -61,12 +61,34 @@ public class DogsControllerTest {
     }
 
     @Test
-    public void DeleteTest() throws Exception {
+    public void DeleteDogTest() throws Exception {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/10001")
                         .header("token", "authorization_token")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/lostdogs/-1")
+                        .header("token", "authorization_token")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)));
+    }
+
+    @Test
+    public void GetDogDetailsTest() throws Exception {
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10001")
+                        .header("token", "authorization_token")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/-1")
+                        .header("token", "authorization_token")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)));
     }
 }

@@ -91,15 +91,29 @@ public class DogsController {
         logHeaders(headers);
         //Check authorization with token
 
-        if(lostDogService.DeleteDog(dogId))
-        {
-            return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true));
-        }
-        else
-        {
-            //return ResponseEntity.badRequest(new Response<>(String.format("Deleted dog with id: %d", dogId), false, false));
-            throw new GenericBadRequestException(String.format("Failed to delete dog with id: %d", dogId));
-        }
+
+        // If we successfully delete
+        if(lostDogService.DeleteDog(dogId)) return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true));
+
+        // If we fail to delete
+        else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to delete dog with id: %d", dogId), false, false));
+    }
+
+    @GetMapping(path = "/{dogId}")
+    public ResponseEntity<Response<LostDog>> GetLostDogDetails(@RequestHeader HttpHeaders headers, @PathVariable("dogId") long dogId) {
+        logHeaders(headers);
+        //Check authorization with token
+
+
+        LostDog savedDog;
+        savedDog = lostDogService.GetDogDetails(dogId);
+
+        // Successfully get dog
+        if(savedDog != null) return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+
+        // fail get dog
+        else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
+
     }
 
 
