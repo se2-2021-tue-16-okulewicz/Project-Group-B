@@ -98,7 +98,7 @@ export default function ListWithDogs() {
     <div className={classes.main}>
       <Button
         className={classes.registerButton}
-        data-testid="register-button"
+        data-testid="registerButton"
         color="primary"
         variant="contained"
         size="large"

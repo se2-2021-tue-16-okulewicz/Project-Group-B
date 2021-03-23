@@ -143,7 +143,7 @@ export default function RegisterDogForm() {
   };
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
-        <Grid container alignContent="space-between" spacing={5}>
+        <Grid className="mainForm" container alignContent="space-between" spacing={5}>
           <Grid
             container
             item
