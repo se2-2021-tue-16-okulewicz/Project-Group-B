@@ -8,14 +8,14 @@ export type Error = {
   hasError: boolean;
   errorCode: number;
   erorMessage: string;
-}
+};
 
 export type State = {
   loading: boolean;
-  error: Error;  
-}
+  error: Error;
+};
 
-const init : State = {
+const init: State = {
   loading: false,
   error: {
     hasError: false,
@@ -25,17 +25,26 @@ const init : State = {
 };
 
 export const reducer = createReducer(init, {
-  [Actions.addDogThunk.pending.toString()]: (state : State, payload : PayloadAction<undefined>) => {
+  [Actions.addDogThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
     let newState = _.cloneDeep(state);
     newState.loading = true;
     return newState;
   },
-  [Actions.addDogThunk.fulfilled.toString()]: (state : State, payload : PayloadAction<RequestResponse<ILostDogWithPicture>>) => {
+  [Actions.addDogThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+  ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     return newState;
   },
-  [Actions.addDogThunk.rejected.toString()]: (state : State, payload : PayloadAction<RequestResponse<ILostDogWithPicture>>) => {
+  [Actions.addDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+  ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
     console.log(errorResponse);
@@ -43,8 +52,8 @@ export const reducer = createReducer(init, {
     newState.error = {
       hasError: true,
       errorCode: errorResponse.code,
-      erorMessage: errorResponse.response.message
-    }
+      erorMessage: errorResponse.response.message,
+    };
     return newState;
   },
 });

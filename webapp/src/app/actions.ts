@@ -3,7 +3,11 @@ import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 
-export const addDogThunk = createAsyncThunk<RequestResponse<ILostDogWithPicture>, { dog: ILostDog; picture: IPicture }, {rejectValue : RequestResponse<ILostDogWithPicture>}>(
+export const addDogThunk = createAsyncThunk<
+  RequestResponse<ILostDogWithPicture>,
+  { dog: ILostDog; picture: IPicture },
+  { rejectValue: RequestResponse<ILostDogWithPicture> }
+>(
   "AddDog",
   async (
     dogAndPicture: { dog: ILostDog; picture: IPicture },

@@ -10,7 +10,7 @@ const getToken: () => string = () => {
 //Reimplement stringifing date
 const zeroPad = (num: number, places: number) =>
   String(num).padStart(places, "0");
-  
+
 //eslint-disable-next-line no-extend-native
 Date.prototype.toJSON = function (key?: any): string {
   return (
