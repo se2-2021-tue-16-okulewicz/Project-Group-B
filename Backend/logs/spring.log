@@ -4,3 +4,23 @@
  at [Source: (ByteArrayInputStream); line: 1, column: 258] (through reference chain: se.backend.wrapper.dogs.LostDogWithBehaviors["dateLost"])]
 2021-03-23 02:38:16 [ERROR] [http-nio-8080-exec-6] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
 2021-03-23 02:38:16 [WARN ] [http-nio-8080-exec-6] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:23:59 [ERROR] [http-nio-8080-exec-3] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:23:59 [WARN ] [http-nio-8080-exec-3] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:25:02 [ERROR] [http-nio-8080-exec-10] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:25:02 [WARN ] [http-nio-8080-exec-10] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:25:24 [ERROR] [http-nio-8080-exec-2] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:25:24 [WARN ] [http-nio-8080-exec-2] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:26:24 [ERROR] [http-nio-8080-exec-1] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:26:24 [WARN ] [http-nio-8080-exec-1] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:27:52 [ERROR] [http-nio-8080-exec-4] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:27:52 [WARN ] [http-nio-8080-exec-4] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:29:12 [ERROR] [http-nio-8080-exec-9] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:29:12 [WARN ] [http-nio-8080-exec-9] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:33:15 [ERROR] [http-nio-8080-exec-3] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:33:15 [WARN ] [http-nio-8080-exec-3] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:33:48 [ERROR] [http-nio-8080-exec-6] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:33:48 [WARN ] [http-nio-8080-exec-6] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:37:06 [ERROR] [http-nio-8080-exec-2] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:37:06 [WARN ] [http-nio-8080-exec-2] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-03-23 03:38:04 [ERROR] [http-nio-8080-exec-1] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-03-23 03:38:04 [WARN ] [http-nio-8080-exec-1] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
