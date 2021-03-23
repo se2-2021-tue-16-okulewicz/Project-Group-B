@@ -1,5 +1,5 @@
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
-import type { APIResponse } from "./response";
+import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
 import axios from "axios";
 
@@ -24,7 +24,7 @@ Date.prototype.toJSON = function (key?: any): string {
 export async function addDog(
   dog: ILostDog,
   picture: IPicture
-): Promise<APIResponse<ILostDogWithPicture>> {
+): Promise<RequestResponse<ILostDogWithPicture>> {
   let formData = new FormData();
 
   const privateProperties = ["id", "pictureId", "ownerId"];
@@ -58,16 +58,25 @@ export async function addDog(
     )
     .then((response) => {
       console.log(response.data);
-      return response.data as APIResponse<ILostDogWithPicture>;
+      return {
+        code: response.status,
+        response: response.data as APIResponse<ILostDogWithPicture>
+      };
     })
     .catch((response) => {
       if (response instanceof TypeError)
         return {
-          message: "Connection error",
-          successful: false,
-          data: null,
+          code: 0,
+          response: {
+            message: "Connection error",
+            successful: false,
+            data: null
+          }
         };
 
-      return response.data as APIResponse<ILostDogWithPicture>;
+      return {
+        code: response.status,
+        response: response.data as APIResponse<ILostDogWithPicture>
+      };
     });
 }
