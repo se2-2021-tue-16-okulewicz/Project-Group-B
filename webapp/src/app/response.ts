@@ -7,4 +7,4 @@ export type APIResponse<T> = {
 export type RequestResponse<T> = {
   code: number;
   response: APIResponse<T>;
-}
+};

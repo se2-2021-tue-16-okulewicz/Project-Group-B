@@ -60,7 +60,7 @@ export async function addDog(
       console.log(response.data);
       return {
         code: response.status,
-        response: response.data as APIResponse<ILostDogWithPicture>
+        response: response.data as APIResponse<ILostDogWithPicture>,
       };
     })
     .catch((response) => {
@@ -70,13 +70,13 @@ export async function addDog(
           response: {
             message: "Connection error",
             successful: false,
-            data: null
-          }
+            data: null,
+          },
         };
 
       return {
         code: response.status,
-        response: response.data as APIResponse<ILostDogWithPicture>
+        response: response.data as APIResponse<ILostDogWithPicture>,
       };
     });
 }
