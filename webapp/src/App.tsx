@@ -17,6 +17,7 @@ import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
+import ListWithDogs from "./dogsList/listWithDogs";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,6 +72,7 @@ function Layout() {
           <Login />
         </Route>
         <Route path="/addDog">
+          <ListWithDogs/>
           <RegisterDogForm />
         </Route>
         <Redirect to="/" />
