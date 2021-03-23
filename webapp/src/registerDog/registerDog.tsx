@@ -32,6 +32,7 @@ import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
+import { useCookies } from "react-cookie";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -108,6 +109,8 @@ export default function RegisterDogForm() {
   const canSave = true;
   const classes = useStyles();
 
+  const [cookies, setCookie, removeCookie] = useCookies();
+
   const onSavePostClicked = () => {
     try {
       registerDog(lostDogFields, picture);
@@ -121,6 +124,7 @@ export default function RegisterDogForm() {
       Actions.addDogThunk({
         dog: dog,
         picture: picture,
+        cookies: cookies
       })
     );
   }

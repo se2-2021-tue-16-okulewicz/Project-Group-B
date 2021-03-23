@@ -7,8 +7,14 @@ import {
   ILoginResults,
 } from "../registerLogin/loginRegisterInterfaces";
 
-const getToken: () => string = () => {
-  return config("tokens.regular");
+const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
+  [name: string]: any;
+}) => {
+  let result =
+    cookies["token"] === undefined
+      ? config("tokens.regular")
+      : cookies["token"];
+  return result;
 };
 
 //Reimplement stringifing date
@@ -28,7 +34,8 @@ Date.prototype.toJSON = function (key?: any): string {
 
 export async function addDog(
   dog: ILostDog,
-  picture: IPicture
+  picture: IPicture,
+  cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture>> {
   let formData = new FormData();
 
@@ -55,7 +62,7 @@ export async function addDog(
       formData,
       {
         headers: {
-          token: getToken(),
+          token: getToken(cookies),
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
         },
@@ -113,7 +120,6 @@ export async function login(
       formData,
       {
         headers: {
-          token: getToken(),
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
         },
