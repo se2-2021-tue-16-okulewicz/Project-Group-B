@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import {
   Button,
   Card,
+  CardContent,
   CardHeader,
   Input,
   MenuItem,
@@ -50,45 +51,49 @@ const useStyles = makeStyles((theme: Theme) =>
     chip: {
       margin: 2,
     },
-    card: {
+    registerButton: {
+      display: "flex",
+    },
+    cardContent: {
+      justifyContent: "center",
+      display: "flex",
+      alignItems: "center",
       color: "aliceblue",
       backgroundColor: "aliceblue",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
     },
   })
 );
 
 export default function RegisterDogForm() {
-  var isRegisterEnabled = sessionStorage.getItem("enable") === "true";
-  var isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
+  //if enable is session storage is null, the form has just been opened
+  let isRegisterEnabled =
+    sessionStorage.getItem("enable") === "false" ? false : true;
+  let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [registerEnabled, setRegisterEnabled] = useState(
     isRegisterEnabled as Boolean
   );
-  if (!isRegisterEnabled && isInputNotNull) {
-    var x = JSON.parse(sessionStorage.getItem("lostDogFields") as string);
-  }
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
-    !isRegisterEnabled && isInputNotNull ? x : initLostDogProps
+    !isRegisterEnabled && isInputNotNull
+      ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
+      : initLostDogProps
   );
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
-    var newField = { ...lostDogFields, [e.target.name]: e.target.value };
+    let newField = { ...lostDogFields, [e.target.name]: e.target.value };
     setLostDogFields(newField);
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
 
   function calendarHandler(date: MaterialUiPickersDate): void {
-    var newField = { ...lostDogFields, dateLost: date as Date };
+    let newField = { ...lostDogFields, dateLost: date as Date };
     setLostDogFields(newField);
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   }
 
   const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
-    var newField = {
+    let newField = {
       ...lostDogFields,
       location: { ...lostDogFields.location, [e.target.name]: e.target.value },
     };
@@ -98,7 +103,7 @@ export default function RegisterDogForm() {
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
-    var newField = {
+    let newField = {
       ...lostDogFields,
       [e.target.name as string]: e.target.value,
     };
@@ -117,6 +122,13 @@ export default function RegisterDogForm() {
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }
+  };
+
+  const onRegisterClick = () => {
+    setLostDogFields(initLostDogProps);
+    sessionStorage.setItem("inputField", JSON.stringify(initLostDogProps));
+    sessionStorage.setItem("enable", "false");
+    setRegisterEnabled(false);
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
@@ -145,25 +157,19 @@ export default function RegisterDogForm() {
   if (registerEnabled) {
     return (
       <Button
+        className={classes.registerButton}
         data-testid="register-button"
-        onClick={() => {
-          setLostDogFields(initLostDogProps);
-          sessionStorage.setItem(
-            "inputField",
-            JSON.stringify(initLostDogProps)
-          );
-          sessionStorage.setItem("enable", "false");
-          setRegisterEnabled(false);
-        }}
+        onClick={() => onRegisterClick()}
         color="primary"
         variant="contained"
+        size="large"
       >
         Register Dog
       </Button>
     );
   } else {
     return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
         <Grid container alignContent="space-between" spacing={5}>
           <Grid
             container
@@ -187,14 +193,15 @@ export default function RegisterDogForm() {
               />
             </FormControl>
             <FormControl className={classes.formControl}>
-              <Card className={classes.card}>
-                <CardHeader title="" />
-                <ImageUpload
-                  data-testid="img-upload"
-                  handlePicturesChange={(
-                    file: React.ChangeEvent<{ value: unknown }>
-                  ) => handlePicturesChange(file)}
-                />
+              <Card className={classes.cardContent}>
+                <CardContent className={classes.cardContent}>
+                  <ImageUpload
+                    data-testid="img-upload"
+                    handlePicturesChange={(
+                      file: React.ChangeEvent<{ value: unknown }>
+                    ) => handlePicturesChange(file)}
+                  />
+                </CardContent>
               </Card>
             </FormControl>
           </Grid>

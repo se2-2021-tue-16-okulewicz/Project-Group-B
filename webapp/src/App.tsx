@@ -1,3 +1,4 @@
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import React from "react";
 import { Provider, useSelector } from "react-redux";
 import {
@@ -18,6 +19,17 @@ import LoadingPopup from "./utilityComponents/LoadingPopup";
 import "./App.css";
 import { useCookies } from "react-cookie";
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    mainContainer: {
+      justifyContent: "center",
+      display: "flex",
+      alignItems: "center",
+      minHeight: "100vh",
+    },
+  })
+);
+
 function App() {
   return (
     <Provider store={store}>
@@ -32,6 +44,7 @@ function Layout() {
   const error = useSelector((state: State) => state.error);
   const loading = useSelector((state: State) => state.loading);
   const history = useHistory();
+  const classes = useStyles();
   const [cookies, setCookie, removeCookie] = useCookies();
 
   const errorOnClose = () => {
@@ -45,7 +58,7 @@ function Layout() {
   };
 
   return (
-    <div className="App">
+    <div className={classes.mainContainer}>
       {ErrorDialog(
         error.hasError,
         errorOnClose,
