@@ -16,7 +16,7 @@ import * as Actions from "../../redux/actions";
 import * as Utility from "../../redux/utility.js";
 import * as styles from "../../constants/account";
 
-const LogIn = ({ navigation }: any) => {
+const SignIn = ({ navigation }: any) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [ready, setReady] = React.useState(false);
@@ -178,4 +178,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default LogIn;
+export default SignIn;

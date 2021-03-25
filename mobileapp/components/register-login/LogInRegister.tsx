@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet, Text, SafeAreaView } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import LogIn from "./LogIn";
+import SignIn from "./SignIn";
 import Register from "./Register";
 import store from "../../redux/store";
 import { useSelector } from "react-redux";
@@ -24,7 +24,7 @@ export default function LogInRegister({ navigation }: any) {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Log in" component={LogIn}></Stack.Screen>
+      <Stack.Screen name="Sign in" component={SignIn}></Stack.Screen>
     </Stack.Navigator>
   );
 }
