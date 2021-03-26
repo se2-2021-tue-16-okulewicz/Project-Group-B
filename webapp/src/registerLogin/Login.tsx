@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import { clearLoginInformation, loginThunk } from "../app/actions";
 import { State } from "../app/reducer";
 import { store } from "../app/store";
+import config from "../config/config";
 import "./Login.css";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -100,15 +101,16 @@ export default function Login() {
 
   useEffect(() => {
     if (loginInfo !== null) {
-      setCookie("token", loginInfo?.token, { path: "/" });
-      setCookie("userType", loginInfo?.userType, { path: "/" });
+      setCookie(config.cookies.token, loginInfo?.token, { path: "/" });
+      setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
+      setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
       history.push("/listDogs");
     }
   }, [loginInfo]);
 
   useEffect(() => {
-    if (cookies["userType"] !== undefined) {
+    if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
     }
   }, []);

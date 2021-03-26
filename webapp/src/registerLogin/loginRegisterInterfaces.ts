@@ -6,4 +6,5 @@ export interface ILoginInformation {
 export interface ILoginResults {
   userType: "Admin" | "Regular" | "Shelter" | "";
   token: string;
+  id: number;
 }

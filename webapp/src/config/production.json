@@ -8,9 +8,14 @@
     "size": 15,
     "page": 0
   },
-  "tokens": {
+  "testTokens": {
     "regular": "",
     "admin": "",
     "shelter": ""
+  },
+  "cookies": {
+    "token": "token",
+    "userType": "userType",
+    "userId": "userId"
   }
 }

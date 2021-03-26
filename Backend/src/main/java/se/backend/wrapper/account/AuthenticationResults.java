@@ -10,6 +10,8 @@ public class AuthenticationResults {
 
     private String token;
 
+    private long id;
+
     public AuthenticationResults(UserType userType) {
         this.userType = userType;
         token = UUID.randomUUID().toString();
