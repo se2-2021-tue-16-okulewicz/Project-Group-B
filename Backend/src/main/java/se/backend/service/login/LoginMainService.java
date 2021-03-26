@@ -54,9 +54,11 @@ public class LoginMainService implements LoginService {
         userProbe.setPassword(getSHA256Hash(password));
         userProbe.setAssociatedEmail(username);
         Example<UserAccount> userExample = Example.of(userProbe, LOGIN_INFORMATION_MATCHER);
-        boolean exists = this.userAccountRepository.exists(userExample);
-        if(exists){
+        var normalUser = userAccountRepository.findOne(userExample);
+
+        if(normalUser.isPresent()){
             var result = new AuthenticationResults(UserType.Regular);
+            result.setId(normalUser.get().getId());
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }
@@ -65,10 +67,11 @@ public class LoginMainService implements LoginService {
         DogShelterAccount dogShelterProbe = new DogShelterAccount();
         dogShelterProbe.setPassword(getSHA256Hash(password));
         dogShelterProbe.setAssociatedEmail(username);
-        Example<DogShelterAccount> dogExample = Example.of(dogShelterProbe, LOGIN_INFORMATION_MATCHER);
-        exists = this.dogShelterAccountRepository.exists(dogExample);
-        if(exists){
+        Example<DogShelterAccount> shelterExample = Example.of(dogShelterProbe, LOGIN_INFORMATION_MATCHER);
+        var shelterUser = dogShelterAccountRepository.findOne(shelterExample);
+        if(shelterUser.isPresent()){
             var result = new AuthenticationResults(UserType.Shelter);
+            result.setId(shelterUser.get().getId());
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }
@@ -78,9 +81,10 @@ public class LoginMainService implements LoginService {
         adminProbe.setPassword(getSHA256Hash(password));
         adminProbe.setAssociatedEmail(username);
         Example<AdminAccount> adminExample = Example.of(adminProbe, LOGIN_INFORMATION_MATCHER);
-        exists = this.adminAccountRepository.exists(adminExample);
-        if(exists){
+        var adminUser = adminAccountRepository.findOne(adminExample);
+        if(adminUser.isPresent()){
             var result = new AuthenticationResults(UserType.Admin);
+            result.setId(adminUser.get().getId());
             sessions.put(result.getToken(),result.getUserType());
             return result;
         }

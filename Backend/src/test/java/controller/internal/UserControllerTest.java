@@ -45,7 +45,8 @@ public class UserControllerTest {
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
-                .andExpect(jsonPath("data.userType", is(UserType.Regular.toString())));
+                .andExpect(jsonPath("data.userType", is(UserType.Regular.toString())))
+                .andExpect(jsonPath("data.id", is(10001)));
 
         MockMultipartFile loginAdmin = new MockMultipartFile("username", "", "text/plain", "admin007".getBytes());
         MockMultipartFile passwordAdmin = new MockMultipartFile("password", "", "text/plain", "admin007123".getBytes());
@@ -56,7 +57,8 @@ public class UserControllerTest {
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
-                .andExpect(jsonPath("data.userType", is(UserType.Admin.toString())));
+                .andExpect(jsonPath("data.userType", is(UserType.Admin.toString())))
+                .andExpect(jsonPath("data.id", is(10001)));
 
         MockMultipartFile loginShelter = new MockMultipartFile("username", "", "text/plain", "hopeShelter".getBytes());
         MockMultipartFile passwordShelter = new MockMultipartFile("password", "", "text/plain", "12345678".getBytes());
@@ -67,7 +69,8 @@ public class UserControllerTest {
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
-                .andExpect(jsonPath("data.userType", is(UserType.Shelter.toString())));
+                .andExpect(jsonPath("data.userType", is(UserType.Shelter.toString())))
+                .andExpect(jsonPath("data.id", is(10001)));
 
         MockMultipartFile loginInvalid = new MockMultipartFile("username", "", "text/plain", "not-existing-acc".getBytes());
         MockMultipartFile passwordInvalid = new MockMultipartFile("password", "", "text/plain", "not-existing-pwd".getBytes());
