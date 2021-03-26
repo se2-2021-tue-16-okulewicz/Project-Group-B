@@ -114,24 +114,33 @@ public class LostDogMainService implements LostDogService{
 
     @Transactional
     @Override
-    public LostDogWithBehaviorsAndWithPicture UpdateDog(LostDogWithBehaviors updatedDog, Picture picture)
+    public LostDogWithBehaviorsAndWithPicture UpdateDog(long dogId, LostDogWithBehaviors updatedDog, Picture picture)
     {
+        // Set Dog Id.
+        updatedDog.setId(dogId);
+
         // Check if the dog is in the database.
+        if(updatedDog == null) return null;
         if(!IsValidDogId(updatedDog.getId())) return null;
 
         // Get old dog.
-        LostDog oldDog = lostDogRepository.getOne(updatedDog.getId());
+        var oldDog = lostDogRepository.findById(updatedDog.getId());
 
         // Delete old behaviors.
-        for(var oldBehavior : dogBehaviorRepository.findAllByDogId(oldDog.getId())) {
+        for(var oldBehavior : dogBehaviorRepository.findAllByDogId(oldDog.get().getId())) {
             dogBehaviorRepository.deleteById(oldBehavior.getId());
         }
         // Delete old picture.
-        pictureRepository.deleteById(oldDog.getPictureId());
+        pictureRepository.deleteById(oldDog.get().getPictureId());
 
         // Set the new stuff. Here the old Dog is overridden by the new one.
         LostDog dogToBeSaved = updatedDog.LostDogWithoutBehaviors();
+        dogToBeSaved.setId(updatedDog.getId());
+        dogToBeSaved.setOwnerId(updatedDog.getOwnerId());
+
         var savedDog = lostDogRepository.save(dogToBeSaved);
+        //logger.info(String.format("CHECK id: %d and %d", dogToBeSaved.get().getId(), oldDog.get().getId()));
+
         var savedPicture = pictureRepository.save(picture);
         savedDog.setPictureId(savedPicture.getId());
 

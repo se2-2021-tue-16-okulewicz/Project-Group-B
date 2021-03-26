@@ -23,6 +23,7 @@ import se.backend.wrapper.account.UserType;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class DogsController {
                                                         @RequestPart("dog") LostDogWithBehaviors newDog,
                                                         @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular,))) {
+        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
             throw new UnauthorizedException();
         }
 
@@ -126,10 +127,11 @@ public class DogsController {
         // fail get dog
         else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
     }
-    /*
+
+    @SneakyThrows
     @PutMapping(path = "/{dogId}")
     public ResponseEntity<Response<LostDog>> UpdateDog(@RequestHeader HttpHeaders headers,
-                                                       @PathVariable("dogID") long dogId,
+                                                       @PathVariable("dogId") long dogId,
                                                        @RequestPart("dog") LostDogWithBehaviors updatedDog,
                                                        @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
@@ -138,17 +140,25 @@ public class DogsController {
         }
 
         LostDog oldDog = lostDogService.GetDogDetails(dogId);
+        if(oldDog == null) return ResponseEntity.status(400).body(new Response<>(String.format("Failed to update dog - No dog with id: %d was found" , dogId), false, null));
 
-        if(oldDog.getId() == )
+        try {
+            var newPicture = new Picture();
+            newPicture.setFileName(picture.getOriginalFilename());
+            newPicture.setFileType(picture.getContentType());
+            newPicture.setData(picture.getBytes());
 
-        var savedDog = lostDogService.UpdateDog(updatedDog, picture);
+            var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture);
 
-        // Successfully get dog
-        if(savedDog != null) return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+            // Successfully get dog
+            if(savedDog != null) return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
 
             // fail get dog
-        else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
-    }*/
+            else throw new GenericBadRequestException(String.format("Failed to update dog with id: %d", dogId));
+        } catch (IOException e) {
+            throw new GenericBadRequestException("Failed to update the dog");
+        }
+    }
 
 
 }

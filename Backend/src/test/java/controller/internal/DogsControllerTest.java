@@ -4,18 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import se.backend.SEBackend;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,13 +66,13 @@ public class DogsControllerTest {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/10001")
-                        .header("token", "authorization_token")
+                        .header("token", "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)));
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/-1")
-                        .header("token", "authorization_token")
+                        .header("token", "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)));
     }
@@ -81,13 +82,51 @@ public class DogsControllerTest {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs/10001")
-                        .header("token", "authorization_token")
+                        .header("token", "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)));
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs/-1")
-                        .header("token", "authorization_token")
+                        .header("token", "regularUserTestToken")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)));
+    }
+
+    @Test
+    public void UpdateDogTest() throws Exception {
+
+        MockMultipartFile dog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile picture = new MockMultipartFile("picture", "image_name.txt", "text/plain", "This should be a picture but we don't have to check for it so it should succeed".getBytes());
+
+        MockMultipartHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
+        builder.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+        mockMvc.perform(builder
+                .file(dog)
+                .file(picture)
+                .header("token", "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)));
+
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/-1");
+        builder.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+
+        mockMvc.perform(builder
+                .file(dog)
+                .file(picture)
+                .header("token", "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)));
     }

@@ -108,36 +108,43 @@ public class LostDogServiceTest {
 
         // Adding dogs
         LostDog newDog1 = new LostDog();
-        newDog1.setName("Name1");
-        LostDogWithBehaviors newDogBeh1 = new LostDogWithBehaviors(newDog1);
         Picture pic1 = new Picture();
+        newDog1.setName("Name1");
         pic1.setFileName("exampleFile1");
+        LostDogWithBehaviors newDogBeh1 = new LostDogWithBehaviors(newDog1);
 
+        var result1 = service.AddLostDog(newDogBeh1, pic1);
+
+        // Make changes
+        Picture pic2 = new Picture();
+        result1.setName("Name2");
+        pic2.setFileName("exampleFile2");
+        LostDogWithBehaviors newDogBeh2 = new LostDogWithBehaviors(result1);
+
+        assertEquals(result1.getId(),newDogBeh2.getId());
+
+        var result2 = service.UpdateDog(result1.getId(), newDogBeh2, pic2);
+
+
+        assertEquals("Name2", result2.getName());
+        assertEquals(0, result2.getBehaviors().size());
+        assertEquals("exampleFile2", result2.getPicture().getFileName());
+
+        // This dog is not in the database.
         LostDog newDog3 = new LostDog();
+        newDog3.setId(9999);
         newDog3.setName("Name3");
         LostDogWithBehaviors newDogBeh3 = new LostDogWithBehaviors(newDog3);
         Picture pic3 = new Picture();
         pic3.setFileName("exampleFile3");
 
-        var result1 = service.AddLostDog(newDogBeh1, pic1);
+        var result3 = service.UpdateDog(newDog3.getId(), newDogBeh3, pic3);
 
-        result1.setName("Name2");
-        Picture pic2 = new Picture();
-        pic2.setFileName("exampleFile2");
-        LostDogWithBehaviors newDogBeh2 = new LostDogWithBehaviors(result1);
-
-        var result2 = service.UpdateDog(newDogBeh2, pic2);
-        var result3 = service.UpdateDog(newDogBeh3, pic3);
-
-        //Checking results of updating
-        assertEquals("Name2", result2.getName());
-        assertEquals(0, result2.getBehaviors().size());
-        assertEquals("exampleFile2", result2.getPicture().getFileName());
         assertEquals(null, result3);
 
         //Getting all dogs again
         allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(allDogs.size(), 5);
+        assertEquals(5, allDogs.size());
     }
 
     @Test
