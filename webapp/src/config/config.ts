@@ -17,10 +17,10 @@ export type Config = {
     token: string;
     userType: string;
     userId: string;
-  }
-}
+  };
+};
 
-const configObject : Config = require(process.env.NODE_ENV === "development"
+const configObject: Config = require(process.env.NODE_ENV === "development"
   ? "./development.json"
   : "./production.json");
 
