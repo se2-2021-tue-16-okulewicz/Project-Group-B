@@ -84,7 +84,9 @@ public class DogsControllerTest {
                 MockMvcRequestBuilders.get("/lostdogs/10001")
                         .header("token", "regularUserTestToken")
         ).andExpect(status().isOk())
-                .andExpect(jsonPath("successful", is(true)));
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Pinky")))
+                .andExpect(jsonPath("data.age", is(12)));
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs/-1")
@@ -96,7 +98,7 @@ public class DogsControllerTest {
     @Test
     public void UpdateDogTest() throws Exception {
 
-        MockMultipartFile dog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile dog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"John\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
         MockMultipartFile picture = new MockMultipartFile("picture", "image_name.txt", "text/plain", "This should be a picture but we don't have to check for it so it should succeed".getBytes());
 
         MockMultipartHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
@@ -112,7 +114,11 @@ public class DogsControllerTest {
                 .file(picture)
                 .header("token", "regularUserTestToken")
         ).andExpect(status().isOk())
-                .andExpect(jsonPath("successful", is(true)));
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("John")))
+                .andExpect(jsonPath("data.age", is(9)));
+
+
 
         builder = MockMvcRequestBuilders.multipart("/lostdogs/-1");
         builder.with(new RequestPostProcessor() {

@@ -82,68 +82,40 @@ public class LostDogMainService implements LostDogService{
     @Override
     public boolean DeleteDog(long dogId) {
         if(!IsValidDogId(dogId)) return false;
-
         LostDog dog = lostDogRepository.getOne(dogId);
-        if(dog == null) return false; // Here we fail to delete because the dog is not in the database.
-
-        // Deletes behaviors
+        if(dog == null) return false;
         var behaviors = dogBehaviorRepository.findAllByDogId(dog.getId());
         for(var behavior : behaviors) {
             dogBehaviorRepository.deleteById(behavior.getId());
         }
-        // Deletes dog and picture.
         pictureRepository.deleteById(dog.getPictureId());
         lostDogRepository.delete(dog);
         return true;
     }
 
-    // method to check if the id exists in the database and if its not less then 0.
     private boolean IsValidDogId(long dogId)
     {
         if(dogId < 0) return false;
-        var dogs = lostDogRepository.findAll(Specification.where(null), PageRequest.of(0, 15)).getContent();
-        for(var dog : dogs)
-        {
-            if(dog.getId() == dogId)
-            {
-                return true;
-            }
-        }
-        return false;
+        return lostDogRepository.existsById(dogId);
     }
 
     @Transactional
     @Override
     public LostDogWithBehaviorsAndWithPicture UpdateDog(long dogId, LostDogWithBehaviors updatedDog, Picture picture)
     {
-        // Set Dog Id.
         updatedDog.setId(dogId);
-
-        // Check if the dog is in the database.
         if(updatedDog == null) return null;
         if(!IsValidDogId(updatedDog.getId())) return null;
-
-        // Get old dog.
         var oldDog = lostDogRepository.findById(updatedDog.getId());
-
-        // Delete old behaviors.
         for(var oldBehavior : dogBehaviorRepository.findAllByDogId(oldDog.get().getId())) {
             dogBehaviorRepository.deleteById(oldBehavior.getId());
         }
-        // Delete old picture.
         pictureRepository.deleteById(oldDog.get().getPictureId());
-
-        // Set the new stuff. Here the old Dog is overridden by the new one.
         LostDog dogToBeSaved = updatedDog.LostDogWithoutBehaviors();
         dogToBeSaved.setId(updatedDog.getId());
         dogToBeSaved.setOwnerId(updatedDog.getOwnerId());
-
-        var savedDog = lostDogRepository.save(dogToBeSaved);
-        //logger.info(String.format("CHECK id: %d and %d", dogToBeSaved.get().getId(), oldDog.get().getId()));
-
-        var savedPicture = pictureRepository.save(picture);
+        var savedDog = lostDogRepository.save(dogToBeSaved);var savedPicture = pictureRepository.save(picture);
         savedDog.setPictureId(savedPicture.getId());
-
         var behaviors = new ArrayList<DogBehavior>();
         for (var behaviorName : updatedDog.getBehaviors() ) {
             var behavior = new DogBehavior();
@@ -154,7 +126,6 @@ public class LostDogMainService implements LostDogService{
         LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(savedDog);
         savedDogWithBehaviors.setBehaviors(updatedDog.getBehaviors());
         var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
-
         returnedDog.setPicture(savedPicture);
         return returnedDog;
     }
@@ -163,17 +134,13 @@ public class LostDogMainService implements LostDogService{
     public LostDogWithBehaviorsAndWithPicture GetDogDetails(long dogId)
     {
         if(!IsValidDogId(dogId)) return null;
-
         var dog = lostDogRepository.findById(dogId);
         var picture = pictureRepository.findById(dog.get().getPictureId());
         var behaviors = dogBehaviorRepository.findAllByDogId(dogId);
         var behaviorStrings = new ArrayList<String>();
-
-        for(var b : behaviors)
-        {
+        for(var b : behaviors) {
             behaviorStrings.add(b.getBehavior());
         }
-
         LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(dog.get());
         savedDogWithBehaviors.setBehaviors(behaviorStrings);
         var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);

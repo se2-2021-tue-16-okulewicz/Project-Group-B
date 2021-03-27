@@ -103,11 +103,7 @@ public class DogsController {
         if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular))) {
             throw new UnauthorizedException();
         }
-
-        // If we successfully delete
         if(lostDogService.DeleteDog(dogId)) return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true));
-
-        // If we fail to delete
         else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to delete dog with id: %d", dogId), false, false));
     }
 
@@ -117,14 +113,9 @@ public class DogsController {
         if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter))) {
             throw new UnauthorizedException();
         }
-
         LostDog savedDog;
         savedDog = lostDogService.GetDogDetails(dogId);
-
-        // Successfully get dog
         if(savedDog != null) return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
-
-        // fail get dog
         else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
     }
 
@@ -138,22 +129,15 @@ public class DogsController {
         if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular))) {
             throw new UnauthorizedException();
         }
-
         LostDog oldDog = lostDogService.GetDogDetails(dogId);
         if(oldDog == null) return ResponseEntity.status(400).body(new Response<>(String.format("Failed to update dog - No dog with id: %d was found" , dogId), false, null));
-
         try {
             var newPicture = new Picture();
             newPicture.setFileName(picture.getOriginalFilename());
             newPicture.setFileType(picture.getContentType());
             newPicture.setData(picture.getBytes());
-
             var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture);
-
-            // Successfully get dog
             if(savedDog != null) return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
-
-            // fail get dog
             else throw new GenericBadRequestException(String.format("Failed to update dog with id: %d", dogId));
         } catch (IOException e) {
             throw new GenericBadRequestException("Failed to update the dog");
