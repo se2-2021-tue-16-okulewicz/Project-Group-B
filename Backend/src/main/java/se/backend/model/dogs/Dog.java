@@ -49,6 +49,7 @@ public class Dog {
                 StringUtils.isValidString(hairLength) &&
                 StringUtils.isValidString(earsType) &&
                 StringUtils.isValidString(tailLength) &&
+                location != null &&
                 StringUtils.isValidString(location.getCity()) &&
                 StringUtils.isValidString(location.getDistrict());
     }
