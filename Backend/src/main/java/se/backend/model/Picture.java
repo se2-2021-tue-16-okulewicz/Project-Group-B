@@ -35,6 +35,7 @@ public class Picture {
 
             //Invalid mime type
             String nameMimeType = URLConnection.guessContentTypeFromName(fileName);
+
             if(!nameMimeType.equals(fileType))
                 return false;
 
