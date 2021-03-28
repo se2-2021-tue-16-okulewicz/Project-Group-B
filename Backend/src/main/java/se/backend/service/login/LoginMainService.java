@@ -1,7 +1,11 @@
 package se.backend.service.login;
 
 import org.javatuples.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +17,7 @@ import se.backend.model.account.Account;
 import se.backend.model.account.AdminAccount;
 import se.backend.model.account.DogShelterAccount;
 import se.backend.model.account.UserAccount;
+import se.backend.service.lostdogs.LostDogMainService;
 import se.backend.wrapper.account.AuthenticationResults;
 import se.backend.wrapper.account.UserType;
 
@@ -25,16 +30,24 @@ import java.util.Objects;
 
 @Service
 public class LoginMainService implements LoginService {
+    private final Logger logger = LoggerFactory.getLogger(LoginMainService.class);
 
     private final UserAccountRepository userAccountRepository;
     private final DogShelterAccountRepository dogShelterAccountRepository;
     private final AdminAccountRepository adminAccountRepository;
 
-    private static final HashMap<String, Pair<UserType, Long>> sessions = new HashMap<>() {{
-        put("regularUserTestToken", new Pair<>(UserType.Regular, 0L));
-        put("testTokenForAdmins", new Pair<>(UserType.Admin, 0L));
-        put("shelterSecretTestToken", new Pair<>(UserType.Shelter, 0L));
-    }};
+    private static Long GetLongFromString(String s) {
+        if(s == null || s.isBlank() || s.isEmpty())
+            return 0L;
+
+        try {
+            return Long.parseUnsignedLong(s);
+        } catch (NumberFormatException e) {
+            return 0L;
+        }
+    }
+
+    private static HashMap<String, Pair<UserType, Long>> sessions = null;
 
     ExampleMatcher LOGIN_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id")
@@ -42,10 +55,32 @@ public class LoginMainService implements LoginService {
             .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
 
     @Autowired
-    public LoginMainService (UserAccountRepository userAccountRepository, DogShelterAccountRepository dogShelterAccountRepository, AdminAccountRepository adminAccountRepository) {
+    public LoginMainService (UserAccountRepository userAccountRepository,
+                             DogShelterAccountRepository dogShelterAccountRepository,
+                             AdminAccountRepository adminAccountRepository,
+                             @Value("${testToken.regularId:0}") String userTestTokenId,
+                             @Value("${testToken.shelterId:0}") String shelterTestTokenId,
+                             @Value("${testToken.adminId:0}") String adminTestTokenId,
+                             @Value("${testToken.regular:regularUserTestToken}") String userTestToken,
+                             @Value("${testToken.shelter:shelterSecretTestToken}") String shelterTestToken,
+                             @Value("${testToken.admin:testTokenForAdmins}") String adminTestToken) {
+
+        if(sessions == null) {
+            sessions = new HashMap<>() {{
+                put(userTestToken, new Pair<>(UserType.Regular, GetLongFromString(userTestTokenId)));
+                put(shelterTestToken, new Pair<>(UserType.Shelter,  GetLongFromString(shelterTestTokenId)));
+                put(adminTestToken, new Pair<>(UserType.Admin,  GetLongFromString(adminTestTokenId)));
+            }};
+        }
+
         this.userAccountRepository = userAccountRepository;
         this.dogShelterAccountRepository = dogShelterAccountRepository;
         this.adminAccountRepository = adminAccountRepository;
+        logger.info(String.format("Regular user token: %d", sessions.get("regularUserTestToken").getValue1()));
+        logger.info(String.format("Shelter user token: %d", sessions.get("shelterSecretTestToken").getValue1()));
+        logger.info(String.format("Admin   user token: %d", sessions.get("testTokenForAdmins").getValue1()));
+
+        logger.info(String.format("Test %s:%s:%s", userTestTokenId, shelterTestTokenId, adminTestTokenId));
     }
 
     @Override
