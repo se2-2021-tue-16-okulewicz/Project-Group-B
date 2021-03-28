@@ -92,7 +92,7 @@ public class DogsController {
             newPicture.setFileType(picture.getContentType());
             newPicture.setData(picture.getBytes());
 
-            savedDog = lostDogService.AddLostDog(newDog, newPicture);
+            savedDog = lostDogService.AddLostDog(newDog, newPicture, authorization.getValue1());
         } catch (Exception e) {
             throw new GenericBadRequestException("Failed to save the dog");
         }
@@ -156,7 +156,7 @@ public class DogsController {
             newPicture.setFileName(picture.getOriginalFilename());
             newPicture.setFileType(picture.getContentType());
             newPicture.setData(picture.getBytes());
-            var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture);
+            var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture, authorization.getValue1());
 
             if(savedDog != null)
                 return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));

@@ -58,10 +58,13 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
-    public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture) {
+    public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture, long ownerId) {
         LostDog dog = newDog.LostDogWithoutBehaviors();
+        dog.setOwnerId(ownerId);
+
         var savedPicture = pictureRepository.save(picture);
         dog.setPictureId(savedPicture.getId());
+
         var savedDog = lostDogRepository.save(dog);
 
         var behaviors = new ArrayList<DogBehavior>();
@@ -109,7 +112,7 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
-    public LostDogWithBehaviorsAndWithPicture UpdateDog(long dogId, LostDogWithBehaviors updatedDog, Picture picture)
+    public LostDogWithBehaviorsAndWithPicture UpdateDog(long dogId, LostDogWithBehaviors updatedDog, Picture picture, long ownerId)
     {
         if(IsInvalidDogId(dogId))
             return null;
@@ -124,7 +127,7 @@ public class LostDogMainService implements LostDogService{
         pictureRepository.deleteById(oldDog.get().getPictureId());
         LostDog dogToBeSaved = updatedDog.LostDogWithoutBehaviors();
         dogToBeSaved.setId(updatedDog.getId());
-        dogToBeSaved.setOwnerId(updatedDog.getOwnerId());
+        dogToBeSaved.setOwnerId(ownerId);
 
         var savedDog = lostDogRepository.save(dogToBeSaved);
         var savedPicture = pictureRepository.save(picture);
