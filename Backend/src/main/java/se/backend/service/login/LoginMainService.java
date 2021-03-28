@@ -65,12 +65,14 @@ public class LoginMainService implements LoginService {
                              @Value("${testToken.shelter:shelterSecretTestToken}") String shelterTestToken,
                              @Value("${testToken.admin:testTokenForAdmins}") String adminTestToken) {
 
+        //Initiates sessions, if test token for given type is present, it is added to the sessions
         if(sessions == null) {
-            sessions = new HashMap<>() {{
-                put(userTestToken, new Pair<>(UserType.Regular, GetLongFromString(userTestTokenId)));
-                put(shelterTestToken, new Pair<>(UserType.Shelter,  GetLongFromString(shelterTestTokenId)));
-                put(adminTestToken, new Pair<>(UserType.Admin,  GetLongFromString(adminTestTokenId)));
-            }};
+            if(userTestToken != null && !userTestToken.isBlank() && !userTestToken.isEmpty())
+                sessions.put(userTestToken, new Pair<>(UserType.Regular, GetLongFromString(userTestTokenId)));
+            if(shelterTestToken != null && !shelterTestToken.isBlank() && !shelterTestToken.isEmpty())
+                sessions.put(shelterTestToken, new Pair<>(UserType.Shelter,  GetLongFromString(shelterTestTokenId)));
+            if(adminTestToken != null && !adminTestToken.isBlank() && !adminTestToken.isEmpty())
+                sessions.put(adminTestToken, new Pair<>(UserType.Admin,  GetLongFromString(adminTestTokenId)));
         }
 
         this.userAccountRepository = userAccountRepository;
