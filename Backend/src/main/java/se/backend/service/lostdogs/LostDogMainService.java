@@ -171,7 +171,7 @@ public class LostDogMainService implements LostDogService{
 
         var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
 
-        picture.ifPresent(returnedDog::setPicture);
+        returnedDog.setPicture(picture.orElse(new Picture(-1, "", "", new byte[0])));
 
         return returnedDog;
     }
