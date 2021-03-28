@@ -1,5 +1,6 @@
 package se.backend.service.login;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -29,10 +30,10 @@ public class LoginMainService implements LoginService {
     private final DogShelterAccountRepository dogShelterAccountRepository;
     private final AdminAccountRepository adminAccountRepository;
 
-    private static final HashMap<String, UserType> sessions = new HashMap<>() {{
-        put("regularUserTestToken", UserType.Regular);
-        put("testTokenForAdmins", UserType.Admin);
-        put("shelterSecretTestToken", UserType.Shelter);
+    private static final HashMap<String, Pair<UserType, Long>> sessions = new HashMap<>() {{
+        put("regularUserTestToken", new Pair<>(UserType.Regular, 0L));
+        put("testTokenForAdmins", new Pair<>(UserType.Admin, 0L));
+        put("shelterSecretTestToken", new Pair<>(UserType.Shelter, 0L));
     }};
 
     ExampleMatcher LOGIN_INFORMATION_MATCHER = ExampleMatcher.matching()
@@ -59,7 +60,7 @@ public class LoginMainService implements LoginService {
         if(normalUser.isPresent()){
             var result = new AuthenticationResults(UserType.Regular);
             result.setId(normalUser.get().getId());
-            sessions.put(result.getToken(),result.getUserType());
+            sessions.put(result.getToken(), new Pair<>(result.getUserType(), 0L));
             return result;
         }
 
@@ -72,7 +73,7 @@ public class LoginMainService implements LoginService {
         if(shelterUser.isPresent()){
             var result = new AuthenticationResults(UserType.Shelter);
             result.setId(shelterUser.get().getId());
-            sessions.put(result.getToken(),result.getUserType());
+            sessions.put(result.getToken(), new Pair<>(result.getUserType(), 0L));
             return result;
         }
 
@@ -85,7 +86,7 @@ public class LoginMainService implements LoginService {
         if(adminUser.isPresent()){
             var result = new AuthenticationResults(UserType.Admin);
             result.setId(adminUser.get().getId());
-            sessions.put(result.getToken(),result.getUserType());
+            sessions.put(result.getToken(), new Pair<>(result.getUserType(), 0L));
             return result;
         }
 
@@ -115,7 +116,7 @@ public class LoginMainService implements LoginService {
         var token = Objects.requireNonNull(httpHeaders.get("token")).get(0);
 
         if(sessions.containsKey(token)){
-            return requiredPermissions.contains(sessions.get(token));
+            return requiredPermissions.contains(sessions.get(token).getValue0());
         }
 
         return false;
