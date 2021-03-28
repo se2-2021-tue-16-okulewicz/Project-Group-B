@@ -94,7 +94,7 @@ public class LoginMainService implements LoginService {
         if(normalUser.isPresent()){
             var result = new AuthenticationResults(UserType.Regular);
             result.setId(normalUser.get().getId());
-            sessions.put(result.getToken(), new Pair<>(result.getUserType(), 0L));
+            sessions.put(result.getToken(), new Pair<>(result.getUserType(), normalUser.get().getId()));
             return result;
         }
 
@@ -107,7 +107,7 @@ public class LoginMainService implements LoginService {
         if(shelterUser.isPresent()){
             var result = new AuthenticationResults(UserType.Shelter);
             result.setId(shelterUser.get().getId());
-            sessions.put(result.getToken(), new Pair<>(result.getUserType(), 0L));
+            sessions.put(result.getToken(), new Pair<>(result.getUserType(), shelterUser.get().getId()));
             return result;
         }
 
@@ -120,7 +120,7 @@ public class LoginMainService implements LoginService {
         if(adminUser.isPresent()){
             var result = new AuthenticationResults(UserType.Admin);
             result.setId(adminUser.get().getId());
-            sessions.put(result.getToken(), new Pair<>(result.getUserType(), 0L));
+            sessions.put(result.getToken(), new Pair<>(result.getUserType(), adminUser.get().getId()));
             return result;
         }
 
