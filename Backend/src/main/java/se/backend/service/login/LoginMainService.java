@@ -67,6 +67,8 @@ public class LoginMainService implements LoginService {
 
         //Initiates sessions, if test token for given type is present, it is added to the sessions
         if(sessions == null) {
+            sessions = new HashMap<>();
+
             if(userTestToken != null && !userTestToken.isBlank() && !userTestToken.isEmpty())
                 sessions.put(userTestToken, new Pair<>(UserType.Regular, GetLongFromString(userTestTokenId)));
             if(shelterTestToken != null && !shelterTestToken.isBlank() && !shelterTestToken.isEmpty())
@@ -78,11 +80,6 @@ public class LoginMainService implements LoginService {
         this.userAccountRepository = userAccountRepository;
         this.dogShelterAccountRepository = dogShelterAccountRepository;
         this.adminAccountRepository = adminAccountRepository;
-        logger.info(String.format("Regular user token: %d", sessions.get("regularUserTestToken").getValue1()));
-        logger.info(String.format("Shelter user token: %d", sessions.get("shelterSecretTestToken").getValue1()));
-        logger.info(String.format("Admin   user token: %d", sessions.get("testTokenForAdmins").getValue1()));
-
-        logger.info(String.format("Test %s:%s:%s", userTestTokenId, shelterTestTokenId, adminTestTokenId));
     }
 
     @Override
