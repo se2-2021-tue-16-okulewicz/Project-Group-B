@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import se.backend.dao.DogBehaviorRepository;
 import se.backend.dao.LostDogRepository;
 import se.backend.dao.PictureRepository;
@@ -15,7 +17,6 @@ import se.backend.model.dogs.LostDog;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,6 +59,7 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture, long ownerId) {
         LostDog dog = newDog.LostDogWithoutBehaviors();
         dog.setOwnerId(ownerId);
@@ -83,8 +85,8 @@ public class LostDogMainService implements LostDogService{
         return returnedDog;
     }
 
-    @Transactional
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean DeleteDog(long dogId) {
         if(IsInvalidDogId(dogId))
             return false;
@@ -112,6 +114,7 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public LostDogWithBehaviorsAndWithPicture UpdateDog(long dogId, LostDogWithBehaviors updatedDog, Picture picture, long ownerId)
     {
         if(IsInvalidDogId(dogId))
