@@ -58,7 +58,8 @@ public class DogsControllerTest {
                 .andExpect(jsonPath("data.name", is("Pinky")))
                 .andExpect(jsonPath("data.location.city", is("Lublin")))
                 .andExpect(jsonPath("data.behaviors", hasSize(2)))
-                .andExpect(jsonPath("data.picture.fileName", is("image_name.txt")));
+                .andExpect(jsonPath("data.picture.fileName", is("image_name.txt")))
+                .andExpect(jsonPath("data.ownerId", is(10001)));
     }
 
     @Test
@@ -68,7 +69,8 @@ public class DogsControllerTest {
                 MockMvcRequestBuilders.delete("/lostdogs/10001")
                         .header("token", "regularUserTestToken")
         ).andExpect(status().isOk())
-                .andExpect(jsonPath("successful", is(true)));
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data", is(true)));
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/-1")
@@ -86,10 +88,11 @@ public class DogsControllerTest {
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data.name", is("Pinky")))
-                .andExpect(jsonPath("data.age", is(12)));
+                .andExpect(jsonPath("data.age", is(12)))
+                .andExpect(jsonPath("data.picture.fileName", is("example1")));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/lostdogs/-1")
+                MockMvcRequestBuilders.get("/lostdogs/20001")
                         .header("token", "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)));
@@ -102,12 +105,9 @@ public class DogsControllerTest {
         MockMultipartFile picture = new MockMultipartFile("picture", "image_name.txt", "text/plain", "This should be a picture but we don't have to check for it so it should succeed".getBytes());
 
         MockMultipartHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
-        builder.with(new RequestPostProcessor() {
-            @Override
-            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
-                request.setMethod("PUT");
-                return request;
-            }
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
         });
         mockMvc.perform(builder
                 .file(dog)
@@ -116,17 +116,16 @@ public class DogsControllerTest {
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data.name", is("John")))
-                .andExpect(jsonPath("data.age", is(9)));
+                .andExpect(jsonPath("data.age", is(9)))
+                .andExpect(jsonPath("data.ownerId", is(10001)))
+                .andExpect(jsonPath("data.picture.fileName", is("image_name.txt")));
 
 
 
-        builder = MockMvcRequestBuilders.multipart("/lostdogs/-1");
-        builder.with(new RequestPostProcessor() {
-            @Override
-            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
-                request.setMethod("PUT");
-                return request;
-            }
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/20001");
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
         });
 
         mockMvc.perform(builder
