@@ -24,7 +24,7 @@ public class LostDogWithBehaviors extends LostDog {
         behaviors = new ArrayList<String>();
     }
 
-    public LostDog LostDogWithoutBehaviors(){
+    public LostDog LostDogWithoutBehaviors() {
         var lostDog = new LostDog();
         lostDog.setDateLost(this.getDateLost());
         lostDog.setIsFound(this.isIsFound());
@@ -39,5 +39,11 @@ public class LostDogWithBehaviors extends LostDog {
         lostDog.setTailLength(this.getTailLength());
         lostDog.setLocation(this.getLocation());
         return lostDog;
+    }
+
+    public boolean IsValid() {
+        if(behaviors == null || behaviors.size() == 0)
+            return false;
+        return super.IsValid();
     }
 }
