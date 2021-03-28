@@ -143,17 +143,18 @@ public class LoginMainService implements LoginService {
     }
 
     @Override
-    public boolean IsAuthorized(HttpHeaders httpHeaders, List<UserType> requiredPermissions) {
+    public Pair<Boolean, Long> IsAuthorized(HttpHeaders httpHeaders, List<UserType> requiredPermissions) {
         if(!httpHeaders.containsKey("token"))
-            return false;
+            return new Pair<>(false, 0L);
 
         var token = Objects.requireNonNull(httpHeaders.get("token")).get(0);
 
         if(sessions.containsKey(token)){
-            return requiredPermissions.contains(sessions.get(token).getValue0());
+            var session = sessions.get(token);
+            return new Pair<>(requiredPermissions.contains(session.getValue0()), session.getValue1());
         }
 
-        return false;
+        return new Pair<>(false, 0L);
     }
 
     private String getSHA256Hash(String data) {

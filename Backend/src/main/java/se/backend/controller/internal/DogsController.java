@@ -61,7 +61,9 @@ public class DogsController {
                                                                                                    value=15
                                                                                                ) Pageable pageable) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter))) {
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
 
@@ -77,7 +79,9 @@ public class DogsController {
                                                         @RequestPart("dog") LostDogWithBehaviors newDog,
                                                         @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Regular))) {
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
 
@@ -98,25 +102,36 @@ public class DogsController {
     //</editor-fold>
 
     @DeleteMapping(path = "/{dogId}")
-    public ResponseEntity<Response<Boolean>> DeleteLostDog(@RequestHeader HttpHeaders headers, @PathVariable("dogId") long dogId) {
+    public ResponseEntity<Response<Boolean>> DeleteLostDog(@RequestHeader HttpHeaders headers,
+                                                           @PathVariable("dogId") long dogId) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular))) {
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
-        if(lostDogService.DeleteDog(dogId)) return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true));
-        else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to delete dog with id: %d", dogId), false, false));
+
+        if(lostDogService.DeleteDog(dogId))
+            return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true));
+        else
+            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to delete dog with id: %d", dogId), false, false));
     }
 
     @GetMapping(path = "/{dogId}")
-    public ResponseEntity<Response<LostDog>> GetLostDogDetails(@RequestHeader HttpHeaders headers, @PathVariable("dogId") long dogId) {
+    public ResponseEntity<Response<LostDog>> GetLostDogDetails(@RequestHeader HttpHeaders headers,
+                                                               @PathVariable("dogId") long dogId) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter))) {
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
-        LostDog savedDog;
-        savedDog = lostDogService.GetDogDetails(dogId);
-        if(savedDog != null) return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
-        else return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
+
+        LostDog savedDog = lostDogService.GetDogDetails(dogId);
+        if(savedDog != null)
+            return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+        else
+            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
     }
 
     @SneakyThrows
@@ -126,23 +141,29 @@ public class DogsController {
                                                        @RequestPart("dog") LostDogWithBehaviors updatedDog,
                                                        @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
-        if(!loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular))) {
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
+
         LostDog oldDog = lostDogService.GetDogDetails(dogId);
-        if(oldDog == null) return ResponseEntity.status(400).body(new Response<>(String.format("Failed to update dog - No dog with id: %d was found" , dogId), false, null));
+        if(oldDog == null)
+            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to update dog - No dog with id: %d was found" , dogId), false, null));
+
         try {
             var newPicture = new Picture();
             newPicture.setFileName(picture.getOriginalFilename());
             newPicture.setFileType(picture.getContentType());
             newPicture.setData(picture.getBytes());
             var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture);
-            if(savedDog != null) return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
-            else throw new GenericBadRequestException(String.format("Failed to update dog with id: %d", dogId));
+
+            if(savedDog != null)
+                return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+            else
+                throw new GenericBadRequestException(String.format("Failed to update dog with id: %d", dogId));
         } catch (IOException e) {
             throw new GenericBadRequestException("Failed to update the dog");
         }
     }
-
-
 }
