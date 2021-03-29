@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface LoginService {
     AuthenticationResults Authenticate(String username, String password);
+    boolean Logout(String token);
     AuthenticationResults CreateAccount(Account user);
     boolean UpdateUser(Account user);
     List<Account> GetUsers(String username);

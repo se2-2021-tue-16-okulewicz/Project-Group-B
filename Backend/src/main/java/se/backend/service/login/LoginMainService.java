@@ -128,6 +128,15 @@ public class LoginMainService implements LoginService {
     }
 
     @Override
+    public boolean Logout(String token) {
+        if(sessions.containsKey(token)){
+            sessions.remove(token);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public AuthenticationResults CreateAccount(Account user) {
         return null;
     }
