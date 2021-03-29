@@ -17,6 +17,7 @@ import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
+import ListWithDogs from "./dogsList/listWithDogs";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "center",
       display: "flex",
       alignItems: "center",
-      minHeight: "100vh",
+      marginTop: "2vh",
     },
   })
 );
@@ -69,6 +70,9 @@ function Layout() {
       <Switch>
         <Route exact path="/">
           <Login />
+        </Route>
+        <Route path="/listDogs">
+          <ListWithDogs />
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />

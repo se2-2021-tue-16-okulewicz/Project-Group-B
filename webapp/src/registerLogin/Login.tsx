@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import { clearLoginInformation, loginThunk } from "../app/actions";
 import { State } from "../app/reducer";
 import { store } from "../app/store";
+import config from "../config/config";
 import "./Login.css";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface iternalState {
+interface internalState {
   username: string;
   password: string;
   showPassword: boolean;
@@ -61,7 +62,7 @@ interface iternalState {
 
 export default function Login() {
   const classes = useStyles();
-  const [values, setValues] = useState<iternalState>({
+  const [values, setValues] = useState<internalState>({
     username: "",
     password: "",
     showPassword: false,
@@ -71,7 +72,7 @@ export default function Login() {
   const history = useHistory();
   const [cookies, setCookie, removeCookie] = useCookies();
 
-  const handleChange = (prop: keyof iternalState) => (
+  const handleChange = (prop: keyof internalState) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -100,16 +101,17 @@ export default function Login() {
 
   useEffect(() => {
     if (loginInfo !== null) {
-      setCookie("token", loginInfo?.token, { path: "/" });
-      setCookie("userType", loginInfo?.userType, { path: "/" });
+      setCookie(config.cookies.token, loginInfo?.token, { path: "/" });
+      setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
+      setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
-      history.push("/addDog");
+      history.push("/listDogs");
     }
   }, [loginInfo]);
 
   useEffect(() => {
-    if (cookies["userType"] !== undefined) {
-      history.push("/addDog");
+    if (cookies[config.cookies.userType] !== undefined) {
+      history.push("/listDogs");
     }
   }, []);
 

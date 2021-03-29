@@ -12,7 +12,7 @@ const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
 }) => {
   let result =
     cookies["token"] === undefined
-      ? config("tokens.regular")
+      ? config.testTokens.regular
       : cookies["token"];
   return result;
 };
@@ -58,7 +58,7 @@ export async function addDog(
 
   return axios
     .post(
-      `http://${config("backend.ip")}:${config("backend.port")}/lostdogs`,
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs`,
       formData,
       {
         headers: {
@@ -69,7 +69,6 @@ export async function addDog(
       }
     )
     .then((response) => {
-      console.log(response);
       return {
         code: response.status,
         response: response.data as APIResponse<ILostDogWithPicture>,
@@ -116,7 +115,7 @@ export async function login(
 
   return axios
     .post(
-      `http://${config("backend.ip")}:${config("backend.port")}/login`,
+      `http://${config.backend.ip}:${config.backend.port}/login`,
       formData,
       {
         headers: {
@@ -126,7 +125,6 @@ export async function login(
       }
     )
     .then((response) => {
-      console.log(response);
       return {
         code: response.status,
         response: response.data as APIResponse<ILoginResults>,
