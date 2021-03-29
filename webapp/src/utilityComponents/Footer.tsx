@@ -17,7 +17,7 @@ const Footer = () => {
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
     removeCookie(config.cookies.userId, { path: "/" });
-    store.dispatch(logoutThunk());
+    store.dispatch(logoutThunk(cookies));
     history.push("/");
   };
 

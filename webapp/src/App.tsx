@@ -18,6 +18,7 @@ import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 import ListWithDogs from "./dogsList/listWithDogs";
+import config from "./config/config";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,10 +50,15 @@ function Layout() {
 
   const errorOnClose = () => {
     if (error.errorCode === 403) {
-      removeCookie("token", { path: "/" });
-      removeCookie("userType", { path: "/" });
-      store.dispatch(logoutThunk());
-      history.push("/");
+      //We can reach this point after logout from footer and it crashes the app
+      //So we wat to if logout if user is already logged out
+      if(cookies[config.cookies.userType] !== undefined) {
+        removeCookie(config.cookies.token, { path: "/" });
+        removeCookie(config.cookies.userType, { path: "/" });
+        removeCookie(config.cookies.userId, { path: "/" });
+        store.dispatch(logoutThunk(cookies));
+        history.push("/");
+      }
     }
     store.dispatch(clearError());
   };

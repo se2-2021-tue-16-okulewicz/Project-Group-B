@@ -11,9 +11,9 @@ const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
 }) => {
   let result =
-    cookies["token"] === undefined
+    cookies[config.cookies.token] === undefined
       ? config.testTokens.regular
-      : cookies["token"];
+      : cookies[config.cookies.token];
   return result;
 };
 
@@ -146,6 +146,42 @@ export async function login(
       return {
         code: response.status,
         response: response.data as APIResponse<ILoginResults>,
+      };
+    });
+}
+
+export async function logout(cookies: {
+  [name: string]: any;
+}): Promise<RequestResponse<null>> {
+  return axios
+    .post(`http://${config.backend.ip}:${config.backend.port}/logout`, undefined, {
+      headers: {
+        token: getToken(cookies),
+        Accept: "application/json",
+      },
+    })
+    .then((response) => {
+      return {
+        code: response.status,
+        response: response.data as APIResponse<null>,
+      };
+    })
+    .catch((error) => {
+      if (error instanceof TypeError || error.message === "Network Error") {
+        return {
+          code: 0,
+          response: {
+            message: "Connection error",
+            successful: false,
+            data: null,
+          },
+        };
+      }
+
+      let response = error.response;
+      return {
+        code: response.status,
+        response: response.data as APIResponse<null>,
       };
     });
 }
