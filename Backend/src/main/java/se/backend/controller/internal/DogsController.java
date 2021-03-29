@@ -162,7 +162,7 @@ public class DogsController {
 
         LostDog oldDog = lostDogService.GetDogDetails(dogId);
         if(oldDog == null)
-            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to update dog - No dog with id: %d was found" , dogId), false, null));
+            throw new GenericBadRequestException(String.format("Failed to update dog - No dog with id: %d was found" , dogId));
 
         try {
             var newPicture = new Picture();
