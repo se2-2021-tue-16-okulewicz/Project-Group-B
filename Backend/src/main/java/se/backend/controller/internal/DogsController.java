@@ -85,6 +85,10 @@ public class DogsController {
             throw new UnauthorizedException();
         }
 
+        if(!newDog.IsValid()) {
+            throw new GenericBadRequestException("Dog does not have complete data");
+        }
+
         LostDog savedDog;
         try {
             var newPicture = new Picture();
@@ -92,8 +96,12 @@ public class DogsController {
             newPicture.setFileType(picture.getContentType());
             newPicture.setData(picture.getBytes());
 
+            if(!newPicture.isValid()) {
+                throw new GenericBadRequestException("Picture is not valid");
+            }
+
             savedDog = lostDogService.AddLostDog(newDog, newPicture, authorization.getValue1());
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new GenericBadRequestException("Failed to save the dog");
         }
 
@@ -101,6 +109,7 @@ public class DogsController {
     }
     //</editor-fold>
 
+    //<editor-fold desc="/lostdogs/{dogId}">
     @DeleteMapping(path = "/{dogId}")
     public ResponseEntity<Response<Boolean>> DeleteLostDog(@RequestHeader HttpHeaders headers,
                                                            @PathVariable("dogId") long dogId) {
@@ -142,20 +151,29 @@ public class DogsController {
                                                        @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
 
-        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular));
         if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
 
+        if(!updatedDog.IsValid()) {
+            throw new GenericBadRequestException("Dog does not have complete data");
+        }
+
         LostDog oldDog = lostDogService.GetDogDetails(dogId);
         if(oldDog == null)
-            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to update dog - No dog with id: %d was found" , dogId), false, null));
+            throw new GenericBadRequestException(String.format("Failed to update dog - No dog with id: %d was found" , dogId));
 
         try {
             var newPicture = new Picture();
             newPicture.setFileName(picture.getOriginalFilename());
             newPicture.setFileType(picture.getContentType());
             newPicture.setData(picture.getBytes());
+
+            if(!newPicture.isValid()) {
+                throw new GenericBadRequestException("Picture is not valid");
+            }
+
             var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture, authorization.getValue1());
 
             if(savedDog != null)
@@ -166,4 +184,5 @@ public class DogsController {
             throw new GenericBadRequestException("Failed to update the dog");
         }
     }
+    //</editor-fold>
 }

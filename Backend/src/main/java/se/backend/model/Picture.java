@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
+import java.io.ByteArrayInputStream;
+import java.net.URLConnection;
 
 @Entity
 @Table(name = "picture")
@@ -23,4 +26,23 @@ public class Picture {
 
     @Lob
     private byte[] data;
+
+    public boolean isValid() {
+        try {
+            //Illegal element in file name
+            if(fileName.contains(".."))
+                return false;
+
+            //Invalid mime type
+            String nameMimeType = URLConnection.guessContentTypeFromName(fileName);
+
+            if(!nameMimeType.equals(fileType))
+                return false;
+
+            //Checking if binary data is correctly recognized as an image
+            return ImageIO.read(new ByteArrayInputStream(data)) != null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

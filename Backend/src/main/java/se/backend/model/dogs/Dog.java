@@ -4,9 +4,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import se.backend.model.Location;
+import se.backend.utils.StringUtils;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode
@@ -38,5 +38,19 @@ public class Dog {
         tailLength =  another.tailLength;
         pictureId = another.pictureId;
         location = another.location;
+    }
+
+    public boolean IsValid() {
+        return StringUtils.isValidString(breed) &&
+                StringUtils.isValidString(size) &&
+                StringUtils.isValidString(color) &&
+                StringUtils.isValidString(specialMarks) &&
+                StringUtils.isValidString(name) &&
+                StringUtils.isValidString(hairLength) &&
+                StringUtils.isValidString(earsType) &&
+                StringUtils.isValidString(tailLength) &&
+                location != null &&
+                StringUtils.isValidString(location.getCity()) &&
+                StringUtils.isValidString(location.getDistrict());
     }
 }

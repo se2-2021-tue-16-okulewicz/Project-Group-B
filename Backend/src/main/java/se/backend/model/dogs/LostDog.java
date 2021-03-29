@@ -35,4 +35,10 @@ public class LostDog extends Dog {
     public LostDog(Dog parent) {
         super(parent);
     }
+
+    public boolean IsValid() {
+        if(dateLost == null)
+            return false;
+        return super.IsValid();
+    }
 }
