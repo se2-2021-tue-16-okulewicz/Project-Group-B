@@ -151,7 +151,7 @@ public class DogsController {
                                                        @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
 
-        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular));
         if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
