@@ -52,7 +52,7 @@ function Layout() {
     if (error.errorCode === 403) {
       //We can reach this point after logout from footer and it crashes the app
       //So we wat to if logout if user is already logged out
-      if(cookies[config.cookies.userType] !== undefined) {
+      if (cookies[config.cookies.userType] !== undefined) {
         removeCookie(config.cookies.token, { path: "/" });
         removeCookie(config.cookies.userType, { path: "/" });
         removeCookie(config.cookies.userId, { path: "/" });

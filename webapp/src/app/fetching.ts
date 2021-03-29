@@ -32,7 +32,9 @@ Date.prototype.toJSON = function (key?: any): string {
   );
 };
 
-async function getResponse<T>(axiosRequest: Promise<AxiosResponse<any>>): Promise<RequestResponse<T>> {
+async function getResponse<T>(
+  axiosRequest: Promise<AxiosResponse<any>>
+): Promise<RequestResponse<T>> {
   try {
     const response = await axiosRequest;
     return {
@@ -83,8 +85,8 @@ export async function addDog(
     picture.fileName
   );
 
-  return getResponse(axios
-    .post(
+  return getResponse(
+    axios.post(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs`,
       formData,
       {
@@ -94,7 +96,8 @@ export async function addDog(
           "Content-Type": "multipart/form-data",
         },
       }
-    ));
+    )
+  );
 }
 
 export async function login(
@@ -116,8 +119,8 @@ export async function login(
     ""
   );
 
-  return getResponse(axios
-    .post(
+  return getResponse(
+    axios.post(
       `http://${config.backend.ip}:${config.backend.port}/login`,
       formData,
       {
@@ -126,17 +129,23 @@ export async function login(
           "Content-Type": "multipart/form-data",
         },
       }
-    ));
+    )
+  );
 }
 
 export async function logout(cookies: {
   [name: string]: any;
 }): Promise<RequestResponse<null>> {
-  return getResponse(axios
-    .post(`http://${config.backend.ip}:${config.backend.port}/logout`, undefined, {
-      headers: {
-        token: getToken(cookies),
-        Accept: "application/json",
-      },
-    }));
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/logout`,
+      undefined,
+      {
+        headers: {
+          token: getToken(cookies),
+          Accept: "application/json",
+        },
+      }
+    )
+  );
 }
