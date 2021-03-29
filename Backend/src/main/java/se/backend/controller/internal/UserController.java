@@ -1,5 +1,6 @@
 package se.backend.controller.internal;
 
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.backend.exceptions.types.GenericBadRequestException;
+import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.account.UserAccount;
 import se.backend.service.login.LoginService;
 import se.backend.utils.Response;
 import se.backend.wrapper.account.AuthenticationResults;
+import se.backend.wrapper.account.UserType;
+
+import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.joining;
 
@@ -57,6 +63,25 @@ public class UserController {
         }
 
         return ResponseEntity.ok(new Response<>(String.format("Token: %s", result.getToken()), true, result));
+    }
+
+    @PostMapping(path = "/logout")
+    public ResponseEntity<Response<Object>> Logout(@RequestHeader HttpHeaders headers) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0())
+            throw new UnauthorizedException();
+
+        if(!headers.containsKey("token"))
+            throw new GenericBadRequestException("Failed to logout");
+
+        var token = Objects.requireNonNull(headers.get("token")).get(0);
+
+        if(!loginService.Logout(token))
+            throw new GenericBadRequestException("Failed to logout");
+
+        return ResponseEntity.ok(new Response<>("Logout successful", true, null));
     }
 
 }

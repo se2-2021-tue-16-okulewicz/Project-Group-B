@@ -13,8 +13,7 @@ import se.backend.wrapper.account.UserType;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = SEBackend.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -39,6 +38,16 @@ public class LoginServiceTest {
 
         var failedResults = service.Authenticate("not-existing-acc", "not-existing-pwd");
         assertNull(failedResults);
+    }
+
+    @Test
+    public void logoutTest() {
+        var properLogoutResult = service.Logout("regularUserTestToken");
+        assertTrue(properLogoutResult);
+
+        //User should be logged out by now
+        var invalidLogoutResult = service.Logout("regularUserTestToken");
+        assertFalse(invalidLogoutResult);
     }
 
     @Test
