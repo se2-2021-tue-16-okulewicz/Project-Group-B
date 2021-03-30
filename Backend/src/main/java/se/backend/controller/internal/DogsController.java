@@ -185,4 +185,24 @@ public class DogsController {
         }
     }
     //</editor-fold>
+
+    //<editor-fold desc="/lostdogs/{dogId}/found">
+    @PutMapping(path = "/{dogId}/found")
+    public ResponseEntity<Response<Object>> MarkAsFound(@RequestHeader HttpHeaders headers,
+                                                        @PathVariable("dogId") long dogId) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular));
+        if(!authorization.getValue0()) {
+            throw new UnauthorizedException();
+        }
+
+        boolean wasMarked = lostDogService.MarkLostDogAsFound(dogId);
+
+        if(!wasMarked)
+            throw new GenericBadRequestException("Failed to mark dog as found");
+
+        return ResponseEntity.ok(new Response<>("Dog marked as found", true, null));
+    }
+    //</editor-fold>
 }
