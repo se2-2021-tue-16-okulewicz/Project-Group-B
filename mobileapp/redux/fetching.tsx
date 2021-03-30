@@ -1,41 +1,64 @@
 import config from "../config/config";
-import axios from "react-native-axios";
+import axios from 'axios';
 import _ from "lodash";
+import { ILoginInformation, ILoginResults } from "../components/loginRegisterInterfaces";
+import { APIResponse, RequestResponse } from "./response";
 
 /**
  * Log into an account
  */
-export async function logIn(email: string, encryptedPassword: string) {
-  const url = `http://${config("backend.ip")}:${config(
-    "backend.port"
-  )}/account/login`;
-  return fetch(url, {
-    method: "POST",
-    headers: {
-      password: "Why we have to do this",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: email,
-      password: encryptedPassword,
+ export async function login(
+  credentials: ILoginInformation
+): Promise<RequestResponse<ILoginResults>> {
+  let formData = new FormData();
+  formData.append(
+    "username",
+    new Blob([credentials.username], {
+      type: "text/plain",
     }),
-  })
-    .then((response: any) => {
-      // get the response body
+    ""
+  );
+  formData.append(
+    "password",
+    new Blob([credentials.password], {
+      type: "text/plain",
+    }),
+    ""
+  );
+
+  return axios
+    .post(
+      `http://localhost:8080/login`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+    .then((response) => {
       return {
-        token: response.data,
         code: response.status,
+        response: response.data as APIResponse<ILoginResults>,
       };
     })
-    .catch((error: any) => {
-      if (error.response)
+    .catch((error) => {
+      if (error instanceof TypeError || error.message === "Network Error") {
         return {
           code: 0,
-          body: {
-            errorMessage: `${error.response.name} - ${error.response.message}`,
+          response: {
+            message: "Connection error",
+            successful: false,
+            data: null,
           },
         };
+      }
 
-      return { code: error.response.status, body: error.response.data };
+      let response = error.response;
+      return {
+        code: response.status,
+        response: response.data as APIResponse<ILoginResults>,
+      };
     });
 }

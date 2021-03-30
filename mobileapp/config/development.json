@@ -1,11 +1,21 @@
 {
   "environment_name": "Development",
   "backend": {
-    "ip": "192.168.1.15",
+    "ip": "localhost",
     "port": 8080
   },
   "defaultFilters": {
-    "size": 10,
+    "size": 15,
     "page": 0
+  },
+  "tokens": {
+    "regular": "regularUserTestToken",
+    "admin": "testTokenForAdmins",
+    "shelter": "shelterSecretTestToken"
+  },
+  "cookies": {
+    "token": "token",
+    "userType": "userType",
+    "userId": "userId"
   }
 }

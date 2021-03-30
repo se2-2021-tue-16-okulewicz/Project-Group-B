@@ -1,38 +1,72 @@
-import { createReducer } from "@reduxjs/toolkit";
-import _ from "lodash";
-import config from "../config/config";
 import * as Actions from "./actions";
+import { createReducer, PayloadAction } from "@reduxjs/toolkit";
+import _ from "lodash";
+import { RequestResponse } from "./response";
+import { ILoginResults } from "../components/loginRegisterInterfaces";
 
-const init = {
-  token: null,
+export type Error = {
+  hasError: boolean;
+  errorCode: number;
+  erorMessage: string;
+};
+
+export type State = {
+  loading: boolean;
+  error: Error;
+  loginInformation: ILoginResults | null;
+};
+
+const init: State = {
+  loading: false,
+  error: {
+    hasError: false,
+    errorCode: 0,
+    erorMessage: "",
+  },
+  loginInformation: null,
 };
 
 export const reducer = createReducer(init, {
-  [Actions.logInThunk.pending]: (state, action) => {
+
+  [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
-    newState.status = "loggingIn";
+    newState.loginInformation = null;
     return newState;
   },
 
-  [Actions.logInThunk.fulfilled]: (state, action) => {
+  [Actions.loginThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
     let newState = _.cloneDeep(state);
-    newState.status = "redirectToCars";
-    newState.token = action.payload.token;
+    newState.loading = true;
+    console.log("Log in pending");
     return newState;
   },
-
-  [Actions.logInThunk.rejected]: (state, action) => {
+  [Actions.loginThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILoginResults>>
+  ) => {
     let newState = _.cloneDeep(state);
-    newState.status = "logInError";
-    newState.error = action.payload.code;
-    newState.errorBody = action.payload.body;
+    newState.loading = false;
+    newState.loginInformation = payload.payload.response.data;
+    console.log("Log in fulfilled");
     return newState;
   },
-  [Actions.setIdle]: (state, action) => {
+  [Actions.loginThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILoginResults>>
+  ) => {
     let newState = _.cloneDeep(state);
-    newState.status = "idle";
-    newState.error = null;
-    newState.errorBody = {};
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    console.log("Log in rejected");
+    console.log(newState.error.erorMessage);
     return newState;
   },
 });

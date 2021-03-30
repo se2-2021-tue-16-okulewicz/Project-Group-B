@@ -5,7 +5,17 @@
     "port": 5050
   },
   "defaultFilters": {
-    "size": 10,
+    "size": 15,
     "page": 0
+  },
+  "testTokens": {
+    "regular": "",
+    "admin": "",
+    "shelter": ""
+  },
+  "cookies": {
+    "token": "token",
+    "userType": "userType",
+    "userId": "userId"
   }
 }

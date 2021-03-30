@@ -7,50 +7,54 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  Image
 } from "react-native";
 import * as React from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import store from "../../redux/store";
 import { useSelector } from "react-redux";
 import * as Actions from "../../redux/actions";
 import * as Utility from "../../redux/utility.js";
 import * as styles from "../../constants/account";
+import { State } from "../../redux/reducer";
+import { store } from "../../redux/store";
+import { clearLoginInformation } from "../../redux/actions";
 
 const SignIn = ({ navigation }: any) => {
-  const [email, setEmail] = React.useState("");
+  const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [ready, setReady] = React.useState(false);
-  const status = useSelector((state) => state.status);
   const [modalVisible, setModalVisible] = React.useState(false);
+  const loginInfo = useSelector((state: State) => state.loginInformation);
 
   React.useEffect(() => {
-    if (status === "loggingIn" || status === "redirectToCars") {
+    if(loginInfo != null){
       setReady(false);
-      if (status === "redirectToCars") {
-        setEmail("");
-        setPassword("");
-      }
-      return;
+      setUsername("");
+      setPassword("");
     }
-    if (status === "logInError") {
-      setReady(true);
-      setModalVisible(true);
-    }
-  }, [status]);
+  }, [loginInfo]);
 
-  async function logIn() {
+  async function signIn() {
+    console.log("Signing in");
     store.dispatch(
-      Actions.logInThunk({ email: email, password: Utility.Encrypt(password) })
+      
+      Actions.loginThunk({ username: username, password: (password) })
     );
   }
 
   React.useEffect(() => {
-    if (Utility.isEmailValid(email) && Utility.isPasswordValid(password)) {
+    if (Utility.isUsernameValid(username) && Utility.isPasswordValid(password)) {
       setReady(true);
       return;
     }
     setReady(false);
-  }, [email, password]);
+  }, [username, password]);
+
+  React.useEffect(() => {
+    if (loginInfo !== null) {
+      store.dispatch(clearLoginInformation());
+    }
+  }, [loginInfo]);
 
   return (
     <KeyboardAvoidingView
@@ -67,7 +71,7 @@ const SignIn = ({ navigation }: any) => {
       >
         <View style={style.centeredView}>
           <View style={style.modalView}>
-            <Text style={style.modalText}>Log-in failed!</Text>
+            <Text style={style.modalText}>Sign-in failed!</Text>
             <Text style={style.modalText}>Check your credentials.</Text>
             <Pressable
               style={[style.modalButton, style.buttonClose]}
@@ -78,13 +82,15 @@ const SignIn = ({ navigation }: any) => {
           </View>
         </View>
       </Modal>
-      <Text style={styles.styles.logo}>Carly</Text>
+      <View>
+      <Image style={style.tinyLogo} source={require('../../assets/images/dog-paw.png')}/>
+      </View>
       <View>
         <TextInput
-          placeholder="E-mail"
+          placeholder="Username"
           style={styles.styles.textInput}
-          onChangeText={(e) => setEmail(e)}
-          value={email}
+          onChangeText={(e) => setUsername(e)}
+          value={username}
         ></TextInput>
         <TextInput
           maxLength={32}
@@ -97,9 +103,9 @@ const SignIn = ({ navigation }: any) => {
         <TouchableOpacity
           disabled={!ready}
           style={ready ? style.button : style.disabledButton}
-          onPress={() => logIn()}
+          onPress={() => signIn()}
         >
-          <Text style={style.buttonText}>Log in</Text>
+          <Text style={style.buttonText}>Sign in</Text>
         </TouchableOpacity>
       </View>
       {/* <SafeAreaView style={styles.styles.bottomView}>
@@ -112,6 +118,10 @@ const SignIn = ({ navigation }: any) => {
   );
 };
 const style = StyleSheet.create({
+  tinyLogo: {
+    width: 50,
+    height: 50
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

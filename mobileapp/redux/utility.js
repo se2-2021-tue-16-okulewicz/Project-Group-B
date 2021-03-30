@@ -99,6 +99,18 @@ export function isEmailValid(email) {
 }
 
 /**
+ * Returns true if username is valid, false otherwise
+ * @param {String} username
+ */
+ export function isUsernameValid(username) {
+
+  if (username.length >8) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * Returns true if password is valid, false otherwise
  * @param {String} password
  */
