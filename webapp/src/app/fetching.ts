@@ -95,6 +95,40 @@ export async function addDog(
     });
 }
 
+export async function fetchDogs() {
+
+  return axios
+    .get(
+      `http://${config("backend.ip")}:${config("backend.port")}/lostdogs`
+    )
+    .then((response) => {
+      console.log(response);
+      return {
+        code: response.status,
+        response: response.data as APIResponse<ILostDogWithPicture[]>,
+      };
+    })
+    .catch((error) => {
+      if (error instanceof TypeError || error.message === "Network Error") {
+        return {
+          code: 0,
+          response: {
+            message: "Connection error",
+            successful: false,
+            data: null,
+          },
+        };
+      }
+
+      let response = error.response;
+      return {
+        code: response.status,
+        response: response.data as APIResponse<ILostDogWithPicture[]>,
+      };
+    });
+}
+
+
 export async function login(
   credentials: ILoginInformation
 ): Promise<RequestResponse<ILoginResults>> {

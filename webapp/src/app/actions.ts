@@ -55,5 +55,18 @@ export const logoutThunk = createAsyncThunk("logout", async () => {
   return;
 });
 
+export const fetchDogsThunk = createAsyncThunk(
+  "dogs/fetchAllDogs",
+  async (dogs: ILostDogWithPicture[], { rejectWithValue }) => {
+    const response: RequestResponse<ILostDogWithPicture[]>= await Fetching.fetchDogs();
+
+    if (response.code !== 200) return rejectWithValue(response);
+
+    dogs = response.response.data as ILostDogWithPicture[];
+
+    return response;
+  }
+);
+
 export const clearError = createAction("clearError");
 export const clearLoginInformation = createAction("clearLoginInformation");
