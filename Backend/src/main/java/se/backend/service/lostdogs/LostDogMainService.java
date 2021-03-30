@@ -186,4 +186,14 @@ public class LostDogMainService implements LostDogService{
 
         return returnedDog;
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean MarkLostDogAsFound(long dogId) {
+        if(IsInvalidDogId(dogId))
+            return false;
+        lostDogRepository.markLostDogFound(dogId);
+        return true;
+    }
+
 }

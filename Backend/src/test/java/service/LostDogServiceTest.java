@@ -181,4 +181,35 @@ public class LostDogServiceTest {
         assertEquals(1, warsawDogs.size());
         assertEquals(4, allDogsWithOr.size());
     }
+
+    @Test
+    public void MarkLostDogAsFoundTest() {
+       //Check if dog is found - should be false
+       var result1 = service.GetDogDetails(10001);
+       assertFalse(result1.isIsFound());
+
+       //Mark as found
+       var markResult1 = service.MarkLostDogAsFound(10001);
+       assertTrue(markResult1);
+
+        //Check if dog is found - should be true now
+        var result2 = service.GetDogDetails(10001);
+        assertTrue(result2.isIsFound());
+
+        //Mark as found again - should return true but not change anything
+        var markResult2 = service.MarkLostDogAsFound(10001);
+        assertTrue(markResult2);
+
+        //Check if dog is found - should be still true
+        var result3 = service.GetDogDetails(10001);
+        assertTrue(result3.isIsFound());
+
+        //Check if another dog is found - should be false
+        var result4 = service.GetDogDetails(10003);
+        assertFalse(result4.isIsFound());
+
+        //Try to mark non-existing dog as found
+        var markResult3 = service.MarkLostDogAsFound(20001);
+        assertFalse(markResult3);
+    }
 }
