@@ -49,9 +49,19 @@ public class LoginMainService implements LoginService {
 
     private HashMap<String, Pair<UserType, Long>> sessions = null;
 
-    ExampleMatcher LOGIN_INFORMATION_MATCHER = ExampleMatcher.matching()
+    private static final ExampleMatcher LOGIN_ADMIN_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id")
-            .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
+            .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
+            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
+
+    private static final ExampleMatcher LOGIN_SHELTER_INFORMATION_MATCHER = ExampleMatcher.matching()
+            .withIgnorePaths("id", "shelter_id")
+            .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
+            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
+
+    private static final ExampleMatcher LOGIN_REGULAR_INFORMATION_MATCHER = ExampleMatcher.matching()
+            .withIgnorePaths("id", "email", "phone_number")
+            .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.caseSensitive())
             .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
 
     @Autowired
@@ -66,16 +76,14 @@ public class LoginMainService implements LoginService {
                              @Value("${testToken.admin:testTokenForAdmins}") String adminTestToken) {
 
         //Initiates sessions, if test token for given type is present, it is added to the sessions
-        if(sessions == null) {
-            sessions = new HashMap<>();
+        sessions = new HashMap<>();
 
-            if(userTestToken != null && !userTestToken.isBlank() && !userTestToken.isEmpty())
-                sessions.put(userTestToken, new Pair<>(UserType.Regular, GetLongFromString(userTestTokenId)));
-            if(shelterTestToken != null && !shelterTestToken.isBlank() && !shelterTestToken.isEmpty())
-                sessions.put(shelterTestToken, new Pair<>(UserType.Shelter,  GetLongFromString(shelterTestTokenId)));
-            if(adminTestToken != null && !adminTestToken.isBlank() && !adminTestToken.isEmpty())
-                sessions.put(adminTestToken, new Pair<>(UserType.Admin,  GetLongFromString(adminTestTokenId)));
-        }
+        if(userTestToken != null && !userTestToken.isBlank() && !userTestToken.isEmpty())
+            sessions.put(userTestToken, new Pair<>(UserType.Regular, GetLongFromString(userTestTokenId)));
+        if(shelterTestToken != null && !shelterTestToken.isBlank() && !shelterTestToken.isEmpty())
+            sessions.put(shelterTestToken, new Pair<>(UserType.Shelter,  GetLongFromString(shelterTestTokenId)));
+        if(adminTestToken != null && !adminTestToken.isBlank() && !adminTestToken.isEmpty())
+            sessions.put(adminTestToken, new Pair<>(UserType.Admin,  GetLongFromString(adminTestTokenId)));
 
         this.userAccountRepository = userAccountRepository;
         this.dogShelterAccountRepository = dogShelterAccountRepository;
@@ -87,8 +95,8 @@ public class LoginMainService implements LoginService {
         //Normal account
         UserAccount userProbe = new UserAccount();
         userProbe.setPassword(getSHA256Hash(password));
-        userProbe.setAssociatedEmail(username);
-        Example<UserAccount> userExample = Example.of(userProbe, LOGIN_INFORMATION_MATCHER);
+        userProbe.setName(username);
+        Example<UserAccount> userExample = Example.of(userProbe, LOGIN_REGULAR_INFORMATION_MATCHER);
         var normalUser = userAccountRepository.findOne(userExample);
 
         if(normalUser.isPresent()){
@@ -102,7 +110,7 @@ public class LoginMainService implements LoginService {
         DogShelterAccount dogShelterProbe = new DogShelterAccount();
         dogShelterProbe.setPassword(getSHA256Hash(password));
         dogShelterProbe.setAssociatedEmail(username);
-        Example<DogShelterAccount> shelterExample = Example.of(dogShelterProbe, LOGIN_INFORMATION_MATCHER);
+        Example<DogShelterAccount> shelterExample = Example.of(dogShelterProbe, LOGIN_SHELTER_INFORMATION_MATCHER);
         var shelterUser = dogShelterAccountRepository.findOne(shelterExample);
         if(shelterUser.isPresent()){
             var result = new AuthenticationResults(UserType.Shelter);
@@ -115,7 +123,7 @@ public class LoginMainService implements LoginService {
         AdminAccount adminProbe = new AdminAccount();
         adminProbe.setPassword(getSHA256Hash(password));
         adminProbe.setAssociatedEmail(username);
-        Example<AdminAccount> adminExample = Example.of(adminProbe, LOGIN_INFORMATION_MATCHER);
+        Example<AdminAccount> adminExample = Example.of(adminProbe, LOGIN_ADMIN_INFORMATION_MATCHER);
         var adminUser = adminAccountRepository.findOne(adminExample);
         if(adminUser.isPresent()){
             var result = new AuthenticationResults(UserType.Admin);

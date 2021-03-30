@@ -20,6 +20,8 @@ public interface LostDogService {
     LostDogWithBehaviorsAndWithPicture UpdateDog(long dogId, LostDogWithBehaviors updatedDog, Picture picture, long ownerId);
     boolean DeleteDog(long dogId);
 
+    boolean MarkLostDogAsFound(long dogId);
+
     //List<LostDog> GetUserDogs(long userId);
 
 

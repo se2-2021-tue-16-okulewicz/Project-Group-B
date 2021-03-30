@@ -38,7 +38,7 @@ public class UserControllerTest {
     @Test
     public void AuthenticateTest() throws Exception {
         //Regular user login
-        MockMultipartFile loginRegular = new MockMultipartFile("username", "", "text/plain", "e.musk@mail.com".getBytes());
+        MockMultipartFile loginRegular = new MockMultipartFile("username", "", "text/plain", "Elon Musk".getBytes());
         MockMultipartFile passwordRegular = new MockMultipartFile("password", "", "text/plain", "xea-12Musk".getBytes());
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/login")
@@ -51,7 +51,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("data.id", is(10001)));
 
         //Admin login
-        MockMultipartFile loginAdmin = new MockMultipartFile("username", "", "text/plain", "admin007".getBytes());
+        MockMultipartFile loginAdmin = new MockMultipartFile("username", "", "text/plain", "admin007@mail.com".getBytes());
         MockMultipartFile passwordAdmin = new MockMultipartFile("password", "", "text/plain", "admin007123".getBytes());
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/login")
@@ -64,7 +64,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("data.id", is(10001)));
 
         //Shelter login
-        MockMultipartFile loginShelter = new MockMultipartFile("username", "", "text/plain", "hopeShelter".getBytes());
+        MockMultipartFile loginShelter = new MockMultipartFile("username", "", "text/plain", "hopeShelter@mail.com".getBytes());
         MockMultipartFile passwordShelter = new MockMultipartFile("password", "", "text/plain", "12345678".getBytes());
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/login")

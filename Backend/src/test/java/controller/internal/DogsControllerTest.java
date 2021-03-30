@@ -310,4 +310,42 @@ public class DogsControllerTest {
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Failed to update dog - No dog with id: 20001 was found")));
     }
+
+    @Test
+    public void MarkDogAsFound() throws Exception {
+        //Getting existing dog and checking that it is not found
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10001")
+                        .header("token", "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("data.isFound", is(false)));
+
+        //Marking dog as found
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/lostdogs/10001/found")
+                        .header("token", "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)));
+
+        //Getting existing dog and checking that it is found now
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10001")
+                        .header("token", "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("data.isFound", is(true)));
+
+        //Marking non-existing dog as found
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/lostdogs/20001/found")
+                        .header("token", "regularUserTestToken")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)));
+
+        //Invalid token
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/lostdogs/10001/found")
+                        .header("token", "invalidToken")
+        ).andExpect(status().isForbidden())
+                .andExpect(jsonPath("successful", is(false)));
+    }
 }
