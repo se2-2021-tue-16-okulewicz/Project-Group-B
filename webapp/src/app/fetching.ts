@@ -1,7 +1,7 @@
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import {
   ILoginInformation,
   ILoginResults,
@@ -11,9 +11,9 @@ const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
 }) => {
   let result =
-    cookies["token"] === undefined
+    cookies[config.cookies.token] === undefined
       ? config.testTokens.regular
-      : cookies["token"];
+      : cookies[config.cookies.token];
   return result;
 };
 
@@ -31,6 +31,35 @@ Date.prototype.toJSON = function (key?: any): string {
     zeroPad(this.getDate(), 2)
   );
 };
+
+async function getResponse<T>(
+  axiosRequest: Promise<AxiosResponse<any>>
+): Promise<RequestResponse<T>> {
+  try {
+    const response = await axiosRequest;
+    return {
+      code: response.status,
+      response: response.data as APIResponse<T>,
+    };
+  } catch (error) {
+    if (error instanceof TypeError || error.message === "Network Error") {
+      return {
+        code: 0,
+        response: {
+          message: "Connection error",
+          successful: false,
+          data: null,
+        },
+      };
+    }
+
+    let response_1 = error.response;
+    return {
+      code: response_1.status,
+      response: response_1.data as APIResponse<T>,
+    };
+  }
+}
 
 export async function addDog(
   dog: ILostDog,
@@ -56,8 +85,8 @@ export async function addDog(
     picture.fileName
   );
 
-  return axios
-    .post(
+  return getResponse(
+    axios.post(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs`,
       formData,
       {
@@ -68,30 +97,7 @@ export async function addDog(
         },
       }
     )
-    .then((response) => {
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILostDogWithPicture>,
-      };
-    })
-    .catch((error) => {
-      if (error instanceof TypeError || error.message === "Network Error") {
-        return {
-          code: 0,
-          response: {
-            message: "Connection error",
-            successful: false,
-            data: null,
-          },
-        };
-      }
-
-      let response = error.response;
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILostDogWithPicture>,
-      };
-    });
+  );
 }
 
 export async function login(
@@ -113,8 +119,8 @@ export async function login(
     ""
   );
 
-  return axios
-    .post(
+  return getResponse(
+    axios.post(
       `http://${config.backend.ip}:${config.backend.port}/login`,
       formData,
       {
@@ -124,28 +130,22 @@ export async function login(
         },
       }
     )
-    .then((response) => {
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILoginResults>,
-      };
-    })
-    .catch((error) => {
-      if (error instanceof TypeError || error.message === "Network Error") {
-        return {
-          code: 0,
-          response: {
-            message: "Connection error",
-            successful: false,
-            data: null,
-          },
-        };
-      }
+  );
+}
 
-      let response = error.response;
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILoginResults>,
-      };
-    });
+export async function logout(cookies: {
+  [name: string]: any;
+}): Promise<RequestResponse<null>> {
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/logout`,
+      undefined,
+      {
+        headers: {
+          token: getToken(cookies),
+          Accept: "application/json",
+        },
+      }
+    )
+  );
 }

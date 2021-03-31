@@ -63,6 +63,7 @@ public class LostDogMainService implements LostDogService{
     public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture, long ownerId) {
         LostDog dog = newDog.LostDogWithoutBehaviors();
         dog.setOwnerId(ownerId);
+        dog.setIsFound(false);
 
         var savedPicture = pictureRepository.save(picture);
         dog.setPictureId(savedPicture.getId());
@@ -132,7 +133,8 @@ public class LostDogMainService implements LostDogService{
             pictureRepository.deleteById(oldDog.get().getPictureId());
 
         LostDog dogToBeSaved = updatedDog.LostDogWithoutBehaviors();
-        dogToBeSaved.setId(updatedDog.getId());
+        dogToBeSaved.setIsFound(oldDog.get().isIsFound());
+        dogToBeSaved.setId(dogId);
         dogToBeSaved.setOwnerId(ownerId);
 
         var savedPicture = pictureRepository.save(picture);
@@ -184,4 +186,14 @@ public class LostDogMainService implements LostDogService{
 
         return returnedDog;
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean MarkLostDogAsFound(long dogId) {
+        if(IsInvalidDogId(dogId))
+            return false;
+        lostDogRepository.markLostDogFound(dogId);
+        return true;
+    }
+
 }

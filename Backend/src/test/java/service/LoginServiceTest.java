@@ -13,8 +13,7 @@ import se.backend.wrapper.account.UserType;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = SEBackend.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -25,20 +24,30 @@ public class LoginServiceTest {
 
     @Test
     public void authenticateTest() {
-        var authenticationResult1 = service.Authenticate("e.musk@mail.com", "xea-12Musk");
+        var authenticationResult1 = service.Authenticate("Elon Musk", "xea-12Musk");
         assertEquals(UserType.Regular, authenticationResult1.getUserType());
 
-        var authenticationResult2 = service.Authenticate("b.gates@mail.com", "MicrosoftTheBest");
+        var authenticationResult2 = service.Authenticate("Bill Gates", "MicrosoftTheBest");
         assertEquals(UserType.Regular, authenticationResult2.getUserType());
 
-        var authenticationResult3 = service.Authenticate("hopeShelter", "12345678");
+        var authenticationResult3 = service.Authenticate("hopeShelter@mail.com", "12345678");
         assertEquals(UserType.Shelter, authenticationResult3.getUserType());
 
-        var authenticationResult4 = service.Authenticate("admin007", "admin007123");
+        var authenticationResult4 = service.Authenticate("admin007@mail.com", "admin007123");
         assertEquals(UserType.Admin, authenticationResult4.getUserType());
 
         var failedResults = service.Authenticate("not-existing-acc", "not-existing-pwd");
         assertNull(failedResults);
+    }
+
+    @Test
+    public void logoutTest() {
+        var properLogoutResult = service.Logout("regularUserTestToken");
+        assertTrue(properLogoutResult);
+
+        //User should be logged out by now
+        var invalidLogoutResult = service.Logout("regularUserTestToken");
+        assertFalse(invalidLogoutResult);
     }
 
     @Test

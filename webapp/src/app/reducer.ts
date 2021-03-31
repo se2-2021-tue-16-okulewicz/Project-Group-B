@@ -117,7 +117,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.logoutThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<undefined>
+    payload: PayloadAction<RequestResponse<null>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
@@ -126,11 +126,17 @@ export const reducer = createReducer(init, {
   },
   [Actions.logoutThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<undefined>
+    payload: PayloadAction<RequestResponse<null>>
   ) => {
     let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
     newState.loading = false;
     newState.loginInformation = null;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
     return newState;
   },
 });

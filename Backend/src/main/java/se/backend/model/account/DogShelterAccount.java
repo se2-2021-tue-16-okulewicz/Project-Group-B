@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "dog_shelter_account")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class DogShelterAccount extends Account implements Serializable{
+public class DogShelterAccount extends Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -24,6 +24,4 @@ public class DogShelterAccount extends Account implements Serializable{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shelter_id", referencedColumnName = "id")
     private Shelter shelter;
-//    @Column(name = "shelter_id")
-//    private long associatedShelterID;
 }

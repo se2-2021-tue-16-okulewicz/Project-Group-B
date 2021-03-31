@@ -12,24 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @MappedSuperclass
 public class Account {
-
-    @Column(name = "username")
+    @Column(name = "email")
     private String associatedEmail;
+
     private String password;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAssociatedEmail() {
-        return associatedEmail;
-    }
-
-    public void setAssociatedEmail(String associatedEmail) {
-        this.associatedEmail = associatedEmail;
-    }
 }

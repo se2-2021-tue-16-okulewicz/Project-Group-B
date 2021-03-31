@@ -51,8 +51,18 @@ export const loginThunk = createAsyncThunk<
   return response as RequestResponse<ILoginResults>;
 });
 
-export const logoutThunk = createAsyncThunk("logout", async () => {
-  return;
+export const logoutThunk = createAsyncThunk<
+  RequestResponse<null>,
+  { [name: string]: any },
+  { rejectValue: RequestResponse<null> }
+>("logout", async (cookies: { [name: string]: any }, { rejectWithValue }) => {
+  const response: RequestResponse<null> = await Fetching.logout(cookies);
+
+  if (response.response.successful !== true) {
+    return rejectWithValue(response as RequestResponse<null>);
+  }
+
+  return response as RequestResponse<null>;
 });
 
 export const clearError = createAction("clearError");
