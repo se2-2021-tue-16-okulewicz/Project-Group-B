@@ -11,9 +11,9 @@ export default {
               RegisterScreen: "one",
             },
           },
-          LogIn: {
+          SignIn: {
             screens: {
-              LogInScreen: "two",
+              SignInScreen: "two",
             },
           },
         },

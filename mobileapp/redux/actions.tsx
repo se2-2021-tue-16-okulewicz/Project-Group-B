@@ -1,10 +1,9 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import * as Fetching from "./fetching";
-import * as Utility from "./utility.js";
 import {
   ILoginInformation,
   ILoginResults,
-} from "../registerLogin/loginRegisterInterfaces";
+} from "../components/loginRegisterInterfaces";
 import { RequestResponse } from "./response";
 
 /**

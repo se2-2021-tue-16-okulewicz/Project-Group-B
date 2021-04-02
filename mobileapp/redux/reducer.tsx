@@ -40,7 +40,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = true;
-    console.log("Log in pending");
     return newState;
   },
   [Actions.loginThunk.fulfilled.toString()]: (
@@ -50,7 +49,6 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.loginInformation = payload.payload.response.data;
-    console.log("Log in fulfilled");
     return newState;
   },
   [Actions.loginThunk.rejected.toString()]: (
@@ -65,7 +63,6 @@ export const reducer = createReducer(init, {
       errorCode: errorResponse.code,
       erorMessage: errorResponse.response.message,
     };
-    console.log("Log in rejected");
     console.log(newState.error.erorMessage);
     return newState;
   },

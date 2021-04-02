@@ -1,34 +1,52 @@
 import config from "../config/config";
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import _ from "lodash";
 import { ILoginInformation, ILoginResults } from "../components/loginRegisterInterfaces";
 import { APIResponse, RequestResponse } from "./response";
 
-/**
- * Log into an account
- */
- export async function login(
+async function getResponse<T>(
+  axiosRequest: Promise<AxiosResponse<any>>
+): Promise<RequestResponse<T>> {
+  try {
+    const response = await axiosRequest;
+    return {
+      code: response.status,
+      response: response.data as APIResponse<T>,
+    };
+  } catch (error) {
+    if (error instanceof TypeError || error.message === "Network Error") {
+      return {
+        code: 0,
+        response: {
+          message: "Connection error",
+          successful: false,
+          data: null,
+        },
+      };
+    }
+
+    let response_1 = error.response;
+    return {
+      code: response_1.status,
+      response: response_1.data as APIResponse<T>,
+    };
+  }
+}
+
+export async function login(
   credentials: ILoginInformation
 ): Promise<RequestResponse<ILoginResults>> {
   let formData = new FormData();
   formData.append(
-    "username",
-    new Blob([credentials.username], {
-      type: "text/plain",
-    }),
-    ""
+    "username", credentials.username
   );
   formData.append(
-    "password",
-    new Blob([credentials.password], {
-      type: "text/plain",
-    }),
-    ""
+    "password", credentials.password
   );
 
-  return axios
-    .post(
-      `http://localhost:8080/login`,
+  return getResponse(
+    axios.post(
+      `http://192.168.1.15:8080/login`,
       formData,
       {
         headers: {
@@ -37,28 +55,6 @@ import { APIResponse, RequestResponse } from "./response";
         },
       }
     )
-    .then((response) => {
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILoginResults>,
-      };
-    })
-    .catch((error) => {
-      if (error instanceof TypeError || error.message === "Network Error") {
-        return {
-          code: 0,
-          response: {
-            message: "Connection error",
-            successful: false,
-            data: null,
-          },
-        };
-      }
-
-      let response = error.response;
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILoginResults>,
-      };
-    });
+  );
 }
+

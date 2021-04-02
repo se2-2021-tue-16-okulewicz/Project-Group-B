@@ -35,7 +35,6 @@ const SignIn = ({ navigation }: any) => {
   }, [loginInfo]);
 
   async function signIn() {
-    console.log("Signing in");
     store.dispatch(
       
       Actions.loginThunk({ username: username, password: (password) })
