@@ -3,7 +3,7 @@ import { StyleSheet, Text, SafeAreaView } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignIn from "./SignIn";
 import Register from "./Register";
-import {store} from "../../redux/store";
+import { store } from "../../redux/store";
 import { useSelector } from "react-redux";
 import * as Actions from "../../redux/actions";
 import { State } from "../../redux/reducer";
