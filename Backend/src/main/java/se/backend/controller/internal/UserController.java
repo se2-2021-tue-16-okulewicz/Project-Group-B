@@ -42,12 +42,26 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<Response<UserAccount>> CreateUserAccount(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<Object>> CreateUserAccount(@RequestHeader HttpHeaders headers,
                                                                    @RequestPart("username") String username,
                                                                    @RequestPart("password") String password,
                                                                    @RequestPart("phone_number") String phoneNumber,
                                                                    @RequestPart("email") String email) {
-        return null;
+        logHeaders(headers);
+
+        UserAccount user = new UserAccount();
+        user.setId(0);
+        user.setAssociatedEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setName(username);
+        user.setPassword(password);
+
+        var result = loginService.CreateAccount(user);
+
+        if(result.getValue0() == null)
+            throw new GenericBadRequestException(result.getValue1());
+
+        return ResponseEntity.ok(new Response<>("Registration successful", true, null));
     }
 
     @PostMapping(path = "/login")
@@ -56,7 +70,7 @@ public class UserController {
                                                                         @RequestPart("password") String password) {
         logHeaders(headers);
 
-        var result = this.loginService.Authenticate(username, password);
+        var result = loginService.Authenticate(username, password);
 
         if(result == null){
             throw new GenericBadRequestException("Login failed.");
