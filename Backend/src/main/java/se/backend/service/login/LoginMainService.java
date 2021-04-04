@@ -51,12 +51,14 @@ public class LoginMainService implements LoginService {
     private static final ExampleMatcher LOGIN_ADMIN_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id")
             .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
-            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
+            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive())
+            .withIgnoreCase();
 
     private static final ExampleMatcher LOGIN_SHELTER_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id", "shelter_id")
             .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
-            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
+            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive())
+            .withIgnoreCase();
 
     private static final ExampleMatcher LOGIN_REGULAR_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id", "email", "phone_number")
