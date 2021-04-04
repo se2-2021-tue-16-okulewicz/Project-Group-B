@@ -46,7 +46,7 @@ public class LoginMainService implements LoginService {
         }
     }
 
-    private HashMap<String, Pair<UserType, Long>> sessions;
+    private final HashMap<String, Pair<UserType, Long>> sessions;
 
     private static final ExampleMatcher LOGIN_ADMIN_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id")
