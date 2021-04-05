@@ -1,19 +1,20 @@
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import {
   ILoginInformation,
   ILoginResults,
+  IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
 }) => {
   let result =
-    cookies["token"] === undefined
-      ? config("tokens.regular")
-      : cookies["token"];
+    cookies[config.cookies.token] === undefined
+      ? config.testTokens.regular
+      : cookies[config.cookies.token];
   return result;
 };
 
@@ -31,6 +32,35 @@ Date.prototype.toJSON = function (key?: any): string {
     zeroPad(this.getDate(), 2)
   );
 };
+
+async function getResponse<T>(
+  axiosRequest: Promise<AxiosResponse<any>>
+): Promise<RequestResponse<T>> {
+  try {
+    const response = await axiosRequest;
+    return {
+      code: response.status,
+      response: response.data as APIResponse<T>,
+    };
+  } catch (error) {
+    if (error instanceof TypeError || error.message === "Network Error") {
+      return {
+        code: 0,
+        response: {
+          message: "Connection error",
+          successful: false,
+          data: null,
+        },
+      };
+    }
+
+    let response_1 = error.response;
+    return {
+      code: response_1.status,
+      response: response_1.data as APIResponse<T>,
+    };
+  }
+}
 
 export async function addDog(
   dog: ILostDog,
@@ -56,9 +86,9 @@ export async function addDog(
     picture.fileName
   );
 
-  return axios
-    .post(
-      `http://${config("backend.ip")}:${config("backend.port")}/lostdogs`,
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs`,
       formData,
       {
         headers: {
@@ -68,31 +98,7 @@ export async function addDog(
         },
       }
     )
-    .then((response) => {
-      console.log(response);
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILostDogWithPicture>,
-      };
-    })
-    .catch((error) => {
-      if (error instanceof TypeError || error.message === "Network Error") {
-        return {
-          code: 0,
-          response: {
-            message: "Connection error",
-            successful: false,
-            data: null,
-          },
-        };
-      }
-
-      let response = error.response;
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILostDogWithPicture>,
-      };
-    });
+  );
 }
 
 export async function fetchDogs() {
@@ -148,9 +154,9 @@ export async function login(
     ""
   );
 
-  return axios
-    .post(
-      `http://${config("backend.ip")}:${config("backend.port")}/login`,
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/login`,
       formData,
       {
         headers: {
@@ -159,29 +165,68 @@ export async function login(
         },
       }
     )
-    .then((response) => {
-      console.log(response);
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILoginResults>,
-      };
-    })
-    .catch((error) => {
-      if (error instanceof TypeError || error.message === "Network Error") {
-        return {
-          code: 0,
-          response: {
-            message: "Connection error",
-            successful: false,
-            data: null,
-          },
-        };
-      }
+  );
+}
 
-      let response = error.response;
-      return {
-        code: response.status,
-        response: response.data as APIResponse<ILoginResults>,
-      };
-    });
+export async function logout(cookies: {
+  [name: string]: any;
+}): Promise<RequestResponse<null>> {
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/logout`,
+      undefined,
+      {
+        headers: {
+          token: getToken(cookies),
+          Accept: "application/json",
+        },
+      }
+    )
+  );
+}
+
+export async function registerRegularUser(
+  newUserInfo: IRegisterRegularUserInformation
+): Promise<RequestResponse<null>> {
+  let formData = new FormData();
+  formData.append(
+    "username",
+    new Blob([newUserInfo.username], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "password",
+    new Blob([newUserInfo.password], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "phone_number",
+    new Blob([newUserInfo.phone], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "email",
+    new Blob([newUserInfo.email], {
+      type: "text/plain",
+    }),
+    ""
+  );
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/register`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    )
+  );
 }

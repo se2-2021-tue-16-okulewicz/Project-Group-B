@@ -12,5 +12,10 @@
     "regular": "regularUserTestToken",
     "admin": "testTokenForAdmins",
     "shelter": "shelterSecretTestToken"
+  },
+  "cookies": {
+    "token": "token",
+    "userType": "userType",
+    "userId": "userId"
   }
 }

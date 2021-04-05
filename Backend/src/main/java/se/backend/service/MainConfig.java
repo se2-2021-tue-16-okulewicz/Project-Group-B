@@ -32,10 +32,10 @@ public class MainConfig implements WebMvcConfigurer {
     @PostConstruct
     private void init() {
         Logger logger = LoggerFactory.getLogger(MainConfig.class);
-        logger.info("************** Environment variables **************");
-        for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
-            logger.info("[{}] : [{}]", entry.getKey(), entry.getValue());
-        }
+        //logger.info("************** Environment variables **************");
+        //for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
+        //    logger.info("[{}] : [{}]", entry.getKey(), entry.getValue());
+        //}
     }
 
     @Bean

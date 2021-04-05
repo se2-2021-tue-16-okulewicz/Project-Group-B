@@ -7,16 +7,17 @@ import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { useCookies } from "react-cookie";
 import { store } from "../app/store";
 import { logoutThunk } from "../app/actions";
+import config from "../config/config";
 
 const Footer = () => {
   const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
 
   const logOut = () => {
-    console.log(cookies);
-    removeCookie("token", { path: "/" });
-    removeCookie("userType", { path: "/" });
-    store.dispatch(logoutThunk());
+    removeCookie(config.cookies.token, { path: "/" });
+    removeCookie(config.cookies.userType, { path: "/" });
+    removeCookie(config.cookies.userId, { path: "/" });
+    store.dispatch(logoutThunk(cookies));
     history.push("/");
   };
 

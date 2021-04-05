@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import se.backend.dao.DogBehaviorRepository;
 import se.backend.dao.LostDogRepository;
 import se.backend.dao.PictureRepository;
@@ -17,6 +19,7 @@ import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,13 +41,15 @@ public class LostDogMainService implements LostDogService{
     public List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page) {
         var dogs = lostDogRepository.findAll(filters, page).getContent();
         var dogsWithBehaviorsAndPictures = new ArrayList<LostDogWithBehaviorsAndWithPicture>();
+
         for(var dog : dogs){
             var dogWithBehavior = new LostDogWithBehaviors(dog);
+
             var behaviors = dogBehaviorRepository.findAllByDogId(dog.getId());
             for(var behavior : behaviors) {
                 dogWithBehavior.getBehaviors().add(behavior.getBehavior());
             }
-            //
+
             var dogWithBehaviorAndWithPicture = new LostDogWithBehaviorsAndWithPicture(dogWithBehavior);
             var picture = pictureRepository.findById(dog.getPictureId());
             dogWithBehaviorAndWithPicture.setPicture(picture.orElse(new Picture(-1, "", "", new byte[0])));
@@ -54,11 +59,17 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
-    public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture, long ownerId) {
         LostDog dog = newDog.LostDogWithoutBehaviors();
+        dog.setOwnerId(ownerId);
+        dog.setIsFound(false);
+
         var savedPicture = pictureRepository.save(picture);
         dog.setPictureId(savedPicture.getId());
+
         var savedDog = lostDogRepository.save(dog);
+
         var behaviors = new ArrayList<DogBehavior>();
         for (var behaviorName : newDog.getBehaviors() ) {
             var behavior = new DogBehavior();
@@ -68,10 +79,121 @@ public class LostDogMainService implements LostDogService{
         }
 
         LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(savedDog);
-        savedDogWithBehaviors.setBehaviors(newDog.getBehaviors());
+        savedDogWithBehaviors.setBehaviors(behaviors.stream().map(DogBehavior::getBehavior).collect(Collectors.toList()));
         var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
         returnedDog.setPicture(savedPicture);
 
         return returnedDog;
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean DeleteDog(long dogId) {
+        if(IsInvalidDogId(dogId))
+            return false;
+
+        var foundDog = lostDogRepository.findById(dogId);
+        if(foundDog.isEmpty())
+            return false;
+
+        var dog = foundDog.get();
+
+        var behaviors = dogBehaviorRepository.findAllByDogId(dog.getId());
+        for(var behavior : behaviors) {
+            dogBehaviorRepository.deleteById(behavior.getId());
+        }
+
+        pictureRepository.deleteById(dog.getPictureId());
+        lostDogRepository.delete(dog);
+        return true;
+    }
+
+    private boolean IsInvalidDogId(long dogId)
+    {
+        if(dogId < 0) return true;
+        return !lostDogRepository.existsById(dogId);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public LostDogWithBehaviorsAndWithPicture UpdateDog(long dogId, LostDogWithBehaviors updatedDog, Picture picture, long ownerId)
+    {
+        if(IsInvalidDogId(dogId))
+            return null;
+        var oldDog = lostDogRepository.findById(dogId);
+        if(oldDog.isEmpty())
+            return null;
+
+        for(var oldBehavior : dogBehaviorRepository.findAllByDogId(oldDog.get().getId())) {
+            if(dogBehaviorRepository.existsById(oldBehavior.getId()))
+                dogBehaviorRepository.deleteById(oldBehavior.getId());
+        }
+
+        if(pictureRepository.existsById(oldDog.get().getPictureId()))
+            pictureRepository.deleteById(oldDog.get().getPictureId());
+
+        LostDog dogToBeSaved = updatedDog.LostDogWithoutBehaviors();
+        dogToBeSaved.setIsFound(oldDog.get().isIsFound());
+        dogToBeSaved.setId(dogId);
+        dogToBeSaved.setOwnerId(ownerId);
+
+        var savedPicture = pictureRepository.save(picture);
+        dogToBeSaved.setPictureId(savedPicture.getId());
+
+        var savedDog = lostDogRepository.save(dogToBeSaved);
+
+        var behaviors = new ArrayList<DogBehavior>();
+        for (var behaviorName : updatedDog.getBehaviors() ) {
+            var behavior = new DogBehavior();
+            behavior.setDogId(savedDog.getId());
+            behavior.setBehavior(behaviorName);
+            behaviors.add(dogBehaviorRepository.save(behavior));
+        }
+
+        LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(savedDog);
+        savedDogWithBehaviors.setBehaviors(behaviors.stream().map(DogBehavior::getBehavior).collect(Collectors.toList()));
+
+        var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
+        returnedDog.setPicture(savedPicture);
+
+        return returnedDog;
+    }
+
+    @Override
+    public LostDogWithBehaviorsAndWithPicture GetDogDetails(long dogId)
+    {
+        if(IsInvalidDogId(dogId))
+            return null;
+
+        var dog = lostDogRepository.findById(dogId);
+        if(dog.isEmpty())
+            return null;
+
+        var picture = pictureRepository.findById(dog.get().getPictureId());
+        var behaviors = dogBehaviorRepository.findAllByDogId(dogId);
+
+        var behaviorStrings = new ArrayList<String>();
+        for(var b : behaviors) {
+            behaviorStrings.add(b.getBehavior());
+        }
+
+        LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(dog.get());
+        savedDogWithBehaviors.setBehaviors(behaviorStrings);
+
+        var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
+
+        returnedDog.setPicture(picture.orElse(new Picture(-1, "", "", new byte[0])));
+
+        return returnedDog;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean MarkLostDogAsFound(long dogId) {
+        if(IsInvalidDogId(dogId))
+            return false;
+        lostDogRepository.markLostDogFound(dogId);
+        return true;
+    }
+
 }

@@ -14,10 +14,13 @@ import java.util.List;
 //TODO: Add comments to the dogs
 public interface LostDogService {
     List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page);
-    LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture);
-    //LostDog GetDogDetails(long dogId);
-    //LostDog UpdateDog(LostDog updatedVersion);
-    //boolean DeleteDog(long dogId);
+    LostDogWithBehaviorsAndWithPicture AddLostDog(LostDogWithBehaviors newDog, Picture picture, long ownerId);
+
+    LostDogWithBehaviorsAndWithPicture GetDogDetails(long dogId);
+    LostDogWithBehaviorsAndWithPicture UpdateDog(long dogId, LostDogWithBehaviors updatedDog, Picture picture, long ownerId);
+    boolean DeleteDog(long dogId);
+
+    boolean MarkLostDogAsFound(long dogId);
 
     //List<LostDog> GetUserDogs(long userId);
 

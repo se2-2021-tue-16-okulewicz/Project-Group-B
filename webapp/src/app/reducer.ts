@@ -15,6 +15,7 @@ export type State = {
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
+  redirect: string | null;
 };
 
 const init: State = {
@@ -25,6 +26,7 @@ const init: State = {
     erorMessage: "",
   },
   loginInformation: null,
+  redirect: null,
 };
 
 export const reducer = createReducer(init, {
@@ -41,6 +43,12 @@ export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
+    return newState;
+  },
+
+  [Actions.clearRedirect.type]: (state: State) => {
+    let newState = _.cloneDeep(state);
+    newState.redirect = null;
     return newState;
   },
 
@@ -117,7 +125,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.logoutThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<undefined>
+    payload: PayloadAction<RequestResponse<null>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
@@ -126,11 +134,50 @@ export const reducer = createReducer(init, {
   },
   [Actions.logoutThunk.rejected.toString()]: (
     state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.loginInformation = null;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+
+  [Actions.registerRegularUserThunk.pending.toString()]: (
+    state: State,
     payload: PayloadAction<undefined>
   ) => {
     let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.registerRegularUserThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.redirect = "/";
     newState.loading = false;
-    newState.loginInformation = null;
+    newState.loginInformation = payload.payload.response.data;
+    return newState;
+  },
+  [Actions.registerRegularUserThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
     return newState;
   },
 });
