@@ -10,6 +10,7 @@ import {
   InputLabel,
   Link,
   makeStyles,
+  TextField,
   Theme,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
@@ -20,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
+import { isString } from "lodash";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -106,6 +108,28 @@ export default function Register() {
     history.push("/");
   };
 
+  function isStringValidPassword(password: string): boolean {
+    return password.length <= 32 && password.length >= 6;
+  }
+
+  function isStringValidUsername(username: string): boolean {
+    return username.length <= 32 && username.length >= 3;
+  }
+
+  function isStringValidPhoneNumeber(phone: string): boolean {
+    let phoneNumberGarbage = new RegExp("[()\\s-]+", "g");
+    let phoneNumber = new RegExp("^((\\+[1-9]?[0-9])|0)?[7-9]?[0-9]{9}$");
+    if (phone === "") return false;
+    phone = phone.replace(phoneNumberGarbage, "");
+    return phoneNumber.test(phone);
+  }
+
+  function isStringValidEmail(email: string): boolean {
+    //Should catch like 99%+ of valid emails
+    let emailRegex : RegExp = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+    return emailRegex.test(email);
+  }
+
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
@@ -124,12 +148,13 @@ export default function Register() {
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}
                 >
-                  <InputLabel htmlFor="username">Username</InputLabel>
-                  <Input
-                    id="username"
+                  <TextField
+                    label="Username"
                     type={"text"}
                     value={values.username}
                     onChange={handleChange("username")}
+                    error={!isStringValidUsername(values.username)}
+                    helperText="Should have between 3 and 32 characters"
                   />
                 </FormControl>
               </div>
@@ -137,12 +162,12 @@ export default function Register() {
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}
                 >
-                  <InputLabel htmlFor="email">E-mail</InputLabel>
-                  <Input
-                    id="email"
+                  <TextField
+                  label="E-mail"
                     type={"text"}
                     value={values.email}
                     onChange={handleChange("email")}
+                    error={!isStringValidEmail(values.email)}
                   />
                 </FormControl>
               </div>
@@ -150,12 +175,12 @@ export default function Register() {
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}
                 >
-                  <InputLabel htmlFor="phone">Phone number</InputLabel>
-                  <Input
-                    id="phone"
+                  <TextField
+                    label="Phone number"
                     type={"text"}
                     value={values.phone}
                     onChange={handleChange("phone")}
+                    error={!isStringValidPhoneNumeber(values.phone)}
                   />
                 </FormControl>
               </div>
@@ -169,6 +194,7 @@ export default function Register() {
                     type={values.showPassword ? "text" : "password"}
                     value={values.password}
                     onChange={handleChange("password")}
+                    error={!isStringValidPassword(values.password)}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -191,12 +217,15 @@ export default function Register() {
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}
                 >
-                  <InputLabel htmlFor="repeatPassword">Repeat password</InputLabel>
+                  <InputLabel htmlFor="repeatPassword">
+                    Repeat password
+                  </InputLabel>
                   <Input
                     id="repeatPassword"
                     type={values.showRepeatedPassword ? "text" : "password"}
                     value={values.repeatedPassword}
                     onChange={handleChange("repeatedPassword")}
+                    error={!(values.password === values.repeatedPassword)}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -223,8 +252,11 @@ export default function Register() {
                     onClick={() => onRegisterClicked()}
                     color="primary"
                     disabled={
-                      values.username.length === 0 &&
-                      values.password.length === 0
+                      !(isStringValidEmail(values.email) &&
+                      isStringValidUsername(values.username) &&
+                      isStringValidPhoneNumeber(values.phone) &&
+                      isStringValidPassword(values.password) &&
+                      values.password === values.repeatedPassword)
                     }
                   >
                     Register
