@@ -25,6 +25,7 @@ const SignIn = ({ navigation }: any) => {
   const [ready, setReady] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const loginInfo = useSelector((state: State) => state.loginInformation);
+  const errorMessage = useSelector((state: State) => state.error.erorMessage);
 
   React.useEffect(() => {
     if(loginInfo != null){
@@ -33,6 +34,13 @@ const SignIn = ({ navigation }: any) => {
       setPassword("");
     }
   }, [loginInfo]);
+
+  React.useEffect(() => {
+    if(errorMessage !== ""){
+      setModalVisible(true);
+      //setReady(false);
+    }
+  }, [errorMessage]);
 
   async function signIn() {
     store.dispatch(
@@ -71,10 +79,10 @@ const SignIn = ({ navigation }: any) => {
         <View style={style.centeredView}>
           <View style={style.modalView}>
             <Text style={style.modalText}>Sign-in failed!</Text>
-            <Text style={style.modalText}>Check your credentials.</Text>
+            <Text style={style.modalText}>{errorMessage}.</Text>
             <Pressable
               style={[style.modalButton, style.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => setModalVisible(false)}
             >
               <Text style={style.textStyle}>OK</Text>
             </Pressable>

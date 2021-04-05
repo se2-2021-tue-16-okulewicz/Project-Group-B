@@ -40,6 +40,9 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = true;
+    newState.error.hasError = false;
+    newState.error.errorCode = 0;
+    newState.error.erorMessage = "";
     return newState;
   },
   [Actions.loginThunk.fulfilled.toString()]: (
@@ -63,7 +66,6 @@ export const reducer = createReducer(init, {
       errorCode: errorResponse.code,
       erorMessage: errorResponse.response.message,
     };
-    console.log(newState.error.erorMessage);
     return newState;
   },
 });
