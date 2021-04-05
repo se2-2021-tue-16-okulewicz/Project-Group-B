@@ -145,7 +145,7 @@ export default function RegisterRegularUser() {
   }, []);
 
   return (
-    <div className="Login">
+    <div className="Register">
       <div className="Title">Lost Dogs and Shelters</div>
       <div>
         <FormControl className={classes.formControl}>
@@ -153,10 +153,8 @@ export default function RegisterRegularUser() {
             <CardHeader title="" />
             <div className="AccountListWrapper">
               <div>
-                <FormControl
-                  className={clsx(classes.margin, classes.textField)}
-                >
                   <TextField
+                  className={clsx(classes.margin, classes.textField)}
                     label="Username"
                     type={"text"}
                     value={values.username}
@@ -164,33 +162,26 @@ export default function RegisterRegularUser() {
                     error={!isStringValidUsername(values.username)}
                     helperText="Should have between 3 and 32 characters"
                   />
-                </FormControl>
               </div>
               <div>
-                <FormControl
-                  className={clsx(classes.margin, classes.textField)}
-                >
                   <TextField
+                  className={clsx(classes.margin, classes.textField)}
                     label="E-mail"
                     type={"text"}
                     value={values.email}
                     onChange={handleChange("email")}
                     error={!isStringValidEmail(values.email)}
                   />
-                </FormControl>
               </div>
               <div>
-                <FormControl
-                  className={clsx(classes.margin, classes.textField)}
-                >
                   <TextField
+                  className={clsx(classes.margin, classes.textField)}
                     label="Phone number"
                     type={"text"}
                     value={values.phone}
                     onChange={handleChange("phone")}
                     error={!isStringValidPhoneNumeber(values.phone)}
                   />
-                </FormControl>
               </div>
               <div>
                 <FormControl
