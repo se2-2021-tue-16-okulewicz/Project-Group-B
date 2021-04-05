@@ -5,6 +5,7 @@ import * as Fetching from "./fetching";
 import {
   ILoginInformation,
   ILoginResults,
+  IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
 
 export const addDogThunk = createAsyncThunk<
@@ -64,6 +65,25 @@ export const logoutThunk = createAsyncThunk<
 
   return response as RequestResponse<null>;
 });
+
+export const registerRegularUserThunk = createAsyncThunk<
+  RequestResponse<null>,
+  IRegisterRegularUserInformation,
+  { rejectValue: RequestResponse<null> }
+>(
+  "registeregularUser",
+  async (newUserInfo: IRegisterRegularUserInformation, { rejectWithValue }) => {
+    const response: RequestResponse<null> = await Fetching.registerRegularUser(
+      newUserInfo
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<null>);
+    }
+
+    return response as RequestResponse<null>;
+  }
+);
 
 export const clearError = createAction("clearError");
 export const clearLoginInformation = createAction("clearLoginInformation");

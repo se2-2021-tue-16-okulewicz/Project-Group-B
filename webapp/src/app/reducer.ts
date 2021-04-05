@@ -139,4 +139,35 @@ export const reducer = createReducer(init, {
     };
     return newState;
   },
+
+  [Actions.registerRegularUserThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.registerRegularUserThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    return newState;
+  },
+  [Actions.registerRegularUserThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
 });

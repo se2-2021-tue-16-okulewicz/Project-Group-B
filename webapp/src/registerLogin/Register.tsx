@@ -23,6 +23,7 @@ import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
 import { isString } from "lodash";
+import { registerRegularUserThunk } from "../app/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -101,8 +102,14 @@ export default function Register() {
   };
 
   const onRegisterClicked = () => {
-    //store.dispatch(
-    //);
+    store.dispatch(
+        registerRegularUserThunk({
+            username: values.username,
+            password: values.password,
+            email: values.email,
+            phone: values.phone
+        })
+    );
   };
 
   const goToLogin = () => {
@@ -127,7 +134,7 @@ export default function Register() {
 
   function isStringValidEmail(email: string): boolean {
     //Should catch like 99%+ of valid emails
-    let emailRegex : RegExp = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+    let emailRegex: RegExp = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
     return emailRegex.test(email);
   }
 
@@ -164,7 +171,7 @@ export default function Register() {
                   className={clsx(classes.margin, classes.textField)}
                 >
                   <TextField
-                  label="E-mail"
+                    label="E-mail"
                     type={"text"}
                     value={values.email}
                     onChange={handleChange("email")}
@@ -212,7 +219,11 @@ export default function Register() {
                       </InputAdornment>
                     }
                   />
-                  <FormHelperText error={!isStringValidPassword(values.password)}>Should have between 6 and 32 characters</FormHelperText>
+                  <FormHelperText
+                    error={!isStringValidPassword(values.password)}
+                  >
+                    Should have between 6 and 32 characters
+                  </FormHelperText>
                 </FormControl>
               </div>
               <div>
@@ -245,7 +256,11 @@ export default function Register() {
                       </InputAdornment>
                     }
                   />
-                  <FormHelperText error={!(values.password === values.repeatedPassword)}>Must be the same as password</FormHelperText>
+                  <FormHelperText
+                    error={!(values.password === values.repeatedPassword)}
+                  >
+                    Must be the same as password
+                  </FormHelperText>
                 </FormControl>
               </div>
               <div>
@@ -256,11 +271,13 @@ export default function Register() {
                     onClick={() => onRegisterClicked()}
                     color="primary"
                     disabled={
-                      !(isStringValidEmail(values.email) &&
-                      isStringValidUsername(values.username) &&
-                      isStringValidPhoneNumeber(values.phone) &&
-                      isStringValidPassword(values.password) &&
-                      values.password === values.repeatedPassword)
+                      !(
+                        isStringValidEmail(values.email) &&
+                        isStringValidUsername(values.username) &&
+                        isStringValidPhoneNumeber(values.phone) &&
+                        isStringValidPassword(values.password) &&
+                        values.password === values.repeatedPassword
+                      )
                     }
                   >
                     Register
