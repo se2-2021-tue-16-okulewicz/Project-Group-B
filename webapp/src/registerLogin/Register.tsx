@@ -13,17 +13,13 @@ import {
   Theme,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import React from "react";
 import clsx from "clsx";
-import "date-fns";
-import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { clearLoginInformation, loginThunk } from "../app/actions";
-import { State } from "../app/reducer";
 import { store } from "../app/store";
 import config from "../config/config";
-import "./Login.css";
+import { useCookies } from "react-cookie";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,30 +52,37 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface internalState {
   username: string;
+  email: string;
+  phone: string;
   password: string;
+  repeatedPassword: string;
   showPassword: boolean;
+  showRepeatedPassword: boolean;
 }
 
-export default function Login() {
+export default function Register() {
   const classes = useStyles();
-  const [values, setValues] = useState<internalState>({
-    username: "",
-    password: "",
-    showPassword: false,
-  });
-
-  const loginInfo = useSelector((state: State) => state.loginInformation);
   const history = useHistory();
   const [cookies, setCookie, removeCookie] = useCookies();
-
-  const handleChange = (prop: keyof internalState) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  const [values, setValues] = useState<internalState>({
+    username: "",
+    email: "",
+    phone: "",
+    password: "",
+    repeatedPassword: "",
+    showPassword: false,
+    showRepeatedPassword: false,
+  });
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
+  };
+
+  const handleClickShowRepeatedPassword = () => {
+    setValues({
+      ...values,
+      showRepeatedPassword: !values.showRepeatedPassword,
+    });
   };
 
   const handleMouseDownPassword = (
@@ -88,30 +91,20 @@ export default function Login() {
     event.preventDefault();
   };
 
-  const onLoginClicked = () => {
-    store.dispatch(
-      loginThunk({
-        username: values.username,
-        password: values.password,
-      })
-    );
+  const handleChange = (prop: keyof internalState) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setValues({ ...values, [prop]: event.target.value });
   };
 
-  const goToUserRegister = () => {
-    history.push("/register/user");
+  const onRegisterClicked = () => {
+    //store.dispatch(
+    //);
   };
 
-  const goToShelterRegister = () => {};
-
-  useEffect(() => {
-    if (loginInfo !== null) {
-      setCookie(config.cookies.token, loginInfo?.token, { path: "/" });
-      setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
-      setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
-      store.dispatch(clearLoginInformation());
-      history.push("/listDogs");
-    }
-  }, [loginInfo]);
+  const goToLogin = () => {
+    history.push("/");
+  };
 
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
@@ -144,6 +137,32 @@ export default function Login() {
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}
                 >
+                  <InputLabel htmlFor="email">E-mail</InputLabel>
+                  <Input
+                    id="email"
+                    type={"text"}
+                    value={values.email}
+                    onChange={handleChange("email")}
+                  />
+                </FormControl>
+              </div>
+              <div>
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                >
+                  <InputLabel htmlFor="phone">Phone number</InputLabel>
+                  <Input
+                    id="phone"
+                    type={"text"}
+                    value={values.phone}
+                    onChange={handleChange("phone")}
+                  />
+                </FormControl>
+              </div>
+              <div>
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                >
                   <InputLabel htmlFor="password">Password</InputLabel>
                   <Input
                     id="password"
@@ -169,18 +188,46 @@ export default function Login() {
                 </FormControl>
               </div>
               <div>
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                >
+                  <InputLabel htmlFor="repeatPassword">Repeat password</InputLabel>
+                  <Input
+                    id="repeatPassword"
+                    type={values.showRepeatedPassword ? "text" : "password"}
+                    value={values.repeatedPassword}
+                    onChange={handleChange("repeatedPassword")}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowRepeatedPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showRepeatedPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </div>
+              <div>
                 <FormControl className={classes.formControl}>
                   <Button
                     data-testid="submit-button"
                     variant="contained"
-                    onClick={() => onLoginClicked()}
+                    onClick={() => onRegisterClicked()}
                     color="primary"
                     disabled={
-                      values.username.length === 0 ||
+                      values.username.length === 0 &&
                       values.password.length === 0
                     }
                   >
-                    Login
+                    Register
                   </Button>
                 </FormControl>
               </div>
@@ -188,28 +235,16 @@ export default function Login() {
           </Card>
         </FormControl>
       </div>
-      <div className="LowerText">Do not have an account?</div>
+      <div className="LowerText">Already have an account?</div>
       <div>
         <Link
           className={classes.root}
           component="button"
-          onClick={() => goToUserRegister()}
+          onClick={() => goToLogin()}
           //color="inherit"
           variant="body2"
         >
-          Create an account
-        </Link>
-      </div>
-      <div className="LowerText">Want to regster new shelter?</div>
-      <div>
-        <Link
-          className={classes.root}
-          component="button"
-          onClick={() => goToShelterRegister()}
-          //color="inherit"
-          variant="body2"
-        >
-          Create new shelter
+          Login
         </Link>
       </div>
     </div>

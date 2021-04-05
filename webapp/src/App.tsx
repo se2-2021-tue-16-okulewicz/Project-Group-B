@@ -19,6 +19,7 @@ import LoadingPopup from "./utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 import ListWithDogs from "./dogsList/listWithDogs";
 import config from "./config/config";
+import Register from "./registerLogin/Register";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,6 +77,9 @@ function Layout() {
       <Switch>
         <Route exact path="/">
           <Login />
+        </Route>
+        <Route path="/register/user">
+          <Register />
         </Route>
         <Route path="/listDogs">
           <ListWithDogs />
