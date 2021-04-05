@@ -163,6 +163,7 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.redirect = "/";
     newState.loading = false;
+    newState.loginInformation = payload.payload.response.data;
     return newState;
   },
   [Actions.registerRegularUserThunk.rejected.toString()]: (

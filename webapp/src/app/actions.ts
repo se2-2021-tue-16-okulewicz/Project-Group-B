@@ -67,7 +67,7 @@ export const logoutThunk = createAsyncThunk<
 });
 
 export const registerRegularUserThunk = createAsyncThunk<
-  RequestResponse<null>,
+  RequestResponse<ILoginResults>,
   IRegisterRegularUserInformation,
   { rejectValue: RequestResponse<null> }
 >(
@@ -81,7 +81,26 @@ export const registerRegularUserThunk = createAsyncThunk<
       return rejectWithValue(response as RequestResponse<null>);
     }
 
-    return response as RequestResponse<null>;
+    //On success we want to acutally login
+    const responseLogin: RequestResponse<ILoginResults> = await Fetching.login(
+      {
+        username: newUserInfo.username,
+        password: newUserInfo.password
+      }
+    );
+  
+    if (response.response.successful !== true) {
+      return rejectWithValue({
+        code: responseLogin.code,
+        response: {
+          message: responseLogin.response.message,
+          successful: responseLogin.response.successful,
+          data: null
+        }
+      });
+    }
+  
+    return responseLogin as RequestResponse<ILoginResults>;
   }
 );
 
