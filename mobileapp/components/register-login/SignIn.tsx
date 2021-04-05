@@ -37,7 +37,7 @@ const SignIn = ({ navigation }: any) => {
   
 
   React.useEffect(() => {
-    if(errorMessage !== ""){
+    if (errorMessage !== "") {
       setModalVisible(true);
     }
   }, [errorMessage]);
