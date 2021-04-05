@@ -15,6 +15,7 @@ export type State = {
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
+  redirect: string | null;
 };
 
 const init: State = {
@@ -25,6 +26,7 @@ const init: State = {
     erorMessage: "",
   },
   loginInformation: null,
+  redirect: null,
 };
 
 export const reducer = createReducer(init, {
@@ -41,6 +43,12 @@ export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
+    return newState;
+  },
+
+  [Actions.clearRedirect.type]: (state: State) => {
+    let newState = _.cloneDeep(state);
+    newState.redirect = null;
     return newState;
   },
 
@@ -153,6 +161,7 @@ export const reducer = createReducer(init, {
     payload: PayloadAction<RequestResponse<null>>
   ) => {
     let newState = _.cloneDeep(state);
+    newState.redirect = "/";
     newState.loading = false;
     return newState;
   },

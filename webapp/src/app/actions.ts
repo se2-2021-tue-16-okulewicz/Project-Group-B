@@ -87,3 +87,4 @@ export const registerRegularUserThunk = createAsyncThunk<
 
 export const clearError = createAction("clearError");
 export const clearLoginInformation = createAction("clearLoginInformation");
+export const clearRedirect = createAction("clearRedirect");
