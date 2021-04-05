@@ -1,7 +1,10 @@
 import config from "../config/config";
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from "axios";
 import _ from "lodash";
-import { ILoginInformation, ILoginResults } from "../components/loginRegisterInterfaces";
+import {
+  ILoginInformation,
+  ILoginResults,
+} from "../components/loginRegisterInterfaces";
 import { APIResponse, RequestResponse } from "./response";
 
 async function getResponse<T>(
@@ -37,24 +40,15 @@ export async function login(
   credentials: ILoginInformation
 ): Promise<RequestResponse<ILoginResults>> {
   let formData = new FormData();
-  formData.append(
-    "username", credentials.username
-  );
-  formData.append(
-    "password", credentials.password
-  );
+  formData.append("username", credentials.username);
+  formData.append("password", credentials.password);
 
   return getResponse(
-    axios.post(
-      `http://192.168.1.15:8080/login`,
-      formData,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    )
+    axios.post(`http://192.168.1.15:8080/login`, formData, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    })
   );
 }
-

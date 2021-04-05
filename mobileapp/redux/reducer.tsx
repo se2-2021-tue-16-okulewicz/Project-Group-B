@@ -27,7 +27,6 @@ const init: State = {
 };
 
 export const reducer = createReducer(init, {
-
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;

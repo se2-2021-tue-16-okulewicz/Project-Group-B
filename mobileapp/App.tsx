@@ -4,7 +4,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./navigation";
-import {store} from "./redux/store";
+import { store } from "./redux/store";
 import { State } from "./redux/reducer";
 
 export default function App() {

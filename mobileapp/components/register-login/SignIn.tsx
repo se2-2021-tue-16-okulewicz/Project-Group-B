@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  Image
+  Image,
 } from "react-native";
 import * as React from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
@@ -28,7 +28,7 @@ const SignIn = ({ navigation }: any) => {
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
 
   React.useEffect(() => {
-    if(loginInfo != null){
+    if (loginInfo != null) {
       setReady(false);
       setUsername("");
       setPassword("");
@@ -44,13 +44,15 @@ const SignIn = ({ navigation }: any) => {
 
   async function signIn() {
     store.dispatch(
-      
-      Actions.loginThunk({ username: username, password: (password) })
+      Actions.loginThunk({ username: username, password: password })
     );
   }
 
   React.useEffect(() => {
-    if (Utility.isUsernameValid(username) && Utility.isPasswordValid(password)) {
+    if (
+      Utility.isUsernameValid(username) &&
+      Utility.isPasswordValid(password)
+    ) {
       setReady(true);
       return;
     }
@@ -90,7 +92,10 @@ const SignIn = ({ navigation }: any) => {
         </View>
       </Modal>
       <View>
-      <Image style={style.tinyLogo} source={require('../../assets/images/dog-paw.png')}/>
+        <Image
+          style={style.tinyLogo}
+          source={require("../../assets/images/dog-paw.png")}
+        />
       </View>
       <View>
         <TextInput
@@ -127,7 +132,7 @@ const SignIn = ({ navigation }: any) => {
 const style = StyleSheet.create({
   tinyLogo: {
     width: 50,
-    height: 50
+    height: 50,
   },
   centeredView: {
     flex: 1,
