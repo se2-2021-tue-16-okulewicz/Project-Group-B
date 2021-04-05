@@ -8,3 +8,10 @@ export interface ILoginResults {
   token: string;
   id: number;
 }
+
+export interface IRegisterRegularUserInformation {
+  username: string;
+  email: string;
+  phone: string;
+  password: string;
+}
