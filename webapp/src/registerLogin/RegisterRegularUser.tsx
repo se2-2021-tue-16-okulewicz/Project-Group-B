@@ -103,12 +103,12 @@ export default function RegisterRegularUser() {
 
   const onRegisterClicked = () => {
     store.dispatch(
-        registerRegularUserThunk({
-            username: values.username,
-            password: values.password,
-            email: values.email,
-            phone: values.phone
-        })
+      registerRegularUserThunk({
+        username: values.username,
+        password: values.password,
+        email: values.email,
+        phone: values.phone,
+      })
     );
   };
 
@@ -153,35 +153,35 @@ export default function RegisterRegularUser() {
             <CardHeader title="" />
             <div className="AccountListWrapper">
               <div>
-                  <TextField
+                <TextField
                   className={clsx(classes.margin, classes.textField)}
-                    label="Username"
-                    type={"text"}
-                    value={values.username}
-                    onChange={handleChange("username")}
-                    error={!isStringValidUsername(values.username)}
-                    helperText="Should have between 3 and 32 characters"
-                  />
+                  label="Username"
+                  type={"text"}
+                  value={values.username}
+                  onChange={handleChange("username")}
+                  error={!isStringValidUsername(values.username)}
+                  helperText="Should have between 3 and 32 characters"
+                />
               </div>
               <div>
-                  <TextField
+                <TextField
                   className={clsx(classes.margin, classes.textField)}
-                    label="E-mail"
-                    type={"text"}
-                    value={values.email}
-                    onChange={handleChange("email")}
-                    error={!isStringValidEmail(values.email)}
-                  />
+                  label="E-mail"
+                  type={"text"}
+                  value={values.email}
+                  onChange={handleChange("email")}
+                  error={!isStringValidEmail(values.email)}
+                />
               </div>
               <div>
-                  <TextField
+                <TextField
                   className={clsx(classes.margin, classes.textField)}
-                    label="Phone number"
-                    type={"text"}
-                    value={values.phone}
-                    onChange={handleChange("phone")}
-                    error={!isStringValidPhoneNumeber(values.phone)}
-                  />
+                  label="Phone number"
+                  type={"text"}
+                  value={values.phone}
+                  onChange={handleChange("phone")}
+                  error={!isStringValidPhoneNumeber(values.phone)}
+                />
               </div>
               <div>
                 <FormControl

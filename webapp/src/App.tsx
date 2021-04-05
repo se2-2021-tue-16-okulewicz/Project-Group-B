@@ -51,7 +51,7 @@ function Layout() {
   const [cookies, setCookie, removeCookie] = useCookies();
 
   useEffect(() => {
-    if(redirect !== null) {
+    if (redirect !== null) {
       history.push(redirect);
       store.dispatch(clearRedirect());
     }

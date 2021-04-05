@@ -82,24 +82,22 @@ export const registerRegularUserThunk = createAsyncThunk<
     }
 
     //On success we want to acutally login
-    const responseLogin: RequestResponse<ILoginResults> = await Fetching.login(
-      {
-        username: newUserInfo.username,
-        password: newUserInfo.password
-      }
-    );
-  
+    const responseLogin: RequestResponse<ILoginResults> = await Fetching.login({
+      username: newUserInfo.username,
+      password: newUserInfo.password,
+    });
+
     if (response.response.successful !== true) {
       return rejectWithValue({
         code: responseLogin.code,
         response: {
           message: responseLogin.response.message,
           successful: responseLogin.response.successful,
-          data: null
-        }
+          data: null,
+        },
       });
     }
-  
+
     return responseLogin as RequestResponse<ILoginResults>;
   }
 );
