@@ -41,16 +41,16 @@ public class Dog {
     }
 
     public boolean IsValid() {
-        return StringUtils.isValidString(breed) &&
-                StringUtils.isValidString(size) &&
-                StringUtils.isValidString(color) &&
-                StringUtils.isValidString(specialMarks) &&
-                StringUtils.isValidString(name) &&
-                StringUtils.isValidString(hairLength) &&
-                StringUtils.isValidString(earsType) &&
-                StringUtils.isValidString(tailLength) &&
+        return StringUtils.IsValidString(breed) &&
+                StringUtils.IsValidString(size) &&
+                StringUtils.IsValidString(color) &&
+                StringUtils.IsValidString(specialMarks) &&
+                StringUtils.IsValidString(name) &&
+                StringUtils.IsValidString(hairLength) &&
+                StringUtils.IsValidString(earsType) &&
+                StringUtils.IsValidString(tailLength) &&
                 location != null &&
-                StringUtils.isValidString(location.getCity()) &&
-                StringUtils.isValidString(location.getDistrict());
+                StringUtils.IsValidString(location.getCity()) &&
+                StringUtils.IsValidString(location.getDistrict());
     }
 }
