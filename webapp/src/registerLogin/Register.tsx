@@ -4,6 +4,7 @@ import {
   CardHeader,
   createStyles,
   FormControl,
+  FormHelperText,
   IconButton,
   Input,
   InputAdornment,
@@ -211,6 +212,7 @@ export default function Register() {
                       </InputAdornment>
                     }
                   />
+                  <FormHelperText error={!isStringValidPassword(values.password)}>Should have between 6 and 32 characters</FormHelperText>
                 </FormControl>
               </div>
               <div>
@@ -226,6 +228,7 @@ export default function Register() {
                     value={values.repeatedPassword}
                     onChange={handleChange("repeatedPassword")}
                     error={!(values.password === values.repeatedPassword)}
+                    aria-describedby="repeatedPasswordHelper"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -242,6 +245,7 @@ export default function Register() {
                       </InputAdornment>
                     }
                   />
+                  <FormHelperText error={!(values.password === values.repeatedPassword)}>Must be the same as password</FormHelperText>
                 </FormControl>
               </div>
               <div>
