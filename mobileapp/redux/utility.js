@@ -103,7 +103,7 @@ export function isEmailValid(email) {
  * @param {String} username
  */
 export function isUsernameValid(username) {
-  if (username.length > 8) {
+  if (username.length > 0) {
     return true;
   }
   return false;
@@ -114,7 +114,7 @@ export function isUsernameValid(username) {
  * @param {String} password
  */
 export function isPasswordValid(password) {
-  if (password.length >= 8) {
+  if (password.length > 0) {
     return true;
   }
   return false;
