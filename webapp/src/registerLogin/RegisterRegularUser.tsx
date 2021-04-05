@@ -64,7 +64,7 @@ interface internalState {
   showRepeatedPassword: boolean;
 }
 
-export default function Register() {
+export default function RegisterRegularUser() {
   const classes = useStyles();
   const history = useHistory();
   const [cookies, setCookie, removeCookie] = useCookies();

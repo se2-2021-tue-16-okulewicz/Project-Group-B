@@ -19,7 +19,7 @@ import LoadingPopup from "./utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 import ListWithDogs from "./dogsList/listWithDogs";
 import config from "./config/config";
-import Register from "./registerLogin/Register";
+import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,7 +79,7 @@ function Layout() {
           <Login />
         </Route>
         <Route path="/register/user">
-          <Register />
+          <RegisterRegularUser />
         </Route>
         <Route path="/listDogs">
           <ListWithDogs />
