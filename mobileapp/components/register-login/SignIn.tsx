@@ -13,17 +13,17 @@ import * as React from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import * as Actions from "../../redux/actions";
-import * as Utility from "../../redux/utility.js";
+import * as Utility from "../../redux/utility.ts";
 import * as styles from "../../constants/account";
 import { State } from "../../redux/reducer";
 import { store } from "../../redux/store";
 import { clearLoginInformation } from "../../redux/actions";
 
 const SignIn = ({ navigation }: any) => {
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [ready, setReady] = React.useState(false);
-  const [modalVisible, setModalVisible] = React.useState(false);
+  const [username, setUsername] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [ready, setReady] = React.useState<boolean>(false);
+  const [modalVisible, setModalVisible] = React.useState<boolean>(false);
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
   const wrongUserErrorMessage = "Mobile application is only available for regular users.";
