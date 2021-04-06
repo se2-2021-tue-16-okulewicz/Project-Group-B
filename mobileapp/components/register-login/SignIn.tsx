@@ -1,7 +1,6 @@
 import {
   StyleSheet,
   Text,
-  SafeAreaView,
   View,
   Modal,
   KeyboardAvoidingView,

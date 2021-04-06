@@ -21,5 +21,8 @@ export type Config = {
 };
 
 const configObject: Config = require("./development.json");
+// const configObject: Config = require(process.env.NODE_ENV === "development"
+//   ? "./development.json"
+//   : "./production.json");
 
 export default configObject;
