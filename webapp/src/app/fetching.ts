@@ -5,6 +5,7 @@ import axios, { AxiosResponse } from "axios";
 import {
   ILoginInformation,
   ILoginResults,
+  IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
@@ -143,6 +144,52 @@ export async function logout(cookies: {
       {
         headers: {
           token: getToken(cookies),
+          Accept: "application/json",
+        },
+      }
+    )
+  );
+}
+
+export async function registerRegularUser(
+  newUserInfo: IRegisterRegularUserInformation
+): Promise<RequestResponse<null>> {
+  let formData = new FormData();
+  formData.append(
+    "username",
+    new Blob([newUserInfo.username], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "password",
+    new Blob([newUserInfo.password], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "phone_number",
+    new Blob([newUserInfo.phone], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "email",
+    new Blob([newUserInfo.email], {
+      type: "text/plain",
+    }),
+    ""
+  );
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/register`,
+      formData,
+      {
+        headers: {
           Accept: "application/json",
         },
       }

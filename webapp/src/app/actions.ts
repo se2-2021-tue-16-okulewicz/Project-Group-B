@@ -5,6 +5,7 @@ import * as Fetching from "./fetching";
 import {
   ILoginInformation,
   ILoginResults,
+  IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
 
 export const addDogThunk = createAsyncThunk<
@@ -65,5 +66,42 @@ export const logoutThunk = createAsyncThunk<
   return response as RequestResponse<null>;
 });
 
+export const registerRegularUserThunk = createAsyncThunk<
+  RequestResponse<ILoginResults>,
+  IRegisterRegularUserInformation,
+  { rejectValue: RequestResponse<null> }
+>(
+  "registeregularUser",
+  async (newUserInfo: IRegisterRegularUserInformation, { rejectWithValue }) => {
+    const response: RequestResponse<null> = await Fetching.registerRegularUser(
+      newUserInfo
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<null>);
+    }
+
+    //On success we want to acutally login
+    const responseLogin: RequestResponse<ILoginResults> = await Fetching.login({
+      username: newUserInfo.username,
+      password: newUserInfo.password,
+    });
+
+    if (response.response.successful !== true) {
+      return rejectWithValue({
+        code: responseLogin.code,
+        response: {
+          message: responseLogin.response.message,
+          successful: responseLogin.response.successful,
+          data: null,
+        },
+      });
+    }
+
+    return responseLogin as RequestResponse<ILoginResults>;
+  }
+);
+
 export const clearError = createAction("clearError");
 export const clearLoginInformation = createAction("clearLoginInformation");
+export const clearRedirect = createAction("clearRedirect");

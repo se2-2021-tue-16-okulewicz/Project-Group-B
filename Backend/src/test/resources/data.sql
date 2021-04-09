@@ -25,9 +25,9 @@ insert into user_account (id, email, password, name, phone_number) values (10001
 insert into user_account (id, email, password, name, phone_number) values (10002, 'b.gates@mail.com', 'F6D578996134B79D95998C8CA649A89F709A478B5FF04599A8D5A281B7969DE4', 'Bill Gates', '+9123456780');
 
 insert into shelter (id, name, country, town, street, house_number) values (10001, 'Hope', 'Poland', 'Warsaw', 'Koszykowa', '75');
-insert into dog_shelter_account (id, email, password, shelter_id) values (10001, 'hopeShelter@mail.com', 'EF797C8118F02DFB649607DD5D3F8C7623048C9C063D532CC95C5ED7A898A64F', 10001);
+insert into dog_shelter_account (id, email, password, shelter_id) values (10001, 'hopeshelter@mail.com', 'EF797C8118F02DFB649607DD5D3F8C7623048C9C063D532CC95C5ED7A898A64F', 10001);
 insert into shelter (id, name, country, town, street, house_number) values (10002, 'Green Peace', 'Poland', 'Warsaw', 'Plac Politechniki', '1B');
-insert into dog_shelter_account (id, email, password, shelter_id) values (10002, 'greenPeace@mail.com', '12345678', 10002);
+insert into dog_shelter_account (id, email, password, shelter_id) values (10002, 'greenpeace@mail.com', '12345678', 10002);
 
 insert into admin_account (id, email, password) values (10001, 'admin007@mail.com', '011A39F456F0C8E6CE47DEB012257A56BE34C52606FAA25D5F32399D6A50036D');
 insert into admin_account (id, email, password) values (10002, 'admin008@mail.com', 'admin008123');
