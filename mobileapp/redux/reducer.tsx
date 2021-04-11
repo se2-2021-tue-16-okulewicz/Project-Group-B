@@ -32,6 +32,14 @@ export const reducer = createReducer(init, {
     newState.loginInformation = null;
     return newState;
   },
+  [Actions.incorrectUserType.type]: (state: State) => {
+    let newState = _.cloneDeep(state);
+    newState.loginInformation = null;
+    newState.error.hasError = true;
+    newState.error.errorCode = 1;
+    newState.error.erorMessage = "Mobile app is only available for regular users";
+    return newState;
+  },
 
   [Actions.loginThunk.pending.toString()]: (
     state: State,

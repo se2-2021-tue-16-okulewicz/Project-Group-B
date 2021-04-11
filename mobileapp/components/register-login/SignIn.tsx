@@ -12,7 +12,7 @@ import * as React from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import * as Actions from "../../redux/actions";
-import * as Utility from "../../redux/utility.ts";
+import * as Utility from "../../redux/utility";
 import * as styles from "../../constants/account";
 import { State } from "../../redux/reducer";
 import { store } from "../../redux/store";
@@ -25,8 +25,8 @@ const SignIn = ({ navigation }: any) => {
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
-  const wrongUserErrorMessage =
-    "Mobile application is only available for regular users.";
+  //const wrongUserErrorMessage =
+    //"Mobile application is only available for regular users.";
   const loading = useSelector((state: State) => state.loading);
 
   React.useEffect(() => {
@@ -61,6 +61,7 @@ const SignIn = ({ navigation }: any) => {
   React.useEffect(() => {
     if (loginInfo !== null) {
       if (loginInfo.userType !== "Regular") {
+        store.dispatch(Actions.incorrectUserType());
         setModalVisible(true);
         setReady(false);
         return;
@@ -86,7 +87,8 @@ const SignIn = ({ navigation }: any) => {
           <View style={style.modalView}>
             <Text style={style.modalText}>Sign-in failed!</Text>
             <Text style={style.modalText}>
-              {errorMessage === "" ? wrongUserErrorMessage : errorMessage}
+              {/* {errorMessage === "" ? wrongUserErrorMessage : errorMessage} */}
+              {errorMessage}
             </Text>
             <Pressable
               style={[style.modalButton, style.buttonClose]}
