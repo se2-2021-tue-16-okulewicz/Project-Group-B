@@ -25,8 +25,6 @@ const SignIn = ({ navigation }: any) => {
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
-  const wrongUserErrorMessage =
-    "Mobile application is only available for regular users.";
   const loading = useSelector((state: State) => state.loading);
 
   React.useEffect(() => {
@@ -87,7 +85,6 @@ const SignIn = ({ navigation }: any) => {
           <View style={style.modalView}>
             <Text style={style.modalText}>Sign-in failed!</Text>
             <Text style={style.modalText}>
-              {/* {errorMessage === "" ? wrongUserErrorMessage : errorMessage} */}
               {errorMessage}
             </Text>
             <Pressable
