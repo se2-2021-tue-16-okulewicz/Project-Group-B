@@ -45,3 +45,5 @@ export const loginThunk = createAsyncThunk<
  */
 export const setIdle = createAction("setIdle");
 export const clearLoginInformation = createAction("clearLoginInformation");
+export const incorrectUserType = createAction("incorrectUserType");
+
