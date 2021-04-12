@@ -82,15 +82,17 @@ scheme.configureHeader(builder => {
 
     })
   .registerConfig('xs', {
-    position: 'relative', // won't stick to top when scroll down
+    position: 'absolute', // won't stick to top when scroll down
   });
 });
 
 scheme.configureEdgeSidebar(builder => {
   builder
     .create('unique_id', { anchor: 'left' })
-     .registerTemporaryConfig('xs', {
-       width: 200, // 'auto' is only valid for temporary variant
+     .registerPermanentConfig('xs', {
+      width: "18%", // px, (%, rem, em is compatible)
+      collapsible: true,
+      collapsedWidth: "10%",
      })
     .registerPermanentConfig('md', {
       width: "15%", // px, (%, rem, em is compatible)
@@ -100,7 +102,6 @@ scheme.configureEdgeSidebar(builder => {
 });
 
 export default function ListWithDogs() {
-  const state = store.getState() as State;
   const [collapsed, setCollapsed] = useState(false);
   const dogs = useSelector((state: State) => (state.dogs as ILostDogWithPicture[]));
   const loading = useSelector((state: State) => state.loading);
@@ -111,7 +112,6 @@ export default function ListWithDogs() {
     size: config.defaultFilters.size
   });
   // is this page last?
-  //const lastPage = useSelector((state) => state.carsLastPage);
   const history = useHistory();
   const [cookies, setCookie, removeCookie] = useCookies();
 

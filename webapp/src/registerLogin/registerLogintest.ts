@@ -1,0 +1,20 @@
+import { ILoginInformation, IRegisterRegularUserInformation } from "./loginRegisterInterfaces"
+
+export const initRegisterRegularUserProps : IRegisterRegularUserInformation={
+    username: "",
+    email:"",
+    password: "",
+    phone: "",
+  }
+
+  export const initCorrectRegisterRegularUserProps : IRegisterRegularUserInformation={
+    username: "newrandomusername",
+    email:"a@abcdegdfds.com",
+    password: "123456",
+    phone: "123456789",
+  }
+
+export const initLoginProps : ILoginInformation={
+    username: "",
+    password: ""
+  }

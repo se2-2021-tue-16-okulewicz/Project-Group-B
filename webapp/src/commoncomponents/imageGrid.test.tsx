@@ -8,7 +8,7 @@
  import { isNull } from "lodash";
  import { Button } from "@material-ui/core";
  import ImageGrid from "./imageGrid";
- import { initLostDogWithPictureProps, initLostDogWithPictureProps2 } from "../dog/dogClasses";
+ import {testDogList} from "../dog/dogTesting";
  
  let container: HTMLDivElement | null = null;
  beforeEach(() => {
@@ -26,17 +26,15 @@
    }
  });
  
- const initdogsList = [initLostDogWithPictureProps,initLostDogWithPictureProps2];
- 
  it("Rendered list of gridlistitems", () => {
    act(() => {
-     render(<ImageGrid dogs={initdogsList}/>, container);
+     render(<ImageGrid dogs={testDogList}/>, container);
    });
    //expect(container).toMatchSnapshot();
    //container?.getElementsByTagName("registerButton")
    expect(
      container?.getElementsByClassName("tile").length
-   ).toEqual(initdogsList.length);
+   ).toEqual(testDogList.length);
  
    expect(
      container?.getElementsByClassName("Alex").length

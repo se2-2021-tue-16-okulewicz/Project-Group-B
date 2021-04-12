@@ -111,6 +111,7 @@ export default function RegisterDogForm() {
     try {
       registerDog(lostDogFields, picture);
       history.push("/listDogs");
+      
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }

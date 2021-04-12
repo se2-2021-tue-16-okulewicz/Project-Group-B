@@ -74,6 +74,7 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
+    //newState.dogsRequireRefresh = true;
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (

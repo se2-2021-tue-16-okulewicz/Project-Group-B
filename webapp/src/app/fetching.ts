@@ -84,8 +84,6 @@ export async function fetchDogs(
           {
             headers: {
               token: getToken(cookies),
-              //Accept: "multipart/form-data",
-              //"Content-Type": "multipart/form-data",
             },
           }
         )
