@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       marginTop: "2vh",
-    },
+    }
   })
 );
 
@@ -85,19 +85,21 @@ function Layout() {
       <Switch>
         <Route exact path="/">
           <Login />
+          <Footer />
         </Route>
         <Route path="/register/user">
           <RegisterRegularUser />
+          <Footer />
         </Route>
         <Route path="/listDogs">
           <ListWithDogs />
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />
+          <Footer />
         </Route>
         <Redirect to="/" />
       </Switch>
-      <Footer />
     </div>
   );
 }
