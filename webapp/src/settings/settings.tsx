@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Card, Grid } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import * as Actions from "../../src/app/actions";
+import * as Actions from "../app/actions";
 import Layout, {
   getContent,
   getDrawerSidebar,
@@ -25,6 +25,7 @@ import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
+import { ILoginInformation, ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -97,20 +98,23 @@ scheme.configureEdgeSidebar((builder) => {
     .create("unique_id", { anchor: "left" })
     .registerPermanentConfig("xs", {
       width: "18%", // px, (%, rem, em is compatible)
-      collapsible: true,
+      collapsible: false,
       collapsedWidth: "10%",
     })
     .registerPermanentConfig("md", {
       width: "15%", // px, (%, rem, em is compatible)
-      collapsible: true,
+      collapsible: false,
       collapsedWidth: "6%",
     });
 });
 
-export default function ListWithDogs() {
+export default function Settings() {
   const [collapsed, setCollapsed] = useState(false);
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
+  );
+  const contactInfo = useSelector(
+    (state: State) => state.loginInformation as ILoginResults
   );
   const loading = useSelector((state: State) => state.loading);
   const refreshRequired = useSelector(
@@ -120,16 +124,21 @@ export default function ListWithDogs() {
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
+    id: contactInfo.id
   });
   // is this page last?
   const history = useHistory();
   const [cookies, setCookie, removeCookie] = useCookies();
+  const [isListOn, setListOn] = useState(true);
 
-  const onRegisterClicked = () => {
-    history.push("/addDog");
+  const onDogsListClicked = () => {
+    setListOn(true);
   };
-  const onSettingsClicked = () => {
-    history.push("/settings");
+  const onInfoClicked = () => {
+    setListOn(false);
+  }
+  const onShelterClicked = () => {
+    history.push("/listDogs");
   };
 
   const classes = useStyles();
@@ -172,12 +181,8 @@ export default function ListWithDogs() {
       </Header>
       <DrawerSidebar sidebarId="unique_id">
         <CollapseBtn
-          onClick={() => {
-            setCollapsed(!collapsed);
-          }}
         />
         <SidebarContent name="sidebar">
-          {!collapsed && (
             <Grid container className={classes.main} spacing={1}>
               {}
               <Button
@@ -186,9 +191,19 @@ export default function ListWithDogs() {
                 color="primary"
                 variant="contained"
                 size="medium"
-                onClick={onRegisterClicked}
+                onClick={onInfoClicked}
               >
-                Register
+                Contact Info
+              </Button>
+              <Button
+                className={classes.registerButton}
+                data-testid="settingsButton"
+                color="secondary"
+                variant="contained"
+                size="medium"
+                onClick={onDogsListClicked}
+              >
+                Your Dogs
               </Button>
               <Grid item xs={12} />
               <Button
@@ -197,12 +212,11 @@ export default function ListWithDogs() {
                 color="secondary"
                 variant="contained"
                 size="medium"
-                onClick={onSettingsClicked}
+                onClick={onShelterClicked}
               >
-                Settings
+                {"Shelter    "} 
               </Button>
             </Grid>
-          )}
         </SidebarContent>
         <Footer />
       </DrawerSidebar>
@@ -210,14 +224,22 @@ export default function ListWithDogs() {
         <InfiniteScroll
           dataLength={dogs.length}
           next={fetchMore}
-          hasMore={!lastPage}
+          hasMore={!lastPage && isListOn}
           loader={
             <div className="loader" key={0}>
               Loading ...
             </div>
           }
         >
-          <ImageGrid dogs={dogs} />
+          {isListOn &&
+          <ImageGrid dogs={dogs} />}
+          {!isListOn &&
+           
+           <Card>
+                 {contactInfo.id}
+           </Card>
+
+          }
         </InfiniteScroll>
       </Content>
     </Root>

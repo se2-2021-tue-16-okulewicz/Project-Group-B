@@ -7,6 +7,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
+import { IContactInfo } from "../settings/contactInfoInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -130,7 +131,7 @@ export async function addDog(
 export async function markLostDogAsFound(
   dogId: number,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<ILostDogWithPicture>> {
+): Promise<RequestResponse<null>> {
 
   return getResponse(
     axios.post(
@@ -146,6 +147,24 @@ export async function markLostDogAsFound(
   );
 }
 
+export async function fetchUserInfo(
+  userId: number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<IContactInfo>> {
+
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/user/${userId}`,
+       {
+        headers: {
+          token: getToken(cookies),
+          //Accept: "application/json",
+          //"Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
 
 export async function login(
   credentials: ILoginInformation

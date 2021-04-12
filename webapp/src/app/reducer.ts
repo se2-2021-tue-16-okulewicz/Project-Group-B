@@ -60,7 +60,7 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.addDogThunk.pending.toString()]: (
+  [Actions.markDogAsFoundThunk.pending.toString()]: (
     state: State,
     payload: PayloadAction<undefined>
   ) => {
@@ -68,6 +68,30 @@ export const reducer = createReducer(init, {
     newState.loading = true;
     return newState;
   },
+  [Actions.markDogAsFoundThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    //newState.dogsRequireRefresh = true;
+    return newState;
+  },
+  [Actions.markDogAsFoundThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+
   [Actions.addDogThunk.fulfilled.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<ILostDogWithPicture>>

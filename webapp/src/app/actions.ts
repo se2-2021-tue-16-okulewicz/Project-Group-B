@@ -3,11 +3,64 @@ import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 import { Item } from "../utilityComponents/uitilities";
+import {IContactInfo} from "../settings/contactInfoInterfaces"
 import {
   ILoginInformation,
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
+
+export const markDogAsFoundThunk = createAsyncThunk<
+RequestResponse<null>,
+{ dogId: number;  cookies: { [name: string]: any } },
+{ rejectValue: RequestResponse<null> }
+>(
+"MarkDogAsFound",
+async (
+  dogAndCookies: {
+    dogId: number;
+    cookies: { [name: string]: any };
+  },
+  { rejectWithValue }
+) => {
+    const response: RequestResponse<null> = await Fetching.markLostDogAsFound(
+      dogAndCookies.dogId,
+      dogAndCookies.cookies
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<null>);
+    }
+
+    return response as RequestResponse<null>;
+  }
+);
+
+export const fetchContactInfoThunk = createAsyncThunk<
+RequestResponse<IContactInfo>,
+{ userId: number;  cookies: { [name: string]: any } },
+{ rejectValue: RequestResponse<IContactInfo> }
+>(
+"FetchUserInfo",
+async (
+  userAndCookies: {
+    userId: number;
+    cookies: { [name: string]: any };
+  },
+  { rejectWithValue }
+) => {
+    const response: RequestResponse<IContactInfo> = await Fetching.fetchUserInfo(
+      userAndCookies.userId,
+      userAndCookies.cookies
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<IContactInfo>);
+    }
+
+    return response as RequestResponse<IContactInfo>;
+  }
+);
 
 export const addDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture>,
