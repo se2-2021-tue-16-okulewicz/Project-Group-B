@@ -1,12 +1,12 @@
-import React from 'react';
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
-import { ILostDogWithPicture } from '../dog/dogInterfaces';
-import { useHistory } from 'react-router';
+import React from "react";
+import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import GridListTileBar from "@material-ui/core/GridListTileBar";
+import IconButton from "@material-ui/core/IconButton";
+import InfoIcon from "@material-ui/icons/Info";
+import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ImageGrid(props:any) {
+export default function ImageGrid(props: any) {
   const classes = useStyles();
   const dogs = props.dogs as ILostDogWithPicture[];
   const history = useHistory();
@@ -37,23 +37,36 @@ export default function ImageGrid(props:any) {
 
   return (
     <GridList cols={3} spacing={3}>
-        
-            {dogs.map((dog: ILostDogWithPicture) => (
-              <GridListTile key={dog.id} style={{ minHeight: "300px"}} className="tile">
-                <img src={`data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer}`} alt={dog.picture.fileName} />
-                <GridListTileBar
-                  className={dog.name}
-                  title={dog.name}
-                  subtitle={<span>lost in {dog.location.city}</span>}
-                  actionIcon={
-                    <IconButton aria-label={`info about ${dog.name}`} className={classes.icon} onClick={()=>{redirectToDetails(dog.id)}}>
-                      <InfoIcon/>
-                    </IconButton>
-                  }
-                />
-                
-              </GridListTile>
-            ))}
-            </GridList>
+      {dogs.map((dog: ILostDogWithPicture) => (
+        <GridListTile
+          key={dog.id}
+          style={{ minHeight: "300px" }}
+          className="tile"
+        >
+          <img
+            src={`data:${dog.picture.fileType};base64,${
+              dog.picture.data as ArrayBuffer
+            }`}
+            alt={dog.picture.fileName}
+          />
+          <GridListTileBar
+            className={dog.name}
+            title={dog.name}
+            subtitle={<span>lost in {dog.location.city}</span>}
+            actionIcon={
+              <IconButton
+                aria-label={`info about ${dog.name}`}
+                className={classes.icon}
+                onClick={() => {
+                  redirectToDetails(dog.id);
+                }}
+              >
+                <InfoIcon />
+              </IconButton>
+            }
+          />
+        </GridListTile>
+      ))}
+    </GridList>
   );
 }
