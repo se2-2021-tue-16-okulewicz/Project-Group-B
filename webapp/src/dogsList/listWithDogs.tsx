@@ -149,7 +149,7 @@ export default function ListWithDogs() {
   };
 
   return (
-    <Root scheme={scheme} >
+    <Root scheme={scheme}>
       <CssBaseline />
       <Header>
         <Toolbar>
@@ -199,7 +199,5 @@ export default function ListWithDogs() {
           </InfiniteScroll>
       </Content>
     </Root>
-
-
   );
 }

@@ -32,7 +32,7 @@
      render(<Provider store={store}><ListWithDogs /></Provider>, container);
    });
    expect(
-     container?.getElementsByTagName("loader").length
+     container?.getElementsByClassName("loader").length
    ).toEqual(1);
  });
  
