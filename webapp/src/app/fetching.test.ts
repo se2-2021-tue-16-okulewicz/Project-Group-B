@@ -33,7 +33,10 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
-import { initLoginProps, initRegisterRegularUserProps } from "../registerLogin/registerLogintest";
+import {
+  initLoginProps,
+  initRegisterRegularUserProps,
+} from "../registerLogin/registerLogintest";
 //import { addDog } from './fetching';
 
 jest.mock("axios");
