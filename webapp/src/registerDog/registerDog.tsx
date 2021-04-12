@@ -107,9 +107,10 @@ export default function RegisterDogForm() {
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
 
-  const onSavePostClicked = () => {
+  const onSubmitClicked = () => {
     try {
       registerDog(lostDogFields, picture);
+      history.push("/listDogs");
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }
@@ -443,7 +444,7 @@ export default function RegisterDogForm() {
             <Button
               data-testid="submit-button"
               variant="contained"
-              onClick={() => onSavePostClicked()}
+              onClick={() => onSubmitClicked()}
               color="primary"
             >
               Submit
