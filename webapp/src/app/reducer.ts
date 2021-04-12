@@ -6,6 +6,7 @@ import { IDog, ILostDog, ILostDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import { useState } from "react";
 import config from "../config/config";
+import { IContactInfo } from "../settings/contactInfoInterfaces";
 
 export type Error = {
   hasError: boolean;
@@ -20,6 +21,7 @@ export type State = {
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
+  contactInfo: IContactInfo|null;
   redirect: string | null;
 };
 
@@ -34,6 +36,7 @@ export const init: State = {
     erorMessage: "",
   },
   loginInformation: null,
+  contactInfo: null,
   redirect: null,
 };
 
@@ -60,7 +63,7 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.markDogAsFoundThunk.pending.toString()]: (
+  [Actions.fetchContactInfoThunk.pending.toString()]: (
     state: State,
     payload: PayloadAction<undefined>
   ) => {
@@ -68,6 +71,33 @@ export const reducer = createReducer(init, {
     newState.loading = true;
     return newState;
   },
+  [Actions.fetchContactInfoThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IContactInfo>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.contactInfo=payload.payload.response.data;
+    console.log(newState.contactInfo);
+    newState.dogsRequireRefresh = true;
+    return newState;
+  },
+  [Actions.fetchContactInfoThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IContactInfo>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+
+
   [Actions.markDogAsFoundThunk.fulfilled.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<null>>
@@ -185,7 +215,9 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.loginInformation = payload.payload.response.data;
+
+    newState.loginInformation = payload.payload.response.data as ILoginResults;
+    console.log(newState.loginInformation);
     return newState;
   },
   [Actions.loginThunk.rejected.toString()]: (

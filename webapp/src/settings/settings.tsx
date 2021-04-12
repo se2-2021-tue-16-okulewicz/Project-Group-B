@@ -26,6 +26,7 @@ import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
 import { ILoginInformation, ILoginResults } from "../registerLogin/loginRegisterInterfaces";
+import { IContactInfo } from "./contactInfoInterfaces";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -114,7 +115,7 @@ export default function Settings() {
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
   const contactInfo = useSelector(
-    (state: State) => state.loginInformation as ILoginResults
+    (state: State) => state.contactInfo as IContactInfo
   );
   const loading = useSelector((state: State) => state.loading);
   const refreshRequired = useSelector(
@@ -124,7 +125,7 @@ export default function Settings() {
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    id: contactInfo.id
+    id: config.cookies.userId
   });
   // is this page last?
   const history = useHistory();
@@ -136,6 +137,7 @@ export default function Settings() {
   };
   const onInfoClicked = () => {
     setListOn(false);
+    //getContactInfo();
   }
   const onShelterClicked = () => {
     history.push("/listDogs");
@@ -170,6 +172,26 @@ export default function Settings() {
     setFilters({ ...filters, page: filters.page + 1 });
   };
 
+  useEffect(() => {
+    if(!isListOn){
+      store.dispatch(
+        Actions.fetchContactInfoThunk({
+          userId: cookies[config.cookies.userId],
+          cookies
+        }));
+      }
+    },[isListOn]);
+
+
+  const getContactInfo = () => {
+    store.dispatch(
+      Actions.fetchContactInfoThunk({
+        userId: cookies[config.cookies.userId],
+        cookies
+      })
+    )
+  }
+
   return (
     <Root scheme={scheme}>
       <CssBaseline />
@@ -177,6 +199,7 @@ export default function Settings() {
         <Toolbar>
           <SidebarTrigger sidebarId="unique_id" />
           Shelter
+          
         </Toolbar>
       </Header>
       <DrawerSidebar sidebarId="unique_id">
@@ -221,6 +244,7 @@ export default function Settings() {
         <Footer />
       </DrawerSidebar>
       <Content>
+      {isListOn &&
         <InfiniteScroll
           dataLength={dogs.length}
           next={fetchMore}
@@ -231,16 +255,17 @@ export default function Settings() {
             </div>
           }
         >
-          {isListOn &&
-          <ImageGrid dogs={dogs} />}
+          
+          <ImageGrid dogs={dogs} />
+          </InfiniteScroll>}
           {!isListOn &&
            
            <Card>
-                 {contactInfo.id}
+                 
            </Card>
 
           }
-        </InfiniteScroll>
+        
       </Content>
     </Root>
   );
