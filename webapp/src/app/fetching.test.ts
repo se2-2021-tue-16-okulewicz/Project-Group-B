@@ -31,11 +31,9 @@ import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import {
   ILoginInformation,
   ILoginResults,
-  initCorrectRegisterRegularUserProps,
-  initLoginProps,
-  initRegisterRegularUserProps,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
+import { initLoginProps, initRegisterRegularUserProps } from "../registerLogin/registerLogintest";
 //import { addDog } from './fetching';
 
 jest.mock("axios");
