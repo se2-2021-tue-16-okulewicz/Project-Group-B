@@ -62,18 +62,16 @@ async function getResponse<T>(
   }
 }
 
-
 export async function fetchDogs(
-    filters:{ [name: string]: any },
-    cookies: { [name: string]: any }
-  ): Promise<RequestResponse<ILostDogWithPicture[]>> {
-
-    const filtersString = Object.keys(filters)
+  filters: { [name: string]: any },
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture[]>> {
+  const filtersString = Object.keys(filters)
     .map((filterName) => {
       const value = String(filters[filterName]).trim();
-      if(filterName!="size")
-      {
-      return value ? `${filterName}=${value}` : "";}
+      if (filterName != "size") {
+        return value ? `${filterName}=${value}` : "";
+      }
     })
     .filter((x) => x !== "")
     .join("&");

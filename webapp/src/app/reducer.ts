@@ -14,7 +14,7 @@ export type Error = {
 };
 
 export type State = {
-  dogs: ILostDogWithPicture[]|any;
+  dogs: ILostDogWithPicture[] | any;
   dogsLastPage: boolean;
   dogsRequireRefresh: boolean;
   loading: boolean;
@@ -92,7 +92,7 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.fetchDogsThunk.pending.toString()]  : (
+  [Actions.fetchDogsThunk.pending.toString()]: (
     state: State,
     payload: PayloadAction<undefined>
   ) => {
@@ -101,10 +101,10 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.fetchDogsThunk.fulfilled.toString()] : (
+  [Actions.fetchDogsThunk.fulfilled.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
-  )  => {
+  ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     // if page filter not specified - set to default
@@ -135,14 +135,14 @@ export const reducer = createReducer(init, {
   [Actions.fetchDogsThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
-  )  => {
+  ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
     newState.loading = false;
     newState.error = {
       hasError: true,
-      errorCode: errorResponse?errorResponse.code:-1,
-      erorMessage: errorResponse?errorResponse.response.message:"",
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
     };
     return newState;
   },

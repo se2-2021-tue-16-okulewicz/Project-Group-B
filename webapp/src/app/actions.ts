@@ -73,13 +73,16 @@ export const fetchDogsThunk = createAsyncThunk(
     const response: RequestResponse<ILostDogWithPicture[]|null>= await Fetching.fetchDogs(item.filters, item.cookies);
 
     if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<ILostDogWithPicture|null>);
+      return rejectWithValue(
+        response as RequestResponse<ILostDogWithPicture | null>
+      );
     }
 
     //let dogs = response.response.data as ILostDogWithPicture[];
 
     return response;
-  });
+  }
+);
 
 export const registerRegularUserThunk = createAsyncThunk<
   RequestResponse<ILoginResults>,

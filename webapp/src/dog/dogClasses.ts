@@ -43,6 +43,5 @@ export const initLostDogWithPictureProps: ILostDogWithPicture = {
   location: { city: "", district: "" },
   dateLost: new Date(2012, 1, 1, 0, 0, 0, 0),
   isFound: false,
-  picture:initPicture
+  picture: initPicture,
 };
-
