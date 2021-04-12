@@ -62,6 +62,32 @@ async function getResponse<T>(
   }
 }
 
+export async function fetchDogs(
+  filters: { [name: string]: any },
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture[]>> {
+  const filtersString = Object.keys(filters)
+    .map((filterName) => {
+      const value = String(filters[filterName]).trim();
+      if (filterName != "size") {
+        return value ? `${filterName}=${value}` : "";
+      }
+    })
+    .filter((x) => x !== "")
+    .join("&");
+
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
+      {
+        headers: {
+          token: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
 export async function addDog(
   dog: ILostDog,
   picture: IPicture,
