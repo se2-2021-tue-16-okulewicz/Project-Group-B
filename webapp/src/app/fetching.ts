@@ -76,17 +76,17 @@ export async function fetchDogs(
     .filter((x) => x !== "")
     .join("&");
 
-    return getResponse(
-        axios.get(
-          `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
-          {
-            headers: {
-              token: getToken(cookies),
-            },
-          }
-        )
-      );
-    }
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
+      {
+        headers: {
+          token: getToken(cookies),
+        },
+      }
+    )
+  );
+}
 
 export async function addDog(
   dog: ILostDog,

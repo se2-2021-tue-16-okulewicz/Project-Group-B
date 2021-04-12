@@ -87,20 +87,20 @@ scheme.configureHeader((builder) => {
     .registerConfig("md", {
       position: "absolute",
     })
-  .registerConfig('xs', {
-    position: 'absolute', // won't stick to top when scroll down
-  });
+    .registerConfig("xs", {
+      position: "absolute", // won't stick to top when scroll down
+    });
 });
 
 scheme.configureEdgeSidebar((builder) => {
   builder
-    .create('unique_id', { anchor: 'left' })
-     .registerPermanentConfig('xs', {
+    .create("unique_id", { anchor: "left" })
+    .registerPermanentConfig("xs", {
       width: "18%", // px, (%, rem, em is compatible)
       collapsible: true,
       collapsedWidth: "10%",
-     })
-    .registerPermanentConfig('md', {
+    })
+    .registerPermanentConfig("md", {
       width: "15%", // px, (%, rem, em is compatible)
       collapsible: true,
       collapsedWidth: "6%",
