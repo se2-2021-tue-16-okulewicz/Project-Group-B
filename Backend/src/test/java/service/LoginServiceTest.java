@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
+import se.backend.model.account.UserAccount;
 import se.backend.service.login.LoginService;
 import se.backend.wrapper.account.UserType;
 
@@ -23,7 +24,7 @@ public class LoginServiceTest {
     private LoginService service;
 
     @Test
-    public void authenticateTest() {
+    public void AuthenticateTest() {
         var authenticationResult1 = service.Authenticate("Elon Musk", "xea-12Musk");
         assertEquals(UserType.Regular, authenticationResult1.getUserType());
 
@@ -41,7 +42,7 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void logoutTest() {
+    public void LogoutTest() {
         var properLogoutResult = service.Logout("regularUserTestToken");
         assertTrue(properLogoutResult);
 
@@ -51,7 +52,67 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void isAuthorizedTest() {
+    public void CreateAccountTest() {
+        UserAccount user1 = new UserAccount();
+        user1.setName("Name");
+        var result = service.CreateAccount(user1);
+        assertEquals("Incomplete data", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setPassword("Password");
+        user1.setPhoneNumber("+48 788 64 00 00");
+        user1.setAssociatedEmail("notValidEmail");
+        result = service.CreateAccount(user1);
+        assertEquals("Email is invalid", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setAssociatedEmail("e.musk@mail.com");
+        result = service.CreateAccount(user1);
+        assertEquals("Email is already used", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setAssociatedEmail("new@mail.com");
+        user1.setName("Elon Musk");
+        result = service.CreateAccount(user1);
+        assertEquals("Name is already used", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setName("Name");
+        user1.setPhoneNumber("Not valid phone number");
+        result = service.CreateAccount(user1);
+        assertEquals("Phone number is invalid", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setPhoneNumber("+48 788 64 00 00");
+        user1.setName("Aa");
+        result = service.CreateAccount(user1);
+        assertEquals("User name is too short", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setName("Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        result = service.CreateAccount(user1);
+        assertEquals("User name is too long", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setName("Name");
+        user1.setPassword("Passw");
+        result = service.CreateAccount(user1);
+        assertEquals("Password is too short", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setPassword("Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        result = service.CreateAccount(user1);
+        assertEquals("Password is too long", result.getValue1());
+        assertNull(result.getValue0());
+
+        user1.setPassword("Password");
+        result = service.CreateAccount(user1);
+        assertEquals("", result.getValue1());
+        assertNotNull(result.getValue0());
+    }
+
+    @Test
+    public void IsAuthorizedTest() {
         HttpHeaders regularTokenHeaders = new HttpHeaders();
         regularTokenHeaders.add("token", "regularUserTestToken");
 

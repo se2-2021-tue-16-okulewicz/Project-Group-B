@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +16,7 @@ import se.backend.model.account.Account;
 import se.backend.model.account.AdminAccount;
 import se.backend.model.account.DogShelterAccount;
 import se.backend.model.account.UserAccount;
-import se.backend.service.lostdogs.LostDogMainService;
+import se.backend.utils.StringUtils;
 import se.backend.wrapper.account.AuthenticationResults;
 import se.backend.wrapper.account.UserType;
 
@@ -47,17 +46,19 @@ public class LoginMainService implements LoginService {
         }
     }
 
-    private HashMap<String, Pair<UserType, Long>> sessions = null;
+    private final HashMap<String, Pair<UserType, Long>> sessions;
 
     private static final ExampleMatcher LOGIN_ADMIN_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id")
             .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
-            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
+            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive())
+            .withIgnoreCase();
 
     private static final ExampleMatcher LOGIN_SHELTER_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id", "shelter_id")
             .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
-            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
+            .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive())
+            .withIgnoreCase();
 
     private static final ExampleMatcher LOGIN_REGULAR_INFORMATION_MATCHER = ExampleMatcher.matching()
             .withIgnorePaths("id", "email", "phone_number")
@@ -145,8 +146,46 @@ public class LoginMainService implements LoginService {
     }
 
     @Override
-    public AuthenticationResults CreateAccount(Account user) {
-        return null;
+    public Pair<UserAccount, String> CreateAccount(UserAccount user) {
+        user.setId(0);
+
+        if(!StringUtils.IsValidString(user.getPhoneNumber()) ||
+                !StringUtils.IsValidString(user.getName()) ||
+                !StringUtils.IsValidString(user.getAssociatedEmail()) ||
+                !StringUtils.IsValidString(user.getPassword()))
+            return new Pair<>(null, "Incomplete data");
+
+        if(!StringUtils.IsStringAnEmail(user.getAssociatedEmail()))
+            return new Pair<>(null, "Email is invalid");
+
+        user.setAssociatedEmail(user.getAssociatedEmail().toLowerCase());
+
+        if(userAccountRepository.existsByAssociatedEmail(user.getAssociatedEmail()))
+            return new Pair<>(null, "Email is already used");
+
+        if(userAccountRepository.existsByName(user.getName()))
+            return new Pair<>(null, "Name is already used");
+
+        if(!StringUtils.IsStringAPhoneNumber(user.getPhoneNumber()))
+            return new Pair<>(null, "Phone number is invalid");
+
+        if(user.getName().length() < 3)
+            return new Pair<>(null, "User name is too short");
+
+        if(user.getName().length() > 32)
+            return new Pair<>(null, "User name is too long");
+
+        if(user.getPassword().length() < 6)
+            return new Pair<>(null, "Password is too short");
+
+        if(user.getPassword().length() > 32)
+            return new Pair<>(null, "Password is too long");
+
+        user.setPassword(getSHA256Hash(user.getPassword()));
+
+        var result = userAccountRepository.save(user);
+
+        return new Pair<>(result, "");
     }
 
     @Override

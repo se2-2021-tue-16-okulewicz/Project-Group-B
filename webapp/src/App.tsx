@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { Provider, useSelector } from "react-redux";
 import {
   Redirect,
@@ -8,7 +8,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import { clearError, logoutThunk } from "./app/actions";
+import { clearError, clearRedirect, logoutThunk } from "./app/actions";
 import { State } from "./app/reducer";
 import { store } from "./app/store";
 import RegisterDogForm from "./registerDog/registerDog";
@@ -19,6 +19,7 @@ import LoadingPopup from "./utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 import ListWithDogs from "./dogsList/listWithDogs";
 import config from "./config/config";
+import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,9 +45,17 @@ function App() {
 function Layout() {
   const error = useSelector((state: State) => state.error);
   const loading = useSelector((state: State) => state.loading);
+  const redirect = useSelector((state: State) => state.redirect);
   const history = useHistory();
   const classes = useStyles();
   const [cookies, setCookie, removeCookie] = useCookies();
+
+  useEffect(() => {
+    if (redirect !== null) {
+      history.push(redirect);
+      store.dispatch(clearRedirect());
+    }
+  }, [redirect]);
 
   const errorOnClose = () => {
     if (error.errorCode === 403) {
@@ -76,6 +85,9 @@ function Layout() {
       <Switch>
         <Route exact path="/">
           <Login />
+        </Route>
+        <Route path="/register/user">
+          <RegisterRegularUser />
         </Route>
         <Route path="/listDogs">
           <ListWithDogs />

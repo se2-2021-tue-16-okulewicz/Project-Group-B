@@ -96,7 +96,11 @@ export default function Login() {
       })
     );
   };
-  const goToUserRegister = () => {};
+
+  const goToUserRegister = () => {
+    history.push("/register/user");
+  };
+
   const goToShelterRegister = () => {};
 
   useEffect(() => {
@@ -172,7 +176,7 @@ export default function Login() {
                     onClick={() => onLoginClicked()}
                     color="primary"
                     disabled={
-                      values.username.length === 0 &&
+                      values.username.length === 0 ||
                       values.password.length === 0
                     }
                   >

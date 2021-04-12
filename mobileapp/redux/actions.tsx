@@ -8,21 +8,8 @@ import { RequestResponse } from "./response";
 
 /**
  * Thunk for logging into an account
- * @param {Object} loginData an object containing registration details
+ * @param {ILoginInformation} credentials an object containing login details
  */
-// export const signInThunk = createAsyncThunk(
-//   "login",
-//   async (
-//     loginData: { username: string; password: string },
-//     { rejectWithValue }
-//   ) => {
-//     const response = await Fetching.logIn(loginData.username, loginData.password);
-
-//     if (response.code !== 200) return rejectWithValue(response);
-
-//     return response;
-//   }
-// );
 
 export const loginThunk = createAsyncThunk<
   RequestResponse<ILoginResults>,
@@ -46,4 +33,3 @@ export const loginThunk = createAsyncThunk<
 export const setIdle = createAction("setIdle");
 export const clearLoginInformation = createAction("clearLoginInformation");
 export const incorrectUserType = createAction("incorrectUserType");
-

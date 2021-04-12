@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user_account")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class UserAccount extends Account implements Serializable{
+public class UserAccount extends Account implements Serializable {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         private long id;

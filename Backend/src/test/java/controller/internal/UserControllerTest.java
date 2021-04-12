@@ -119,4 +119,174 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void RegisterTest() throws Exception {
+        MockMultipartFile loginValid = new MockMultipartFile("username", "", "text/plain", "Name".getBytes());
+        MockMultipartFile loginShort = new MockMultipartFile("username", "", "text/plain", "Na".getBytes());
+        MockMultipartFile loginLong = new MockMultipartFile("username", "", "text/plain", "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa".getBytes());
+        MockMultipartFile loginRepeat = new MockMultipartFile("username", "", "text/plain", "Elon Musk".getBytes());
+        MockMultipartFile loginEmpty = new MockMultipartFile("username", "", "text/plain", " ".getBytes());
+
+        MockMultipartFile passwordValid = new MockMultipartFile("password", "", "text/plain", "Password".getBytes());
+        MockMultipartFile passwordShort = new MockMultipartFile("password", "", "text/plain", "Passw".getBytes());
+        MockMultipartFile passwordLong = new MockMultipartFile("password", "", "text/plain", "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa".getBytes());
+
+        MockMultipartFile emailValid = new MockMultipartFile("email", "", "text/plain", "mail@mail.com".getBytes());
+        MockMultipartFile emailInvalid = new MockMultipartFile("email", "", "text/plain", "@.".getBytes());
+        MockMultipartFile emailRepeat = new MockMultipartFile("email", "", "text/plain", "e.musk@mail.com".getBytes());
+
+        MockMultipartFile phoneValid = new MockMultipartFile("phone_number", "", "text/plain", "+48788640000".getBytes());
+        MockMultipartFile phoneInvalid = new MockMultipartFile("phone_number", "", "text/plain", "Not a phone number".getBytes());
+
+        //Missing request part
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginValid)
+                        .file(passwordValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Missing part of a request")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Empty part
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginEmpty)
+                        .file(passwordValid)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Incomplete data")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Invalid mail
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginValid)
+                        .file(passwordValid)
+                        .file(emailInvalid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Email is invalid")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Used mail
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginValid)
+                        .file(passwordValid)
+                        .file(emailRepeat)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Email is already used")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Used name
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginRepeat)
+                        .file(passwordValid)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Name is already used")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Invalid phone
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginValid)
+                        .file(passwordValid)
+                        .file(emailValid)
+                        .file(phoneInvalid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Phone number is invalid")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Name too short
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginShort)
+                        .file(passwordValid)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("User name is too short")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Name too long
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginLong)
+                        .file(passwordValid)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("User name is too long")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Password too short
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginValid)
+                        .file(passwordShort)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Password is too short")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Password too long
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginValid)
+                        .file(passwordLong)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Password is too long")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Success
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/register")
+                        .file(loginValid)
+                        .file(passwordValid)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("message", is("Registration successful")))
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Try to login on new account
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/login")
+                        .file(loginValid)
+                        .file(passwordValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.userType", is(UserType.Regular.toString())));
+    }
 }

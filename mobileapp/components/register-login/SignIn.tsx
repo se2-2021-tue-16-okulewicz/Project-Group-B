@@ -25,6 +25,8 @@ const SignIn = ({ navigation }: any) => {
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
+  //const wrongUserErrorMessage =
+  //"Mobile application is only available for regular users.";
   const loading = useSelector((state: State) => state.loading);
 
   React.useEffect(() => {
