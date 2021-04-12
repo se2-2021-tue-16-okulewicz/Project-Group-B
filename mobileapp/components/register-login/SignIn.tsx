@@ -86,9 +86,7 @@ const SignIn = ({ navigation }: any) => {
         <View style={style.centeredView}>
           <View style={style.modalView}>
             <Text style={style.modalText}>Sign-in failed!</Text>
-            <Text style={style.modalText}>
-              {errorMessage}
-            </Text>
+            <Text style={style.modalText}>{errorMessage}</Text>
             <Pressable
               style={[style.modalButton, style.buttonClose]}
               onPress={() => setModalVisible(false)}

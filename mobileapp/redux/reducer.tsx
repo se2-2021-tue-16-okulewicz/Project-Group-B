@@ -37,7 +37,8 @@ export const reducer = createReducer(init, {
     newState.loginInformation = null;
     newState.error.hasError = true;
     newState.error.errorCode = 1;
-    newState.error.erorMessage = "Mobile application is not available for admins or shelter managers";
+    newState.error.erorMessage =
+      "Mobile application is not available for admins or shelter managers";
     return newState;
   },
 
