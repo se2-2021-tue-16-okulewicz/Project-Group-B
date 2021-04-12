@@ -29,16 +29,6 @@ import { ILoginInformation, ILoginResults, initCorrectRegisterRegularUserProps, 
 
 jest.mock('axios');
 
-
-/*test('the data is peanut butter', async () => {
-  const data: RequestResponse<ILostDogWithPicture> = await Fetching.addDog(
-    initLostDogProps,
-    initPicture,
-    testCookies
-  );
-  expect(data).toEqual(initLostDogWithPictureProps);
-});*/
-
 const errorObject = {
   "code": 0,
   "response": {
@@ -116,7 +106,6 @@ test('logout without being logged in', async () => {
     await expect(addDog('react')).rejects.toThrow(errorMessage);
   });
 });*/
-
 
 /*'use strict';
 
