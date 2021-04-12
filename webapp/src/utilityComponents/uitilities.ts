@@ -1,9 +1,9 @@
 export type Item = {
-     filters: {
-        page: number;
-        size: number;
-    }, cookies:
-    {
-        [name: string]: any;
-    }
-}
+  filters: {
+    page: number;
+    size: number;
+  };
+  cookies: {
+    [name: string]: any;
+  };
+};

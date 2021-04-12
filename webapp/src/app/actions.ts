@@ -2,7 +2,7 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
-import {Item} from "../utilityComponents/uitilities"
+import { Item } from "../utilityComponents/uitilities";
 import {
   ILoginInformation,
   ILoginResults,
@@ -69,8 +69,10 @@ export const logoutThunk = createAsyncThunk<
 
 export const fetchDogsThunk = createAsyncThunk(
   "fetchAllDogs",
-  async ( item:any, { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPicture[]|null>= await Fetching.fetchDogs(item.filters, item.cookies);
+  async (item: any, { rejectWithValue }) => {
+    const response: RequestResponse<
+      ILostDogWithPicture[] | null
+    > = await Fetching.fetchDogs(item.filters, item.cookies);
 
     if (response.response.successful !== true) {
       return rejectWithValue(
