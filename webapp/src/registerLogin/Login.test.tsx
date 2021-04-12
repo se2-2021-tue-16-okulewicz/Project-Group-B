@@ -46,9 +46,9 @@ it("Test login view elements", () => {
   expect(container?.getElementsByTagName("button").length).toBe(4);
 });
 
-describe('reducer', () => {
-  it('should return initial state', () => {
-    const state = reducer(init, { type: '' });
+describe("reducer", () => {
+  it("should return initial state", () => {
+    const state = reducer(init, { type: "" });
     expect(state).toEqual({
       dogs: [],
       dogsLastPage: false,

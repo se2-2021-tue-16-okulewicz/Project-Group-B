@@ -1,26 +1,46 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Card, CardHeader, Divider, Grid, GridList, GridListTile, GridListTileBar, IconButton, List, Paper } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardHeader,
+  Divider,
+  Grid,
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  IconButton,
+  List,
+  Paper,
+} from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import styled from 'styled-components';
-import getLayoutComponents from '@mui-treasury/layout';
+import styled from "styled-components";
+import getLayoutComponents from "@mui-treasury/layout";
 import { store } from "../app/store";
 import { reducer, State } from "../app/reducer";
 import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
-import * as  Actions from "../../src/app/actions"
-import Layout, { getContent, getFooter, getDrawerSidebar, getHeader, Root, getSidebarTrigger, getSidebarContent, getCollapseBtn } from '@mui-treasury/layout';
-import Toolbar from '@material-ui/core/Toolbar';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import * as Actions from "../../src/app/actions";
+import Layout, {
+  getContent,
+  getFooter,
+  getDrawerSidebar,
+  getHeader,
+  Root,
+  getSidebarTrigger,
+  getSidebarContent,
+  getCollapseBtn,
+} from "@mui-treasury/layout";
+import Toolbar from "@material-ui/core/Toolbar";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
-import InfoIcon from '@material-ui/icons/Info';
+import InfoIcon from "@material-ui/icons/Info";
 //import { getLayoutComponents } from '@mui-treasury/layout';
-
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const Header = getHeader(styled);
@@ -34,15 +54,14 @@ const scheme = Layout();
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     icon: {
-      color: 'rgba(255, 255, 255, 0.54)',
+      color: "rgba(255, 255, 255, 0.54)",
     },
     registerButton: {
       display: "flex",
       textAlign: "center",
       alignSelf: "center",
       marginLeft: "5%",
-      marginRight: "5%"
-
+      marginRight: "5%",
     },
     cardContent: {
       justifyContent: "center",
@@ -75,29 +94,28 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       marginTop: "2vh",
       flexGrow: 1,
-      alignSelf: "center"
+      alignSelf: "center",
     },
   })
 );
 
-scheme.configureHeader(builder => {
+scheme.configureHeader((builder) => {
   builder
-    .registerConfig('md', {
-      position: 'absolute',
-
+    .registerConfig("md", {
+      position: "absolute",
     })
-  .registerConfig('xs', {
-    position: 'relative', // won't stick to top when scroll down
-  });
+    .registerConfig("xs", {
+      position: "relative", // won't stick to top when scroll down
+    });
 });
 
-scheme.configureEdgeSidebar(builder => {
+scheme.configureEdgeSidebar((builder) => {
   builder
-    .create('unique_id', { anchor: 'left' })
-     .registerTemporaryConfig('xs', {
-       width: 200, // 'auto' is only valid for temporary variant
-     })
-    .registerPermanentConfig('md', {
+    .create("unique_id", { anchor: "left" })
+    .registerTemporaryConfig("xs", {
+      width: 200, // 'auto' is only valid for temporary variant
+    })
+    .registerPermanentConfig("md", {
       width: "15%", // px, (%, rem, em is compatible)
       collapsible: true,
       collapsedWidth: "6%",
@@ -105,18 +123,20 @@ scheme.configureEdgeSidebar(builder => {
 });
 //scheme.configureInsetSidebar
 
-
-
 export default function ListWithDogs() {
   const state = store.getState() as State;
   const [collapsed, setCollapsed] = useState(false);
-  const dogs = useSelector((state: State) => (state.dogs as ILostDogWithPicture[]));
+  const dogs = useSelector(
+    (state: State) => state.dogs as ILostDogWithPicture[]
+  );
   const loading = useSelector((state: State) => state.loading);
-  const refreshRequired = useSelector((state: State) => state.dogsRequireRefresh);
+  const refreshRequired = useSelector(
+    (state: State) => state.dogsRequireRefresh
+  );
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
-    size: config.defaultFilters.size
+    size: config.defaultFilters.size,
   });
   // is this page last?
   //const lastPage = useSelector((state) => state.carsLastPage);
@@ -150,8 +170,7 @@ export default function ListWithDogs() {
             ...filters,
             page: config.defaultFilters.page,
           },
-          cookies: config.cookies.token
-
+          cookies: config.cookies.token,
         }) //filters
       );
       //set page number to 0
@@ -177,12 +196,11 @@ export default function ListWithDogs() {
     store.dispatch(
       Actions.fetchDogsThunk({
         filters: { ...filters, page: filters.page + 1 },
-        cookies: cookies
+        cookies: cookies,
       }) //filters
     );
     setFilters({ ...filters, page: filters.page + 1 });
   };
-
 
   // const handlePicturesChange = (event: any) => {
   //   if (event) {
@@ -220,8 +238,7 @@ export default function ListWithDogs() {
       </div> */
 
   return (
-    <Root scheme={scheme} >
-
+    <Root scheme={scheme}>
       <CssBaseline />
       <Header>
         <Toolbar>
@@ -230,54 +247,58 @@ export default function ListWithDogs() {
         </Toolbar>
       </Header>
       <DrawerSidebar sidebarId="unique_id">
-        <CollapseBtn onClick={()=>{setCollapsed(!collapsed)}}/>
+        <CollapseBtn
+          onClick={() => {
+            setCollapsed(!collapsed);
+          }}
+        />
         <SidebarContent name="sidebar">
-          {!collapsed &&
-          <Grid container className={classes.main} spacing={1}>
-            { }
-            <Button
-              className={classes.registerButton}
-              data-testid="registerButton"
-              color="primary"
-              variant="contained"
-              size="medium"
-              onClick={onRegisterClicked}
-            >Register</Button>
-            <Grid item xs={12} />
-            <Button
-              className={classes.registerButton}
-              data-testid="settingsButton"
-              color="secondary"
-              variant="contained"
-              size="medium"
-            >Settings</Button>
-
-          </Grid>}
-
+          {!collapsed && (
+            <Grid container className={classes.main} spacing={1}>
+              {}
+              <Button
+                className={classes.registerButton}
+                data-testid="registerButton"
+                color="primary"
+                variant="contained"
+                size="medium"
+                onClick={onRegisterClicked}
+              >
+                Register
+              </Button>
+              <Grid item xs={12} />
+              <Button
+                className={classes.registerButton}
+                data-testid="settingsButton"
+                color="secondary"
+                variant="contained"
+                size="medium"
+              >
+                Settings
+              </Button>
+            </Grid>
+          )}
         </SidebarContent>
 
         <Footer />
       </DrawerSidebar>
-      <Content>       
-          <InfiniteScroll
-            dataLength={dogs.length}
-            next={fetchMore}
-            hasMore={!lastPage}
-            loader={
-              <div className="loader" key={0}>
-                Loading ...
-              </div>
-            }
-          >
-            <ImageGrid dogs={dogs}/>
-          </InfiniteScroll>
+      <Content>
+        <InfiniteScroll
+          dataLength={dogs.length}
+          next={fetchMore}
+          hasMore={!lastPage}
+          loader={
+            <div className="loader" key={0}>
+              Loading ...
+            </div>
+          }
+        >
+          <ImageGrid dogs={dogs} />
+        </InfiniteScroll>
       </Content>
-
     </Root>
-
-
   );
 }
- //<img src={byteArrayToBase64((dogs[19] as ILostDogWithPicture).picture.data as ArrayBuffer)}  alt={dogs[0].picture.fileName} />
+//<img src={byteArrayToBase64((dogs[19] as ILostDogWithPicture).picture.data as ArrayBuffer)}  alt={dogs[0].picture.fileName} />
 //          <Button>{dog.name}</Button>
 // <img src={`data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer}`}  alt={dog.picture.fileName} />

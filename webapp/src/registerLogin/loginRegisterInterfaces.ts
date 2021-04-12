@@ -3,10 +3,10 @@ export interface ILoginInformation {
   password: string;
 }
 
-export const initLoginProps : ILoginInformation={
+export const initLoginProps: ILoginInformation = {
   username: "",
-  password: ""
-}
+  password: "",
+};
 
 export interface ILoginResults {
   userType: "Admin" | "Regular" | "Shelter" | "";
@@ -14,20 +14,19 @@ export interface ILoginResults {
   id: number;
 }
 
-export const initRegisterRegularUserProps : IRegisterRegularUserInformation={
+export const initRegisterRegularUserProps: IRegisterRegularUserInformation = {
   username: "",
-  email:"",
+  email: "",
   password: "",
   phone: "",
-}
+};
 
-
-export const initCorrectRegisterRegularUserProps : IRegisterRegularUserInformation={
+export const initCorrectRegisterRegularUserProps: IRegisterRegularUserInformation = {
   username: "newrandomusername",
-  email:"a@abcdegdfds.com",
+  email: "a@abcdegdfds.com",
   password: "123456",
   phone: "123456789",
-}
+};
 
 export interface IRegisterRegularUserInformation {
   username: string;

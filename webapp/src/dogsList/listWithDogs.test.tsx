@@ -29,7 +29,12 @@ afterEach(() => {
 
 it("Rendered list of dogs", () => {
   act(() => {
-    render(<Provider store={store}><ListWithDogs /></Provider>, container);
+    render(
+      <Provider store={store}>
+        <ListWithDogs />
+      </Provider>,
+      container
+    );
   });
   //expect(container).toMatchSnapshot();
   //container?.getElementsByTagName("registerButton")
