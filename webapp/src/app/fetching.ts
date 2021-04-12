@@ -101,6 +101,26 @@ export async function addDog(
   );
 }
 
+export async function markLostDogAsFound(
+  dogId: number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture>> {
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/found`,
+      {
+        headers: {
+          token: getToken(cookies),
+          //Accept: "application/json",
+          //"Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
+
 export async function login(
   credentials: ILoginInformation
 ): Promise<RequestResponse<ILoginResults>> {

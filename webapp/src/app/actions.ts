@@ -52,6 +52,7 @@ export const loginThunk = createAsyncThunk<
   return response as RequestResponse<ILoginResults>;
 });
 
+
 export const logoutThunk = createAsyncThunk<
   RequestResponse<null>,
   { [name: string]: any },
