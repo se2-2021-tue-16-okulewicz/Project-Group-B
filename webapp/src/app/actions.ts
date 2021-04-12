@@ -66,39 +66,16 @@ export const logoutThunk = createAsyncThunk<
   return response as RequestResponse<null>;
 });
 
-export const registerRegularUserThunk = createAsyncThunk<
-  RequestResponse<ILoginResults>,
-  IRegisterRegularUserInformation,
-  { rejectValue: RequestResponse<null> }
->(
-  "registeregularUser",
-  async (newUserInfo: IRegisterRegularUserInformation, { rejectWithValue }) => {
-    const response: RequestResponse<null> = await Fetching.registerRegularUser(
-      newUserInfo
-    );
+export const fetchDogsThunk = createAsyncThunk(
+  "dogs/fetchAllDogs",
+  async (dogs: ILostDogWithPicture[], { rejectWithValue }) => {
+    const response: RequestResponse<ILostDogWithPicture[]>= await Fetching.fetchDogs();
 
-    if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<null>);
-    }
+    if (response.code !== 200) return rejectWithValue(response);
 
-    //On success we want to acutally login
-    const responseLogin: RequestResponse<ILoginResults> = await Fetching.login({
-      username: newUserInfo.username,
-      password: newUserInfo.password,
-    });
+    dogs = response.response.data as ILostDogWithPicture[];
 
-    if (response.response.successful !== true) {
-      return rejectWithValue({
-        code: responseLogin.code,
-        response: {
-          message: responseLogin.response.message,
-          successful: responseLogin.response.successful,
-          data: null,
-        },
-      });
-    }
-
-    return responseLogin as RequestResponse<ILoginResults>;
+    return response;
   }
 );
 

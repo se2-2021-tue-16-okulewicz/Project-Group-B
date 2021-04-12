@@ -31,7 +31,7 @@ import { initLostDogProps, initPicture } from "../dog/dogClasses";
 import { ILostDog, IPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import * as Actions from "../app/actions";
+import * as  Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";

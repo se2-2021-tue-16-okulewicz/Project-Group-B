@@ -1,9 +1,13 @@
 import "date-fns";
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Card, CardHeader, List } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
+import { store } from "../app/store";
+import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
+import * as  Actions from "../../src/app/actions"
+//mport { Root, Header, Nav, Content, Footer, presets } from "./Layout";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,15 +72,19 @@ export default function ListWithDogs() {
   //   setRegisterEnabled(false);
   // };
 
-  // function registerDog(dog: ILostDog, picture: IPicture) {
-  //   store.dispatch(
-  //     Actions.addDogThunk({
-  //       dog: dog,
-  //       picture: picture,
-  //       cookies: cookies,
-  //     })
-  //   );
-  // }
+  /*function getDogs() {
+    store.dispatch(
+      Actions.fetchDogsThunk({
+        //dogs:dogs
+      })
+    );
+  }*/
+  const redirectToDogDetails = (id:Number) => {
+    history.push(`lostdog/${id}`);
+    if (status === "error") {
+      //store.dispatch(Actions.setIdle());
+    }
+  };
 
   // const handlePicturesChange = (event: any) => {
   //   if (event) {
@@ -103,21 +111,21 @@ export default function ListWithDogs() {
       >
         Register a Dog
       </Button>
-      {/*<List className={classes.root}>
+      <List className={classes.root}>
         {[0, 1, 2, 3, 4].map((sectionId) => (
           <li key={`section-${sectionId}`} className={classes.listSection}>
             <ul className={classes.ul}>
               {[0, 1, 2].map((item) => (
                 <Card className={classes.Card}>
                   <CardHeader>
-                    Item nr 
+                    Item nr
                   </CardHeader>
                 </Card>
               ))}
             </ul>
           </li>
         ))}
-              </List>*/}
+      </List>
     </div>
   );
 }
