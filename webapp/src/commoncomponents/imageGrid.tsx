@@ -6,6 +6,8 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
+import { ILostDogWithPicture } from '../dog/dogInterfaces';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -43,30 +45,33 @@ const useStyles = makeStyles((theme: Theme) =>
  *   },
  * ];
  */
-export default function TitlebarGridList(dogs : any) {
+export default function ImageGrid(props:any) {
   const classes = useStyles();
+  const dogs = props.dogs as ILostDogWithPicture[];
+  const history = useHistory();
+  const redirectToDetails = (id: Number) => {
+    history.push(`/listDogs/lostdog/${id}`);
+  };
 
   return (
-    <div className={classes.root}>
-      <GridList cellHeight={180} className={classes.gridList}>
-        <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-          <ListSubheader component="div">December</ListSubheader>
-        </GridListTile>
-        {dogs.map((dog:any) => (
-          <GridListTile key={dogs.id}>
-            <img src={dog.picture.data} alt={dogs.picture.title} />
-            <GridListTileBar
-              title={dog.name}
-              subtitle={<span>by: {dog.location}</span>}
-              actionIcon={
-                <IconButton aria-label={`info about ${dog.name}`} className={classes.icon}>
-                  <InfoIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-    </div>
+    <GridList cols={3} spacing={3}>
+        
+            {dogs.map((dog: ILostDogWithPicture) => (
+              <GridListTile key={dog.id} style={{ minHeight: "300px"}} className="tile">
+                <img src={`data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer}`} alt={dog.picture.fileName} />
+                <GridListTileBar
+                  className={dog.name}
+                  title={dog.name}
+                  subtitle={<span>lost in {dog.location.city}</span>}
+                  actionIcon={
+                    <IconButton aria-label={`info about ${dog.name}`} className={classes.icon} onClick={()=>{redirectToDetails(dog.id)}}>
+                      <InfoIcon/>
+                    </IconButton>
+                  }
+                />
+                
+              </GridListTile>
+            ))}
+            </GridList>
   );
 }

@@ -7,7 +7,8 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act, createRenderer } from "react-dom/test-utils";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
-import imageGrid from "./imageGrid";
+import ImageGrid from "./imageGrid";
+import { initLostDogWithPictureProps, initLostDogWithPictureProps2 } from "../dog/dogClasses";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -25,14 +26,19 @@ afterEach(() => {
   }
 });
 
-/*it("Rendered list of dogs", () => {
+const initdogsList = [initLostDogWithPictureProps,initLostDogWithPictureProps2];
+
+it("Rendered list of gridlistitems", () => {
   act(() => {
-    render(<imageGrid />, container);
+    render(<ImageGrid dogs={initdogsList}/>, container);
   });
   //expect(container).toMatchSnapshot();
   //container?.getElementsByTagName("registerButton")
   expect(
-    container?.getElementsByTagName("classes.registerButton").length
-  ).toBeGreaterThanOrEqual(0);
-  //main form is not rendered initially
-});*/
+    container?.getElementsByClassName("tile").length
+  ).toEqual(initdogsList.length);
+
+  expect(
+    container?.getElementsByClassName("Alex").length
+    ).toEqual(1);
+});

@@ -9,6 +9,7 @@ import Login from "./Login";
 import { isNull } from "lodash";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
+import { reducer, init } from "../app/reducer";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -43,4 +44,23 @@ it("Test login view elements", () => {
   );
 
   expect(container?.getElementsByTagName("button").length).toBe(4);
+});
+
+describe('reducer', () => {
+  it('should return initial state', () => {
+    const state = reducer(init, { type: '' });
+    expect(state).toEqual({
+      dogs: [],
+      dogsLastPage: false,
+      dogsRequireRefresh: true,
+      loading: false,
+      error: {
+        hasError: false,
+        errorCode: 0,
+        erorMessage: "",
+      },
+      loginInformation: null,
+      redirect: null,
+    });
+  });
 });

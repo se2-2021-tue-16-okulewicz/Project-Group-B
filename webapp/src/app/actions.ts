@@ -67,15 +67,19 @@ export const logoutThunk = createAsyncThunk<
 });
 
 export const fetchDogsThunk = createAsyncThunk(
-  "dogs/fetchAllDogs",
-  async (dogs: ILostDogWithPicture[], { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPicture[]>= await Fetching.fetchDogs();
+  "fetchAllDogs",
+  async (item: any, { rejectWithValue }) => {
+    const response: RequestResponse<ILostDogWithPicture[]|null>= await Fetching.fetchDogs(item.filters, item.cookies);
 
-    if (response.code !== 200) return rejectWithValue(response);
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<ILostDogWithPicture|null>);
+    }
 
-    dogs = response.response.data as ILostDogWithPicture[];
+    //let dogs = response.response.data as ILostDogWithPicture[];
 
     return response;
+  });
+
 export const registerRegularUserThunk = createAsyncThunk<
   RequestResponse<ILoginResults>,
   IRegisterRegularUserInformation,
