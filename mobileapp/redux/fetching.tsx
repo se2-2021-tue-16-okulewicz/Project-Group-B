@@ -44,11 +44,15 @@ export async function login(
   formData.append("password", credentials.password);
 
   return getResponse(
-    axios.post(`http://${config.backend.ip}:${config.backend.port}/login`, formData, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/login`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
   );
 }

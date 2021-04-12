@@ -37,7 +37,8 @@ export const reducer = createReducer(init, {
     newState.loginInformation = null;
     newState.error.hasError = true;
     newState.error.errorCode = 1;
-    newState.error.erorMessage = "Mobile app is only available for regular users";
+    newState.error.erorMessage =
+      "Mobile app is only available for regular users";
     return newState;
   },
 
