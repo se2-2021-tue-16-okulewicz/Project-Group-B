@@ -3,6 +3,7 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
 import { ILoginResults } from "../components/loginRegisterInterfaces";
+import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
 
 export type Error = {
   hasError: boolean;
@@ -11,12 +12,14 @@ export type Error = {
 };
 
 export type State = {
+  dogs: ILostDogWithPicture[] | any;
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
 };
 
 const init: State = {
+  dogs: [],
   loading: false,
   error: {
     hasError: false,
