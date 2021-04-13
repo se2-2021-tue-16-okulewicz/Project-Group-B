@@ -52,7 +52,7 @@ export default function DogsList({ navigation }: any) {
       //set page number to 0
       setFilters({ ...filters, page: config.defaultFilters.page });
     } // eslint-disable-next-line
-    setMyDogs(dogsList.filter((dog) => dog.ownerId === id) );
+    setMyDogs(dogsList.filter((dog) => dog.ownerId != id) );
   }, [refreshRequired]);
 
   /**
