@@ -12,7 +12,6 @@ import { useState } from "react";
 export default function DogsList({ navigation }: any) {
   const Stack = createStackNavigator();
   const state = store.getState();
-  //const [dogsList, setDogsList] = React.useState<ILostDogWithPicture[]>([])
   const dogsList = useSelector((state: State) => state.dogs as ILostDogWithPicture[]);
   const isLoading = useSelector((state: State) => state.loadingDogs);
   const cookies = useSelector((state: State) => state.loginInformation?.token);
@@ -21,7 +20,7 @@ export default function DogsList({ navigation }: any) {
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
   });
-
+  
   //Fetching cars at the beginning
   React.useEffect(() => {
     if (refreshRequired) {

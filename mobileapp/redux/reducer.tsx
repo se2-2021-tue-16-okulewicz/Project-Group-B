@@ -13,6 +13,7 @@ export type Error = {
 };
 
 export type State = {
+  status: string,
   dogs: ILostDogWithPicture[] | any;
   dogsLastPage: boolean;
   dogsRequireRefresh: boolean;
@@ -23,6 +24,7 @@ export type State = {
 };
 
 const init: State = {
+  status: "",
   dogs: [],
   dogsLastPage: false,
   dogsRequireRefresh: true,
@@ -62,7 +64,6 @@ export const reducer = createReducer(init, {
     newState.error.hasError = false;
     newState.error.errorCode = 0;
     newState.error.erorMessage = "";
-    console.log("login pending");
     return newState;
   },
   [Actions.loginThunk.fulfilled.toString()]: (
@@ -72,9 +73,10 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.loginInformation = payload.payload.response.data;
-    //console.log("login fulfilled " + newState.loginInformation?.token + " " + newState.loginInformation?.userType );
-    //newState.dogsRequireRefresh = true;
-    console.log("login fulfilled");
+    newState.dogsRequireRefresh = true;
+    if(newState.loginInformation?.userType == "Regular"){
+      newState.status = "redirectToDogs";
+    }
     return newState;
   },
   [Actions.loginThunk.rejected.toString()]: (
@@ -89,7 +91,6 @@ export const reducer = createReducer(init, {
       errorCode: errorResponse.code,
       erorMessage: errorResponse.response.message,
     };
-    console.log("login rejected");
     return newState;
   },
 
@@ -99,6 +100,7 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loadingDogs = true;
     newState.dogsRequireRefresh = false;
+    newState.status = "";
     return newState;
   },
 
@@ -122,10 +124,10 @@ export const reducer = createReducer(init, {
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
     newState.dogs = state.dogs.concat(payload.payload.response.data);
+    newState.loadingDogs = false;
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = newState.dogs.length < pageSize;
     newState.dogsRequireRefresh = false;
-    console.log("dogs fulfilled");
     return newState;
   },
 
@@ -141,7 +143,6 @@ export const reducer = createReducer(init, {
       errorCode: errorResponse ? errorResponse.code : -1,
       erorMessage: errorResponse ? errorResponse.response.message : "",
     };
-    console.log("dogs rejected");
     return newState;
   },
 });
