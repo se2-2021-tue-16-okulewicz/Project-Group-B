@@ -83,3 +83,20 @@ export async function fetchDogs(
     )
   );
 }
+
+export async function markLostDogAsFound(
+  dogId:number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture[]>> {
+
+  return getResponse(
+    axios.put(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/found`,
+      {
+        headers: {
+          token: cookies,
+        },
+      }
+    )
+  );
+}
