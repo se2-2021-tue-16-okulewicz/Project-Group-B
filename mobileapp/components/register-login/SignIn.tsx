@@ -59,14 +59,18 @@ const SignIn = ({ navigation }: any) => {
   }, [username, password]);
 
   React.useEffect(() => {
-    if (loginInfo !== null) {
+    if (loginInfo != null) {
       if (loginInfo.userType !== "Regular") {
         store.dispatch(Actions.incorrectUserType());
         setModalVisible(true);
         setReady(false);
         return;
       }
-      store.dispatch(clearLoginInformation());
+      if(loginInfo.userType === "Regular"){
+      navigation.push("DogsList");
+      }
+      //console.log(loginInfo.userType + " user logged in with token " + loginInfo.token );
+      //store.dispatch(clearLoginInformation());
     }
   }, [loginInfo]);
 
