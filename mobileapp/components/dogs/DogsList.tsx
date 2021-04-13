@@ -52,28 +52,28 @@ export default function DogsList({ navigation }: any) {
     );
     setFilters({ ...filters, page: filters.page + 1 });
   };
-  // React.useEffect(() => {
-  //   console.log("fetch dogs!");
-  //   store.dispatch(Actions.fetchDogsThunk({cookies}));
-  // }, [dogsList]);
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={styles.item} > 
       <TouchableOpacity >
         <Text style={styles.title}>{dog.name}</Text>
-        <Image style ={styles.flag}
+        <Image style ={styles.picture}
         source ={{uri: `data:${dog.picture.fileType};base64,${
           dog.picture.data as ArrayBuffer
         }`}}
           />
+          <View style={styles.row}>  
+            <Image
+          style={styles.tinyLogo}
+          source={require("../../assets/images/pin.png")}
+        />
+          <Text style={styles.subtitle}>{dog.location.city}</Text>
+          </View>
+         
       </TouchableOpacity>
+      
     </View>
   );
-  
-  // return (
-  //   <Text>List of dogs!</Text>
-  // );
-
   return (
     <SafeAreaView style={styles.container}>
   { isLoading ? <Text>Loading...</Text> :
@@ -103,16 +103,34 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   item: {
-    backgroundColor: '#efefef',
-    padding: 20,
-    marginVertical: 8,
+    backgroundColor: '#eeeeee',
+    padding: 10,
+    marginVertical: 5,
     marginHorizontal: 16,
   },
   title: {
     fontSize: 24,
   },
-  flag: {
-    height: 64,
-    width: 64
+  picture: {
+    height: 80,
+    width: 80
   },
+  subtitle: {
+    fontSize: 12,
+    fontStyle: 'italic',
+  },
+  tinyLogo: {
+      width: 15,
+      height: 15,
+    
+  },
+  row: {
+    marginTop: 4,
+    paddingLeft: 8,
+    width: 100,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  }
 });
