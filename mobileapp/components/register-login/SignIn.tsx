@@ -25,9 +25,8 @@ const SignIn = ({ navigation }: any) => {
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
-  //const wrongUserErrorMessage =
-  //"Mobile application is only available for regular users.";
   const loading = useSelector((state: State) => state.loading);
+  const status = useSelector((state: State) => state.status);
 
   React.useEffect(() => {
     if (loading) {
@@ -66,13 +65,17 @@ const SignIn = ({ navigation }: any) => {
         setReady(false);
         return;
       }
-      if(loginInfo.userType === "Regular"){
-      navigation.push("DogsList");
-      }
-      //console.log(loginInfo.userType + " user logged in with token " + loginInfo.token );
-      //store.dispatch(clearLoginInformation());
+      // if(loginInfo.userType === "Regular"){
+      // navigation.push("DogsList");
+      // }
     }
   }, [loginInfo]);
+
+  React.useEffect(() => {
+    if(status == "redirectToDogs"){
+      navigation.push("DogsList");
+    }
+  }, [status])
 
   return (
     <KeyboardAvoidingView
