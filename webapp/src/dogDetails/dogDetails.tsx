@@ -120,7 +120,7 @@ const DogDetails = (props: any) => {
 
   const onSubmitClicked = () => {
     try {
-      markDogAsFound(dogId);
+      markDogAsFound(editedDog);
       history.push("/settings");
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
