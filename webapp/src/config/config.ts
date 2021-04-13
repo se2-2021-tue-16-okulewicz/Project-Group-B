@@ -17,6 +17,7 @@ export type Config = {
     token: string;
     userType: string;
     userId: string;
+    id: Number;
   };
 };
 

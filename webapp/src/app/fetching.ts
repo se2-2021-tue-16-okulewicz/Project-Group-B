@@ -7,6 +7,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
+import { IContactInfo } from "../settings/contactInfoInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -69,16 +70,32 @@ export async function fetchDogs(
   const filtersString = Object.keys(filters)
     .map((filterName) => {
       const value = String(filters[filterName]).trim();
-      if (filterName != "size") {
-        return value ? `${filterName}=${value}` : "";
-      }
+      //if (filterName != "size") {
+      return value ? `${filterName}=${value}` : "";
+      //}
     })
     .filter((x) => x !== "")
     .join("&");
-
+  //console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
+      {
+        headers: {
+          token: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
+export async function fetchOneDog(
+  id: Number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture>> {
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs?${id}`,
       {
         headers: {
           token: getToken(cookies),
@@ -121,6 +138,80 @@ export async function addDog(
           token: getToken(cookies),
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
+export async function updateDog(
+  dog: ILostDogWithPicture,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture>> {
+  let formData = new FormData();
+
+  const privateProperties = ["id", "pictureId", "ownerId"];
+  const excludePrivateProperties = (key: string, value: any) =>
+    privateProperties.includes(key) ? undefined : value;
+
+  formData.append(
+    "dog",
+    new Blob([JSON.stringify(dog, excludePrivateProperties)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  formData.append(
+    "picture",
+    new Blob([dog.picture.data], { type: dog.picture.fileType }),
+    dog.picture.fileName
+  );
+
+  return getResponse(
+    axios.put(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dog.id}`,
+      formData,
+      {
+        headers: {
+          token: getToken(cookies),
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
+export async function markLostDogAsFound(
+  dogId: number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<null>> {
+  return getResponse(
+    axios.put(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/found`,
+      {
+        headers: {
+          token: getToken(cookies),
+          //Accept: "application/json",
+          //"Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
+export async function fetchUserInfo(
+  userId: number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<IContactInfo>> {
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/user/${userId}`,
+      {
+        headers: {
+          token: getToken(cookies),
+          //Accept: "application/json",
+          //"Content-Type": "multipart/form-data",
         },
       }
     )
@@ -221,4 +312,7 @@ export async function registerRegularUser(
       }
     )
   );
+}
+function setCookies(email: string) {
+  throw new Error("Function not implemented.");
 }

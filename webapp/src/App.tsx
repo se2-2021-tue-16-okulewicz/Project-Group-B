@@ -20,6 +20,7 @@ import { useCookies } from "react-cookie";
 import ListWithDogs from "./dogsList/listWithDogs";
 import config from "./config/config";
 import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
+import Settings from "./settings/settings";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -91,6 +92,9 @@ function Layout() {
         </Route>
         <Route path="/listDogs">
           <ListWithDogs />
+        </Route>
+        <Route path="/settings">
+          <Settings />
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />

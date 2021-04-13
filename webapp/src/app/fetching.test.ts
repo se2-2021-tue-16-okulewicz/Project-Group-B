@@ -28,11 +28,7 @@ import {
 import config from "../config/config";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import {
-  ILoginInformation,
-  ILoginResults,
-  IRegisterRegularUserInformation,
-} from "../registerLogin/loginRegisterInterfaces";
+import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import {
   initLoginProps,
   initRegisterRegularUserProps,

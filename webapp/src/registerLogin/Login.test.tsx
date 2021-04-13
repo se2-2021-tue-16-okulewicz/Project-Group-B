@@ -10,6 +10,13 @@ import { isNull } from "lodash";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
 import { reducer, init } from "../app/reducer";
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  useHistory,
+} from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -31,7 +38,11 @@ it("Test login view elements", () => {
   act(() => {
     render(
       <Provider store={store}>
-        <Login />
+        <Router>
+          <Route exact path="/">
+            <Login />
+          </Route>
+        </Router>
       </Provider>,
       container
     );
@@ -50,9 +61,11 @@ describe("reducer", () => {
   it("should return initial state", () => {
     const state = reducer(init, { type: "" });
     expect(state).toEqual({
+      contactInfo: null,
       dogs: [],
       dogsLastPage: false,
       dogsRequireRefresh: true,
+      editedDog: null,
       loading: false,
       error: {
         hasError: false,
@@ -61,6 +74,7 @@ describe("reducer", () => {
       },
       loginInformation: null,
       redirect: null,
+      settingsRequireRefresh: true,
     });
   });
 });

@@ -102,6 +102,7 @@ export default function RegisterRegularUser() {
   };
 
   const onRegisterClicked = () => {
+    //temporary before adding endpoint for fetching user's data
     store.dispatch(
       registerRegularUserThunk({
         username: values.username,
