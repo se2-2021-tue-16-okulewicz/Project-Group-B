@@ -65,7 +65,7 @@ export const markLostDogAsFoundThunk = createAsyncThunk(
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<
       ILostDogWithPicture[] | null
-    > = await Fetching.markLostDogAsFound(item.dogId, item.cookies);
+    > = await Fetching.markLostDogAsFound(item.dogID, item.cookies);
 
     if (response.response.successful !== true) {
       return rejectWithValue(
