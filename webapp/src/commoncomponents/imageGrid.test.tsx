@@ -37,13 +37,16 @@ afterEach(() => {
 
 it("Rendered list of gridlistitems", () => {
   act(() => {
-    render(<Provider store={store}>
-      <Router>
-      <Route path="/">
-      <ImageGrid dogs={testDogList} id={-1} cookies={{}} path={""}/>
- </Route>
-</Router>
-</Provider>, container);
+    render(
+      <Provider store={store}>
+        <Router>
+          <Route path="/">
+            <ImageGrid dogs={testDogList} id={-1} cookies={{}} path={""} />
+          </Route>
+        </Router>
+      </Provider>,
+      container
+    );
   });
   //expect(container).toMatchSnapshot();
   //container?.getElementsByTagName("registerButton")

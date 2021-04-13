@@ -37,23 +37,29 @@ it("Test register regular user view elements", () => {
   act(() => {
     render(
       <Provider store={store}>
-             <Router>
-             <Route path="/register/user">
-          <RegisterRegularUser />
-        </Route>
-      </Router>
+        <Router>
+          <Route path="/register/user">
+            <RegisterRegularUser />
+          </Route>
+        </Router>
       </Provider>,
       container
     );
   });
 
-  expect(container?.getElementsByClassName("LowerText").length).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByClassName("LowerText").length
+  ).toBeGreaterThanOrEqual(0);
 
-  expect(container?.getElementsByClassName("AccountListWrapper").length).toBeGreaterThanOrEqual(
-    0
-  );
+  expect(
+    container?.getElementsByClassName("AccountListWrapper").length
+  ).toBeGreaterThanOrEqual(0);
 
-  expect(container?.getElementsByTagName("button").length).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByTagName("button").length
+  ).toBeGreaterThanOrEqual(0);
 
-  expect(container?.getElementsByClassName("MuiFormControl-root").length).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByClassName("MuiFormControl-root").length
+  ).toBeGreaterThanOrEqual(0);
 });

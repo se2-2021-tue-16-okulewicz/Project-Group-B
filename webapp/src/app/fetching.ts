@@ -71,12 +71,12 @@ export async function fetchDogs(
     .map((filterName) => {
       const value = String(filters[filterName]).trim();
       //if (filterName != "size") {
-        return value ? `${filterName}=${value}` : "";
+      return value ? `${filterName}=${value}` : "";
       //}
     })
     .filter((x) => x !== "")
     .join("&");
-//console.log(filtersString);
+  //console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
@@ -93,7 +93,6 @@ export async function fetchOneDog(
   id: Number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture>> {
-
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${id}`,
@@ -187,7 +186,6 @@ export async function markLostDogAsFound(
   dogId: number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<null>> {
-
   return getResponse(
     axios.post(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/found`,
@@ -206,11 +204,10 @@ export async function fetchUserInfo(
   userId: number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<IContactInfo>> {
-
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/user/${userId}`,
-       {
+      {
         headers: {
           token: getToken(cookies),
           //Accept: "application/json",
@@ -319,4 +316,3 @@ export async function registerRegularUser(
 function setCookies(email: string) {
   throw new Error("Function not implemented.");
 }
-

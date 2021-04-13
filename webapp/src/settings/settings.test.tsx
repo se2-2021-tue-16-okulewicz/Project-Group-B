@@ -18,7 +18,6 @@ import {
   useHistory,
 } from "react-router-dom";
 
-
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
   // setup a DOM element as a render target
@@ -40,9 +39,9 @@ it("Rendered list of dogs", () => {
     render(
       <Provider store={store}>
         <Router>
-        <Route path="/settings">
-          <Settings />
-        </Route>
+          <Route path="/settings">
+            <Settings />
+          </Route>
         </Router>
       </Provider>,
       container
