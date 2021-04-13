@@ -70,13 +70,13 @@ export async function fetchDogs(
   const filtersString = Object.keys(filters)
     .map((filterName) => {
       const value = String(filters[filterName]).trim();
-      if (filterName != "size") {
+      //if (filterName != "size") {
         return value ? `${filterName}=${value}` : "";
-      }
+      //}
     })
     .filter((x) => x !== "")
     .join("&");
-
+console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
@@ -261,3 +261,7 @@ export async function registerRegularUser(
     )
   );
 }
+function setCookies(email: string) {
+  throw new Error("Function not implemented.");
+}
+

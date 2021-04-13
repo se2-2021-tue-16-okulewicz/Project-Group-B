@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Card, Grid } from "@material-ui/core";
+import { Button, Card, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
@@ -27,6 +27,13 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
 import { ILoginInformation, ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import { IContactInfo } from "./contactInfoInterfaces";
+import DraftsIcon from '@material-ui/icons/Drafts';
+import SendIcon from '@material-ui/icons/Send';
+import { Home } from "@material-ui/icons";
+import { classicNameResolver } from "typescript";
+import { faAlignJustify } from "@fortawesome/free-solid-svg-icons";
+import { filter } from "lodash";
+
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -41,12 +48,17 @@ const useStyles = makeStyles((theme: Theme) =>
     icon: {
       color: "rgba(255, 255, 255, 0.54)",
     },
-    registerButton: {
+    menuItem: {
+      minWidth:"100%",
       display: "flex",
-      textAlign: "center",
+      textAlign: "left",
       alignSelf: "center",
-      marginLeft: "5%",
-      marginRight: "5%",
+      marginLeft:"0%",
+      marginBottom: "1%",
+      marginTop: "1%",
+      borderBottomColor: "black",
+      borderBottomWidth:"1", 
+      fontSize:"1.3em"
     },
     cardContent: {
       justifyContent: "center",
@@ -81,6 +93,19 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       alignSelf: "center",
     },
+    header:{
+      background:"palealiceblue",
+      color:"black",
+      fontStyle:"oblique",
+      fontSize:"2em",
+      fontFamily:"Gill Sans Extrabold",
+      fontWeight:"bolder",
+      justifyContent:"center",
+      alignItems: "center",
+      alignSelf: "center",
+      display:"flex"
+
+    }
   })
 );
 
@@ -91,6 +116,9 @@ scheme.configureHeader((builder) => {
     })
     .registerConfig("xs", {
       position: "absolute", // won't stick to top when scroll down
+    })
+    .registerConfig("sm", {
+      position: "absolute", // won't stick to top when scroll down
     });
 });
 
@@ -98,39 +126,42 @@ scheme.configureEdgeSidebar((builder) => {
   builder
     .create("unique_id", { anchor: "left" })
     .registerPermanentConfig("xs", {
-      width: "18%", // px, (%, rem, em is compatible)
+      width: "25%", // px, (%, rem, em is compatible)
       collapsible: false,
-      collapsedWidth: "10%",
+    })
+    .registerPermanentConfig("sm", {
+      width: "20%", // px, (%, rem, em is compatible)
+      collapsible: false,
     })
     .registerPermanentConfig("md", {
-      width: "15%", // px, (%, rem, em is compatible)
+      width: "15%", //x, (%, rem, em is compatible)
       collapsible: false,
-      collapsedWidth: "6%",
     });
 });
 
 export default function Settings() {
   const [collapsed, setCollapsed] = useState(false);
-  const dogs = useSelector(
-    (state: State) => state.dogs as ILostDogWithPicture[]
-  );
-  const contactInfo = useSelector(
-    (state: State) => state.contactInfo as IContactInfo
-  );
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const [lastPage, setLastPage] = useState(false);
+    const dogs = (useSelector(
+      (state: State) => state.dogs as ILostDogWithPicture[]
+    ));
+  const [filteredDogs, setFilteredDogs] = useState< ILostDogWithPicture[]>();
+  //const contactInfo = {cookies[username]}
   const loading = useSelector((state: State) => state.loading);
   const refreshRequired = useSelector(
-    (state: State) => state.dogsRequireRefresh
+    (state: State) => state.settingsRequireRefresh as boolean
   );
-  const lastPage = useSelector((state: State) => state.dogsLastPage);
+
+  const history = useHistory();
+  const [isListOn, setListOn] = useState(true);
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    id: config.cookies.userId
+    //ownerId: Number.parseInt(cookies[config.cookies.userId]),//cookies[config.cookies.userId],
   });
   // is this page last?
-  const history = useHistory();
-  const [cookies, setCookie, removeCookie] = useCookies();
-  const [isListOn, setListOn] = useState(true);
+
 
   const onDogsListClicked = () => {
     setListOn(true);
@@ -145,34 +176,8 @@ export default function Settings() {
 
   const classes = useStyles();
 
-  useEffect(() => {
-    if (refreshRequired) {
-      // fetch and append page 0
-      store.dispatch(
-        Actions.fetchDogsThunk({
-          filters: {
-            ...filters,
-            page: config.defaultFilters.page,
-          },
-          cookies: config.cookies.token,
-        }) //filters
-      );
-      //set page number to 0
-      setFilters({ ...filters, page: config.defaultFilters.page });
-    } // eslint-disable-next-line
-  }, [refreshRequired]);
-
-  const fetchMore = () => {
-    store.dispatch(
-      Actions.fetchDogsThunk({
-        filters: { ...filters, page: filters.page + 1 },
-        cookies: cookies,
-      }) //filters
-    );
-    setFilters({ ...filters, page: filters.page + 1 });
-  };
-
-  useEffect(() => {
+//uncomment after the endpoint in backend
+  /*useEffect(() => {
     if(!isListOn){
       store.dispatch(
         Actions.fetchContactInfoThunk({
@@ -180,25 +185,24 @@ export default function Settings() {
           cookies
         }));
       }
-    },[isListOn]);
+    },[isListOn]);*/
 
-
-  const getContactInfo = () => {
+  /*const getContactInfo = () => {
     store.dispatch(
       Actions.fetchContactInfoThunk({
         userId: cookies[config.cookies.userId],
         cookies
       })
     )
-  }
+  }*/
 
   return (
     <Root scheme={scheme}>
       <CssBaseline />
-      <Header>
+      <Header  className={classes.header} >
         <Toolbar>
           <SidebarTrigger sidebarId="unique_id" />
-          Shelter
+          Settings
           
         </Toolbar>
       </Header>
@@ -206,62 +210,54 @@ export default function Settings() {
         <CollapseBtn
         />
         <SidebarContent name="sidebar">
-            <Grid container className={classes.main} spacing={1}>
-              {}
-              <Button
-                className={classes.registerButton}
+            <Grid container className={classes.main} spacing={2}>
+              
+              <MenuItem
+                className={classes.menuItem}
                 data-testid="registerButton"
                 color="primary"
-                variant="contained"
-                size="medium"
+                //variant="contained"
+                //size="medium"
                 onClick={onInfoClicked}
               >
+                {!isListOn &&<SendIcon/>}
                 Contact Info
-              </Button>
-              <Button
-                className={classes.registerButton}
-                data-testid="settingsButton"
-                color="secondary"
-                variant="contained"
-                size="medium"
+              </MenuItem>
+              <MenuItem
+                className={classes.menuItem}
+                data-testid="dogsButton"
+                color="primary"
+                //variant="contained"
+                //size="medium"
                 onClick={onDogsListClicked}
               >
-                Your Dogs
-              </Button>
+                {isListOn &&<SendIcon/>}
+                My Dogs
+              </MenuItem>
               <Grid item xs={12} />
-              <Button
-                className={classes.registerButton}
-                data-testid="settingsButton"
-                color="secondary"
-                variant="contained"
-                size="medium"
+              <Grid item xs={12} />
+              <MenuItem
+                className={classes.menuItem}
+                data-testid="shelterButton"
+                color="primary"
+                //variant="contained"
+                //size="medium"
                 onClick={onShelterClicked}
               >
-                {"Shelter    "} 
-              </Button>
+                Shelter
+              </MenuItem>
             </Grid>
         </SidebarContent>
         <Footer />
       </DrawerSidebar>
       <Content>
       {isListOn &&
-        <InfiniteScroll
-          dataLength={dogs.length}
-          next={fetchMore}
-          hasMore={!lastPage && isListOn}
-          loader={
-            <div className="loader" key={0}>
-              Loading ...
-            </div>
+          <ImageGrid dogs={dogs} id={Number.parseInt(cookies[config.cookies.userId])}/>
           }
-        >
-          
-          <ImageGrid dogs={dogs} />
-          </InfiniteScroll>}
           {!isListOn &&
            
            <Card>
-                 
+                 {cookies["username"]}
            </Card>
 
           }

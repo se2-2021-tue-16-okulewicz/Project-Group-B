@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Menu, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
@@ -25,6 +25,8 @@ import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
+import { Add, Pets, Settings } from "@material-ui/icons";
+import { faDog } from "@fortawesome/free-solid-svg-icons";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -40,11 +42,28 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "rgba(255, 255, 255, 0.54)",
     },
     registerButton: {
+      minWidth:"100%",
       display: "flex",
-      textAlign: "center",
+      textAlign: "left",
       alignSelf: "center",
-      marginLeft: "5%",
-      marginRight: "5%",
+      marginLeft:"0%",
+      marginBottom: "1%",
+      marginTop: "1%",
+      borderBottomColor: "black",
+      borderBottomWidth:"1", 
+      fontSize:"1.3em"
+    },
+    header:{
+      background:"palealiceblue",
+      color:"black",
+      fontStyle:"oblique",
+      fontSize:"2em",
+      fontFamily:"Gill Sans Extrabold",
+      fontWeight:"bolder",
+      justifyContent:"center",
+      alignItems: "center",
+      alignSelf: "center",
+      display:"flex"
     },
     cardContent: {
       justifyContent: "center",
@@ -108,6 +127,7 @@ scheme.configureEdgeSidebar((builder) => {
 });
 
 export default function ListWithDogs() {
+  const state = store.getState();
   const [collapsed, setCollapsed] = useState(false);
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
@@ -164,7 +184,7 @@ export default function ListWithDogs() {
   return (
     <Root scheme={scheme}>
       <CssBaseline />
-      <Header>
+      <Header className={classes.header} >
         <Toolbar>
           <SidebarTrigger sidebarId="unique_id" />
           Shelter
@@ -180,27 +200,31 @@ export default function ListWithDogs() {
           {!collapsed && (
             <Grid container className={classes.main} spacing={1}>
               {}
-              <Button
+              <MenuItem
                 className={classes.registerButton}
                 data-testid="registerButton"
                 color="primary"
-                variant="contained"
-                size="medium"
+                //variant="contained"
+                //size="medium"
                 onClick={onRegisterClicked}
               >
+                <Pets/>
+                <Grid item xs={1} />
                 Register
-              </Button>
+              </MenuItem>
               <Grid item xs={12} />
-              <Button
+              <MenuItem
                 className={classes.registerButton}
                 data-testid="settingsButton"
-                color="secondary"
-                variant="contained"
-                size="medium"
+                color="primary"
+                //variant="contained"
+                //size="medium"
                 onClick={onSettingsClicked}
               >
+                <Settings/>
+                <Grid item xs={1}/>
                 Settings
-              </Button>
+              </MenuItem>
             </Grid>
           )}
         </SidebarContent>

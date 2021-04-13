@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ImageGrid(props: any) {
   const classes = useStyles();
   const dogs = props.dogs as ILostDogWithPicture[];
+  const id = props.id ? props.id as Number : -1;
+  console.log(id);
+  //const [cookies, setCookie, removeCookie] = useCookies();
+  //const dogs = props.dogs.filter((x:ILostDogWithPicture)=>x.ownerId===cookies[config.cookies.userId]);
   const history = useHistory();
   const redirectToDetails = (id: Number) => {
     history.push(`/listDogs/lostdog/${id}`);
@@ -37,7 +41,7 @@ export default function ImageGrid(props: any) {
 
   return (
     <GridList cols={3} spacing={3}>
-      {dogs.map((dog: ILostDogWithPicture) => (
+      {dogs.map((dog: ILostDogWithPicture) => (( (id ==-1 || dog.ownerId==id) &&
         <GridListTile
           key={dog.id}
           style={{ minHeight: "300px" }}
@@ -52,7 +56,7 @@ export default function ImageGrid(props: any) {
           <GridListTileBar
             className={dog.name}
             title={dog.name}
-            subtitle={<span>lost in {dog.location.city}</span>}
+            subtitle={<span>lost in {dog.location.city} by {dog.ownerId}</span>}
             actionIcon={
               <IconButton
                 aria-label={`info about ${dog.name}`}
@@ -65,7 +69,7 @@ export default function ImageGrid(props: any) {
               </IconButton>
             }
           />
-        </GridListTile>
+        </GridListTile>)
       ))}
     </GridList>
   );

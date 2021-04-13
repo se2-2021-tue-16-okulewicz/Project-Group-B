@@ -7,6 +7,7 @@ import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import { useState } from "react";
 import config from "../config/config";
 import { IContactInfo } from "../settings/contactInfoInterfaces";
+import { useCookies } from "react-cookie";
 
 export type Error = {
   hasError: boolean;
@@ -18,6 +19,7 @@ export type State = {
   dogs: ILostDogWithPicture[] | any;
   dogsLastPage: boolean;
   dogsRequireRefresh: boolean;
+  settingsRequireRefresh:boolean;
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
@@ -29,6 +31,7 @@ export const init: State = {
   dogs: [],
   dogsLastPage: false,
   dogsRequireRefresh: true,
+  settingsRequireRefresh:true,
   loading: false,
   error: {
     hasError: false,
@@ -39,6 +42,7 @@ export const init: State = {
   contactInfo: null,
   redirect: null,
 };
+
 
 export const reducer = createReducer(init, {
   [Actions.clearError.type]: (state: State) => {
@@ -54,6 +58,7 @@ export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
+    newState.contactInfo = null;
     return newState;
   },
 
@@ -78,7 +83,6 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.contactInfo=payload.payload.response.data;
-    console.log(newState.contactInfo);
     newState.dogsRequireRefresh = true;
     return newState;
   },
@@ -176,13 +180,13 @@ export const reducer = createReducer(init, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    newState.dogs = state.dogs
+      newState.dogs = state.dogs
       .concat(payload.payload.response.data)
-      .slice(0, (pageNumber + 2) * pageSize);
+      .slice(0, (pageNumber + 1) * pageSize);
+    
     // if response is shorter than default size - it means end is reached.
-    newState.dogsLastPage = newState.dogs.length < pageSize;
+    newState.dogsLastPage = newState.dogs.length <= pageSize || !payload.payload.response.data;
     newState.dogsRequireRefresh = false;
-    //console.log({ state, pageNumber, pageSize, newState, payload });
     return newState;
   },
 
@@ -215,9 +219,7 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-
     newState.loginInformation = payload.payload.response.data as ILoginResults;
-    console.log(newState.loginInformation);
     return newState;
   },
   [Actions.loginThunk.rejected.toString()]: (
