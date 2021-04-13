@@ -74,6 +74,10 @@ export default function DogsList({ navigation }: any) {
     setFilters({ ...filters, page: filters.page + 1 });
   };
 
+  function markDogAsFound(id: number){
+    store.dispatch(Actions.markLostDogAsFound({cookies: cookies, dogID: id}));
+  }
+
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={styles.item}>
       <TouchableOpacity>
@@ -87,7 +91,7 @@ export default function DogsList({ navigation }: any) {
             }`,
           }}
         />
-        <TouchableOpacity >
+        <TouchableOpacity onPress={markDogAsFound(dog.id)}>
           <Text style={styles.right}>Mark as found</Text>
         </TouchableOpacity>
         </View>
