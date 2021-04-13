@@ -121,7 +121,7 @@ export const reducer = createReducer(init, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    newState.dogs = state.dogs.concat(payload.payload.response.data);
+    newState.dogs = payload.payload.response.data;
     newState.loadingDogs = false;
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = newState.dogs.length < pageSize;
