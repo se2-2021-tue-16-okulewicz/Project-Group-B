@@ -6,6 +6,7 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { APIResponse, RequestResponse } from "./response";
+import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
 
 async function getResponse<T>(
   axiosRequest: Promise<AxiosResponse<any>>
@@ -51,6 +52,32 @@ export async function login(
         headers: {
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
+export async function fetchDogs(
+  filters: { [name: string]: any },
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture[]>> {
+  const filtersString = Object.keys(filters)
+    .map((filterName) => {
+      const value = String(filters[filterName]).trim();
+      if (filterName != "size") {
+        return value ? `${filterName}=${value}` : "";
+      }
+    })
+    .filter((x) => x !== "")
+    .join("&");
+
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
+      {
+        headers: {
+          token: cookies,
         },
       }
     )
