@@ -5,6 +5,7 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { RequestResponse } from "./response";
+import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
 
 /**
  * Thunk for logging into an account
@@ -26,6 +27,28 @@ export const loginThunk = createAsyncThunk<
 
   return response as RequestResponse<ILoginResults>;
 });
+
+/*
+fetching dogs
+*/
+export const fetchDogsThunk = createAsyncThunk(
+  "fetchAllDogs",
+  async (item: any, { rejectWithValue }) => {
+    const response: RequestResponse<
+      ILostDogWithPicture[] | null
+    > = await Fetching.fetchDogs(item.filters, item.cookies);
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<ILostDogWithPicture | null>
+      );
+    }
+
+    //let dogs = response.response.data as ILostDogWithPicture[];
+
+    return response;
+  }
+);
 
 /*
  * Reseting state to idle.
