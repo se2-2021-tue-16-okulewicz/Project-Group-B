@@ -145,6 +145,44 @@ export async function addDog(
   );
 }
 
+export async function updateDog(
+  dog: ILostDogWithPicture,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture>> {
+  let formData = new FormData();
+
+  const privateProperties = ["id", "pictureId", "ownerId"];
+  const excludePrivateProperties = (key: string, value: any) =>
+    privateProperties.includes(key) ? undefined : value;
+
+  formData.append(
+    "dog",
+    new Blob([JSON.stringify(dog, excludePrivateProperties)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  formData.append(
+    "picture",
+    new Blob([dog.picture.data], { type: dog.picture.fileType }),
+    dog.picture.fileName
+  );
+
+  return getResponse(
+    axios.put(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dog.id}`,
+      formData,
+      {
+        headers: {
+          token: getToken(cookies),
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
 export async function markLostDogAsFound(
   dogId: number,
   cookies: { [name: string]: any }

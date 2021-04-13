@@ -90,6 +90,32 @@ export const addDogThunk = createAsyncThunk<
   }
 );
 
+export const updateDogThunk = createAsyncThunk<
+  RequestResponse<ILostDogWithPicture>,
+  { dog: ILostDogWithPicture; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<ILostDogWithPicture> }
+>(
+  "UpdateDog",
+  async (
+    dogAndPictureAndCookies: {
+      dog: ILostDogWithPicture;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<ILostDogWithPicture> = await Fetching.updateDog(
+      dogAndPictureAndCookies.dog,
+      dogAndPictureAndCookies.cookies
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<ILostDogWithPicture>);
+    }
+
+    return response as RequestResponse<ILostDogWithPicture>;
+  }
+);
+
 export const loginThunk = createAsyncThunk<
   RequestResponse<ILoginResults>,
   ILoginInformation,

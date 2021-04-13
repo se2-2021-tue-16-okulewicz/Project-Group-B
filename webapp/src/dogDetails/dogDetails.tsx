@@ -28,7 +28,7 @@ import {
   BreedTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture } from "../dog/dogInterfaces";
+import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
@@ -37,6 +37,7 @@ import { useCookies } from "react-cookie";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 import config from "../config/config";
 import { useSelector } from "react-redux";
+import { State } from "../app/reducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,7 +72,7 @@ const DogDetails = (props: any) => {
   console.log(path);
   const history = useHistory();
   const classes = useStyles();
-  const edited = (useSelector(
+  const editedDog = (useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
   ));
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -81,17 +82,8 @@ const DogDetails = (props: any) => {
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
   );
-  useEffect(() => {
-      // fetch and append page 0
-      store.dispatch(
-        Actions.fetchOneDogThunk({
-          dogId:props.dogId,
-          cookies: config.cookies.token,
-        }) //filters
-      );
 
-    }, []);
-    console.log()
+    
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
@@ -128,27 +120,38 @@ const DogDetails = (props: any) => {
 
   const onSubmitClicked = () => {
     try {
-      registerDog(lostDogFields, picture);
-      history.push("/listDogs");
+      markDogAsFound(dogId);
+      history.push("/settings");
     } catch (err) {
-      console.error("Failed to save the dog: ", err);
+      console.error("Failed to fetch the dog: ", err);
     }
   };
 
   const onCancelClick = () => {
-    history.push("/listDogs");
+    try {
+      fetchDog(dogId);
+    } catch (err) {
+      console.error("Failed to fetch the dog: ", err);
+    }
   };
 
-  function registerDog(dog: ILostDog, picture: IPicture) {
+  function fetchDog(dogId: Number) {
     store.dispatch(
-      Actions.addDogThunk({
-        dog: dog,
-        picture: picture,
-        cookies: cookies,
-      })
+      Actions.fetchOneDogThunk({
+        dogId: dogId,
+        cookies: config.cookies.token,
+      }) //filters
     );
   }
 
+  function markDogAsFound(dog: ILostDogWithPicture) {
+    store.dispatch(
+      Actions.updateDogThunk({
+        dog: dog,
+        cookies: cookies,
+      }) //filters
+    );
+  }
   const handlePicturesChange = (event: any) => {
     if (event) {
       (event as File).arrayBuffer().then((fileBuffer) => {
@@ -179,7 +182,7 @@ const DogDetails = (props: any) => {
         >
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
-              Name
+              Name 
             </InputLabel>
             <Input
               data-testid="name-input"
@@ -466,7 +469,7 @@ const DogDetails = (props: any) => {
               onClick={() => onSubmitClicked()}
               color="primary"
             >
-              Submit
+              Mark Dog As Found
             </Button>
           </FormControl>
           <FormControl className={classes.formControl}>
@@ -476,7 +479,7 @@ const DogDetails = (props: any) => {
               onClick={onCancelClick}
               color="secondary"
             >
-              Cancel
+             Fetch Dog
             </Button>
           </FormControl>
         </Grid>

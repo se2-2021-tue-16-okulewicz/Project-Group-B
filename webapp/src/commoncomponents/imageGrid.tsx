@@ -70,7 +70,7 @@ export default function ImageGrid(props: any) {
                 onClick={() => {
                   //redirectToDetails(dog.id);
                   setDogId(dog.id);
-                  history.push(`${props.path}/${dog.id}`);
+                  history.push(`${props.path}/dog/${dog.id}`);
                 }}
               >
                 <InfoIcon />
@@ -81,7 +81,7 @@ export default function ImageGrid(props: any) {
       ))}
     </GridList>
         </Route>        
-        <Route path={`${path}/:id`}
+        <Route path={`${path}/dog/:id`}
             children={<DogDetails cookies={props.cookies} dogId={dogId}/>}/>
         </Switch>
   );

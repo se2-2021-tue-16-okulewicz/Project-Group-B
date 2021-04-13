@@ -152,6 +152,30 @@ export const reducer = createReducer(init, {
     };
     return newState;
   },
+  [Actions.updateDogThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    //newState.dogsRequireRefresh = true;
+    return newState;
+  },
+  [Actions.updateDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: payload.payload?errorResponse.code:-1,
+      erorMessage: payload.payload?errorResponse.response.message:"Update has failed",
+    };
+    return newState;
+  },
+
 
   [Actions.fetchDogsThunk.pending.toString()]: (
     state: State,
