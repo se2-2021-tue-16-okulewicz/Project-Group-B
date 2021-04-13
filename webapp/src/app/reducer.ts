@@ -8,6 +8,7 @@ import { useState } from "react";
 import config from "../config/config";
 import { IContactInfo } from "../settings/contactInfoInterfaces";
 import { useCookies } from "react-cookie";
+import { initLostDogProps } from "../dog/dogClasses";
 
 export type Error = {
   hasError: boolean;
@@ -17,7 +18,8 @@ export type Error = {
 
 export type State = {
   dogs: ILostDogWithPicture[] | any;
-  dogsLastPage: boolean;
+  editedDog: ILostDogWithPicture|any;
+  dogsLastPage: boolean|null;
   dogsRequireRefresh: boolean;
   settingsRequireRefresh:boolean;
   loading: boolean;
@@ -29,6 +31,7 @@ export type State = {
 
 export const init: State = {
   dogs: [],
+  editedDog:null,
   dogsLastPage: false,
   dogsRequireRefresh: true,
   settingsRequireRefresh:true,
@@ -185,8 +188,41 @@ export const reducer = createReducer(init, {
       .slice(0, (pageNumber + 1) * pageSize);
     
     // if response is shorter than default size - it means end is reached.
-    newState.dogsLastPage = newState.dogs.length <= pageSize || !payload.payload.response.data;
+    newState.dogsLastPage = newState.dogs.length < pageSize;
     newState.dogsRequireRefresh = false;
+    return newState;
+  },
+
+  [Actions.fetchOneDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+  [Actions.fetchOneDogThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+
+  [Actions.fetchOneDogThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.editedDog = payload.payload.response.data as ILostDogWithPicture;
     return newState;
   },
 

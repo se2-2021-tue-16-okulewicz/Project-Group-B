@@ -89,6 +89,23 @@ console.log(filtersString);
   );
 }
 
+export async function fetchOneDog(
+  id: Number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture>> {
+
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs?${id}`,
+      {
+        headers: {
+          token: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
 export async function addDog(
   dog: ILostDog,
   picture: IPicture,

@@ -140,6 +140,25 @@ export const fetchDogsThunk = createAsyncThunk(
   }
 );
 
+export const fetchOneDogThunk = createAsyncThunk(
+  "fetchOneDog",
+  async (item: any, { rejectWithValue }) => {
+    const response: RequestResponse<
+      ILostDogWithPicture
+    > = await Fetching.fetchOneDog(item.id, item.cookies);
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<ILostDogWithPicture | null>
+      );
+    }
+
+    //let dogs = response.response.data as ILostDogWithPicture[];
+
+    return response;
+  }
+);
+
 export const registerRegularUserThunk = createAsyncThunk<
   RequestResponse<ILoginResults>,
   IRegisterRegularUserInformation,

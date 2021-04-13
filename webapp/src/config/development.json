@@ -16,6 +16,7 @@
   "cookies": {
     "token": "token",
     "userType": "userType",
-    "userId": "userId"
+    "userId": "userId",
+    "id":0
   }
 }

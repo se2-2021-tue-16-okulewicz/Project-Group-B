@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Grid, Menu, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
@@ -153,7 +153,7 @@ export default function ListWithDogs() {
   };
 
   const classes = useStyles();
-
+  const { path } = useRouteMatch();
   useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0
@@ -241,7 +241,7 @@ export default function ListWithDogs() {
             </div>
           }
         >
-          <ImageGrid dogs={dogs} />
+          <ImageGrid dogs={dogs} id={-1} cookies={cookies}/>
         </InfiniteScroll>
       </Content>
     </Root>

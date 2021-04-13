@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
-import { useHistory } from "react-router-dom";
+import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
@@ -33,6 +33,8 @@ import { Home } from "@material-ui/icons";
 import { classicNameResolver } from "typescript";
 import { faAlignJustify } from "@fortawesome/free-solid-svg-icons";
 import { filter } from "lodash";
+import DogDetails from "../dogDetails/dogDetails";
+//import EditDetails from "./"
 
 
 const SidebarTrigger = getSidebarTrigger(styled);
@@ -146,6 +148,7 @@ export default function Settings() {
     const dogs = (useSelector(
       (state: State) => state.dogs as ILostDogWithPicture[]
     ));
+    console.log(dogs);
   const [filteredDogs, setFilteredDogs] = useState< ILostDogWithPicture[]>();
   //const contactInfo = {cookies[username]}
   const loading = useSelector((state: State) => state.loading);
@@ -195,7 +198,7 @@ export default function Settings() {
       })
     )
   }*/
-
+  const { path } = useRouteMatch();
   return (
     <Root scheme={scheme}>
       <CssBaseline />
@@ -252,7 +255,7 @@ export default function Settings() {
       </DrawerSidebar>
       <Content>
       {isListOn &&
-          <ImageGrid dogs={dogs} id={Number.parseInt(cookies[config.cookies.userId])}/>
+          <ImageGrid dogs={dogs} id={Number.parseInt(cookies[config.cookies.userId])} cookies={cookies} path={path}/>
           }
           {!isListOn &&
            
@@ -264,5 +267,6 @@ export default function Settings() {
         
       </Content>
     </Root>
-  );
+
+  );//cookies={cookies}
 }
