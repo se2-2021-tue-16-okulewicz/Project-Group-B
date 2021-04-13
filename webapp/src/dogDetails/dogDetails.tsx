@@ -121,18 +121,22 @@ const DogDetails = (props: any) => {
   const onSubmitClicked = () => {
     try {
       markDogAsFound(dogId);
-      history.push("/settings");
+      history.push("/listDogs");
+    } catch (err) {
+      console.error("Failed to fetch the dog: ", err);
+    }
+  };
+
+  const onEditClick = () => {
+    try {
+      fetchDog(dogId);
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     }
   };
 
   const onCancelClick = () => {
-    try {
-      fetchDog(dogId);
-    } catch (err) {
-      console.error("Failed to fetch the dog: ", err);
-    }
+    history.push("/settings");
   };
 
   function fetchDog(dogId: Number) {
@@ -476,10 +480,20 @@ const DogDetails = (props: any) => {
             <Button
               data-testid="cancel-button"
               variant="contained"
+              onClick={onEditClick}
+              color="secondary"
+            >
+             Fetch Dog for Edit
+            </Button>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <Button
+              data-testid="cancel-button"
+              variant="contained"
               onClick={onCancelClick}
               color="secondary"
             >
-             Fetch Dog
+             Cancel
             </Button>
           </FormControl>
         </Grid>
