@@ -1,0 +1,410 @@
+2021-04-12 09:05:42 [ERROR] [http-nio-8080-exec-1] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 09:05:42 [WARN ] [http-nio-8080-exec-1] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-04-12 09:57:09 [ERROR] [http-nio-8080-exec-8] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 09:57:09 [WARN ] [http-nio-8080-exec-8] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-04-12 12:16:58 [INFO ] [main] ingBootTestContextBootstrapper: Neither @ContextConfiguration nor @ContextHierarchy found for test class [controller.internal.DogsControllerTest], using SpringBootContextLoader
+2021-04-12 12:16:58 [INFO ] [main] .support.AbstractContextLoader: Could not detect default resource locations for test class [controller.internal.DogsControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-04-12 12:16:59 [INFO ] [main] ingBootTestContextBootstrapper: Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-04-12 12:16:59 [INFO ] [main] ingBootTestContextBootstrapper: Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@93c892ab, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@4314d1e6, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@ed6b6819, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@e37b765a, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1409d013, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2e0cd25e, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@d4982106, org.springframework.test.context.event.EventPublishingTestExecutionListener@f5746efd, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@a74bf1db, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@4f78d661, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@d754f3cb, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@c01242a3, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@13499a57, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@de72fea2]
+2021-04-12 12:17:01 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:01 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 129ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:01 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:02 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:38207614-b272-4018-9e8f-3b966c77a339;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:02 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-04-12 12:17:02 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-04-12 12:17:03 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:03 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:04 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:05 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 179ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:05 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:06 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-04-12 12:17:06 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 4012 ms
+2021-04-12 12:17:07 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:07 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:07 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:07 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:07 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:07 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:07 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 137 ms
+2021-04-12 12:17:07 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:07 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:08 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-04-12 12:17:08 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:09 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:09 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:09 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:09 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:10 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:10 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 93ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:10 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:10 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:10 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-04-12 12:17:10 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:10 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:030f4501-6585-432d-8b25-85bf2ce0ecca;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:10 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:10 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:11 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:11 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:11 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:12 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:12 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:12 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:12 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 31 ms
+2021-04-12 12:17:12 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:12 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:13 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:13 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:13 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:14 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:14 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 97ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:14 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:14 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:eed7dbbe-88cc-48ee-a8b1-e1d1000d93b7;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:14 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:14 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:14 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:15 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:15 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:15 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:15 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:16 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 100 ms
+2021-04-12 12:17:16 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:16 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:16 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:17:16 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:16 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:16 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:17 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:17 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 63ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:17 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:17 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:00ef6961-1164-405b-bcc0-5f43ae848fc4;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:17 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:17 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:18 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:18 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:19 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:19 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:19 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:19 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 78 ms
+2021-04-12 12:17:19 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:19 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:19 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:17:19 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:19 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:19 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:20 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:20 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 68ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:20 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:20 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:d2601af9-158c-45e3-83cd-70b41a1b6aa0;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:20 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:20 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:20 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:21 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:21 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:21 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:21 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:21 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 67 ms
+2021-04-12 12:17:22 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:22 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:22 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:17:22 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Dog does not have complete data
+2021-04-12 12:17:22 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Picture is not valid
+2021-04-12 12:17:22 [ERROR] [main] nd.annotation.ExceptionHandler: MissingServletRequestPartException: Required request part 'picture' is not present
+2021-04-12 12:17:22 [ERROR] [main] nd.annotation.ExceptionHandler: HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.time.LocalDate` from String "2021-3-15": Failed to deserialize java.time.LocalDate: (java.time.format.DateTimeParseException) Text '2021-3-15' could not be parsed at index 5; nested exception is com.fasterxml.jackson.databind.exc.InvalidFormatException: Cannot deserialize value of type `java.time.LocalDate` from String "2021-3-15": Failed to deserialize java.time.LocalDate: (java.time.format.DateTimeParseException) Text '2021-3-15' could not be parsed at index 5
+ at [Source: (ByteArrayInputStream); line: 1, column: 163] (through reference chain: se.backend.wrapper.dogs.LostDogWithBehaviors["dateLost"])
+2021-04-12 12:17:22 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:22 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:22 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:23 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:23 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 76ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:23 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:23 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:d37f345e-d095-417c-9bb2-85851601d2ae;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:23 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:23 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:23 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:24 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:24 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:24 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:24 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:24 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 67 ms
+2021-04-12 12:17:25 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:25 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:25 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Failed to mark dog as found
+2021-04-12 12:17:25 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:17:25 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:25 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:25 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:25 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:26 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 65ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:26 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:26 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:fc01e8c6-d9bc-4cde-b11c-48e073a580ca;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:26 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:26 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:26 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:26 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:27 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:27 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:27 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:27 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 51 ms
+2021-04-12 12:17:27 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:27 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:27 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:17:27 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Dog does not have complete data
+2021-04-12 12:17:27 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Picture is not valid
+2021-04-12 12:17:27 [ERROR] [main] nd.annotation.ExceptionHandler: MissingServletRequestPartException: Required request part 'picture' is not present
+2021-04-12 12:17:27 [ERROR] [main] nd.annotation.ExceptionHandler: HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.time.LocalDate` from String "2021-3-15": Failed to deserialize java.time.LocalDate: (java.time.format.DateTimeParseException) Text '2021-3-15' could not be parsed at index 5; nested exception is com.fasterxml.jackson.databind.exc.InvalidFormatException: Cannot deserialize value of type `java.time.LocalDate` from String "2021-3-15": Failed to deserialize java.time.LocalDate: (java.time.format.DateTimeParseException) Text '2021-3-15' could not be parsed at index 5
+ at [Source: (ByteArrayInputStream); line: 1, column: 163] (through reference chain: se.backend.wrapper.dogs.LostDogWithBehaviors["dateLost"])
+2021-04-12 12:17:27 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Failed to update dog - No dog with id: 20001 was found
+2021-04-12 12:17:27 [INFO ] [main] ingBootTestContextBootstrapper: Neither @ContextConfiguration nor @ContextHierarchy found for test class [controller.internal.UserControllerTest], using SpringBootContextLoader
+2021-04-12 12:17:27 [INFO ] [main] .support.AbstractContextLoader: Could not detect default resource locations for test class [controller.internal.UserControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-04-12 12:17:27 [INFO ] [main] ingBootTestContextBootstrapper: Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-04-12 12:17:27 [INFO ] [main] ingBootTestContextBootstrapper: Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@a8ee39c3, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@65c17335, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@1c21aae8, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@4284c335, org.springframework.test.context.support.DirtiesContextTestExecutionListener@7f65d491, org.springframework.test.context.transaction.TransactionalTestExecutionListener@7ecdedae, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@54656e1d, org.springframework.test.context.event.EventPublishingTestExecutionListener@ac6dfef2, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@de04c022, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@1139a16f, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@b9b4829f, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@cea5d433, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@8ae17b00, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@ed5723b7]
+2021-04-12 12:17:27 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:27 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:27 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:28 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:28 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 59ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:28 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:28 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:f353a781-72ac-4b52-bd32-9b9a572a55cf;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:28 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:28 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:29 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:29 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:30 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:30 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:30 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:30 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 72 ms
+2021-04-12 12:17:30 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:30 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: MissingServletRequestPartException: Required request part 'phone_number' is not present
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Incomplete data
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Email is invalid
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Email is already used
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Name is already used
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Phone number is invalid
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: User name is too short
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: User name is too long
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Password is too short
+2021-04-12 12:17:30 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Password is too long
+2021-04-12 12:17:30 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:30 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:30 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:31 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:31 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 58ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:31 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:31 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:4a3c4c10-94ad-4b96-aa5e-905c88965f0f;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:31 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:31 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:32 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:32 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:32 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:32 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:33 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:33 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 73 ms
+2021-04-12 12:17:33 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:33 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:33 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Login failed.
+2021-04-12 12:17:33 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:33 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:33 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:34 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:34 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 54ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:34 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:34 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:922cd95c-d18c-47d5-a17f-06804ab3d480;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:34 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:34 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:34 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:34 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:35 [INFO ] [main] b.SpringBootMockServletContext: Initializing Spring TestDispatcherServlet ''
+2021-04-12 12:17:35 [INFO ] [main] .servlet.TestDispatcherServlet: Initializing Servlet ''
+2021-04-12 12:17:35 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:35 [INFO ] [main] .servlet.TestDispatcherServlet: Completed initialization in 69 ms
+2021-04-12 12:17:35 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:35 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:36 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:17:36 [ERROR] [main] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:17:36 [INFO ] [main] ingBootTestContextBootstrapper: Neither @ContextConfiguration nor @ContextHierarchy found for test class [service.LoginServiceTest], using SpringBootContextLoader
+2021-04-12 12:17:36 [INFO ] [main] .support.AbstractContextLoader: Could not detect default resource locations for test class [service.LoginServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-04-12 12:17:36 [INFO ] [main] ingBootTestContextBootstrapper: Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-04-12 12:17:36 [INFO ] [main] ingBootTestContextBootstrapper: Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@2dc5ad52, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@ed672968, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@376030cd, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@a222c7ac, org.springframework.test.context.support.DirtiesContextTestExecutionListener@56bbeb6b, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2c53ecd4, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@5390d919, org.springframework.test.context.event.EventPublishingTestExecutionListener@dd2236a6, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@828b7f4a, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@6ae13e3b, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@cb3b2fab, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@a048329d, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@91d6ee52, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@e32accf]
+2021-04-12 12:17:36 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:36 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 67ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:36 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:36 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:2d28ddd2-8900-4e96-834d-c94195304619;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:36 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:37 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:37 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:37 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:38 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:38 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:38 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:38 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:38 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:38 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:38 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:39 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 73ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:39 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:39 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:a63b7209-3ea6-4739-b146-7801ec8b82af;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:39 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:39 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:39 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:39 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:40 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:40 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:40 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:40 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:40 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:40 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:41 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:41 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 63ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:41 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:41 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:e065a3a0-731b-4909-97c8-5fdfe2d8fb09;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:41 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:41 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:42 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:42 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:43 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:43 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:43 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:43 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:43 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:43 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:44 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:44 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 39ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:44 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:44 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:20b5e2fc-53a2-487e-8bca-599b91c04331;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:44 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:44 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:44 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:44 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:45 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:45 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:45 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:45 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:45 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:45 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:45 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:45 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 30ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:45 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:45 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:8856ac3e-3c13-4ade-8232-ca23966bc273;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:45 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:45 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:45 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:46 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:46 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:46 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:46 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:46 [INFO ] [main] ingBootTestContextBootstrapper: Neither @ContextConfiguration nor @ContextHierarchy found for test class [service.LostDogServiceTest], using SpringBootContextLoader
+2021-04-12 12:17:46 [INFO ] [main] .support.AbstractContextLoader: Could not detect default resource locations for test class [service.LostDogServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-04-12 12:17:46 [INFO ] [main] ingBootTestContextBootstrapper: Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-04-12 12:17:46 [INFO ] [main] ingBootTestContextBootstrapper: Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@c5c99fe3, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@cf11146, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@e3fa56dd, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@e3064f23, org.springframework.test.context.support.DirtiesContextTestExecutionListener@c02a495c, org.springframework.test.context.transaction.TransactionalTestExecutionListener@ff68ead6, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@28787fee, org.springframework.test.context.event.EventPublishingTestExecutionListener@3907cc3b, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@db0fdeae, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@e7b39bdb, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@52d3181c, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@1c715d1, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@27d3e7a0, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@1213799f]
+2021-04-12 12:17:46 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:46 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:46 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:47 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:47 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 65ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:47 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:47 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:8bb9561e-6c14-4a0c-b296-5834f721fec6;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:47 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:47 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:47 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:48 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:49 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:49 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:49 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:49 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:49 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:49 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:50 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:50 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 58ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:50 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:50 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:b54f3e20-67c7-4f81-a098-9b0ca51944af;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:50 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:50 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:50 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:51 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:51 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:51 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:51 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:51 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:51 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:51 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:52 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:52 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 60ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:52 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:52 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:9201015e-d3ac-46cc-ba51-3d936c57ea32;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:52 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:52 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:52 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:53 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:53 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:53 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:54 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:54 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:54 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:54 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:54 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:54 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 70ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:54 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:54 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:6a551c4e-3da8-4cf8-b192-b89616401b42;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:55 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:55 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:55 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:55 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:55 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:55 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:56 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:56 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:56 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:56 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:56 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:56 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 71ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:57 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:57 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:cd1dafd2-b3aa-4610-8ab4-6e54f566430a;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:57 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:57 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:57 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:57 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:17:58 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:17:58 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:17:58 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:17:58 [INFO ] [main] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:17:58 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:17:58 [INFO ] [main] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:59 [INFO ] [main] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:17:59 [INFO ] [main] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 57ms. Found 7 JPA repository interfaces.
+2021-04-12 12:17:59 [INFO ] [main] SourceBeanFactoryPostProcessor: Replacing 'dataSource' DataSource bean with embedded version
+2021-04-12 12:17:59 [INFO ] [main] bedded.EmbeddedDatabaseFactory: Starting embedded database: url='jdbc:h2:mem:6f3d5dec-6443-462d-a7c5-972a98ca6388;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2021-04-12 12:17:59 [INFO ] [main] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:17:59 [INFO ] [main] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:17:59 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:18:00 [WARN ] [main] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:18:00 [INFO ] [main] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:18:01 [INFO ] [main] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:18:01 [INFO ] [main] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:18:01 [INFO ] [SpringContextShutdownHook] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:18:01 [INFO ] [SpringContextShutdownHook] tainerEntityManagerFactoryBean: Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:18:01 [INFO ] [SpringContextShutdownHook] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:18:01 [INFO ] [SpringContextShutdownHook] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:18:01 [INFO ] [SpringContextShutdownHook] urrent.ThreadPoolTaskScheduler: Shutting down ExecutorService 'taskScheduler'
+2021-04-12 12:18:01 [INFO ] [SpringContextShutdownHook] current.ThreadPoolTaskExecutor: Shutting down ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:18:36 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-04-12 12:18:36 [INFO ] [restartedMain] sPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-04-12 12:18:39 [INFO ] [restartedMain] epositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-04-12 12:18:39 [INFO ] [restartedMain] epositoryConfigurationDelegate: Finished Spring Data repository scanning in 246ms. Found 7 JPA repository interfaces.
+2021-04-12 12:18:41 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat initialized with port(s): 8080 (http)
+2021-04-12 12:18:41 [INFO ] [restartedMain] letWebServerApplicationContext: Root WebApplicationContext: initialization completed in 5052 ms
+2021-04-12 12:18:42 [INFO ] [restartedMain] current.ThreadPoolTaskExecutor: Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-12 12:18:42 [INFO ] [restartedMain] urrent.ThreadPoolTaskScheduler: Initializing ExecutorService 'taskScheduler'
+2021-04-12 12:18:43 [WARN ] [restartedMain] figuration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-04-12 12:18:44 [INFO ] [restartedMain] igure.OptionalLiveReloadServer: LiveReload server is running on port 35729
+2021-04-12 12:18:44 [INFO ] [restartedMain] oint.web.EndpointLinksResolver: Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-04-12 12:18:46 [INFO ] [task-1] tainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-04-12 12:18:46 [INFO ] [restartedMain] mbedded.tomcat.TomcatWebServer: Tomcat started on port(s): 8080 (http) with context path ''
+2021-04-12 12:18:46 [INFO ] [restartedMain] positoryInitializationListener: Triggering deferred initialization of Spring Data repositories…
+2021-04-12 12:18:47 [INFO ] [restartedMain] positoryInitializationListener: Spring Data repositories initialized!
+2021-04-12 12:20:17 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2021-04-12 12:20:17 [INFO ] [http-nio-8080-exec-1] .web.servlet.DispatcherServlet: Completed initialization in 16 ms
+2021-04-12 12:21:58 [ERROR] [http-nio-8080-exec-3] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:21:58 [WARN ] [http-nio-8080-exec-3] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]
+2021-04-12 12:22:00 [ERROR] [http-nio-8080-exec-5] nd.annotation.ExceptionHandler: GenericBadRequestException: Unauthorised access to data
+2021-04-12 12:22:00 [WARN ] [http-nio-8080-exec-5] eptionHandlerExceptionResolver: Resolved [se.backend.exceptions.types.UnauthorizedException: Unauthorised access to data]

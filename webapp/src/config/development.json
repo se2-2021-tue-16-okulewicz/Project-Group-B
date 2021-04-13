@@ -8,7 +8,7 @@
     "size": 15,
     "page": 0
   },
-  "tokens": {
+  "testTokens": {
     "regular": "regularUserTestToken",
     "admin": "testTokenForAdmins",
     "shelter": "shelterSecretTestToken"
