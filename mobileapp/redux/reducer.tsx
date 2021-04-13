@@ -151,7 +151,7 @@ export const reducer = createReducer(init, {
     newState.status = "";
     return newState;
   },
-  
+
   [Actions.markLostDogAsFoundThunk.fulfilled.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
@@ -178,6 +178,7 @@ export const reducer = createReducer(init, {
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = newState.dogs.length < pageSize;
     newState.dogsRequireRefresh = true;
+    console.log("Marking Fullfilled");
     return newState;
   },
 
