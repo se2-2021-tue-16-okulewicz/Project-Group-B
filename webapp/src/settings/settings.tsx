@@ -198,7 +198,7 @@ export default function Settings() {
       })
     )
   }*/
-  const { path } = useRouteMatch();
+  const { path} = useRouteMatch();
   return (
     <Root scheme={scheme}>
       <CssBaseline />

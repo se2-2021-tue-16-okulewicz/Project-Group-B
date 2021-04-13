@@ -8,6 +8,13 @@ import { act, createRenderer } from "react-dom/test-utils";
 import RegisterDogForm from "./registerDog";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  useHistory,
+} from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
