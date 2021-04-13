@@ -29,38 +29,15 @@ it("Rendered register form button", () => {
   act(() => {
     render(<RegisterDogForm />, container);
   });
-  //expect(container).toMatchSnapshot();
-  //main form is not rendered initially
   expect(container?.getElementsByClassName("mainForm").length).toEqual(1);
   expect(
     container?.getElementsByClassName("classes.formControl").length
   ).toBeGreaterThanOrEqual(0);
 });
 
-/*it("Render form for dog register", () => {
-  act(() => {
-    render(<RegisterDogForm />, container);
-  });
-
-  expect(
-    container?.getElementsByClassName("MuiGrid-root").length
-  ).toBeGreaterThanOrEqual(0);
-});*/
-
 it("test only register button", () => {
   act(() => {
     render(<RegisterDogForm />, container);
   });
   const myRegisterClicked = jest.fn();
-  //const mockedButton = shallow(<Button onClick={myRegisterClicked} />);
-
-  //the register button is initially rendered
-
-  //mockedButton.find('registerButton').simulate('click');
-  //mockedButton.find('.Button__btn').simulate('click');
-  //mockedButton.find('button.Button__btn').simulate('click');
-  //expect(myRegisterClicked.mock.calls.length).toBe(0); // !! Should be 3 ?
-
-  // Snapshot demo
-  //expect(mockedButton).toMatchSnapshot();
 });

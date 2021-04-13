@@ -15,7 +15,6 @@ export interface IPicture {
   fileType: string;
   data: ArrayBuffer;
 }
-
 export interface IDog {
   id: number;
   name: string;
