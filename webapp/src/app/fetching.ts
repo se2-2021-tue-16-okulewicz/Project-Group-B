@@ -76,7 +76,7 @@ export async function fetchDogs(
     })
     .filter((x) => x !== "")
     .join("&");
-console.log(filtersString);
+//console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,

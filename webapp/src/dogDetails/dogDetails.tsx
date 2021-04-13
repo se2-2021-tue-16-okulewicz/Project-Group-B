@@ -69,7 +69,7 @@ const DogDetails = (props: any) => {
   //const id = Number(useParams());
   const { path } = useRouteMatch();
   const dogId=props.dogId;
-  console.log(path);
+  //console.log(path);
   const history = useHistory();
   const classes = useStyles();
   const editedDog = (useSelector(

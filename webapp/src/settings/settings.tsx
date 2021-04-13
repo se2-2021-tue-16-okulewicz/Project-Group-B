@@ -148,7 +148,7 @@ export default function Settings() {
     const dogs = (useSelector(
       (state: State) => state.dogs as ILostDogWithPicture[]
     ));
-    console.log(dogs);
+    //console.log(dogs);
   const [filteredDogs, setFilteredDogs] = useState< ILostDogWithPicture[]>();
   //const contactInfo = {cookies[username]}
   const loading = useSelector((state: State) => state.loading);

@@ -62,7 +62,7 @@ export default function ImageGrid(props: any) {
           <GridListTileBar
             className={dog.name}
             title={dog.name}
-            subtitle={<span>{dog.isFound} in {dog.location.city} by {dog.ownerId}</span>}
+            subtitle={<span>{dog.isFound?"Found":"Lost"} in {dog.location.city} by {dog.ownerId}</span>}
             actionIcon={
               <IconButton
                 aria-label={`info about ${dog.name}`}
