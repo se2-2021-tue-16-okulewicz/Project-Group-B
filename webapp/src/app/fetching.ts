@@ -189,8 +189,8 @@ export async function markLostDogAsFound(
 ): Promise<RequestResponse<null>> {
 
   return getResponse(
-    axios.post(
-      `http://${config.backend.ip}:${config.backend.port}/lostdogs/found`,
+    axios.put(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/found`,
       {
         headers: {
           token: getToken(cookies),

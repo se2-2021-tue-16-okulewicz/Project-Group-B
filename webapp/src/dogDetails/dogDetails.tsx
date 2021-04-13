@@ -120,7 +120,7 @@ const DogDetails = (props: any) => {
 
   const onSubmitClicked = () => {
     try {
-      markDogAsFound(editedDog);
+      markDogAsFound(dogId);
       history.push("/settings");
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
@@ -144,10 +144,10 @@ const DogDetails = (props: any) => {
     );
   }
 
-  function markDogAsFound(dog: ILostDogWithPicture) {
+  function markDogAsFound(dogId: Number) {
     store.dispatch(
-      Actions.updateDogThunk({
-        dog: dog,
+      Actions.markDogAsFoundThunk({
+        dogId: dogId as number,
         cookies: cookies,
       }) //filters
     );
