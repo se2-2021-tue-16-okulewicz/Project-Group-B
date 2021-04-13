@@ -36,7 +36,7 @@ export const fetchDogsThunk = createAsyncThunk(
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<
       ILostDogWithPicture[] | null
-    > = await Fetching.fetchDogs(item.cookies);
+    > = await Fetching.fetchDogs(item.filters, item.cookies);
 
     if (response.response.successful !== true) {
       return rejectWithValue(
