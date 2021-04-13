@@ -33,6 +33,8 @@ export default function DogsList({ navigation }: any) {
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
   });
+  const id = useSelector((state: State) => state.loginInformation?.id);
+  const [myDogs, setMyDogs] = useState<ILostDogWithPicture[]>([]);
 
   //Fetching cars at the beginning
   React.useEffect(() => {
@@ -50,6 +52,7 @@ export default function DogsList({ navigation }: any) {
       //set page number to 0
       setFilters({ ...filters, page: config.defaultFilters.page });
     } // eslint-disable-next-line
+    setMyDogs(dogsList.filter((dog) => dog.ownerId === id) );
   }, [refreshRequired]);
 
   /**
@@ -70,6 +73,7 @@ export default function DogsList({ navigation }: any) {
     <View style={styles.item}>
       <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
+        <View style={styles.rowP}>
         <Image
           style={styles.picture}
           source={{
@@ -78,6 +82,11 @@ export default function DogsList({ navigation }: any) {
             }`,
           }}
         />
+        <TouchableOpacity >
+          <Text style={styles.right}>Mark as found</Text>
+        </TouchableOpacity>
+        </View>
+        
         <View style={styles.row}>
           <Image
             style={styles.tinyLogo}
@@ -94,10 +103,10 @@ export default function DogsList({ navigation }: any) {
         <Text>Loading...</Text>
       ) : (
         <View>
-          <Text>Displaying {dogsList.length} dogs</Text>
+          <Text>Displaying {myDogs.length} dogs</Text>
 
           <FlatList
-            data={dogsList.length > 0 ? dogsList.slice(0, dogsList.length) : []}
+            data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
             renderItem={({ item }) => renderListItem(item, navigation)}
             keyExtractor={(item) => item.name}
           />
@@ -128,6 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   picture: {
+    marginRight:50,
     height: 80,
     width: 80,
   },
@@ -148,4 +158,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
+  rowP: {
+    flexDirection: 'row', 
+    justifyContent: 'space-evenly',
+    alignItems: 'baseline'
+
+  },
+  right:{
+    marginLeft: 50
+  }
 });
