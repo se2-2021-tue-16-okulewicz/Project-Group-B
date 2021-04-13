@@ -12,9 +12,13 @@ export default function LogInRegister({ navigation }: any) {
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const loadingdogs = useSelector((state: State) => state.loadingDogs);
   const loading = useSelector((state: State) => state.loading);
-  const dogsList = useSelector((state: State) => state.dogs as ILostDogWithPicture[]);
+  const dogsList = useSelector(
+    (state: State) => state.dogs as ILostDogWithPicture[]
+  );
   const cookies = useSelector((state: State) => state.loginInformation?.token);
-  const refreshRequired = useSelector((state: State) => state.dogsRequireRefresh);
+  const refreshRequired = useSelector(
+    (state: State) => state.dogsRequireRefresh
+  );
   return (
     <Stack.Navigator
       initialRouteName="Sign in"
@@ -22,7 +26,11 @@ export default function LogInRegister({ navigation }: any) {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Sign in" component={SignIn} initialParams={navigation}></Stack.Screen>
+      <Stack.Screen
+        name="Sign in"
+        component={SignIn}
+        initialParams={navigation}
+      ></Stack.Screen>
     </Stack.Navigator>
   );
 }

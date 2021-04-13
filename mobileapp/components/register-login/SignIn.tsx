@@ -72,10 +72,10 @@ const SignIn = ({ navigation }: any) => {
   }, [loginInfo]);
 
   React.useEffect(() => {
-    if(status == "redirectToDogs"){
+    if (status == "redirectToDogs") {
       navigation.push("DogsList");
     }
-  }, [status])
+  }, [status]);
 
   return (
     <KeyboardAvoidingView

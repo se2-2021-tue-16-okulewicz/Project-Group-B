@@ -29,8 +29,7 @@ function RootNavigator() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="LogInRegister" component={LogInRegister} />
       <Stack.Screen name="DogsList" component={DogsList} />
-      
-      
+
       {/* <Stack.Screen name="Root" component={BottomTabNavigator} />
       <Stack.Screen
         name="NotFound"

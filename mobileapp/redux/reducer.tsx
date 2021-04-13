@@ -13,11 +13,11 @@ export type Error = {
 };
 
 export type State = {
-  status: string,
+  status: string;
   dogs: ILostDogWithPicture[] | any;
   dogsLastPage: boolean;
   dogsRequireRefresh: boolean;
-  loadingDogs: boolean,
+  loadingDogs: boolean;
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
@@ -74,7 +74,7 @@ export const reducer = createReducer(init, {
     newState.loading = false;
     newState.loginInformation = payload.payload.response.data;
     newState.dogsRequireRefresh = true;
-    if(newState.loginInformation?.userType == "Regular"){
+    if (newState.loginInformation?.userType == "Regular") {
       newState.status = "redirectToDogs";
     }
     return newState;
@@ -94,9 +94,7 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.fetchDogsThunk.pending.toString()]: (
-    state: State,
-  ) => {
+  [Actions.fetchDogsThunk.pending.toString()]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loadingDogs = true;
     newState.dogsRequireRefresh = false;

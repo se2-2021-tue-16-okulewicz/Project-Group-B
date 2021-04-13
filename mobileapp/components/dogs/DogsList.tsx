@@ -1,5 +1,14 @@
 import * as React from "react";
-import { View, StatusBar, StyleSheet, FlatList, TouchableOpacity, Text, SafeAreaView, Image } from "react-native";
+import {
+  View,
+  StatusBar,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Text,
+  SafeAreaView,
+  Image,
+} from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
 import { ILostDog, ILostDogWithPicture } from "./dog/dogInterfaces";
@@ -12,15 +21,19 @@ import { useState } from "react";
 export default function DogsList({ navigation }: any) {
   const Stack = createStackNavigator();
   const state = store.getState();
-  const dogsList = useSelector((state: State) => state.dogs as ILostDogWithPicture[]);
+  const dogsList = useSelector(
+    (state: State) => state.dogs as ILostDogWithPicture[]
+  );
   const isLoading = useSelector((state: State) => state.loadingDogs);
   const cookies = useSelector((state: State) => state.loginInformation?.token);
-  const refreshRequired = useSelector((state: State) => state.dogsRequireRefresh);
+  const refreshRequired = useSelector(
+    (state: State) => state.dogsRequireRefresh
+  );
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
   });
-  
+
   //Fetching cars at the beginning
   React.useEffect(() => {
     if (refreshRequired) {
@@ -43,7 +56,7 @@ export default function DogsList({ navigation }: any) {
    * Is invoked after reaching bottom of the page.
    * Fetches next page and increments page number
    */
-   const fetchMore = () => {
+  const fetchMore = () => {
     store.dispatch(
       Actions.fetchDogsThunk({
         filters: { ...filters, page: filters.page + 1 },
@@ -54,40 +67,43 @@ export default function DogsList({ navigation }: any) {
   };
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
-    <View style={styles.item} > 
-      <TouchableOpacity >
+    <View style={styles.item}>
+      <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
-        <Image style ={styles.picture}
-        source ={{uri: `data:${dog.picture.fileType};base64,${
-          dog.picture.data as ArrayBuffer
-        }`}}
-          />
-          <View style={styles.row}>  
-            <Image
-          style={styles.tinyLogo}
-          source={require("../../assets/images/pin.png")}
+        <Image
+          style={styles.picture}
+          source={{
+            uri: `data:${dog.picture.fileType};base64,${
+              dog.picture.data as ArrayBuffer
+            }`,
+          }}
         />
+        <View style={styles.row}>
+          <Image
+            style={styles.tinyLogo}
+            source={require("../../assets/images/pin.png")}
+          />
           <Text style={styles.subtitle}>{dog.location.city}</Text>
-          </View>
-         
+        </View>
       </TouchableOpacity>
-      
     </View>
   );
   return (
     <SafeAreaView style={styles.container}>
-  { isLoading ? <Text>Loading...</Text> :
-      <View>
-        <Text>Displaying {dogsList.length} dogs</Text>
-        
-         <FlatList 
-          data={dogsList.length > 0 ? dogsList.slice(0, dogsList.length) : []}
-          renderItem={({ item }) => renderListItem(item, navigation)}
-          keyExtractor={(item) => item.name} /> 
-      </View>
-      }
-      </SafeAreaView>
-      
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <View>
+          <Text>Displaying {dogsList.length} dogs</Text>
+
+          <FlatList
+            data={dogsList.length > 0 ? dogsList.slice(0, dogsList.length) : []}
+            renderItem={({ item }) => renderListItem(item, navigation)}
+            keyExtractor={(item) => item.name}
+          />
+        </View>
+      )}
+    </SafeAreaView>
   );
 }
 
@@ -97,13 +113,13 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   searchBar: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
   },
   item: {
-    backgroundColor: '#eeeeee',
+    backgroundColor: "#eeeeee",
     padding: 10,
     marginVertical: 5,
     marginHorizontal: 16,
@@ -113,24 +129,23 @@ const styles = StyleSheet.create({
   },
   picture: {
     height: 80,
-    width: 80
+    width: 80,
   },
   subtitle: {
     fontSize: 12,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
   tinyLogo: {
-      width: 15,
-      height: 15,
-    
+    width: 15,
+    height: 15,
   },
   row: {
     marginTop: 4,
     paddingLeft: 8,
     width: 100,
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  }
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
 });
