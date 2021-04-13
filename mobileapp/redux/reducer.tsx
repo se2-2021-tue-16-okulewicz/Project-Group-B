@@ -16,7 +16,7 @@ export type State = {
   dogs: ILostDogWithPicture[] | any;
   dogsLastPage: boolean;
   dogsRequireRefresh: boolean;
-  loadingDogs: boolean,
+  loadingDogs: boolean;
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
@@ -93,9 +93,7 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.fetchDogsThunk.pending.toString()]: (
-    state: State,
-  ) => {
+  [Actions.fetchDogsThunk.pending.toString()]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loadingDogs = true;
     newState.dogsRequireRefresh = false;

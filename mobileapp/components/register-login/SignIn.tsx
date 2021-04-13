@@ -66,8 +66,8 @@ const SignIn = ({ navigation }: any) => {
         setReady(false);
         return;
       }
-      if(loginInfo.userType === "Regular"){
-      navigation.push("DogsList");
+      if (loginInfo.userType === "Regular") {
+        navigation.push("DogsList");
       }
       //console.log(loginInfo.userType + " user logged in with token " + loginInfo.token );
       //store.dispatch(clearLoginInformation());
