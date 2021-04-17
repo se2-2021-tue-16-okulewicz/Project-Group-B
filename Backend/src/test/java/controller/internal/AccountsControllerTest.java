@@ -1,28 +1,19 @@
 package controller.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.multipart.MultipartFile;
 import se.backend.SEBackend;
 import se.backend.service.login.LoginService;
-import se.backend.wrapper.account.LoginInfo;
 import se.backend.wrapper.account.UserType;
 
-import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class AccountsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -94,26 +85,26 @@ public class UserControllerTest {
         //Get dogs
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs")
-                        .header("token", "regularUserTestToken"))
+                        .header(LoginService.authorizationHeader, "regularUserTestToken"))
                 .andExpect(status().isOk());
 
         //Logout
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/logout")
-                        .header("token", "regularUserTestToken"))
+                        .header(LoginService.authorizationHeader, "regularUserTestToken"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)));
 
         //Get dogs again (forbidden)
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs")
-                        .header("token", "regularUserTestToken"))
+                        .header(LoginService.authorizationHeader, "regularUserTestToken"))
                 .andExpect(status().isForbidden());
 
         //Logout (again - forbidden)
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/logout")
-                        .header("token", "regularUserTestToken"))
+                        .header(LoginService.authorizationHeader, "regularUserTestToken"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("successful", is(false)));
 
