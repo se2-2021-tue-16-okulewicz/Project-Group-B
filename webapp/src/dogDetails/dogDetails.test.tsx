@@ -5,10 +5,10 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act, createRenderer } from "react-dom/test-utils";
+import DogDetails from "./dogDetails";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
-import ImageGrid from "./imageGrid";
-import { testDogList } from "../dog/dogTesting";
+import { store } from "../app/store";
 import { Provider } from "react-redux";
 import {
   Redirect,
@@ -17,7 +17,6 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import { store } from "../app/store";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -35,21 +34,20 @@ afterEach(() => {
   }
 });
 
-it("Rendered list of dog cards", () => {
+it("Rendered list of dogs", () => {
   act(() => {
-    render(<Provider store={store}>
-      <Router>
-      <Route path="/">
-      <ImageGrid dogs={testDogList} id={-1} cookies={{}} path={""}/>
- </Route>
-</Router>
-</Provider>, container);
+    render(
+      <Provider store={store}>
+        <Router>
+        <Route path={"/"}
+            children={<DogDetails cookies={{}} dogId={1}/>}/>
+        </Router>
+      </Provider>,
+      container
+    );
   });
-  //expect(container).toMatchSnapshot();
-  //container?.getElementsByTagName("registerButton")
-  expect(container?.getElementsByClassName("tile").length).toEqual(
-    testDogList.length
-  );
- //check if dog named alex was rendered
-  expect(container?.getElementsByClassName("Alex").length).toEqual(1);
+  expect(container?.getElementsByClassName("mainForm").length).toEqual(1);
+  expect(
+    container?.getElementsByClassName("classes.formControl").length
+  ).toBeGreaterThanOrEqual(0);
 });
