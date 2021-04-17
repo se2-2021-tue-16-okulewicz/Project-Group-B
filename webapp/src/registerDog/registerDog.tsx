@@ -107,16 +107,24 @@ export default function RegisterDogForm() {
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
 
+  function clearStorage() {
+    sessionStorage.removeItem("lostDogFields");
+    sessionStorage.removeItem("inputField");
+    sessionStorage.clear();
+  }
+
   const onSubmitClicked = () => {
     try {
       registerDog(lostDogFields, picture);
-      history.push("/listDogs");
+      clearStorage();
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }
+    history.push("/listDogs");
   };
 
   const onCancelClick = () => {
+    clearStorage();
     history.push("/listDogs");
   };
 

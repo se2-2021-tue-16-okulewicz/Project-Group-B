@@ -171,6 +171,16 @@ const EditDogDetails = (props: any) => {
       });
     }
   };
+  /*useEffect(() => {
+    if(!isListOn){
+      store.dispatch(
+        Actions.fetchOneDogThunk({
+          dogId: dogId,
+          cookies: cookies,
+        }) //filters
+      );
+      }
+    },[isListOn]);*/
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
       <Grid
