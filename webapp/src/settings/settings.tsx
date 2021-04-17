@@ -36,7 +36,7 @@ import { Home } from "@material-ui/icons";
 import { classicNameResolver } from "typescript";
 import { faAlignJustify } from "@fortawesome/free-solid-svg-icons";
 import { filter } from "lodash";
-import DogDetails from "../dogDetails/dogDetails";
+import DogDetails from "../editDogDetails/editDogDetails";
 //import EditDetails from "./"
 
 const SidebarTrigger = getSidebarTrigger(styled);

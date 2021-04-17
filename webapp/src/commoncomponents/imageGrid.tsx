@@ -9,7 +9,7 @@ import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { useHistory } from "react-router";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import DogDetails from "../dogDetails/dogDetails";
+import EditDogDetails from "../editDogDetails/editDogDetails";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,7 +48,7 @@ export default function ImageGrid(props: any) {
         <GridList cols={3} spacing={3}>
           {dogs.map(
             (dog: ILostDogWithPicture) =>
-              (id == -1 || dog.ownerId == id) && (
+              (id == -1 && dog.isFound==false|| dog.ownerId == id) && (
                 <GridListTile
                   key={dog.id}
                   style={{ minHeight: "300px" }}
@@ -65,8 +65,7 @@ export default function ImageGrid(props: any) {
                     title={dog.name}
                     subtitle={
                       <span>
-                        {dog.isFound ? "Found" : "Lost"} in {dog.location.city}{" "}
-                        by {dog.ownerId}
+                        {dog.isFound ? "Found" : "Lost in " + dog.location.city+" by "+ dog.ownerId}
                       </span>
                     }
                     actionIcon={
@@ -90,7 +89,7 @@ export default function ImageGrid(props: any) {
       </Route>
       <Route
         path={`${path}/dog/:id`}
-        children={<DogDetails cookies={props.cookies} dogId={dogId} />}
+        children={<EditDogDetails cookies={props.cookies} dogId={dogId} />}
       />
     </Switch>
   );

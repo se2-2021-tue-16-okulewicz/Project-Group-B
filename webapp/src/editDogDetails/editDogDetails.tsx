@@ -1,5 +1,5 @@
 import "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import {
   Button,
@@ -28,13 +28,16 @@ import {
   BreedTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture } from "../dog/dogInterfaces";
+import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams, useRouteMatch } from "react-router-dom";
+import config from "../config/config";
+import { useSelector } from "react-redux";
+import { State } from "../app/reducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,13 +62,22 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "aliceblue",
       backgroundColor: "aliceblue",
     },
+    mainForm:{
+      marginTop:'4%'
+    }
   })
 );
-
-export default function EditDetails() {
+const EditDogDetails = (props: any) => {
   //if enable is session storage is null, the form has just been opened
+  //const id = Number(useParams());
+  const { path } = useRouteMatch();
+  const dogId = props.dogId;
+  //console.log(path);
   const history = useHistory();
   const classes = useStyles();
+  const editedDog = useSelector(
+    (state: State) => state.editedDog as ILostDogWithPicture
+  );
   const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
@@ -73,6 +85,7 @@ export default function EditDetails() {
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
   );
+
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
@@ -109,27 +122,43 @@ export default function EditDetails() {
 
   const onSubmitClicked = () => {
     try {
-      registerDog(lostDogFields, picture);
+      markDogAsFound(dogId);
       history.push("/listDogs");
     } catch (err) {
-      console.error("Failed to save the dog: ", err);
+      console.error("Failed to fetch the dog: ", err);
+    }
+  };
+
+  const onEditClick = () => {
+    try {
+      fetchDog(dogId);
+    } catch (err) {
+      console.error("Failed to fetch the dog: ", err);
     }
   };
 
   const onCancelClick = () => {
-    history.push("/listDogs");
+    history.push("/settings");
   };
 
-  function registerDog(dog: ILostDog, picture: IPicture) {
+  function fetchDog(dogId: Number) {
     store.dispatch(
-      Actions.addDogThunk({
-        dog: dog,
-        picture: picture,
-        cookies: cookies,
-      })
+      Actions.fetchOneDogThunk({
+        dogId: dogId,
+        cookies: config.cookies.token,
+      }) //filters
     );
   }
 
+  function markDogAsFound(dogId: Number) {
+    console.log(cookies);
+    store.dispatch(
+      Actions.markDogAsFoundThunk({
+        dogId: dogId as number,
+        cookies: cookies,
+      }) //filters
+    );
+  }
   const handlePicturesChange = (event: any) => {
     if (event) {
       (event as File).arrayBuffer().then((fileBuffer) => {
@@ -145,7 +174,7 @@ export default function EditDetails() {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
       <Grid
-        className="mainForm"
+        className={classes.mainForm}
         container
         alignContent="space-between"
         spacing={5}
@@ -447,7 +476,17 @@ export default function EditDetails() {
               onClick={() => onSubmitClicked()}
               color="primary"
             >
-              Submit
+              Mark Dog As Found
+            </Button>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <Button
+              data-testid="cancel-button"
+              variant="contained"
+              onClick={onEditClick}
+              color="secondary"
+            >
+             Fetch Dog for Edit
             </Button>
           </FormControl>
           <FormControl className={classes.formControl}>
@@ -457,11 +496,13 @@ export default function EditDetails() {
               onClick={onCancelClick}
               color="secondary"
             >
-              Cancel
+             Cancel
             </Button>
           </FormControl>
         </Grid>
       </Grid>
     </MuiPickersUtilsProvider>
   );
-}
+};
+
+export default EditDogDetails;
