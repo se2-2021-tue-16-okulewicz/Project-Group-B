@@ -39,13 +39,15 @@ it("Rendered list of dogs", () => {
     render(
       <Provider store={store}>
         <Router>
-        <Route path="/listDogs">
-          <ListWithDogs />
-        </Route>
+          <Route path="/listDogs">
+            <ListWithDogs />
+          </Route>
         </Router>
       </Provider>,
       container
     );
   });
-  expect(container?.getElementsByClassName("loader").length).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByClassName("loader").length
+  ).toBeGreaterThanOrEqual(0);
 });

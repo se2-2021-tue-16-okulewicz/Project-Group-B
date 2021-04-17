@@ -56,3 +56,25 @@ export const fetchDogsThunk = createAsyncThunk(
 export const setIdle = createAction("setIdle");
 export const clearLoginInformation = createAction("clearLoginInformation");
 export const incorrectUserType = createAction("incorrectUserType");
+
+/*
+Marking lost dog as foud.
+*/
+export const markLostDogAsFoundThunk = createAsyncThunk(
+  "markLostDogAsFound",
+  async (item: any, { rejectWithValue }) => {
+    const response: RequestResponse<
+      ILostDogWithPicture[] | null
+    > = await Fetching.markLostDogAsFound(item.dogID, item.cookies);
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<ILostDogWithPicture | null>
+      );
+    }
+
+    //let dogs = response.response.data as ILostDogWithPicture[];
+
+    return response;
+  }
+);

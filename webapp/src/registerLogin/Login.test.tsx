@@ -38,10 +38,10 @@ it("Test login view elements", () => {
   act(() => {
     render(
       <Provider store={store}>
-                <Router>
-        <Route exact path="/">
-        <Login />
-        </Route>
+        <Router>
+          <Route exact path="/">
+            <Login />
+          </Route>
         </Router>
       </Provider>,
       container
@@ -61,11 +61,11 @@ describe("reducer", () => {
   it("should return initial state", () => {
     const state = reducer(init, { type: "" });
     expect(state).toEqual({
-      contactInfo:null,
+      contactInfo: null,
       dogs: [],
       dogsLastPage: false,
       dogsRequireRefresh: true,
-      editedDog:null,
+      editedDog: null,
       loading: false,
       error: {
         hasError: false,
@@ -74,7 +74,7 @@ describe("reducer", () => {
       },
       loginInformation: null,
       redirect: null,
-      settingsRequireRefresh:true
+      settingsRequireRefresh: true,
     });
   });
 });

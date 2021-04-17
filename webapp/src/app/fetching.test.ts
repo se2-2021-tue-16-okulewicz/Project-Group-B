@@ -28,10 +28,11 @@ import {
 import config from "../config/config";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import {
-  ILoginResults,
-} from "../registerLogin/loginRegisterInterfaces";
-import { initLoginProps, initRegisterRegularUserProps } from "../registerLogin/registerLogintest";
+  initLoginProps,
+  initRegisterRegularUserProps,
+} from "../registerLogin/registerLogintest";
 //import { addDog } from './fetching';
 
 jest.mock("axios");

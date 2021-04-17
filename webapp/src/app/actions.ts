@@ -3,7 +3,7 @@ import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 import { Item } from "../utilityComponents/uitilities";
-import {IContactInfo} from "../settings/contactInfoInterfaces"
+import { IContactInfo } from "../settings/contactInfoInterfaces";
 import {
   ILoginInformation,
   ILoginResults,
@@ -11,18 +11,18 @@ import {
 } from "../registerLogin/loginRegisterInterfaces";
 
 export const markDogAsFoundThunk = createAsyncThunk<
-RequestResponse<null>,
-{ dogId: number;  cookies: { [name: string]: any } },
-{ rejectValue: RequestResponse<null> }
+  RequestResponse<null>,
+  { dogId: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<null> }
 >(
-"MarkDogAsFound",
-async (
-  dogAndCookies: {
-    dogId: number;
-    cookies: { [name: string]: any };
-  },
-  { rejectWithValue }
-) => {
+  "MarkDogAsFound",
+  async (
+    dogAndCookies: {
+      dogId: number;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
     const response: RequestResponse<null> = await Fetching.markLostDogAsFound(
       dogAndCookies.dogId,
       dogAndCookies.cookies
@@ -37,18 +37,18 @@ async (
 );
 
 export const fetchContactInfoThunk = createAsyncThunk<
-RequestResponse<IContactInfo>,
-{ userId: number;  cookies: { [name: string]: any } },
-{ rejectValue: RequestResponse<IContactInfo> }
+  RequestResponse<IContactInfo>,
+  { userId: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IContactInfo> }
 >(
-"FetchUserInfo",
-async (
-  userAndCookies: {
-    userId: number;
-    cookies: { [name: string]: any };
-  },
-  { rejectWithValue }
-) => {
+  "FetchUserInfo",
+  async (
+    userAndCookies: {
+      userId: number;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
     const response: RequestResponse<IContactInfo> = await Fetching.fetchUserInfo(
       userAndCookies.userId,
       userAndCookies.cookies
@@ -132,7 +132,6 @@ export const loginThunk = createAsyncThunk<
   return response as RequestResponse<ILoginResults>;
 });
 
-
 export const logoutThunk = createAsyncThunk<
   RequestResponse<null>,
   { [name: string]: any },
@@ -169,9 +168,10 @@ export const fetchDogsThunk = createAsyncThunk(
 export const fetchOneDogThunk = createAsyncThunk(
   "fetchOneDog",
   async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<
-      ILostDogWithPicture
-    > = await Fetching.fetchOneDog(item.id, item.cookies);
+    const response: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
+      item.id,
+      item.cookies
+    );
 
     if (response.response.successful !== true) {
       return rejectWithValue(

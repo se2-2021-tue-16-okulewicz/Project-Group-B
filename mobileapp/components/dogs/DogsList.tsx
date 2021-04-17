@@ -33,6 +33,8 @@ export default function DogsList({ navigation }: any) {
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
   });
+  const id = useSelector((state: State) => state.loginInformation?.id);
+  const [myDogs, setMyDogs] = useState<ILostDogWithPicture[]>([]);
 
   //Fetching cars at the beginning
   React.useEffect(() => {
@@ -50,8 +52,14 @@ export default function DogsList({ navigation }: any) {
       //set page number to 0
       setFilters({ ...filters, page: config.defaultFilters.page });
     } // eslint-disable-next-line
+    let tmp = dogsList;
+    setMyDogs(tmp.filter((dog) => dog.ownerId == id));
   }, [refreshRequired]);
 
+  React.useEffect(() => {
+    let tmp = dogsList;
+    setMyDogs(tmp.filter((dog) => dog.ownerId == id));
+  }, [dogsList]);
   /**
    * Is invoked after reaching bottom of the page.
    * Fetches next page and increments page number
@@ -66,18 +74,30 @@ export default function DogsList({ navigation }: any) {
     setFilters({ ...filters, page: filters.page + 1 });
   };
 
+  function markDogAsFound(id: number) {
+    store.dispatch(
+      Actions.markLostDogAsFoundThunk({ cookies: cookies, dogID: id })
+    );
+  }
+
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={styles.item}>
       <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
-        <Image
-          style={styles.picture}
-          source={{
-            uri: `data:${dog.picture.fileType};base64,${
-              dog.picture.data as ArrayBuffer
-            }`,
-          }}
-        />
+        <View style={styles.rowP}>
+          <Image
+            style={styles.picture}
+            source={{
+              uri: `data:${dog.picture.fileType};base64,${
+                dog.picture.data as ArrayBuffer
+              }`,
+            }}
+          />
+          <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
+            <Text style={styles.right}>Mark as found</Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.row}>
           <Image
             style={styles.tinyLogo}
@@ -94,10 +114,10 @@ export default function DogsList({ navigation }: any) {
         <Text>Loading...</Text>
       ) : (
         <View>
-          <Text>Displaying {dogsList.length} dogs</Text>
+          <Text>Displaying {myDogs.length} dogs</Text>
 
           <FlatList
-            data={dogsList.length > 0 ? dogsList.slice(0, dogsList.length) : []}
+            data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
             renderItem={({ item }) => renderListItem(item, navigation)}
             keyExtractor={(item) => item.name}
           />
@@ -128,6 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   picture: {
+    marginRight: 50,
     height: 80,
     width: 80,
   },
@@ -147,5 +168,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
+  },
+  rowP: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "baseline",
+  },
+  right: {
+    marginLeft: 50,
   },
 });

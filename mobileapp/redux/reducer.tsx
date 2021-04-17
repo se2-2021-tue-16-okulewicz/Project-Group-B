@@ -121,7 +121,7 @@ export const reducer = createReducer(init, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    newState.dogs = state.dogs.concat(payload.payload.response.data);
+    newState.dogs = payload.payload.response.data;
     newState.loadingDogs = false;
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = newState.dogs.length < pageSize;
@@ -130,6 +130,61 @@ export const reducer = createReducer(init, {
   },
 
   [Actions.fetchDogsThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loadingDogs = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+
+  [Actions.markLostDogAsFoundThunk.pending.toString()]: (state: State) => {
+    let newState = _.cloneDeep(state);
+    newState.loadingDogs = true;
+    newState.dogsRequireRefresh = false;
+    newState.status = "";
+    return newState;
+  },
+
+  [Actions.markLostDogAsFoundThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    const pageNumber = _.get(
+      payload,
+      ["meta", "arg", "filters", "page"],
+      config.defaultFilters.page
+    );
+    // if size filter not specified - set pageSize to default
+    const pageSize = _.get(
+      payload,
+      ["meta", "arg", "filters", "size"],
+      config.defaultFilters.size
+    );
+    // dogs obtained from server are appended to current dogs
+    // the .slice protects dogs list enormous growth - when fetch
+    // is called multiple times (by an error)
+
+    let tmp = state.dogs;
+    newState.dogs = tmp.filter(
+      (dog) => dog.ownerId !== newState.loginInformation?.id
+    );
+    newState.loadingDogs = false;
+    // if response is shorter than default size - it means end is reached.
+    newState.dogsLastPage = newState.dogs.length < pageSize;
+    newState.dogsRequireRefresh = true;
+    console.log("Marking Fullfilled");
+    return newState;
+  },
+
+  [Actions.markLostDogAsFoundThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
   ) => {

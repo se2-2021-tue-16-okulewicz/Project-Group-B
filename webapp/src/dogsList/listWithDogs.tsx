@@ -42,28 +42,28 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "rgba(255, 255, 255, 0.54)",
     },
     registerButton: {
-      minWidth:"100%",
+      minWidth: "100%",
       display: "flex",
       textAlign: "left",
       alignSelf: "center",
-      marginLeft:"0%",
+      marginLeft: "0%",
       marginBottom: "1%",
       marginTop: "1%",
       borderBottomColor: "black",
-      borderBottomWidth:"1", 
-      fontSize:"1.3em"
+      borderBottomWidth: "1",
+      fontSize: "1.3em",
     },
-    header:{
-      background:"palealiceblue",
-      color:"black",
-      fontStyle:"oblique",
-      fontSize:"2em",
-      fontFamily:"Gill Sans Extrabold",
-      fontWeight:"bolder",
-      justifyContent:"center",
+    header: {
+      background: "palealiceblue",
+      color: "black",
+      fontStyle: "oblique",
+      fontSize: "2em",
+      fontFamily: "Gill Sans Extrabold",
+      fontWeight: "bolder",
+      justifyContent: "center",
       alignItems: "center",
       alignSelf: "center",
-      display:"flex"
+      display: "flex",
     },
     cardContent: {
       justifyContent: "center",
@@ -184,7 +184,7 @@ export default function ListWithDogs() {
   return (
     <Root scheme={scheme}>
       <CssBaseline />
-      <Header className={classes.header} >
+      <Header className={classes.header}>
         <Toolbar>
           <SidebarTrigger sidebarId="unique_id" />
           Shelter
@@ -208,7 +208,7 @@ export default function ListWithDogs() {
                 //size="medium"
                 onClick={onRegisterClicked}
               >
-                <Pets/>
+                <Pets />
                 <Grid item xs={1} />
                 Register
               </MenuItem>
@@ -221,8 +221,8 @@ export default function ListWithDogs() {
                 //size="medium"
                 onClick={onSettingsClicked}
               >
-                <Settings/>
-                <Grid item xs={1}/>
+                <Settings />
+                <Grid item xs={1} />
                 Settings
               </MenuItem>
             </Grid>
@@ -241,7 +241,7 @@ export default function ListWithDogs() {
             </div>
           }
         >
-          <ImageGrid dogs={dogs} id={-1} cookies={cookies}/>
+          <ImageGrid dogs={dogs} id={-1} cookies={cookies} />
         </InfiniteScroll>
       </Content>
     </Root>

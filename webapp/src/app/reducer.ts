@@ -18,23 +18,23 @@ export type Error = {
 
 export type State = {
   dogs: ILostDogWithPicture[] | any;
-  editedDog: ILostDogWithPicture|any;
-  dogsLastPage: boolean|null;
+  editedDog: ILostDogWithPicture | any;
+  dogsLastPage: boolean | null;
   dogsRequireRefresh: boolean;
-  settingsRequireRefresh:boolean;
+  settingsRequireRefresh: boolean;
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
-  contactInfo: IContactInfo|null;
+  contactInfo: IContactInfo | null;
   redirect: string | null;
 };
 
 export const init: State = {
   dogs: [],
-  editedDog:null,
+  editedDog: null,
   dogsLastPage: false,
   dogsRequireRefresh: true,
-  settingsRequireRefresh:true,
+  settingsRequireRefresh: true,
   loading: false,
   error: {
     hasError: false,
@@ -45,7 +45,6 @@ export const init: State = {
   contactInfo: null,
   redirect: null,
 };
-
 
 export const reducer = createReducer(init, {
   [Actions.clearError.type]: (state: State) => {
@@ -85,7 +84,7 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.contactInfo=payload.payload.response.data;
+    newState.contactInfo = payload.payload.response.data;
     newState.dogsRequireRefresh = true;
     return newState;
   },
@@ -103,7 +102,6 @@ export const reducer = createReducer(init, {
     };
     return newState;
   },
-
 
   [Actions.markDogAsFoundThunk.fulfilled.toString()]: (
     state: State,
@@ -170,12 +168,13 @@ export const reducer = createReducer(init, {
     newState.loading = false;
     newState.error = {
       hasError: true,
-      errorCode: payload.payload?errorResponse.code:-1,
-      erorMessage: payload.payload?errorResponse.response.message:"Update has failed",
+      errorCode: payload.payload ? errorResponse.code : -1,
+      erorMessage: payload.payload
+        ? errorResponse.response.message
+        : "Update has failed",
     };
     return newState;
   },
-
 
   [Actions.fetchDogsThunk.pending.toString()]: (
     state: State,
@@ -207,10 +206,10 @@ export const reducer = createReducer(init, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-      newState.dogs = state.dogs
+    newState.dogs = state.dogs
       .concat(payload.payload.response.data)
       .slice(0, (pageNumber + 1) * pageSize);
-    
+
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = newState.dogs.length < pageSize;
     newState.dogsRequireRefresh = false;

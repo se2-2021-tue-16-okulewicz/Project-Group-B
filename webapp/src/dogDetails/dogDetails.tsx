@@ -68,13 +68,13 @@ const DogDetails = (props: any) => {
   //if enable is session storage is null, the form has just been opened
   //const id = Number(useParams());
   const { path } = useRouteMatch();
-  const dogId=props.dogId;
+  const dogId = props.dogId;
   //console.log(path);
   const history = useHistory();
   const classes = useStyles();
-  const editedDog = (useSelector(
+  const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
-  ));
+  );
   const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
@@ -83,7 +83,6 @@ const DogDetails = (props: any) => {
       : initLostDogProps
   );
 
-    
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
@@ -186,7 +185,7 @@ const DogDetails = (props: any) => {
         >
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
-              Name 
+              Name
             </InputLabel>
             <Input
               data-testid="name-input"
@@ -500,6 +499,6 @@ const DogDetails = (props: any) => {
       </Grid>
     </MuiPickersUtilsProvider>
   );
-}
+};
 
 export default DogDetails;
