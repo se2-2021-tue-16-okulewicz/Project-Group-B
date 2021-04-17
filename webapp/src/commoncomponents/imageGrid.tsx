@@ -10,6 +10,7 @@ import { useHistory } from "react-router";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import EditDogDetails from "../editDogDetails/editDogDetails";
+import DogDetails from "../dogDetails/dogDetails";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,6 +42,7 @@ export default function ImageGrid(props: any) {
   const redirectToDetails = (ids: Number) => {
     //setDogId(ids);
   };
+  //id == -1 && dog.isFound==false|| dog.ownerId == id
   const { path } = useRouteMatch();
   return (
     <Switch>
@@ -48,7 +50,7 @@ export default function ImageGrid(props: any) {
         <GridList cols={3} spacing={3}>
           {dogs.map(
             (dog: ILostDogWithPicture) =>
-              (id == -1 && dog.isFound==false|| dog.ownerId == id) && (
+              (true) && (
                 <GridListTile
                   key={dog.id}
                   style={{ minHeight: "300px" }}
@@ -90,6 +92,10 @@ export default function ImageGrid(props: any) {
       <Route
         path={`${path}/dog/:id`}
         children={<EditDogDetails cookies={props.cookies} dogId={dogId} />}
+      />
+      <Route
+        path={`${path}/dog/:id`}
+        children={<DogDetails cookies={props.cookies} dogId={dogId} />}
       />
     </Switch>
   );

@@ -5,7 +5,7 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act, createRenderer } from "react-dom/test-utils";
-import EditDetails from "./dogDetails";
+import DogDetails from "./dogDetails";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
 
@@ -27,7 +27,7 @@ afterEach(() => {
 
 it("Rendered register form button", () => {
   act(() => {
-    render(<EditDetails />, container);
+    render(<DogDetails />, container);
   });
   expect(container?.getElementsByClassName("mainForm").length).toEqual(1);
   expect(
@@ -37,7 +37,7 @@ it("Rendered register form button", () => {
 
 it("test only register button", () => {
   act(() => {
-    render(<EditDetails />, container);
+    render(<DogDetails />, container);
   });
   const myRegisterClicked = jest.fn();
 });

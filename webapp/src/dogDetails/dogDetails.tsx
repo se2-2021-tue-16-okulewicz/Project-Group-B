@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function EditDetails() {
+const DogDetails= (props: any) => {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
   const classes = useStyles();
@@ -465,3 +465,5 @@ export default function EditDetails() {
     </MuiPickersUtilsProvider>
   );
 }
+
+export default DogDetails;

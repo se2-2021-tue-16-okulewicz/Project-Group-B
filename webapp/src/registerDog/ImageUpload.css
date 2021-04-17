@@ -15,6 +15,13 @@
   align-self: center;
 }
 
+.imageInputLabel {
+  margin-top: 400px;
+  margin-left:36%;
+  margin-right:37%;
+  font-size: 20px;
+}
+
 .customButton {
   cursor: pointer;
   border: 2px solid #1a202c;

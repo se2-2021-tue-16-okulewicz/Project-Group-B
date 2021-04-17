@@ -132,6 +132,7 @@ export default function ListWithDogs() {
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
+  const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
   const loading = useSelector((state: State) => state.loading);
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh
@@ -168,8 +169,16 @@ export default function ListWithDogs() {
       );
       //set page number to 0
       setFilters({ ...filters, page: config.defaultFilters.page });
+      
     } // eslint-disable-next-line
   }, [refreshRequired]);
+
+
+  
+  React.useEffect(() => {
+    let tmp = dogs;
+    setFilteredDogs(tmp.filter((dog:ILostDogWithPicture) => dog.isFound != true));
+  }, [dogs]);
 
   const fetchMore = () => {
     store.dispatch(
@@ -241,7 +250,7 @@ export default function ListWithDogs() {
             </div>
           }
         >
-          <ImageGrid dogs={dogs} id={-1} cookies={cookies} />
+          <ImageGrid dogs={filteredDogs} id={-1} cookies={cookies} path={path}/>
         </InfiniteScroll>
       </Content>
     </Root>

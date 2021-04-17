@@ -6,8 +6,11 @@ import {
   Card,
   CardContent,
   CardHeader,
+  FilledInput,
   Input,
+  InputAdornment,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from "@material-ui/core";
@@ -28,7 +31,7 @@ import {
   BreedTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture } from "../dog/dogInterfaces";
+import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
@@ -39,11 +42,11 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formControl: {
-      margin: theme.spacing(1),
+      marginBottom: theme.spacing(1.5),
       minWidth: 120,
     },
     selectEmpty: {
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(1),
     },
     chips: {
       display: "flex",
@@ -59,6 +62,11 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "aliceblue",
       backgroundColor: "aliceblue",
     },
+    mainForm:{
+      marginLeft:'0.5%',
+      marginRight:'0.5%',
+      marginTop:'0.009%'
+    }
   })
 );
 
@@ -73,6 +81,7 @@ export default function RegisterDogForm() {
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
   );
+
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
@@ -150,13 +159,14 @@ export default function RegisterDogForm() {
       });
     }
   };
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
       <Grid
-        className="mainForm"
+        className={classes.mainForm}
         container
         alignContent="space-between"
-        spacing={5}
+        spacing={7}
       >
         <Grid
           container
@@ -164,7 +174,6 @@ export default function RegisterDogForm() {
           xs={5}
           direction="column"
           alignContent="stretch"
-          spacing={1}
         >
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
@@ -198,20 +207,19 @@ export default function RegisterDogForm() {
           xs={3}
           direction="column"
           alignContent="stretch"
-          spacing={1}
+
         >
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="age-label">
-              Age
-            </InputLabel>
             <TextField
-              data-testid="age-input"
+              label="Age"
               type="number"
               id="age"
               name="age"
               value={lostDogFields.age}
               onChange={inputsHandler}
-              required
+              InputProps={{ startAdornment:
+              <InputAdornment position="start">Years</InputAdornment>}}
+              variant="outlined"
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
@@ -376,7 +384,6 @@ export default function RegisterDogForm() {
           xs={4}
           direction="column"
           alignContent="stretch"
-          spacing={1}
         >
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel shrink id="calendar-label">
