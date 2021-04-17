@@ -107,15 +107,27 @@ export const reducer = createReducer(init, {
     state: State,
     payload: PayloadAction<RequestResponse<null>>
   ) => {
+    console.log(payload.payload);
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    //newState.dogsRequireRefresh = true;
+    newState.dogsRequireRefresh = true;
+    return newState;
+  },
+  [Actions.markDogAsFoundThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    console.log(payload.payload);
+    let newState = _.cloneDeep(state);
+    newState.dogs = [];
+    newState.loading = true;
     return newState;
   },
   [Actions.markDogAsFoundThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<null>>
   ) => {
+    console.log(payload.payload);
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
     newState.loading = false;
@@ -133,12 +145,22 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    //newState.dogsRequireRefresh = true;
+    newState.dogsRequireRefresh = true;
+    return newState;
+  },
+  [Actions.addDogThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null>>
+  ) => {
+    console.log(payload.payload);
+    let newState = _.cloneDeep(state);
+    newState.dogs = [];
+    newState.loading = true;
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+    payload: PayloadAction<RequestResponse<null>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;

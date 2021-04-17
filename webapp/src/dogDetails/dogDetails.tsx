@@ -148,6 +148,7 @@ const DogDetails = (props: any) => {
   }
 
   function markDogAsFound(dogId: Number) {
+    console.log(cookies);
     store.dispatch(
       Actions.markDogAsFoundThunk({
         dogId: dogId as number,
