@@ -47,7 +47,7 @@ public class DogsControllerTest {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs")
                         .header(LoginService.authorizationHeader, "tokenIsInvalid")
-        ).andExpect(status().isForbidden())
+        ).andExpect(status().isUnauthorized())
             .andExpect(jsonPath("successful", is(false)))
             .andExpect(jsonPath("data").value(IsNull.nullValue()));
 }
@@ -83,7 +83,7 @@ public class DogsControllerTest {
                         .file(fullDog)
                         .file(validPicture)
                         .header(LoginService.authorizationHeader, "tokenIsInvalid")
-        ).andExpect(status().isForbidden())
+        ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
 
@@ -154,7 +154,7 @@ public class DogsControllerTest {
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/20001")
                         .header(LoginService.authorizationHeader, "tokenIsInvalid")
-        ).andExpect(status().isForbidden())
+        ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
     }
@@ -225,7 +225,7 @@ public class DogsControllerTest {
                 .file(fullDog)
                 .file(validPicture)
                 .header(LoginService.authorizationHeader, "tokenIsInvalid")
-        ).andExpect(status().isForbidden())
+        ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
 
@@ -343,7 +343,7 @@ public class DogsControllerTest {
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/lostdogs/10001/found")
                         .header(LoginService.authorizationHeader, "invalidToken")
-        ).andExpect(status().isForbidden())
+        ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)));
     }
 }

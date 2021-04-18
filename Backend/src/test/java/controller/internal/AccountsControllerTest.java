@@ -99,13 +99,13 @@ public class AccountsControllerTest {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs")
                         .header(LoginService.authorizationHeader, "regularUserTestToken"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
 
         //Logout (again - forbidden)
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/logout")
                         .header(LoginService.authorizationHeader, "regularUserTestToken"))
-                .andExpect(status().isForbidden())
+                .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)));
 
     }
