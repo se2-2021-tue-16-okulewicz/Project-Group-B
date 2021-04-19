@@ -91,6 +91,7 @@ export async function markLostDogAsFound(
   return getResponse(
     axios.put(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/found`,
+      undefined,
       {
         headers: {
           token: cookies,
