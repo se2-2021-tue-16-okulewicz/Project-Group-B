@@ -11,6 +11,8 @@ import se.backend.wrapper.account.UserType;
 import java.util.List;
 
 public interface LoginService {
+    String authorizationHeader = "Authorization";
+
     AuthenticationResults Authenticate(String username, String password);
     boolean Logout(String token);
 

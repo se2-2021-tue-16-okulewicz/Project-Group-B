@@ -32,7 +32,7 @@ public class LostDogWithBehaviors extends LostDog {
         lostDog.setAge(this.getAge());
         lostDog.setSize(this.getSize());
         lostDog.setColor(this.getColor());
-        lostDog.setSpecialMarks(this.getSpecialMarks());
+        lostDog.setSpecialMark(this.getSpecialMark());
         lostDog.setName(this.getName());
         lostDog.setHairLength(this.getHairLength());
         lostDog.setEarsType(this.getEarsType());
