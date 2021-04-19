@@ -81,10 +81,10 @@ export default function DogsList({ navigation }: any) {
   }
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
-    <View style={styles.item}>
+    <View style={[styles.item]}>
       <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
-        <View style={styles.rowP}>
+        <View style={[{flexDirection: 'row'}]}>
           <Image
             style={styles.picture}
             source={{
@@ -93,9 +93,11 @@ export default function DogsList({ navigation }: any) {
               }`,
             }}
           />
-          <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
+          {dog.isFound ? <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
             <Text style={styles.right}>Mark as found</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> : 
+          <Text style={styles.found}>Found</Text>
+          }
         </View>
 
         <View style={styles.row}>
@@ -114,7 +116,7 @@ export default function DogsList({ navigation }: any) {
         <Text>Loading...</Text>
       ) : (
         <View>
-          <Text>Displaying {myDogs.length} dogs</Text>
+          <Text>Displaying dogs: {myDogs.length}</Text>
 
           <FlatList
             data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
@@ -172,9 +174,14 @@ const styles = StyleSheet.create({
   rowP: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems: "baseline",
+    textAlignVertical: 'center'
   },
   right: {
-    marginLeft: 50,
+    // marginLeft: 50,
+  },
+  found: {
+    marginLeft: '33%',
+    color: 'green',
+    
   },
 });

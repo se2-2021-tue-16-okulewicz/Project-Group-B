@@ -174,7 +174,7 @@ export const reducer = createReducer(init, {
 
     let tmp = state.dogs;
     newState.dogs = tmp.filter(
-      (dog) => dog.ownerId !== newState.loginInformation?.id
+      (dog: ILostDogWithPicture) => dog.ownerId !== newState.loginInformation?.id
     );
     newState.loadingDogs = false;
     // if response is shorter than default size - it means end is reached.
