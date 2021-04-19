@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const DogDetails= (props: any) => {
   //if enable is session storage is null, the form has just been opened
+  //need to finish details
   const history = useHistory();
   const classes = useStyles();
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -442,22 +443,12 @@ const DogDetails= (props: any) => {
           </FormControl>
           <FormControl className={classes.formControl}>
             <Button
-              data-testid="submit-button"
-              variant="contained"
-              onClick={() => onSubmitClicked()}
-              color="primary"
-            >
-              Submit
-            </Button>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <Button
               data-testid="cancel-button"
               variant="contained"
               onClick={onCancelClick}
-              color="secondary"
+              color="primary"
             >
-              Cancel
+              Shelter
             </Button>
           </FormControl>
         </Grid>

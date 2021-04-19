@@ -62,10 +62,10 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "aliceblue",
       backgroundColor: "aliceblue",
     },
-    mainForm:{
-      marginLeft:'0.5%',
-      marginRight:'0.5%',
-      marginTop:'0.009%'
+    mainForm: {
+      marginLeft: '0.5%',
+      marginRight: '0.5%',
+      marginTop: '0.009%'
     }
   })
 );
@@ -125,6 +125,7 @@ export default function RegisterDogForm() {
   const onSubmitClicked = () => {
     try {
       registerDog(lostDogFields, picture);
+      store.dispatch(Actions.clearDogList);
       clearStorage();
     } catch (err) {
       console.error("Failed to save the dog: ", err);
@@ -134,6 +135,7 @@ export default function RegisterDogForm() {
 
   const onCancelClick = () => {
     clearStorage();
+    store.dispatch(Actions.clearDogList);
     history.push("/listDogs");
   };
 
@@ -217,8 +219,10 @@ export default function RegisterDogForm() {
               name="age"
               value={lostDogFields.age}
               onChange={inputsHandler}
-              InputProps={{ startAdornment:
-              <InputAdornment position="start">Years</InputAdornment>}}
+              InputProps={{
+                startAdornment:
+                  <InputAdornment position="start">Years</InputAdornment>
+              }}
               variant="outlined"
             />
           </FormControl>

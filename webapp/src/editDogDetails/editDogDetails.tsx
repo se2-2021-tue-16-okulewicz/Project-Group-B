@@ -5,12 +5,13 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
   Input,
+  InputAdornment,
   MenuItem,
   Select,
   TextField,
 } from "@material-ui/core";
+import "../registerDog/ImageUpload.css";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -27,18 +28,18 @@ import {
   BehaviorsTypes,
   BreedTypes,
 } from "../dog/dogEnums";
-import { initLostDogProps, initPicture } from "../dog/dogClasses";
+import { initPicture } from "../dog/dogClasses";
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
-import { useHistory, useParams, useRouteMatch } from "react-router-dom";
-import config from "../config/config";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
 
+//edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formControl: {
@@ -62,8 +63,8 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "aliceblue",
       backgroundColor: "aliceblue",
     },
-    mainForm:{
-      marginTop:'4%'
+    mainForm: {
+      marginTop: '4%'
     }
   })
 );
@@ -71,87 +72,147 @@ const EditDogDetails = (props: any) => {
   //if enable is session storage is null, the form has just been opened
   //const id = Number(useParams());
   const { path } = useRouteMatch();
-  const dogId = props.dogId;
-  //console.log(path);
   const history = useHistory();
   const classes = useStyles();
+  const [pageRefresh, setPageRefresh] = useState(true);
+  const refreshRequired = useSelector(
+    (state: State) => state.dogsRequireRefresh 
+  ) as boolean;
   const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
   );
-  const [cookies, setCookie, removeCookie] = useCookies();
-  let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  const [lostDogFields, setLostDogFields] = useState<ILostDog>(
-    isInputNotNull
-      ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
-      : initLostDogProps
-  );
+  
+  useEffect(() => {
+    if (refreshRequired) {
+      try {
+        store.dispatch(
+          Actions.fetchOneDogThunk({
+            id: dogId as number,
+            cookies: cookies,
+          }) //filters
+        );
+      }
+      catch (err) {
+        console.error("Failed to fetch the dog: ", err);
+      }
+      finally {
+        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
+        setEditDogFields(editedDog);
+        store.dispatch(Actions.finishRefreshing);
+        console.log(editedDog);
+      }
+    }
+  }, [refreshRequired]);
 
-  sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
+  useEffect(()=>{
+    if(pageRefresh && !refreshRequired)
+    {
+      sessionStorage.setItem("editDogFields", JSON.stringify(editDogFields));
+      setPageRefresh(false);
+    }
+}, [refreshRequired]);
+  const [isNewPicture, setIsNewPicture] = useState(false);
+  const dogId = props.dogId == 0 ? sessionStorage.getItem("editDogId") : props.dogId;
+  const [cookies, setCookie, removeCookie] = useCookies();
+  let isInputNull = JSON.parse(sessionStorage.getItem("editDogFields") as string)?false:true;
+  console.log(isInputNull);
+  const [editDogFields, setEditDogFields] = useState<ILostDog>(
+    !isInputNull && pageRefresh
+      ? JSON.parse(sessionStorage.getItem("editDogFields") as string)
+      : editedDog
+  );
+  //
+  console.log(editDogFields);
+  console.log(editedDog);
+  if(!editDogFields) setEditDogFields(editedDog);
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
-    let newField = { ...lostDogFields, [e.target.name]: e.target.value };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
+    let newField = { ...editDogFields, [e.target.name]: e.target.value };
+    setEditDogFields(newField);
+    sessionStorage.setItem("editDogFields", JSON.stringify(newField));
   };
 
   function calendarHandler(date: MaterialUiPickersDate): void {
-    let newField = { ...lostDogFields, dateLost: date as Date };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
+    let newField = { ...editDogFields, dateLost: date as Date };
+    setEditDogFields(newField);
+    sessionStorage.setItem("editDogFields", JSON.stringify(newField));
   }
 
   const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
     let newField = {
-      ...lostDogFields,
-      location: { ...lostDogFields.location, [e.target.name]: e.target.value },
+      ...editDogFields,
+      location: { ...editDogFields.location, [e.target.name]: e.target.value },
     };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
+    setEditDogFields(newField);
+    sessionStorage.setItem("editDogFields", JSON.stringify(newField));
   };
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
     let newField = {
-      ...lostDogFields,
+      ...editDogFields,
       [e.target.name as string]: e.target.value,
     };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
+    setEditDogFields(newField);
+    sessionStorage.setItem("editDogFields", JSON.stringify(newField));
   };
 
-  const onSubmitClicked = () => {
+  function clearStorage() {
+    sessionStorage.removeItem("editDogFields");
+    sessionStorage.removeItem("inputEditField");
+    sessionStorage.removeItem("editDogId");
+    sessionStorage.clear();
+  } 
+
+  const onMarkDogClicked = () => {
     try {
       markDogAsFound(dogId);
-      history.push("/listDogs");
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     }
+    finally{
+      store.dispatch(Actions.clearDogList);
+      clearStorage();
+      history.push("/settings");
+    }
   };
 
-  const onEditClick = () => {
+  const onSubmitEditClicked = () => {
     try {
-      fetchDog(dogId);
+      if (picture==initPicture)
+      {
+        setPicture(editedDog.picture);
+      }
+      updateDog(editDogFields, picture);
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
+    }
+    finally{
+      store.dispatch(Actions.clearDogList);
+      clearStorage();
+      history.push("/settings");
     }
   };
 
   const onCancelClick = () => {
+    store.dispatch(Actions.clearDogList);
+    clearStorage();
     history.push("/settings");
   };
 
-  function fetchDog(dogId: Number) {
+  function updateDog(dog: ILostDog, picture: IPicture) {
+    let tmp = dog as ILostDogWithPicture;
+    tmp.picture = picture as IPicture;
     store.dispatch(
-      Actions.fetchOneDogThunk({
-        dogId: dogId,
-        cookies: config.cookies.token,
+      Actions.updateDogThunk({
+        dog: tmp,
+        cookies: cookies,
       }) //filters
     );
   }
 
   function markDogAsFound(dogId: Number) {
-    console.log(cookies);
     store.dispatch(
       Actions.markDogAsFoundThunk({
         dogId: dogId as number,
@@ -170,32 +231,26 @@ const EditDogDetails = (props: any) => {
         } as IPicture);
       });
     }
+    setIsNewPicture(true);
   };
-  /*useEffect(() => {
-    if(!isListOn){
-      store.dispatch(
-        Actions.fetchOneDogThunk({
-          dogId: dogId,
-          cookies: cookies,
-        }) //filters
-      );
-      }
-    },[isListOn]);*/
+  
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
+      {refreshRequired && !editDogFields && (<></>)}
+      {!refreshRequired && editDogFields && (
       <Grid
         className={classes.mainForm}
         container
         alignContent="space-between"
-        spacing={5}
+        spacing={7}
       >
+        
         <Grid
           container
           item
           xs={5}
           direction="column"
           alignContent="stretch"
-          spacing={1}
         >
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
@@ -205,14 +260,19 @@ const EditDogDetails = (props: any) => {
               data-testid="name-input"
               id="name"
               name="name"
-              value={lostDogFields.name}
+              value={editDogFields.name}
               onChange={inputsHandler}
-              required
             />
           </FormControl>
           <FormControl className={classes.formControl}>
             <Card className={classes.cardContent}>
               <CardContent className={classes.cardContent}>
+                {editedDog && !isNewPicture &&
+                  <img className="image"
+                    src={`data:${editedDog.picture.fileType};base64,${editedDog.picture.data as ArrayBuffer
+                      }`}
+                    alt={editedDog.picture.fileName}
+                  />}
                 <ImageUpload
                   data-testid="img-upload"
                   handlePicturesChange={(
@@ -229,20 +289,20 @@ const EditDogDetails = (props: any) => {
           xs={3}
           direction="column"
           alignContent="stretch"
-          spacing={1}
         >
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="age-label">
-              Age
-            </InputLabel>
             <TextField
-              data-testid="age-input"
+              label="Age"
               type="number"
               id="age"
               name="age"
-              value={lostDogFields.age}
+              value={editDogFields.age}
               onChange={inputsHandler}
-              required
+              InputProps={{
+                startAdornment:
+                  <InputAdornment position="start">Years</InputAdornment>
+              }}
+              variant="outlined"
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
@@ -254,7 +314,7 @@ const EditDogDetails = (props: any) => {
               labelId="color-label"
               id="color"
               name="color"
-              value={lostDogFields.color}
+              value={editDogFields.color}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -275,7 +335,7 @@ const EditDogDetails = (props: any) => {
               native
               label="hair"
               labelId="hair-label"
-              value={lostDogFields.hairLength}
+              value={editDogFields.hairLength}
               name="hairLength"
               onChange={selectsHandler}
               displayEmpty
@@ -298,7 +358,7 @@ const EditDogDetails = (props: any) => {
               labelId="size-label"
               label="size"
               name="size"
-              value={lostDogFields.size}
+              value={editDogFields.size}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -320,7 +380,7 @@ const EditDogDetails = (props: any) => {
               labelId="ears-label"
               label="ears"
               name="earsType"
-              value={lostDogFields.earsType}
+              value={editDogFields.earsType}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -342,7 +402,7 @@ const EditDogDetails = (props: any) => {
               labelId="tail-label"
               label="tail"
               name="tailLength"
-              value={lostDogFields.tailLength}
+              value={editDogFields.tailLength}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -364,7 +424,7 @@ const EditDogDetails = (props: any) => {
               labelId="mark-label"
               label="specialmark "
               name="specialMarks"
-              value={lostDogFields.specialMarks}
+              value={editDogFields.specialMarks}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -386,7 +446,7 @@ const EditDogDetails = (props: any) => {
               labelId="breed-label"
               label="breed "
               name="breed"
-              value={lostDogFields.breed}
+              value={editDogFields.breed}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -407,7 +467,6 @@ const EditDogDetails = (props: any) => {
           xs={4}
           direction="column"
           alignContent="stretch"
-          spacing={1}
         >
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel shrink id="calendar-label">
@@ -420,7 +479,7 @@ const EditDogDetails = (props: any) => {
               format="yyyy-MM-dd"
               margin="normal"
               id="date-picker-inline"
-              value={lostDogFields.dateLost}
+              value={editDogFields.dateLost}
               maxDate={new Date()}
               name="dateLost"
               onChange={(date: any) => calendarHandler(date)}
@@ -433,7 +492,7 @@ const EditDogDetails = (props: any) => {
             <Input
               data-testid="city-input"
               name="city"
-              value={lostDogFields.location.city}
+              value={editDogFields.location.city}
               onChange={inputArrayHandler}
             />
           </FormControl>
@@ -444,7 +503,7 @@ const EditDogDetails = (props: any) => {
             <Input
               data-testid="district-input"
               name="district"
-              value={lostDogFields.location.district}
+              value={editDogFields.location.district}
               onChange={inputArrayHandler}
             />
           </FormControl>
@@ -457,7 +516,7 @@ const EditDogDetails = (props: any) => {
               labelId="behavior-label"
               label="Behavior"
               name="behaviors"
-              value={lostDogFields.behaviors}
+              value={editDogFields.behaviors}
               onChange={selectsHandler}
               input={<Input />}
               displayEmpty
@@ -483,20 +542,21 @@ const EditDogDetails = (props: any) => {
             <Button
               data-testid="submit-button"
               variant="contained"
-              onClick={() => onSubmitClicked()}
+              onClick={() => onMarkDogClicked()}
               color="primary"
+              disabled={editedDog ? editedDog.isFound : true}
             >
-              Mark Dog As Found
+              {editedDog ? (editedDog.isFound ? "Dog was found!" : "Mark Dog as Found") : "Dog not fetched"}
             </Button>
           </FormControl>
           <FormControl className={classes.formControl}>
             <Button
               data-testid="cancel-button"
               variant="contained"
-              onClick={onEditClick}
+              onClick={onSubmitEditClicked}
               color="secondary"
             >
-             Fetch Dog for Edit
+              Update the Dog
             </Button>
           </FormControl>
           <FormControl className={classes.formControl}>
@@ -504,13 +564,15 @@ const EditDogDetails = (props: any) => {
               data-testid="cancel-button"
               variant="contained"
               onClick={onCancelClick}
-              color="secondary"
+              color="primary"
             >
-             Cancel
+              Cancel
             </Button>
           </FormControl>
         </Grid>
       </Grid>
+    
+  )} 
     </MuiPickersUtilsProvider>
   );
 };

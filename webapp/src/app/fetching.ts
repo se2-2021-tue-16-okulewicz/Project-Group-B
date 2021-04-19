@@ -7,7 +7,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
-import { IContactInfo } from "../settings/contactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -93,9 +93,10 @@ export async function fetchOneDog(
   id: Number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture>> {
+  console.log(id);
   return getResponse(
     axios.get(
-      `http://${config.backend.ip}:${config.backend.port}/lostdogs?${id}`,
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${id}`,
       {
         headers: {
           token: getToken(cookies),

@@ -5,10 +5,10 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { store } from "../app/store";
-import { State } from "../app/reducer";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import * as Actions from "../app/actions";
+import { store } from "../../app/store";
+import { State } from "../../app/reducer";
+import { ILostDogWithPicture } from "../../dog/dogInterfaces";
+import * as Actions from "../../app/actions";
 import Layout, {
   getContent,
   getDrawerSidebar,
@@ -21,25 +21,24 @@ import Layout, {
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
-import config from "../config/config";
-import ImageGrid from "../commoncomponents/imageGrid";
+import config from "../../config/config";
+import ImageGrid from "../../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Footer from "../utilityComponents/Footer";
+import Footer from "../../utilityComponents/Footer";
 import {
   ILoginInformation,
   ILoginResults,
-} from "../registerLogin/loginRegisterInterfaces";
-import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+} from "../../registerLogin/loginRegisterInterfaces";
+import { IContactInfo } from "../../contactInfo/contactInfoInterfaces";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import SendIcon from "@material-ui/icons/Send";
 import { Home } from "@material-ui/icons";
 import { classicNameResolver } from "typescript";
 import { faAlignJustify } from "@fortawesome/free-solid-svg-icons";
 import { filter } from "lodash";
-import DogDetails from "../editDogDetails/editDogDetails";
-import { clearDogList } from "../app/actions";
+import DogDetails from "../../editDogDetails/editDogDetails";
+import { clearDogList } from "../../app/actions";
 import { cleanup } from "@testing-library/react";
-import LoadingPopup from "../utilityComponents/LoadingPopup";
 //import EditDetails from "./"
 
 const SidebarTrigger = getSidebarTrigger(styled);
@@ -148,117 +147,88 @@ scheme.configureEdgeSidebar((builder) => {
     });
 });
 
-export default function Settings() {
-  const [displayLoader, setDisplayLoader] = useState(false);
-  const [listFetched, setListFetched] = useState(false);
+export default function NewSettings() {
   const [cookies, setCookie, removeCookie] = useCookies();
-  const lastPage = useSelector((state: State) => state.dogsLastPage);
+  const [lastPage, setLastPage] = useState(false);
+  console.log(cookies[config.cookies.userId]);
   const dogs = (useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
   ));
-  const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
-  const [displayedDogs, setDisplayedDogs] = useState<ILostDogWithPicture[]>([]);
-  //const contactInfo = {cookies[username]}
+  const loading = useSelector((state: State) => state.loading);
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
-  const [pageRefresh, setPageRefresh] = useState(true);
+  const [initialRefresh, setInitialRefresh] = useState(true);
 
-  const classes = useStyles();
   const history = useHistory();
-  const { path } = useRouteMatch();
-  const [isListVisible, setListVisible] = useState(true);
+  const [isListOn, setListOn] = useState(true);
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
     ownerId: Number.parseInt(cookies[config.cookies.userId]),
   });
+  // is this page last?
 
-  const onDogsListClicked = () => { setListVisible(true); };
-  const onInfoClicked = () => { setListVisible(false); /*getContactInfo();*/ };
+  const onDogsListClicked = () => {
+    setListOn(true);
+  };
+  const onInfoClicked = () => {
+    setListOn(false);
+    //getContactInfo();
+  };
   const onShelterClicked = () => {
     store.dispatch(clearDogList());
     history.push("/listDogs");
   };
 
-  //refresh page
-  useEffect(() => {
-    if (pageRefresh) {
-      store.dispatch(clearDogList);
-      setPageRefresh(false);
-    }
-  }, [pageRefresh])
-
-  // fetch and append page 0
+  const classes = useStyles();
+  
   useEffect(() => {
     if (refreshRequired) {
-      try {
-        store.dispatch(
-          Actions.fetchDogsThunk({
-            filters: {
-              ...filters,
-              page: config.defaultFilters.page,
-            },
-            cookies: config.cookies.token,
-          }) //filters
-        );
-      }
+      // fetch and append page 0
+      try{
+      store.dispatch(
+        Actions.fetchDogsThunk({
+          filters: {
+            ...filters,
+            page: config.defaultFilters.page,
+          },
+          cookies: config.cookies.token,
+        }) //filters
+      );
+    }
       catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       }
-      finally {
+      finally{
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
-        setPageRefresh(false);
+        setInitialRefresh(false);
       }
-    }
-    // eslint-disable-next-line
+    }     
+       // eslint-disable-next-line
   }, [refreshRequired]);
 
-  //fetch more
-  useEffect(() => {
-    if (!refreshRequired && !lastPage) {
-      try {
-        store.dispatch(
-          Actions.fetchDogsThunk({
-            filters: {
-              ...filters,
-              page: filters.page,
-            },
-            cookies: config.cookies.token,
-          }) //filters
-        )
-      }
+  const fetchMore = () => {
+    try{
+      store.dispatch(
+        Actions.fetchDogsThunk({
+          filters: {
+            ...filters,
+            page: filters.page,
+          },
+          cookies: config.cookies.token,
+        }) //filters
+      )}
       catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       }
-      finally {
+      finally{
         setFilters({ ...filters, page: filters.page + 1 });
-        setPageRefresh(false);
+        setInitialRefresh(false);
       }
     }
-  }, [refreshRequired, lastPage])
 
-  //filter
-  useEffect(() => {
-    if (!refreshRequired && lastPage) {
-      let tmp = dogs;
-      let addDogs = tmp.filter((dog: ILostDogWithPicture) => dog.ownerId == Number.parseInt(cookies[config.cookies.userId]));
-      setFilteredDogs(addDogs);
-      setDisplayedDogs(addDogs.slice(0, filters.size));
-      setListFetched(true);
-      setPageRefresh(false);
-    }
-  }, [refreshRequired, lastPage])
-
-  const fetchMore = () => {
-    setDisplayLoader(true);
-    let addDogs = filteredDogs.slice(0, displayedDogs.length + filters.size);
-    setTimeout(() => {
-      setDisplayedDogs(addDogs);
-      setDisplayLoader(false);
-    }, 700);
-  }
-
+  const { path } = useRouteMatch();
   return (
     <Root scheme={scheme}>
       <CssBaseline />
@@ -278,7 +248,7 @@ export default function Settings() {
               color="primary"
               onClick={onInfoClicked}
             >
-              {!isListVisible && <SendIcon />}
+              {!isListOn && <SendIcon />}
               Contact Info
             </MenuItem>
             <MenuItem
@@ -287,7 +257,7 @@ export default function Settings() {
               color="primary"
               onClick={onDogsListClicked}
             >
-              {isListVisible && <SendIcon />}
+              {isListOn && <SendIcon />}
               My Dogs
             </MenuItem>
             <Grid item xs={12} />
@@ -305,18 +275,26 @@ export default function Settings() {
         <Footer />
       </DrawerSidebar>
       <Content>
-        {isListVisible && lastPage && listFetched && (
+        {isListOn &&(
           <InfiniteScroll
-            dataLength={displayedDogs.length}
-            scrollThreshold={0.5}
+            dataLength={dogs.length}
             next={fetchMore}
-            hasMore={filteredDogs.length > displayedDogs.length}
-            loader={((displayLoader && <LoadingPopup />) || (!displayLoader && <></>))}
+            hasMore={!lastPage}
+            loader={
+              <div className="loader" key={0}>
+                Loading ...
+              </div>
+            }
           >
-            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
-          </InfiniteScroll>)}
-        {!isListVisible && <Card></Card>}
+            <ImageGrid
+              dogs={dogs}
+              cookies={cookies}
+              path={path}
+            />
+          </InfiniteScroll>
+          )}
+        {!isListOn && <Card></Card>}
       </Content>
     </Root>
-  );
+  ); //cookies={cookies}
 }

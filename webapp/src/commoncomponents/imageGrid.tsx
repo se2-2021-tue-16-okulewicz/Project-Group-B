@@ -11,6 +11,10 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import EditDogDetails from "../editDogDetails/editDogDetails";
 import DogDetails from "../dogDetails/dogDetails";
+import { store } from "../app/store";
+import * as Actions from "../app/actions";
+import { useSelector } from "react-redux";
+import { State } from "../app/reducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,15 +38,31 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ImageGrid(props: any) {
   const classes = useStyles();
   const dogs = props.dogs as ILostDogWithPicture[];
-  const id = props.id; // ? props.id as Number : -1;
+  const filters = props.filters;
   const [dogId, setDogId] = useState(0);
-  //const [cookies, setCookie, removeCookie] = useCookies();
-  //const dogs = props.dogs.filter((x:ILostDogWithPicture)=>x.ownerId===cookies[config.cookies.userId]);
   const history = useHistory();
-  const redirectToDetails = (ids: Number) => {
-    //setDogId(ids);
+  const editedDog = useSelector(
+    (state: State) => state.editedDog as ILostDogWithPicture
+  );
+  const redirectToEditDetails = (id: number) => {
+    try {
+      store.dispatch(
+        Actions.fetchOneDogThunk({
+          id: id as number,
+          cookies: props.cookies,
+        })
+      );
+    }
+    catch (err) {
+      console.error("Failed to fetch the dog: ", err);
+    }
+    finally {
+      sessionStorage.setItem("editDogId", JSON.stringify(id));
+      sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
+      store.dispatch(Actions.startRefreshing);
+      history.push(`${props.path}/edit/dog/${id}`);
+    }
   };
-  //id == -1 && dog.isFound==false|| dog.ownerId == id
   const { path } = useRouteMatch();
   return (
     <Switch>
@@ -50,51 +70,53 @@ export default function ImageGrid(props: any) {
         <GridList cols={3} spacing={3}>
           {dogs.map(
             (dog: ILostDogWithPicture) =>
-              (true) && (
-                <GridListTile
-                  key={dog.id}
-                  style={{ minHeight: "300px" }}
-                  className="tile"
-                >
-                  <img
-                    src={`data:${dog.picture.fileType};base64,${
-                      dog.picture.data as ArrayBuffer
+              <GridListTile
+                key={dog.id}
+                style={{ minHeight: "300px" }}
+                className="tile"
+              >
+                <img
+                  src={`data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer
                     }`}
-                    alt={dog.picture.fileName}
-                  />
-                  <GridListTileBar
-                    className={dog.name}
-                    title={dog.name}
-                    subtitle={
-                      <span>
-                        {dog.isFound ? "Found" : "Lost in " + dog.location.city+" by "+ dog.ownerId}
-                      </span>
-                    }
-                    actionIcon={
-                      <IconButton
-                        aria-label={`info about ${dog.name}`}
-                        className={classes.icon}
-                        onClick={() => {
-                          //redirectToDetails(dog.id);
-                          setDogId(dog.id);
-                          history.push(`${props.path}/dog/${dog.id}`);
-                        }}
-                      >
-                        <InfoIcon />
-                      </IconButton>
-                    }
-                  />
-                </GridListTile>
-              )
+                  alt={dog.picture.fileName}
+                />
+                <GridListTileBar
+                  className={dog.name}
+                  title={dog.name}
+                  subtitle={
+                    <span>
+                      {dog.isFound ? "Found" : "Lost in " + dog.location.city + " by " + dog.ownerId}
+                    </span>
+                  }
+                  actionIcon={
+                    <IconButton
+                      aria-label={`info about ${dog.name}`}
+                      className={classes.icon}
+                      onClick={() => {
+                        if(props.path=="/listDogs")
+                        {
+                          history.push(`${props.path}/${dog.id}`);
+                        }
+                        else{
+                          setDogId((dog.id) as number);
+                          redirectToEditDetails(dog.id as number);
+                          }                     
+                      }}
+                    >
+                      <InfoIcon />
+                    </IconButton>
+                  }
+                />
+              </GridListTile>
           )}
         </GridList>
       </Route>
       <Route
-        path={`${path}/dog/:id`}
-        children={<EditDogDetails cookies={props.cookies} dogId={dogId} />}
+        path={`${props.path}/edit/dog/:id`}
+        children={<EditDogDetails cookies={props.cookies} dogId={dogId}/>}
       />
       <Route
-        path={`${path}/dog/:id`}
+        path={`${props.path}/:id`}
         children={<DogDetails cookies={props.cookies} dogId={dogId} />}
       />
     </Switch>

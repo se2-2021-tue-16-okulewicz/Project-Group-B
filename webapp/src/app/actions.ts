@@ -3,7 +3,7 @@ import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 import { Item } from "../utilityComponents/uitilities";
-import { IContactInfo } from "../settings/contactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 import {
   ILoginInformation,
   ILoginResults,
@@ -155,33 +155,28 @@ export const fetchDogsThunk = createAsyncThunk(
 
     if (response.response.successful !== true) {
       return rejectWithValue(
-        response as RequestResponse<ILostDogWithPicture | null>
+        response as RequestResponse<null>
       );
     }
 
-    //let dogs = response.response.data as ILostDogWithPicture[];
-
-    return response;
+    return response as RequestResponse<ILostDogWithPicture[]>;
   }
 );
 
 export const fetchOneDogThunk = createAsyncThunk(
   "fetchOneDog",
   async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
+    const response: RequestResponse<ILostDogWithPicture|null> = await Fetching.fetchOneDog(
       item.id,
       item.cookies
     );
 
     if (response.response.successful !== true) {
       return rejectWithValue(
-        response as RequestResponse<ILostDogWithPicture | null>
+        response as RequestResponse<null>
       );
     }
-
-    //let dogs = response.response.data as ILostDogWithPicture[];
-
-    return response;
+    return response as RequestResponse<ILostDogWithPicture>;
   }
 );
 
@@ -224,3 +219,7 @@ export const registerRegularUserThunk = createAsyncThunk<
 export const clearError = createAction("clearError");
 export const clearLoginInformation = createAction("clearLoginInformation");
 export const clearRedirect = createAction("clearRedirect");
+export const clearDogList = createAction("clearDogList");
+export const startRefreshing = createAction("startRefreshing");
+export const finishRefreshing = createAction("finishRefreshing");
+
