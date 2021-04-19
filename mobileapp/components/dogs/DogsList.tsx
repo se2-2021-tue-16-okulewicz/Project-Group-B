@@ -93,8 +93,8 @@ export default function DogsList({ navigation }: any) {
               }`,
             }}
           />
-          {dog.isFound ? <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
-            <Text style={styles.right}>Mark as found</Text>
+          {!dog.isFound ? <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
+            <Text style={styles.lost}>Mark as found</Text>
           </TouchableOpacity> : 
           <Text style={styles.found}>Found</Text>
           }
@@ -182,6 +182,10 @@ const styles = StyleSheet.create({
   found: {
     marginLeft: '33%',
     color: 'green',
+    
+  },
+  lost: {
+    marginLeft: '37%',
     
   },
 });
