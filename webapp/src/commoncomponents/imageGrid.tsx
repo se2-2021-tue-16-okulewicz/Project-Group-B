@@ -57,6 +57,7 @@ export default function ImageGrid(props: any) {
       console.error("Failed to fetch the dog: ", err);
     }
     finally {
+      console.log(editedDog);
       sessionStorage.setItem("editDogId", JSON.stringify(id));
       sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
       store.dispatch(Actions.startRefreshing);

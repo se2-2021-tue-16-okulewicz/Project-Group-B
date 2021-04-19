@@ -115,15 +115,11 @@ const EditDogDetails = (props: any) => {
   const dogId = props.dogId == 0 ? sessionStorage.getItem("editDogId") : props.dogId;
   const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNull = JSON.parse(sessionStorage.getItem("editDogFields") as string)?false:true;
-  console.log(isInputNull);
   const [editDogFields, setEditDogFields] = useState<ILostDog>(
     !isInputNull && pageRefresh
       ? JSON.parse(sessionStorage.getItem("editDogFields") as string)
       : editedDog
   );
-  //
-  console.log(editDogFields);
-  console.log(editedDog);
   if(!editDogFields) setEditDogFields(editedDog);
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
@@ -237,7 +233,7 @@ const EditDogDetails = (props: any) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
       {refreshRequired && !editDogFields && (<></>)}
-      {!refreshRequired && editDogFields && (
+      {!refreshRequired && editDogFields && props.dogId >0 && (
       <Grid
         className={classes.mainForm}
         container

@@ -161,7 +161,6 @@ export default function RegisterDogForm() {
       });
     }
   };
-
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
       <Grid

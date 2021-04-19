@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "aliceblue",
       backgroundColor: "aliceblue",
     },
+    mainForm: {
+      marginTop: '4%'
+    }
   })
 );
 

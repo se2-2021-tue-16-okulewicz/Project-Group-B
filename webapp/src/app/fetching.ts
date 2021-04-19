@@ -70,13 +70,10 @@ export async function fetchDogs(
   const filtersString = Object.keys(filters)
     .map((filterName) => {
       const value = String(filters[filterName]).trim();
-      //if (filterName != "size") {
       return value ? `${filterName}=${value}` : "";
-      //}
     })
     .filter((x) => x !== "")
     .join("&");
-  //console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
@@ -194,8 +191,6 @@ export async function markLostDogAsFound(
       {
         headers: {
           token: getToken(cookies),
-          //Accept: "application/json",
-          //"Content-Type": "multipart/form-data",
         },
       }
     )
@@ -212,8 +207,6 @@ export async function fetchUserInfo(
       {
         headers: {
           token: getToken(cookies),
-          //Accept: "application/json",
-          //"Content-Type": "multipart/form-data",
         },
       }
     )
