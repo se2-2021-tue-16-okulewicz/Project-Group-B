@@ -84,7 +84,7 @@ export default function DogsList({ navigation }: any) {
     <View style={[styles.item]}>
       <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
-        <View style={[{flexDirection: 'row'}]}>
+        <View style={[{ flexDirection: "row" }]}>
           <Image
             style={styles.picture}
             source={{
@@ -93,11 +93,13 @@ export default function DogsList({ navigation }: any) {
               }`,
             }}
           />
-          {!dog.isFound ? <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
-            <Text style={styles.lost}>Mark as found</Text>
-          </TouchableOpacity> : 
-          <Text style={styles.found}>Found</Text>
-          }
+          {!dog.isFound ? (
+            <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
+              <Text style={styles.lost}>Mark as found</Text>
+            </TouchableOpacity>
+          ) : (
+            <Text style={styles.found}>Found</Text>
+          )}
         </View>
 
         <View style={styles.row}>
@@ -174,18 +176,16 @@ const styles = StyleSheet.create({
   rowP: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    textAlignVertical: 'center'
+    textAlignVertical: "center",
   },
   right: {
     // marginLeft: 50,
   },
   found: {
-    marginLeft: '33%',
-    color: 'green',
-    
+    marginLeft: "33%",
+    color: "green",
   },
   lost: {
-    marginLeft: '37%',
-    
+    marginLeft: "37%",
   },
 });
