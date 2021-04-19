@@ -419,8 +419,8 @@ const EditDogDetails = (props: any) => {
               native
               labelId="mark-label"
               label="specialmark "
-              name="specialMarks"
-              value={editDogFields.specialMarks}
+              name="specialMark"
+              value={editDogFields.specialMark}
               onChange={selectsHandler}
               displayEmpty
             >

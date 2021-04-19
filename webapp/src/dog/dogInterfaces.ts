@@ -26,7 +26,7 @@ export interface IDog {
   size: SizeTypes | "";
   earsType: EarsTypes | "";
   tailLength: TailTypes | "";
-  specialMarks: SpecialMarkTypes | "";
+  specialMark: SpecialMarkTypes | "";
   behaviors: BehaviorsTypes[];
   location: { city: string; district: string };
 }

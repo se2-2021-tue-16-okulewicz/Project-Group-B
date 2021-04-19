@@ -343,8 +343,8 @@ export default function RegisterDogForm() {
               native
               labelId="mark-label"
               label="specialmark "
-              name="specialMarks"
-              value={lostDogFields.specialMarks}
+              name="specialMark"
+              value={lostDogFields.specialMark}
               onChange={selectsHandler}
               displayEmpty
             >
