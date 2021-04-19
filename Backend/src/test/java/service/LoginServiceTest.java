@@ -113,17 +113,19 @@ public class LoginServiceTest {
 
     @Test
     public void IsAuthorizedTest() {
+        String authorizationHeader = "Authorization";
+
         HttpHeaders regularTokenHeaders = new HttpHeaders();
-        regularTokenHeaders.add("token", "regularUserTestToken");
+        regularTokenHeaders.add(authorizationHeader, "regularUserTestToken");
 
         HttpHeaders adminTokenHeaders = new HttpHeaders();
-        adminTokenHeaders.add("token", "testTokenForAdmins");
+        adminTokenHeaders.add(authorizationHeader, "testTokenForAdmins");
 
         HttpHeaders shelterTokenHeaders = new HttpHeaders();
-        shelterTokenHeaders.add("token", "shelterSecretTestToken");
+        shelterTokenHeaders.add(authorizationHeader, "shelterSecretTestToken");
 
         HttpHeaders invalidTokenHeaders = new HttpHeaders();
-        invalidTokenHeaders.add("token", "i am invalid token");
+        invalidTokenHeaders.add(authorizationHeader, "i am invalid token");
 
         HttpHeaders noTokenHeaders = new HttpHeaders();
 

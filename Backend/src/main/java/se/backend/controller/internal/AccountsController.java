@@ -1,6 +1,5 @@
 package se.backend.controller.internal;
 
-import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import static java.util.stream.Collectors.joining;
 
 @RestController
 @RequestMapping(path = "")
-public class UserController {
+public class AccountsController {
 
     private final Logger logger = LoggerFactory.getLogger(DogsController.class);
     private void logHeaders(@RequestHeader HttpHeaders headers) {
@@ -37,7 +36,7 @@ public class UserController {
     private final LoginService loginService;
 
     @Autowired
-    public UserController(LoginService loginService) {
+    public AccountsController(LoginService loginService) {
         this.loginService = loginService;
     }
 
@@ -87,10 +86,10 @@ public class UserController {
         if(!authorization.getValue0())
             throw new UnauthorizedException();
 
-        if(!headers.containsKey("token"))
+        if(!headers.containsKey(loginService.authorizationHeader))
             throw new GenericBadRequestException("Failed to logout");
 
-        var token = Objects.requireNonNull(headers.get("token")).get(0);
+        var token = Objects.requireNonNull(headers.get(loginService.authorizationHeader)).get(0);
 
         if(!loginService.Logout(token))
             throw new GenericBadRequestException("Failed to logout");

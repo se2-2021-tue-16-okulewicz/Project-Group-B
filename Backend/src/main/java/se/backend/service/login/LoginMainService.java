@@ -200,10 +200,10 @@ public class LoginMainService implements LoginService {
 
     @Override
     public Pair<Boolean, Long> IsAuthorized(HttpHeaders httpHeaders, List<UserType> requiredPermissions) {
-        if(!httpHeaders.containsKey("token"))
+        if(!httpHeaders.containsKey(authorizationHeader))
             return new Pair<>(false, 0L);
 
-        var token = Objects.requireNonNull(httpHeaders.get("token")).get(0);
+        var token = Objects.requireNonNull(httpHeaders.get(authorizationHeader)).get(0);
 
         if(sessions.containsKey(token)){
             var session = sessions.get(token);
