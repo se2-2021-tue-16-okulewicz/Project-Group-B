@@ -76,7 +76,10 @@ export default function DogsList({ navigation }: any) {
 
   function markDogAsFound(id: number) {
     store.dispatch(
-      Actions.markLostDogAsFoundThunk({ Authorization: Authorization, dogID: id })
+      Actions.markLostDogAsFoundThunk({
+        Authorization: Authorization,
+        dogID: id,
+      })
     );
   }
 
