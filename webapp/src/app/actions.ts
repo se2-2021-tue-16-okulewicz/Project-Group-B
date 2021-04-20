@@ -153,9 +153,7 @@ export const fetchDogsThunk = createAsyncThunk(
     > = await Fetching.fetchDogs(item.filters, item.cookies);
 
     if (response.response.successful !== true) {
-      return rejectWithValue(
-        response as RequestResponse<null>
-      );
+      return rejectWithValue(response as RequestResponse<null>);
     }
 
     return response as RequestResponse<ILostDogWithPicture[]>;
@@ -165,15 +163,13 @@ export const fetchDogsThunk = createAsyncThunk(
 export const fetchOneDogThunk = createAsyncThunk(
   "fetchOneDog",
   async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPicture|null> = await Fetching.fetchOneDog(
+    const response: RequestResponse<ILostDogWithPicture | null> = await Fetching.fetchOneDog(
       item.id,
       item.cookies
     );
 
     if (response.response.successful !== true) {
-      return rejectWithValue(
-        response as RequestResponse<null>
-      );
+      return rejectWithValue(response as RequestResponse<null>);
     }
     return response as RequestResponse<ILostDogWithPicture>;
   }
@@ -221,4 +217,3 @@ export const clearRedirect = createAction("clearRedirect");
 export const clearDogList = createAction("clearDogList");
 export const startRefreshing = createAction("startRefreshing");
 export const finishRefreshing = createAction("finishRefreshing");
-

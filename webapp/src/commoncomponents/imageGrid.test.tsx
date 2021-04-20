@@ -53,6 +53,6 @@ it("Rendered list of dog cards", () => {
   expect(container?.getElementsByClassName("tile").length).toEqual(
     testDogList.length
   );
- //check if dog named alex was rendered
+  //check if dog named alex was rendered
   expect(container?.getElementsByClassName("Alex").length).toEqual(1);
 });

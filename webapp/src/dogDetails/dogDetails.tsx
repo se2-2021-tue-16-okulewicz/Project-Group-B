@@ -60,12 +60,12 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: "aliceblue",
     },
     mainForm: {
-      marginTop: '4%'
-    }
+      marginTop: "4%",
+    },
   })
 );
 
-const DogDetails= (props: any) => {
+const DogDetails = (props: any) => {
   //if enable is session storage is null, the form has just been opened
   //need to finish details
   const history = useHistory();
@@ -458,6 +458,6 @@ const DogDetails= (props: any) => {
       </Grid>
     </MuiPickersUtilsProvider>
   );
-}
+};
 
 export default DogDetails;

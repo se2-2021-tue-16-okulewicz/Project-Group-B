@@ -9,10 +9,7 @@ import NewSettings from "./new_settings";
 import { isNull } from "lodash";
 import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import {
-  Route,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -43,5 +40,7 @@ it("Rendered list of dogs", () => {
       container
     );
   });
-  expect(container?.getElementsByClassName("loader").length).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByClassName("loader").length
+  ).toBeGreaterThanOrEqual(0);
 });

@@ -51,11 +51,9 @@ export default function ImageGrid(props: any) {
           cookies: props.cookies,
         })
       );
-    }
-    catch (err) {
+    } catch (err) {
       console.error("Failed to fetch the dog: ", err);
-    }
-    finally {
+    } finally {
       sessionStorage.setItem("editDogId", JSON.stringify(id));
       //sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
       history.push(`${props.path}/edit/${id}`);
@@ -66,56 +64,60 @@ export default function ImageGrid(props: any) {
     <Switch>
       <Route exact path={path}>
         <GridList cols={3} spacing={3}>
-          {dogs.map(
-            (dog: ILostDogWithPicture) =>
-              <GridListTile
-                key={dog.id}
-                style={{ minHeight: "300px" }}
-                className="tile"
-              >
-                <img
-                  src={`data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer
-                    }`}
-                  alt={dog.picture.fileName}
-                />
-                <GridListTileBar
-                  className={dog.name}
-                  title={dog.name}
-                  subtitle={
-                    <span>
-                      {dog.isFound ? "Found" : "Lost in " + dog.location.city + " by " + dog.ownerId}
-                    </span>
-                  }
-                  actionIcon={
-                    <IconButton
-                      aria-label={`info about ${dog.name}`}
-                      className={classes.icon}
-                      onClick={() => {
-                        if(props.path=="/listDogs")
-                        {
-                          history.push(`${props.path}/${dog.id}`);
-                        }
-                        else{
-                          setDogId((dog.id) as number);
-                          redirectToEditDetails(dog.id as number);
-                          }                     
-                      }}
-                    >
-                      <InfoIcon />
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-          )}
+          {dogs.map((dog: ILostDogWithPicture) => (
+            <GridListTile
+              key={dog.id}
+              style={{ minHeight: "300px" }}
+              className="tile"
+            >
+              <img
+                src={`data:${dog.picture.fileType};base64,${
+                  dog.picture.data as ArrayBuffer
+                }`}
+                alt={dog.picture.fileName}
+              />
+              <GridListTileBar
+                className={dog.name}
+                title={dog.name}
+                subtitle={
+                  <span>
+                    {dog.isFound
+                      ? "Found"
+                      : "Lost in " + dog.location.city + " by " + dog.ownerId}
+                  </span>
+                }
+                actionIcon={
+                  <IconButton
+                    aria-label={`info about ${dog.name}`}
+                    className={classes.icon}
+                    onClick={() => {
+                      if (props.path == "/listDogs") {
+                        history.push(`${props.path}/${dog.id}`);
+                      } else {
+                        setDogId(dog.id as number);
+                        redirectToEditDetails(dog.id as number);
+                      }
+                    }}
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                }
+              />
+            </GridListTile>
+          ))}
         </GridList>
       </Route>
       <Route
         path={`${props.path}/edit/:id`}
-        children={<EditDogDetails cookies={props.cookies} dogId={dogId}/>}
+        children={<EditDogDetails cookies={props.cookies} dogId={dogId} />}
       />
       <Route
         path={`${props.path}/:id`}
-        children={<GridListTile>Work in progress...</GridListTile>/*<DogDetails cookies={props.cookies} dogId={dogId} />*/}
+        children={
+          <GridListTile>
+            Work in progress...
+          </GridListTile> /*<DogDetails cookies={props.cookies} dogId={dogId} />*/
+        }
       />
     </Switch>
   );

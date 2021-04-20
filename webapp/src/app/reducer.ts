@@ -24,7 +24,7 @@ export type State = {
   loginInformation: ILoginResults | null;
   contactInfo: IContactInfo | null;
   redirect: string | null;
-  pages:number;
+  pages: number;
 };
 
 export const init: State = {
@@ -42,7 +42,7 @@ export const init: State = {
   loginInformation: null,
   contactInfo: null,
   redirect: null,
-  pages:0
+  pages: 0,
 };
 
 export const reducer = createReducer(init, {
@@ -74,7 +74,7 @@ export const reducer = createReducer(init, {
     newState.dogs = [];
     newState.dogsRequireRefresh = true;
     newState.dogsLastPage = false;
-    newState.editedDog=null;
+    newState.editedDog = null;
     return newState;
   },
   [Actions.startRefreshing.type]: (state: State) => {
@@ -244,12 +244,14 @@ export const reducer = createReducer(init, {
       newState.dogs = state.dogs
         .concat(payload.payload.response.data as ILostDogWithPicture[])
         .slice(0, (pageNumber + 1) * pageSize);
-    }
-    else {
-      newState.dogs = (payload.payload.response.data as ILostDogWithPicture[]).slice(0, (pageNumber + 1) * pageSize);
+    } else {
+      newState.dogs = (payload.payload.response
+        .data as ILostDogWithPicture[]).slice(0, (pageNumber + 1) * pageSize);
     }
     // if response is shorter than default size - it means end is reached.
-    newState.dogsLastPage = (payload.payload.response.data as ILostDogWithPicture[]).length < pageSize;
+    newState.dogsLastPage =
+      (payload.payload.response.data as ILostDogWithPicture[]).length <
+      pageSize;
     newState.pages = pageNumber;
     newState.dogsRequireRefresh = false;
     //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);

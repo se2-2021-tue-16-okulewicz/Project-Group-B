@@ -106,15 +106,15 @@ scheme.configureHeader((builder) => {
   builder
     .registerConfig("md", {
       position: "absolute",
-      initialHeight: "8%"
+      initialHeight: "8%",
     })
     .registerConfig("xs", {
       position: "absolute", // won't stick to top when scroll down
-      initialHeight: "8%"
+      initialHeight: "8%",
     })
     .registerConfig("sm", {
       position: "absolute", // won't stick to top when scroll down
-      initialHeight: "8%"
+      initialHeight: "8%",
     });
 });
 
@@ -140,9 +140,9 @@ export default function Settings() {
   const [listFetched, setListFetched] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
-  const dogs = (useSelector(
+  const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
-  ));
+  );
   const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
   const [displayedDogs, setDisplayedDogs] = useState<ILostDogWithPicture[]>([]);
   //const contactInfo = {cookies[username]}
@@ -150,9 +150,7 @@ export default function Settings() {
     (state: State) => state.dogsRequireRefresh as boolean
   );
   const [pageRefresh, setPageRefresh] = useState(true);
-  const pages = useSelector(
-    (state: State) => state.pages as number
-  );
+  const pages = useSelector((state: State) => state.pages as number);
   const classes = useStyles();
   const history = useHistory();
   const { path } = useRouteMatch();
@@ -162,8 +160,12 @@ export default function Settings() {
     size: config.defaultFilters.size,
     ownerId: Number.parseInt(cookies[config.cookies.userId]),
   });
-  const onDogsListClicked = () => { setListVisible(true); };
-  const onInfoClicked = () => { setListVisible(false); /*getContactInfo();*/ };
+  const onDogsListClicked = () => {
+    setListVisible(true);
+  };
+  const onInfoClicked = () => {
+    setListVisible(false); /*getContactInfo();*/
+  };
   const onShelterClicked = () => {
     store.dispatch(clearDogList());
     history.push("/listDogs");
@@ -171,11 +173,11 @@ export default function Settings() {
 
   //refresh page
   useEffect(() => {
-  if (pageRefresh && !listFetched) {
+    if (pageRefresh && !listFetched) {
       store.dispatch(clearDogList);
       setPageRefresh(false);
-  }
-  }, [pageRefresh])
+    }
+  }, [pageRefresh]);
 
   // fetch and append page 0
   useEffect(() => {
@@ -190,11 +192,9 @@ export default function Settings() {
             cookies: config.cookies.token,
           }) //filters
         );
-      }
-      catch (err) {
+      } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
-      }
-      finally {
+      } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
         setPageRefresh(false);
       }
@@ -214,29 +214,30 @@ export default function Settings() {
             },
             cookies: config.cookies.token,
           }) //filters
-        )
-      }
-      catch (err) {
+        );
+      } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
-      }
-      finally {
+      } finally {
         setFilters({ ...filters, page: filters.page + 1 });
         setPageRefresh(false);
       }
     }
-  }, [refreshRequired, lastPage, pages])
+  }, [refreshRequired, lastPage, pages]);
 
   //filter
   useEffect(() => {
     if (!refreshRequired && lastPage && !listFetched) {
       let tmp = dogs;
-      let addDogs = tmp.filter((dog: ILostDogWithPicture) => dog.ownerId === Number.parseInt(cookies[config.cookies.userId]));
+      let addDogs = tmp.filter(
+        (dog: ILostDogWithPicture) =>
+          dog.ownerId === Number.parseInt(cookies[config.cookies.userId])
+      );
       setFilteredDogs(addDogs);
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
       setPageRefresh(false);
     }
-  }, [refreshRequired, lastPage])
+  }, [refreshRequired, lastPage]);
 
   const fetchMore = () => {
     setDisplayLoader(true);
@@ -245,7 +246,7 @@ export default function Settings() {
       setDisplayedDogs(addDogs);
       setDisplayLoader(false);
     }, 700);
-  }
+  };
 
   return (
     <Root scheme={scheme}>
@@ -299,10 +300,13 @@ export default function Settings() {
             scrollThreshold={0.5}
             next={fetchMore}
             hasMore={filteredDogs.length > displayedDogs.length}
-            loader={((displayLoader && <LoadingPopup />) || (!displayLoader && <></>))}
+            loader={
+              (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
+            }
           >
-            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path}/>
-          </InfiniteScroll>)}
+            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
+          </InfiniteScroll>
+        )}
         {!isListVisible && <Card></Card>}
       </Content>
     </Root>
