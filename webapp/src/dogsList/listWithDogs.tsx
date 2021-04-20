@@ -160,7 +160,7 @@ export default function ListWithDogs() {
     size: config.defaultFilters.size,
     isFound: false, //for after the filters will be implemented in the backend
   });
-  
+
   const [cookies, removeCookie] = useCookies();
   const history = useHistory();
   const classes = useStyles();
@@ -248,7 +248,9 @@ export default function ListWithDogs() {
   useEffect(() => {
     if (!refreshRequired && lastPage) {
       let tmp = dogs;
-      let addDogs = tmp.filter((dog: ILostDogWithPicture) => dog.isFound === false);
+      let addDogs = tmp.filter(
+        (dog: ILostDogWithPicture) => dog.isFound === false
+      );
       setFilteredDogs(addDogs);
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
@@ -312,7 +314,7 @@ export default function ListWithDogs() {
                 color="primary"
                 onClick={onLogOutClicked}
               >
-                <ExitToApp/>
+                <ExitToApp />
                 <Grid item xs={1} />
                 Logout
               </MenuItem>

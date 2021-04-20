@@ -186,7 +186,7 @@ export default function Settings() {
       store.dispatch(clearDogList);
       setPageRefresh(false);
     }
-  }, [pageRefresh])
+  }, [pageRefresh]);
 
   // fetch and append page 0
   useEffect(() => {
@@ -296,7 +296,7 @@ export default function Settings() {
               color="primary"
               onClick={onShelterClicked}
             >
-               <HouseRounded/>
+              <HouseRounded />
               <Grid item xs={1} />
               Shelter
             </MenuItem>
@@ -309,8 +309,8 @@ export default function Settings() {
             >
               <ExitToApp />
               <Grid item xs={1} />
-                Logout
-              </MenuItem>
+              Logout
+            </MenuItem>
           </Grid>
         </SidebarContent>
       </DrawerSidebar>
@@ -326,7 +326,8 @@ export default function Settings() {
             }
           >
             <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
-          </InfiniteScroll>)}
+          </InfiniteScroll>
+        )}
         {!isListVisible && <Card></Card>}
       </Content>
     </Root>
