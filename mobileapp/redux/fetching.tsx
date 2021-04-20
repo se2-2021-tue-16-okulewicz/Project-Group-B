@@ -77,7 +77,7 @@ export async function fetchDogs(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
       {
         headers: {
-          token: Authorization,
+          Authorization: Authorization,
         },
       }
     )
@@ -94,7 +94,7 @@ export async function markLostDogAsFound(
       undefined,
       {
         headers: {
-          token: Authorization,
+          Authorization: Authorization,
         },
       }
     )
