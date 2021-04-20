@@ -25,7 +25,9 @@ export default function DogsList({ navigation }: any) {
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
   const isLoading = useSelector((state: State) => state.loadingDogs);
-  const Authorization = useSelector((state: State) => state.loginInformation?.token);
+  const Authorization = useSelector(
+    (state: State) => state.loginInformation?.token
+  );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh
   );
