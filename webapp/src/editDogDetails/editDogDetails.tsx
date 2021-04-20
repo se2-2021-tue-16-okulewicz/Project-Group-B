@@ -28,7 +28,7 @@ import {
   BehaviorsTypes,
   BreedTypes,
 } from "../dog/dogEnums";
-import { initPicture } from "../dog/dogClasses";
+import { initLostDogWithPictureProps, initPicture } from "../dog/dogClasses";
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
@@ -38,6 +38,8 @@ import { useCookies } from "react-cookie";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
+import LoadingPopup from "../utilityComponents/LoadingPopup";
+import { WindowConsumer } from "@mui-treasury/layout";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>
@@ -74,21 +76,30 @@ const EditDogDetails = (props: any) => {
   const { path } = useRouteMatch();
   const history = useHistory();
   const classes = useStyles();
-  const [pageRefresh, setPageRefresh] = useState(true);
+  //const [pageRefresh, setPageRefresh] = useState(true);
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh 
   ) as boolean;
   const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
   );
-  
-  useEffect(() => {
+  console.log(editedDog);
+  useEffect(()=>{
+    if(editedDog){
+      sessionStorage.setItem("editDogFields", JSON.stringify(editedDog as ILostDog));
+      setPicture(editedDog.picture as IPicture);
+      setEditDogFields(editedDog as ILostDog);
+      //setPageRefresh(false);
+    }
+  },[editedDog])
+
+  /*useEffect(() => {
     if (refreshRequired) {
       try {
         store.dispatch(
           Actions.fetchOneDogThunk({
             id: dogId as number,
-            cookies: cookies,
+            cookies: props.cookies,
           }) //filters
         );
       }
@@ -99,28 +110,20 @@ const EditDogDetails = (props: any) => {
         sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
         setEditDogFields(editedDog);
         store.dispatch(Actions.finishRefreshing);
-        console.log(editedDog);
       }
     }
-  }, [refreshRequired]);
-
-  useEffect(()=>{
-    if(pageRefresh && !refreshRequired)
-    {
-      sessionStorage.setItem("editDogFields", JSON.stringify(editDogFields));
-      setPageRefresh(false);
-    }
-}, [refreshRequired]);
+  }, [refreshRequired]);*/
   const [isNewPicture, setIsNewPicture] = useState(false);
   const dogId = props.dogId == 0 ? sessionStorage.getItem("editDogId") : props.dogId;
-  const [cookies, setCookie, removeCookie] = useCookies();
-  let isInputNull = JSON.parse(sessionStorage.getItem("editDogFields") as string)?false:true;
+  //const [cookies, setCookie, removeCookie] = useCookies();
+  let isInputNotNull = sessionStorage.getItem("editDogFields") != null;
   const [editDogFields, setEditDogFields] = useState<ILostDog>(
-    !isInputNull && pageRefresh
+    isInputNotNull
       ? JSON.parse(sessionStorage.getItem("editDogFields") as string)
-      : editedDog
+      : initLostDogWithPictureProps
   );
-  if(!editDogFields) setEditDogFields(editedDog);
+  //if(editDogFields!=null) setPageRefresh(false);
+  sessionStorage.setItem("editDogFields", JSON.stringify(editDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
@@ -169,8 +172,10 @@ const EditDogDetails = (props: any) => {
     }
     finally{
       store.dispatch(Actions.clearDogList);
+      store.dispatch(Actions.startRefreshing);
       clearStorage();
       history.push("/settings");
+      //window.location.reload(true);
     }
   };
 
@@ -178,9 +183,9 @@ const EditDogDetails = (props: any) => {
     try {
       if (picture==initPicture)
       {
-        setPicture(editedDog.picture);
+        setPicture(editedDog.picture as IPicture);
       }
-      updateDog(editDogFields, picture);
+      updateDog(editDogFields, picture as IPicture);
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     }
@@ -188,6 +193,7 @@ const EditDogDetails = (props: any) => {
       store.dispatch(Actions.clearDogList);
       clearStorage();
       history.push("/settings");
+      //window.location.reload(false);
     }
   };
 
@@ -203,7 +209,7 @@ const EditDogDetails = (props: any) => {
     store.dispatch(
       Actions.updateDogThunk({
         dog: tmp,
-        cookies: cookies,
+        cookies: props.cookies,
       }) //filters
     );
   }
@@ -212,7 +218,7 @@ const EditDogDetails = (props: any) => {
     store.dispatch(
       Actions.markDogAsFoundThunk({
         dogId: dogId as number,
-        cookies: cookies,
+        cookies: props.cookies,
       }) //filters
     );
   }
@@ -229,11 +235,22 @@ const EditDogDetails = (props: any) => {
     }
     setIsNewPicture(true);
   };
-  
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
-      {refreshRequired && !editDogFields && (<></>)}
-      {!refreshRequired && editDogFields && props.dogId >0 && (
+    <div>
+
+      {!editDogFields &&(<Grid className={classes.mainForm}><FormControl className={classes.formControl}>
+            <Button
+              data-testid="submit-button"
+              variant="contained"
+              onClick={() => onMarkDogClicked()}
+              color="primary"
+              disabled={editedDog ? editedDog.isFound : true}
+            >
+              {editedDog ? (editedDog.isFound ? "Dog was found!" : "Mark Dog as Found") : "Dog not fetched"}
+            </Button>
+          </FormControl></Grid>)}
+      {!refreshRequired && editDogFields &&(
+        <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
       <Grid
         className={classes.mainForm}
         container
@@ -567,9 +584,9 @@ const EditDogDetails = (props: any) => {
           </FormControl>
         </Grid>
       </Grid>
-    
+      </MuiPickersUtilsProvider>
   )} 
-    </MuiPickersUtilsProvider>
+</div>
   );
 };
 

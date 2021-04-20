@@ -13,7 +13,7 @@ const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
 }) => {
   let result =
-    cookies[config.cookies.token] === undefined
+    cookies[config.cookies.token] === undefined 
       ? config.testTokens.regular
       : cookies[config.cookies.token];
   return result;
@@ -79,7 +79,7 @@ export async function fetchDogs(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
         },
       }
     )
@@ -90,13 +90,12 @@ export async function fetchOneDog(
   id: Number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture>> {
-  console.log(id);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${id}`,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
         },
       }
     )
@@ -133,7 +132,7 @@ export async function addDog(
       formData,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
         },
@@ -171,7 +170,7 @@ export async function updateDog(
       formData,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
         },
@@ -190,7 +189,7 @@ export async function markLostDogAsFound(
        undefined,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
         },
       }
     )
@@ -206,7 +205,7 @@ export async function fetchUserInfo(
       `http://${config.backend.ip}:${config.backend.port}/user/${userId}`,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
         },
       }
     )
@@ -255,7 +254,7 @@ export async function logout(cookies: {
       undefined,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
           Accept: "application/json",
         },
       }

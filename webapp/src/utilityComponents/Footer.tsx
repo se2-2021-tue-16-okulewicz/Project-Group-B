@@ -17,6 +17,7 @@ const Footer = () => {
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
     removeCookie(config.cookies.userId, { path: "/" });
+    //console.log(cookies[config.cookies.token]);
     store.dispatch(logoutThunk(cookies));
     history.push("/");
   };
@@ -42,6 +43,7 @@ const Footer = () => {
         <a
           href="https://github.com/se2-2021-tue-16-okulewicz/Project-Group-B"
           target="_blank"
+          rel="noreferrer"
           className="Github"
         >
           <FontAwesomeIcon icon={faGithub} />

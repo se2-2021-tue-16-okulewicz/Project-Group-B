@@ -194,7 +194,7 @@ export default function NewListWithDogs() {
             ...filters,
             page: config.defaultFilters.page,
           },
-          cookies: config.cookies.token,
+          cookies: cookies,
         }) //filters
       );
     }
@@ -217,7 +217,7 @@ export default function NewListWithDogs() {
             ...filters,
             page: filters.page,
           },
-          cookies: config.cookies.token,
+          cookies: cookies,
         }) //filters
       )}
       catch (err) {

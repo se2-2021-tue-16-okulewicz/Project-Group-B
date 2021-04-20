@@ -1,9 +1,9 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Card, Grid, MenuItem } from "@material-ui/core";
+import { Card, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
-import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
@@ -25,22 +25,9 @@ import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
-import {
-  ILoginInformation,
-  ILoginResults,
-} from "../registerLogin/loginRegisterInterfaces";
-import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
-import DraftsIcon from "@material-ui/icons/Drafts";
 import SendIcon from "@material-ui/icons/Send";
-import { Home } from "@material-ui/icons";
-import { classicNameResolver } from "typescript";
-import { faAlignJustify } from "@fortawesome/free-solid-svg-icons";
-import { filter } from "lodash";
-import DogDetails from "../editDogDetails/editDogDetails";
 import { clearDogList } from "../app/actions";
-import { cleanup } from "@testing-library/react";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
-//import EditDetails from "./"
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -163,7 +150,9 @@ export default function Settings() {
     (state: State) => state.dogsRequireRefresh as boolean
   );
   const [pageRefresh, setPageRefresh] = useState(true);
-
+  const pages = useSelector(
+    (state: State) => state.pages as number
+  );
   const classes = useStyles();
   const history = useHistory();
   const { path } = useRouteMatch();
@@ -173,7 +162,7 @@ export default function Settings() {
     size: config.defaultFilters.size,
     ownerId: Number.parseInt(cookies[config.cookies.userId]),
   });
-
+  console.log(dogs);
   const onDogsListClicked = () => { setListVisible(true); };
   const onInfoClicked = () => { setListVisible(false); /*getContactInfo();*/ };
   const onShelterClicked = () => {
@@ -183,15 +172,15 @@ export default function Settings() {
 
   //refresh page
   useEffect(() => {
-    if (pageRefresh) {
+  if (pageRefresh && !listFetched) {
       store.dispatch(clearDogList);
       setPageRefresh(false);
-    }
+  }
   }, [pageRefresh])
 
   // fetch and append page 0
   useEffect(() => {
-    if (refreshRequired) {
+    if (refreshRequired && !listFetched) {
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -216,7 +205,7 @@ export default function Settings() {
 
   //fetch more
   useEffect(() => {
-    if (!refreshRequired && !lastPage) {
+    if (!refreshRequired && !lastPage && !listFetched) {
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -236,13 +225,13 @@ export default function Settings() {
         setPageRefresh(false);
       }
     }
-  }, [refreshRequired, lastPage])
+  }, [refreshRequired, lastPage, pages])
 
   //filter
   useEffect(() => {
-    if (!refreshRequired && lastPage) {
+    if (!refreshRequired && lastPage && !listFetched) {
       let tmp = dogs;
-      let addDogs = tmp.filter((dog: ILostDogWithPicture) => dog.ownerId == Number.parseInt(cookies[config.cookies.userId]));
+      let addDogs = tmp.filter((dog: ILostDogWithPicture) => dog.ownerId === Number.parseInt(cookies[config.cookies.userId]));
       setFilteredDogs(addDogs);
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
@@ -313,7 +302,7 @@ export default function Settings() {
             hasMore={filteredDogs.length > displayedDogs.length}
             loader={((displayLoader && <LoadingPopup />) || (!displayLoader && <></>))}
           >
-            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
+            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path}/>
           </InfiniteScroll>)}
         {!isListVisible && <Card></Card>}
       </Content>

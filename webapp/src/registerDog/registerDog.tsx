@@ -5,12 +5,9 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
-  FilledInput,
   Input,
   InputAdornment,
   MenuItem,
-  OutlinedInput,
   Select,
   TextField,
 } from "@material-ui/core";
@@ -31,7 +28,7 @@ import {
   BreedTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
+import { ILostDog, IPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";

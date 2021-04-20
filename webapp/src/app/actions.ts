@@ -2,7 +2,6 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
-import { Item } from "../utilityComponents/uitilities";
 import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 import {
   ILoginInformation,

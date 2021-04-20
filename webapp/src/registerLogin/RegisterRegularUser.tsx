@@ -22,7 +22,6 @@ import { useHistory } from "react-router-dom";
 import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
-import { isString } from "lodash";
 import { registerRegularUserThunk } from "../app/actions";
 
 const useStyles = makeStyles((theme: Theme) =>

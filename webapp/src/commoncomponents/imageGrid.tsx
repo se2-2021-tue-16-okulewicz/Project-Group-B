@@ -7,7 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { useHistory } from "react-router";
-import { config } from "@fortawesome/fontawesome-svg-core";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import EditDogDetails from "../editDogDetails/editDogDetails";
 import DogDetails from "../dogDetails/dogDetails";
@@ -38,13 +37,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ImageGrid(props: any) {
   const classes = useStyles();
   const dogs = props.dogs as ILostDogWithPicture[];
-  const filters = props.filters;
   const [dogId, setDogId] = useState(0);
   const history = useHistory();
-  const editedDog = useSelector(
+  /*const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
-  );
+  );*/
   const redirectToEditDetails = (id: number) => {
+    //console.log(props.cookies);
     try {
       store.dispatch(
         Actions.fetchOneDogThunk({
@@ -57,10 +56,8 @@ export default function ImageGrid(props: any) {
       console.error("Failed to fetch the dog: ", err);
     }
     finally {
-      console.log(editedDog);
       sessionStorage.setItem("editDogId", JSON.stringify(id));
-      sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
-      store.dispatch(Actions.startRefreshing);
+      //sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
       history.push(`${props.path}/edit/dog/${id}`);
     }
   };
@@ -118,7 +115,7 @@ export default function ImageGrid(props: any) {
       />
       <Route
         path={`${props.path}/:id`}
-        children={<DogDetails cookies={props.cookies} dogId={dogId} />}
+        children={<GridListTile>Work in progress...</GridListTile>/*<DogDetails cookies={props.cookies} dogId={dogId} />*/}
       />
     </Switch>
   );

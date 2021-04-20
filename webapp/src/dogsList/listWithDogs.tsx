@@ -1,14 +1,14 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Menu, MenuItem } from "@material-ui/core";
+import { Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { useCookies } from "react-cookie";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import * as Actions from "../../src/app/actions";
+import { useCookies } from "react-cookie";
 import Layout, {
   getContent,
   getDrawerSidebar,
@@ -25,10 +25,8 @@ import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
-import { Add, Pets, Settings } from "@material-ui/icons";
-import { faDog } from "@fortawesome/free-solid-svg-icons";
+import { Pets, Settings } from "@material-ui/icons";
 import { clearDogList } from "../../src/app/actions";
-import { wait } from "@testing-library/dom";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 
 const SidebarTrigger = getSidebarTrigger(styled);
@@ -155,6 +153,9 @@ export default function ListWithDogs() {
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
+  const pages = useSelector(
+    (state: State) => state.pages as number
+  );
   const [pageRefresh, setPageRefresh] = useState(true);
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
@@ -168,7 +169,7 @@ export default function ListWithDogs() {
   const { path } = useRouteMatch();
 
   const onRegisterClicked = () => {
-    //store.dispatch(clearDogList());
+    store.dispatch(clearDogList());
     history.push("/addDog");
   };
   const onSettingsClicked = () => {
@@ -176,10 +177,10 @@ export default function ListWithDogs() {
     history.push("/settings");
   };
 
+
   //refetches page every [10] minutes, only if there were changes in the list
   /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
         setTimeout(() => {
-          console.log("refresh");
           setPageRefresh(true);
 
         },600000)
@@ -240,7 +241,7 @@ export default function ListWithDogs() {
         setPageRefresh(false);
       }
     }
-  }, [refreshRequired, lastPage])
+  }, [refreshRequired, lastPage, pages])
 
   //filters dog list (temporary solution, before backend is implemented)
   useEffect(() => {
