@@ -34,12 +34,9 @@ import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
-import { useCookies } from "react-cookie";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
-import LoadingPopup from "../utilityComponents/LoadingPopup";
-import { WindowConsumer } from "@mui-treasury/layout";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>
@@ -72,7 +69,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 const EditDogDetails = (props: any) => {
   //if enable is session storage is null, the form has just been opened
-  //const id = Number(useParams());
   const { path } = useRouteMatch();
   const history = useHistory();
   const classes = useStyles();
@@ -150,7 +146,7 @@ const EditDogDetails = (props: any) => {
       store.dispatch(Actions.startRefreshing);
       clearStorage();
       history.push("/settings");
-      //window.location.reload(true);
+      history.go(0);
     }
   };
 
@@ -166,8 +162,10 @@ const EditDogDetails = (props: any) => {
     }
     finally{
       store.dispatch(Actions.clearDogList);
+      store.dispatch(Actions.startRefreshing);
       clearStorage();
       history.push("/settings");
+      history.go(0);
       //window.location.reload(false);
     }
   };

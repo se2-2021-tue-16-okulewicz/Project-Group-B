@@ -106,7 +106,6 @@ export default function Login() {
   useEffect(() => {
     if (loginInfo !== null) {
       setCookie(config.cookies.token, loginInfo?.token, { path: "/" });
-      //console.log(cookies[config.cookies.token]);
       setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
@@ -114,11 +113,12 @@ export default function Login() {
     }
   }, [loginInfo]);
 
-  useEffect(() => {
+  //THIS makes the web app skip the log in
+  /*useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
     }
-  }, []);
+  }, []);*/
 
   return (
     <div className="Login">

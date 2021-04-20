@@ -10,14 +10,13 @@ import { logoutThunk } from "../app/actions";
 import config from "../config/config";
 
 const Footer = () => {
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, removeCookie] = useCookies();
   const history = useHistory();
 
   const logOut = () => {
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
     removeCookie(config.cookies.userId, { path: "/" });
-    //console.log(cookies[config.cookies.token]);
     store.dispatch(logoutThunk(cookies));
     history.push("/");
   };

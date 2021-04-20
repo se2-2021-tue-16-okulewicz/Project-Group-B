@@ -128,6 +128,7 @@ export default function RegisterDogForm() {
       console.error("Failed to save the dog: ", err);
     }
     history.push("/listDogs");
+    history.go(0);
   };
 
   const onCancelClick = () => {

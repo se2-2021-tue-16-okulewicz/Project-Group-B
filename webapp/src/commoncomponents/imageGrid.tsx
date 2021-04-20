@@ -9,11 +9,9 @@ import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { useHistory } from "react-router";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import EditDogDetails from "../editDogDetails/editDogDetails";
-import DogDetails from "../dogDetails/dogDetails";
 import { store } from "../app/store";
 import * as Actions from "../app/actions";
-import { useSelector } from "react-redux";
-import { State } from "../app/reducer";
+import { Edit } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -83,7 +81,7 @@ export default function ImageGrid(props: any) {
                   title={dog.name}
                   subtitle={
                     <span>
-                      {dog.isFound ? "Found" : "Lost in " + dog.location.city + " by " + dog.ownerId}
+                      {dog.isFound ? "Found" : "Lost in " + dog.location.city}
                     </span>
                   }
                   actionIcon={
@@ -91,7 +89,7 @@ export default function ImageGrid(props: any) {
                       aria-label={`info about ${dog.name}`}
                       className={classes.icon}
                       onClick={() => {
-                        if(props.path=="/listDogs")
+                        if(props.path==="/listDogs")
                         {
                           history.push(`${props.path}/${dog.id}`);
                         }
@@ -101,7 +99,7 @@ export default function ImageGrid(props: any) {
                           }                     
                       }}
                     >
-                      <InfoIcon />
+                      {(props.path==="/listDogs")?<InfoIcon />:<Edit/>}
                     </IconButton>
                   }
                 />

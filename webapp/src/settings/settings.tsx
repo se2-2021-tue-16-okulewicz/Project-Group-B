@@ -26,8 +26,9 @@ import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
 import SendIcon from "@material-ui/icons/Send";
-import { clearDogList } from "../app/actions";
+import { clearDogList, logoutThunk } from "../app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
+import { ExitToApp, House, HouseRounded } from "@material-ui/icons";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -45,14 +46,14 @@ const useStyles = makeStyles((theme: Theme) =>
     menuItem: {
       minWidth: "100%",
       display: "flex",
-      textAlign: "left",
+      textAlign: "center",
       alignSelf: "center",
-      marginLeft: "0%",
+      marginLeft: "1%",
       marginBottom: "1%",
       marginTop: "1%",
       borderBottomColor: "black",
       borderBottomWidth: "1",
-      fontSize: "1.3em",
+      fontSize: "1.4em",
     },
     cardContent: {
       justifyContent: "center",
@@ -138,7 +139,7 @@ scheme.configureEdgeSidebar((builder) => {
 export default function Settings() {
   const [displayLoader, setDisplayLoader] = useState(false);
   const [listFetched, setListFetched] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const dogs = (useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
@@ -168,13 +169,21 @@ export default function Settings() {
     store.dispatch(clearDogList());
     history.push("/listDogs");
   };
+  const onLogOutClicked = () => {
+    console.log(cookies["token"]);
+    removeCookie(config.cookies.token, { path: "/" });
+    removeCookie(config.cookies.userType, { path: "/" });
+    removeCookie(config.cookies.userId, { path: "/" });
+    store.dispatch(logoutThunk(cookies));
+    history.push("/");
+  };
 
   //refresh page
   useEffect(() => {
-  if (pageRefresh && !listFetched) {
+    if (pageRefresh && !listFetched) {
       store.dispatch(clearDogList);
       setPageRefresh(false);
-  }
+    }
   }, [pageRefresh])
 
   // fetch and append page 0
@@ -259,7 +268,7 @@ export default function Settings() {
       <DrawerSidebar sidebarId="unique_id">
         <CollapseBtn />
         <SidebarContent name="sidebar">
-          <Grid container className={classes.main} spacing={2}>
+          <Grid container className={classes.main} spacing={1}>
             <MenuItem
               className={classes.menuItem}
               data-testid="registerButton"
@@ -286,11 +295,23 @@ export default function Settings() {
               color="primary"
               onClick={onShelterClicked}
             >
+               <HouseRounded/>
+              <Grid item xs={1} />
               Shelter
             </MenuItem>
+            <MenuItem
+              className={classes.menuItem}
+              data-testid="logoutsButton"
+              disabled={cookies["userType"] === undefined}
+              color="primary"
+              onClick={onLogOutClicked}
+            >
+              <ExitToApp />
+              <Grid item xs={1} />
+                Logout
+              </MenuItem>
           </Grid>
         </SidebarContent>
-        <Footer />
       </DrawerSidebar>
       <Content>
         {isListVisible && lastPage && listFetched && (
@@ -301,7 +322,7 @@ export default function Settings() {
             hasMore={filteredDogs.length > displayedDogs.length}
             loader={((displayLoader && <LoadingPopup />) || (!displayLoader && <></>))}
           >
-            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path}/>
+            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
           </InfiniteScroll>)}
         {!isListVisible && <Card></Card>}
       </Content>

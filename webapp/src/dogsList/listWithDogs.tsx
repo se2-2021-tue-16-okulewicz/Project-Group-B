@@ -25,8 +25,8 @@ import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../utilityComponents/Footer";
-import { Pets, Settings } from "@material-ui/icons";
-import { clearDogList } from "../../src/app/actions";
+import { ExitToApp, Pets, Settings } from "@material-ui/icons";
+import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 
 const SidebarTrigger = getSidebarTrigger(styled);
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: "1%",
       borderBottomColor: "black",
       borderBottomWidth: "1",
-      fontSize: "1.3em",
+      fontSize: "1.4em",
     },
     header: {
       background: "palealiceblue",
@@ -162,9 +162,9 @@ export default function ListWithDogs() {
     size: config.defaultFilters.size,
     isFound: false //for after the filters will be implemented in the backend 
   });
-  // is this page last?
+  
+  const [cookies, removeCookie] = useCookies();
   const history = useHistory();
-  const [cookies, setCookie, removeCookie] = useCookies();
   const classes = useStyles();
   const { path } = useRouteMatch();
 
@@ -176,7 +176,14 @@ export default function ListWithDogs() {
     store.dispatch(clearDogList());
     history.push("/settings");
   };
-
+  const onLogOutClicked = () => {
+    console.log(cookies["token"]);
+    removeCookie(config.cookies.token, { path: "/" });
+    removeCookie(config.cookies.userType, { path: "/" });
+    removeCookie(config.cookies.userId, { path: "/" });
+    store.dispatch(logoutThunk(cookies));
+    history.push("/");
+  };
 
   //refetches page every [10] minutes, only if there were changes in the list
   /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
@@ -247,7 +254,7 @@ export default function ListWithDogs() {
   useEffect(() => {
     if (!refreshRequired && lastPage) {
       let tmp = dogs;
-      let addDogs = tmp.filter((dog: ILostDogWithPicture) => dog.isFound == false);
+      let addDogs = tmp.filter((dog: ILostDogWithPicture) => dog.isFound === false);
       setFilteredDogs(addDogs);
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
@@ -304,10 +311,20 @@ export default function ListWithDogs() {
                 <Grid item xs={1} />
                 Settings
               </MenuItem>
+              <MenuItem
+                className={classes.registerButton}
+                data-testid="logoutsButton"
+                disabled={cookies["userType"] === undefined}
+                color="primary"
+                onClick={onLogOutClicked}
+              >
+                <ExitToApp/>
+                <Grid item xs={1} />
+                Logout
+              </MenuItem>
             </Grid>
           )}
         </SidebarContent>
-        <Footer />
       </DrawerSidebar>
       <Content >
         {lastPage && listFetched && (
