@@ -118,15 +118,15 @@ scheme.configureHeader((builder) => {
   builder
     .registerConfig("md", {
       position: "absolute",
-      initialHeight: "8%"
+      initialHeight: "8%",
     })
     .registerConfig("xs", {
       position: "absolute", // won't stick to top when scroll down
-      initialHeight: "8%"
+      initialHeight: "8%",
     })
     .registerConfig("sm", {
       position: "absolute", // won't stick to top when scroll down
-      initialHeight: "8%"
+      initialHeight: "8%",
     });
 });
 
@@ -150,9 +150,9 @@ scheme.configureEdgeSidebar((builder) => {
 export default function NewSettings() {
   const [cookies, setCookie, removeCookie] = useCookies();
   const [lastPage, setLastPage] = useState(false);
-  const dogs = (useSelector(
+  const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
-  ));
+  );
   const loading = useSelector((state: State) => state.loading);
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
@@ -181,34 +181,32 @@ export default function NewSettings() {
   };
 
   const classes = useStyles();
-  
+
   useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0
-      try{
-      store.dispatch(
-        Actions.fetchDogsThunk({
-          filters: {
-            ...filters,
-            page: config.defaultFilters.page,
-          },
-          cookies: config.cookies.token,
-        }) //filters
-      );
-    }
-      catch (err) {
+      try {
+        store.dispatch(
+          Actions.fetchDogsThunk({
+            filters: {
+              ...filters,
+              page: config.defaultFilters.page,
+            },
+            cookies: config.cookies.token,
+          }) //filters
+        );
+      } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
-      }
-      finally{
+      } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
         setInitialRefresh(false);
       }
-    }     
-       // eslint-disable-next-line
+    }
+    // eslint-disable-next-line
   }, [refreshRequired]);
 
   const fetchMore = () => {
-    try{
+    try {
       store.dispatch(
         Actions.fetchDogsThunk({
           filters: {
@@ -217,15 +215,14 @@ export default function NewSettings() {
           },
           cookies: config.cookies.token,
         }) //filters
-      )}
-      catch (err) {
-        console.error("Failed to fetch the dogs: ", err);
-      }
-      finally{
-        setFilters({ ...filters, page: filters.page + 1 });
-        setInitialRefresh(false);
-      }
+      );
+    } catch (err) {
+      console.error("Failed to fetch the dogs: ", err);
+    } finally {
+      setFilters({ ...filters, page: filters.page + 1 });
+      setInitialRefresh(false);
     }
+  };
 
   const { path } = useRouteMatch();
   return (
@@ -274,7 +271,7 @@ export default function NewSettings() {
         <Footer />
       </DrawerSidebar>
       <Content>
-        {isListOn &&(
+        {isListOn && (
           <InfiniteScroll
             dataLength={dogs.length}
             next={fetchMore}
@@ -285,13 +282,9 @@ export default function NewSettings() {
               </div>
             }
           >
-            <ImageGrid
-              dogs={dogs}
-              cookies={cookies}
-              path={path}
-            />
+            <ImageGrid dogs={dogs} cookies={cookies} path={path} />
           </InfiniteScroll>
-          )}
+        )}
         {!isListOn && <Card></Card>}
       </Content>
     </Root>

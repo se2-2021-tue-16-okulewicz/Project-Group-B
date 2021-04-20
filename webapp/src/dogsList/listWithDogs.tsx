@@ -107,15 +107,15 @@ scheme.configureHeader((builder) => {
 
     .registerConfig("xs", {
       position: "absolute",
-      initialHeight: "8%" // won't stick to top when scroll down
+      initialHeight: "8%", // won't stick to top when scroll down
     })
     .registerConfig("sm", {
       position: "absolute",
-      initialHeight: "8%" // won't stick to top when scroll down
+      initialHeight: "8%", // won't stick to top when scroll down
     })
     .registerConfig("md", {
       position: "absolute",
-      initialHeight: "8%"
+      initialHeight: "8%",
     });
 });
 
@@ -145,22 +145,20 @@ export default function ListWithDogs() {
   //const [isListDifferent, setIsListDifferent] = useState(false);
   const [listFetched, setListFetched] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
-  const dogs = (useSelector(
+  const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
-  ))
+  );
   const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
   const [displayedDogs, setDisplayedDogs] = useState<ILostDogWithPicture[]>([]);
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
-  const pages = useSelector(
-    (state: State) => state.pages as number
-  );
+  const pages = useSelector((state: State) => state.pages as number);
   const [pageRefresh, setPageRefresh] = useState(true);
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    isFound: false //for after the filters will be implemented in the backend 
+    isFound: false, //for after the filters will be implemented in the backend
   });
   
   const [cookies, removeCookie] = useCookies();
@@ -193,13 +191,13 @@ export default function ListWithDogs() {
         },600000)
   }*/
 
- //clears dog list, when page is refreshed or changed
+  //clears dog list, when page is refreshed or changed
   useEffect(() => {
     if (pageRefresh) {
       store.dispatch(clearDogList);
       setPageRefresh(false);
     }
-  }, [pageRefresh])
+  }, [pageRefresh]);
 
   //fetches first page of dog list
   useEffect(() => {
@@ -214,11 +212,9 @@ export default function ListWithDogs() {
             cookies: config.cookies.token,
           }) //filters
         );
-      }
-      catch (err) {
+      } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
-      }
-      finally {
+      } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
         setPageRefresh(false);
       }
@@ -238,17 +234,15 @@ export default function ListWithDogs() {
             },
             cookies: config.cookies.token,
           }) //filters
-        )
-      }
-      catch (err) {
+        );
+      } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
-      }
-      finally {
+      } finally {
         setFilters({ ...filters, page: filters.page + 1 });
         setPageRefresh(false);
       }
     }
-  }, [refreshRequired, lastPage, pages])
+  }, [refreshRequired, lastPage, pages]);
 
   //filters dog list (temporary solution, before backend is implemented)
   useEffect(() => {
@@ -260,7 +254,7 @@ export default function ListWithDogs() {
       setListFetched(true);
       setPageRefresh(false);
     }
-  }, [refreshRequired, lastPage])
+  }, [refreshRequired, lastPage]);
 
   //display more dogs on the grid
   const fetchMore = () => {
@@ -270,7 +264,7 @@ export default function ListWithDogs() {
       setDisplayedDogs(addDogs);
       setDisplayLoader(false);
     }, 700);
-  }
+  };
   return (
     <Root scheme={scheme}>
       <CssBaseline />
@@ -326,17 +320,20 @@ export default function ListWithDogs() {
           )}
         </SidebarContent>
       </DrawerSidebar>
-      <Content >
+      <Content>
         {lastPage && listFetched && (
           <InfiniteScroll
             dataLength={displayedDogs.length}
             scrollThreshold={0.5}
             next={fetchMore}
             hasMore={filteredDogs.length > displayedDogs.length}
-            loader={((displayLoader && <LoadingPopup />) || (!displayLoader && <></>))}
+            loader={
+              (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
+            }
           >
             <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
-          </InfiniteScroll>)}
+          </InfiniteScroll>
+        )}
       </Content>
     </Root>
   );

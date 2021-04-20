@@ -109,18 +109,17 @@ scheme.configureHeader((builder) => {
 
     .registerConfig("xs", {
       position: "absolute",
-      initialHeight:"8%" // won't stick to top when scroll down
+      initialHeight: "8%", // won't stick to top when scroll down
     })
     .registerConfig("sm", {
       position: "absolute",
-      initialHeight:"8%" // won't stick to top when scroll down
+      initialHeight: "8%", // won't stick to top when scroll down
     })
     .registerConfig("md", {
       position: "absolute",
-      initialHeight:"8%"
+      initialHeight: "8%",
     });
 });
-
 
 scheme.configureEdgeSidebar((builder) => {
   builder
@@ -146,9 +145,9 @@ export default function NewListWithDogs() {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [display, setDisplay] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const dogs = (useSelector(
+  const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
-  ))
+  );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
@@ -157,7 +156,7 @@ export default function NewListWithDogs() {
   const [filters, setFilters] = useState({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    isFound: false //for after the filters will be implemented in the backend 
+    isFound: false, //for after the filters will be implemented in the backend
   });
 
   // is this page last?
@@ -171,46 +170,43 @@ export default function NewListWithDogs() {
   const onSettingsClicked = () => {
     store.dispatch(clearDogList());
     history.push("/settings");
-
   };
 
   const classes = useStyles();
   const { path } = useRouteMatch();
 
-  useEffect(()=>{
-    if(initialRefresh){
+  useEffect(() => {
+    if (initialRefresh) {
       store.dispatch(clearDogList);
       setInitialRefresh(false);
     }
-  },[initialRefresh])
+  }, [initialRefresh]);
 
   useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0
-      try{
-      store.dispatch(
-        Actions.fetchDogsThunk({
-          filters: {
-            ...filters,
-            page: config.defaultFilters.page,
-          },
-          cookies: cookies,
-        }) //filters
-      );
-    }
-      catch (err) {
+      try {
+        store.dispatch(
+          Actions.fetchDogsThunk({
+            filters: {
+              ...filters,
+              page: config.defaultFilters.page,
+            },
+            cookies: cookies,
+          }) //filters
+        );
+      } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
-      }
-      finally{
+      } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
         setInitialRefresh(false);
       }
-    }     
-       // eslint-disable-next-line
+    }
+    // eslint-disable-next-line
   }, [refreshRequired]);
 
   const fetchMore = () => {
-    try{
+    try {
       store.dispatch(
         Actions.fetchDogsThunk({
           filters: {
@@ -219,15 +215,14 @@ export default function NewListWithDogs() {
           },
           cookies: cookies,
         }) //filters
-      )}
-      catch (err) {
-        console.error("Failed to fetch the dogs: ", err);
-      }
-      finally{
-        setFilters({ ...filters, page: filters.page + 1 });
-        setInitialRefresh(false);
-      }
+      );
+    } catch (err) {
+      console.error("Failed to fetch the dogs: ", err);
+    } finally {
+      setFilters({ ...filters, page: filters.page + 1 });
+      setInitialRefresh(false);
     }
+  };
 
   return (
     <Root scheme={scheme}>
@@ -274,7 +269,7 @@ export default function NewListWithDogs() {
         </SidebarContent>
         <Footer />
       </DrawerSidebar>
-      <Content >
+      <Content>
         <InfiniteScroll
           dataLength={dogs.length}
           scrollThreshold={0.8}
@@ -282,7 +277,7 @@ export default function NewListWithDogs() {
           hasMore={!lastPage}
           loader={<div key={0}>Loading...</div>}
         >
-          <ImageGrid dogs={dogs} cookies={cookies} path={path}/>
+          <ImageGrid dogs={dogs} cookies={cookies} path={path} />
         </InfiniteScroll>
       </Content>
     </Root>

@@ -4,15 +4,12 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act} from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
 import Settings from "./settings";
 import { isNull } from "lodash";
 import { store } from "../app/store";
 import { Provider } from "react-redux";
-import {
-  Route,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {

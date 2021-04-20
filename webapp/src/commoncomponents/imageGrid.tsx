@@ -49,11 +49,9 @@ export default function ImageGrid(props: any) {
           cookies: props.cookies,
         })
       );
-    }
-    catch (err) {
+    } catch (err) {
       console.error("Failed to fetch the dog: ", err);
-    }
-    finally {
+    } finally {
       sessionStorage.setItem("editDogId", JSON.stringify(id));
       //sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
       history.push(`${props.path}/edit/${id}`);
@@ -109,11 +107,15 @@ export default function ImageGrid(props: any) {
       </Route>
       <Route
         path={`${props.path}/edit/:id`}
-        children={<EditDogDetails cookies={props.cookies} dogId={dogId}/>}
+        children={<EditDogDetails cookies={props.cookies} dogId={dogId} />}
       />
       <Route
         path={`${props.path}/:id`}
-        children={<GridListTile>Work in progress...</GridListTile>/*<DogDetails cookies={props.cookies} dogId={dogId} />*/}
+        children={
+          <GridListTile>
+            Work in progress...
+          </GridListTile> /*<DogDetails cookies={props.cookies} dogId={dogId} />*/
+        }
       />
     </Switch>
   );

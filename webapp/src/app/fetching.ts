@@ -13,7 +13,7 @@ const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
 }) => {
   let result =
-    cookies[config.cookies.token] === undefined 
+    cookies[config.cookies.token] === undefined
       ? config.testTokens.regular
       : cookies[config.cookies.token];
   return result;
@@ -187,7 +187,7 @@ export async function markLostDogAsFound(
   return getResponse(
     axios.put(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/found`,
-       undefined,
+      undefined,
       {
         headers: {
           Authorization: getToken(cookies),

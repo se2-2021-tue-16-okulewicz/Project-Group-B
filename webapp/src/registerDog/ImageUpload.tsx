@@ -29,7 +29,7 @@ const ImageUpload = (props: any) => {
           className="imageInputLabel"
           shrink
           id="pic-label"
-          style={{  fontSize: "20px" }}
+          style={{ fontSize: "20px" }}
         >
           <Input
             className="imageInput"

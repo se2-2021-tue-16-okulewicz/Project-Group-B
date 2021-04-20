@@ -60,10 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: "aliceblue",
     },
     mainForm: {
-      marginLeft: '0.5%',
-      marginRight: '0.5%',
-      marginTop: '0.009%'
-    }
+      marginLeft: "0.5%",
+      marginRight: "0.5%",
+      marginTop: "0.009%",
+    },
   })
 );
 
@@ -167,13 +167,7 @@ export default function RegisterDogForm() {
         alignContent="space-between"
         spacing={7}
       >
-        <Grid
-          container
-          item
-          xs={5}
-          direction="column"
-          alignContent="stretch"
-        >
+        <Grid container item xs={5} direction="column" alignContent="stretch">
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
               Name
@@ -200,14 +194,7 @@ export default function RegisterDogForm() {
             </Card>
           </FormControl>
         </Grid>
-        <Grid
-          container
-          item
-          xs={3}
-          direction="column"
-          alignContent="stretch"
-
-        >
+        <Grid container item xs={3} direction="column" alignContent="stretch">
           <FormControl variant="outlined" className={classes.formControl}>
             <TextField
               label="Age"
@@ -217,8 +204,9 @@ export default function RegisterDogForm() {
               value={lostDogFields.age}
               onChange={inputsHandler}
               InputProps={{
-                startAdornment:
+                startAdornment: (
                   <InputAdornment position="start">Years</InputAdornment>
+                ),
               }}
               variant="outlined"
             />
@@ -379,13 +367,7 @@ export default function RegisterDogForm() {
             </Select>
           </FormControl>
         </Grid>
-        <Grid
-          container
-          item
-          xs={4}
-          direction="column"
-          alignContent="stretch"
-        >
+        <Grid container item xs={4} direction="column" alignContent="stretch">
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel shrink id="calendar-label">
               Dog was lost on
