@@ -17,7 +17,6 @@ const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
       ? config.testTokens.regular
       : cookies[config.cookies.token];
   return result;
-  console.log(result);
 };
 
 //Reimplement stringifing date

@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Grid, MenuItem } from "@material-ui/core";
+import { Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
@@ -28,6 +28,9 @@ import Footer from "../utilityComponents/Footer";
 import { ExitToApp, Pets, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -41,6 +44,28 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     icon: {
       color: "rgba(255, 255, 255, 0.54)",
+    },
+    menuItem: {
+      minWidth: "100%",
+      display: "flex",
+      textAlign: "center",
+      alignSelf: "center",
+      marginLeft: "1%",
+      marginBottom: "1%",
+      marginTop: "1%",
+      borderBottomColor: "black",
+      borderBottomWidth: "1",
+      fontSize: "1.4em",
+    },
+    copyright: {
+      minWidth: "100%",
+      display: "flex",
+      verticalAlign: "bottom",
+      textAlign: "center",
+      alignSelf: "center",
+      marginLeft: "1%",
+      borderBottomColor: "black",
+      fontSize: "0.7em",
     },
     registerButton: {
       minWidth: "100%",
@@ -315,6 +340,33 @@ export default function ListWithDogs() {
                 <ExitToApp/>
                 <Grid item xs={1} />
                 Logout
+              </MenuItem>
+              <Divider className={classes.menuItem} style={{display:"flex", marginBottom:"10%"}}/>
+            <MenuItem
+              className={classes.copyright}
+              data-testid="copyrightButton"
+            >
+              <a
+                href="https://github.com/se2-2021-tue-16-okulewicz/Project-Group-B"
+                target="_blank"
+                rel="noreferrer"
+                className="Github"
+              >
+                <FontAwesomeIcon icon={faGithub} color="black"/>
+               
+              </a>
+              <Grid item xs={1} />
+              SE2 Group B, {new Date().getFullYear()} 
+
+            </MenuItem>
+            <MenuItem
+              className={classes.copyright}
+              data-testid="copyrightButton"
+              color="primary"
+            >
+              <FontAwesomeIcon icon={faCopyright} className="Github" color="black"/>{" "}
+              <Grid item xs={1} />
+              All Rights Reserved.
               </MenuItem>
             </Grid>
           )}

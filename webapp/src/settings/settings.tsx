@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Card, Grid, MenuItem } from "@material-ui/core";
+import { Card, Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useRouteMatch, useHistory } from "react-router-dom";
@@ -24,11 +24,13 @@ import { useSelector } from "react-redux";
 import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Footer from "../utilityComponents/Footer";
 import SendIcon from "@material-ui/icons/Send";
 import { clearDogList, logoutThunk } from "../app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
-import { ExitToApp, House, HouseRounded } from "@material-ui/icons";
+import { ExitToApp, HouseRounded } from "@material-ui/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -54,6 +56,16 @@ const useStyles = makeStyles((theme: Theme) =>
       borderBottomColor: "black",
       borderBottomWidth: "1",
       fontSize: "1.4em",
+    },
+    copyright: {
+      minWidth: "100%",
+      display: "flex",
+      verticalAlign: "bottom",
+      textAlign: "center",
+      alignSelf: "center",
+      marginLeft: "1%",
+      borderBottomColor: "black",
+      fontSize: "0.7em",
     },
     cardContent: {
       justifyContent: "center",
@@ -296,7 +308,7 @@ export default function Settings() {
               color="primary"
               onClick={onShelterClicked}
             >
-               <HouseRounded/>
+              <HouseRounded />
               <Grid item xs={1} />
               Shelter
             </MenuItem>
@@ -311,6 +323,34 @@ export default function Settings() {
               <Grid item xs={1} />
                 Logout
               </MenuItem>
+              <Divider className={classes.menuItem} style={{display:"flex", marginBottom:"10%"}}/>
+            <MenuItem
+              className={classes.copyright}
+              data-testid="copyrightButton"
+            >
+              <a
+                href="https://github.com/se2-2021-tue-16-okulewicz/Project-Group-B"
+                target="_blank"
+                rel="noreferrer"
+                className="Github"
+              >
+                <FontAwesomeIcon icon={faGithub} color="black"/>
+               
+              </a>
+              <Grid item xs={1} />
+              SE2 Group B, {new Date().getFullYear()} 
+
+            </MenuItem>
+            <MenuItem
+              className={classes.copyright}
+              data-testid="copyrightButton"
+              color="primary"
+            >
+              <FontAwesomeIcon icon={faCopyright} className="Github" color="black"/>{" "}
+              <Grid item xs={1} />
+              All Rights Reserved.
+              </MenuItem>
+
           </Grid>
         </SidebarContent>
       </DrawerSidebar>
