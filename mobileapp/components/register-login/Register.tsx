@@ -1,21 +1,30 @@
-import { StyleSheet, Text, SafeAreaView, View, KeyboardAvoidingView, Platform, Modal, Pressable, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  Modal,
+  Pressable,
+  Image,
+} from "react-native";
 import * as React from "react";
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import { store } from '../../redux/store';
-import * as Actions from '../../redux/actions';
-import SignIn from './SignIn';
-import * as Utility from '../../redux/utility.js';
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { store } from "../../redux/store";
+import * as Actions from "../../redux/actions";
+import SignIn from "./SignIn";
+import * as Utility from "../../redux/utility.js";
 import { useSelector } from "react-redux";
 import * as styles from "../../constants/account";
-import { State } from '../../redux/reducer';
-
+import { State } from "../../redux/reducer";
 
 const Register = ({ navigation }: any) => {
   //need to add onSubmit function above, I commented it out bcs it was not working
-  const [userName, setUserName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [phoneNumber, setPhoneNumber] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [userName, setUserName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [ready, setReady] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
@@ -48,7 +57,6 @@ const Register = ({ navigation }: any) => {
       setModalVisible(true);
     }
   }, [errorMessage]);
-
 
   async function register() {
     store.dispatch(
@@ -86,7 +94,12 @@ const Register = ({ navigation }: any) => {
   // }, [status])
 
   React.useEffect(() => {
-    if (isStringValidEmail(email) && isStringValidUsername(userName) && isStringValidPhoneNumeber(phoneNumber) && isStringValidPassword(password)) {
+    if (
+      isStringValidEmail(email) &&
+      isStringValidUsername(userName) &&
+      isStringValidPhoneNumeber(phoneNumber) &&
+      isStringValidPassword(password)
+    ) {
       setReady(true);
       return;
     }
@@ -94,8 +107,10 @@ const Register = ({ navigation }: any) => {
   }, [email, password]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.styles.containerMain}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.styles.containerMain}
+    >
       <Modal
         animationType="slide"
         transparent={true}
@@ -124,11 +139,33 @@ const Register = ({ navigation }: any) => {
         />
       </View>
       <View>
-        <TextInput placeholder="Username" style={styles.styles.textInput} onChangeText={(e) => setUserName(e)}></TextInput>
-        <TextInput placeholder="E-mail" style={styles.styles.textInput} onChangeText={(e) => setEmail(e)}></TextInput>
-        <TextInput placeholder="Phone number" style={styles.styles.textInput} onChangeText={(e) => setPhoneNumber(e)}></TextInput>
-        <TextInput maxLength={32} secureTextEntry={true} placeholder="Password" style={styles.styles.textInput} onChangeText={(e) => setPassword(e)}></TextInput>
-        <TouchableOpacity disabled={!ready} style={ready ? style.button : style.disabledButton} onPress={() => register()}>
+        <TextInput
+          placeholder="Username"
+          style={styles.styles.textInput}
+          onChangeText={(e) => setUserName(e)}
+        ></TextInput>
+        <TextInput
+          placeholder="E-mail"
+          style={styles.styles.textInput}
+          onChangeText={(e) => setEmail(e)}
+        ></TextInput>
+        <TextInput
+          placeholder="Phone number"
+          style={styles.styles.textInput}
+          onChangeText={(e) => setPhoneNumber(e)}
+        ></TextInput>
+        <TextInput
+          maxLength={32}
+          secureTextEntry={true}
+          placeholder="Password"
+          style={styles.styles.textInput}
+          onChangeText={(e) => setPassword(e)}
+        ></TextInput>
+        <TouchableOpacity
+          disabled={!ready}
+          style={ready ? style.button : style.disabledButton}
+          onPress={() => register()}
+        >
           <Text style={style.buttonText}>Register </Text>
         </TouchableOpacity>
       </View>
@@ -151,7 +188,7 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     width: 280,
@@ -163,17 +200,17 @@ const style = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   modalButton: {
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    width: 120
+    width: 120,
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -184,12 +221,12 @@ const style = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-    color: 'red'
+    color: "red",
   },
   button: {
     alignItems: "center",
@@ -197,7 +234,7 @@ const style = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
     width: 250,
-    margin: 7
+    margin: 7,
   },
   disabledButton: {
     alignItems: "center",
@@ -205,12 +242,12 @@ const style = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
     width: 250,
-    margin: 7
+    margin: 7,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 15
-  }
-})
+    color: "white",
+    fontSize: 15,
+  },
+});
 
 export default Register;
