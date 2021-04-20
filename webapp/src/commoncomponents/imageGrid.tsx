@@ -58,7 +58,7 @@ export default function ImageGrid(props: any) {
     finally {
       sessionStorage.setItem("editDogId", JSON.stringify(id));
       //sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
-      history.push(`${props.path}/edit/dog/${id}`);
+      history.push(`${props.path}/edit/${id}`);
     }
   };
   const { path } = useRouteMatch();
@@ -110,7 +110,7 @@ export default function ImageGrid(props: any) {
         </GridList>
       </Route>
       <Route
-        path={`${props.path}/edit/dog/:id`}
+        path={`${props.path}/edit/:id`}
         children={<EditDogDetails cookies={props.cookies} dogId={dogId}/>}
       />
       <Route
