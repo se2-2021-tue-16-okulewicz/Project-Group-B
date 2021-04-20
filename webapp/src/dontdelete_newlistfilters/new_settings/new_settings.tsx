@@ -150,7 +150,6 @@ scheme.configureEdgeSidebar((builder) => {
 export default function NewSettings() {
   const [cookies, setCookie, removeCookie] = useCookies();
   const [lastPage, setLastPage] = useState(false);
-  console.log(cookies[config.cookies.userId]);
   const dogs = (useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
   ));

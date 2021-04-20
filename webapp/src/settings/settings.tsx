@@ -162,7 +162,6 @@ export default function Settings() {
     size: config.defaultFilters.size,
     ownerId: Number.parseInt(cookies[config.cookies.userId]),
   });
-  console.log(dogs);
   const onDogsListClicked = () => { setListVisible(true); };
   const onInfoClicked = () => { setListVisible(false); /*getContactInfo();*/ };
   const onShelterClicked = () => {

@@ -83,46 +83,21 @@ const EditDogDetails = (props: any) => {
   const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
   );
-  console.log(editedDog);
   useEffect(()=>{
     if(editedDog){
       sessionStorage.setItem("editDogFields", JSON.stringify(editedDog as ILostDog));
       setPicture(editedDog.picture as IPicture);
       setEditDogFields(editedDog as ILostDog);
-      //setPageRefresh(false);
     }
   },[editedDog])
-
-  /*useEffect(() => {
-    if (refreshRequired) {
-      try {
-        store.dispatch(
-          Actions.fetchOneDogThunk({
-            id: dogId as number,
-            cookies: props.cookies,
-          }) //filters
-        );
-      }
-      catch (err) {
-        console.error("Failed to fetch the dog: ", err);
-      }
-      finally {
-        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
-        setEditDogFields(editedDog);
-        store.dispatch(Actions.finishRefreshing);
-      }
-    }
-  }, [refreshRequired]);*/
   const [isNewPicture, setIsNewPicture] = useState(false);
   const dogId = props.dogId == 0 ? sessionStorage.getItem("editDogId") : props.dogId;
-  //const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("editDogFields") != null;
   const [editDogFields, setEditDogFields] = useState<ILostDog>(
     isInputNotNull
       ? JSON.parse(sessionStorage.getItem("editDogFields") as string)
       : initLostDogWithPictureProps
   );
-  //if(editDogFields!=null) setPageRefresh(false);
   sessionStorage.setItem("editDogFields", JSON.stringify(editDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
