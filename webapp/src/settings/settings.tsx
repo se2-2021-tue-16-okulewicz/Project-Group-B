@@ -198,7 +198,7 @@ export default function Settings() {
       store.dispatch(clearDogList);
       setPageRefresh(false);
     }
-  }, [pageRefresh])
+  }, [pageRefresh]);
 
   // fetch and append page 0
   useEffect(() => {
@@ -366,7 +366,8 @@ export default function Settings() {
             }
           >
             <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
-          </InfiniteScroll>)}
+          </InfiniteScroll>
+        )}
         {!isListVisible && <Card></Card>}
       </Content>
     </Root>
