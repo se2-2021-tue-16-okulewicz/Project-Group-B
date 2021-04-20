@@ -343,32 +343,37 @@ export default function ListWithDogs() {
                 <Grid item xs={1} />
                 Logout
               </MenuItem>
-              <Divider className={classes.menuItem} style={{display:"flex", marginBottom:"10%"}}/>
-            <MenuItem
-              className={classes.copyright}
-              data-testid="copyrightButton"
-            >
-              <a
-                href="https://github.com/se2-2021-tue-16-okulewicz/Project-Group-B"
-                target="_blank"
-                rel="noreferrer"
-                className="Github"
+              <Divider
+                className={classes.menuItem}
+                style={{ display: "flex", marginBottom: "10%" }}
+              />
+              <MenuItem
+                className={classes.copyright}
+                data-testid="copyrightButton"
               >
-                <FontAwesomeIcon icon={faGithub} color="black"/>
-               
-              </a>
-              <Grid item xs={1} />
-              SE2 Group B, {new Date().getFullYear()} 
-
-            </MenuItem>
-            <MenuItem
-              className={classes.copyright}
-              data-testid="copyrightButton"
-              color="primary"
-            >
-              <FontAwesomeIcon icon={faCopyright} className="Github" color="black"/>{" "}
-              <Grid item xs={1} />
-              All Rights Reserved.
+                <a
+                  href="https://github.com/se2-2021-tue-16-okulewicz/Project-Group-B"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="Github"
+                >
+                  <FontAwesomeIcon icon={faGithub} color="black" />
+                </a>
+                <Grid item xs={1} />
+                SE2 Group B, {new Date().getFullYear()}
+              </MenuItem>
+              <MenuItem
+                className={classes.copyright}
+                data-testid="copyrightButton"
+                color="primary"
+              >
+                <FontAwesomeIcon
+                  icon={faCopyright}
+                  className="Github"
+                  color="black"
+                />{" "}
+                <Grid item xs={1} />
+                All Rights Reserved.
               </MenuItem>
             </Grid>
           )}
