@@ -58,8 +58,10 @@ function Layout() {
     } // eslint-disable-next-line
   }, [redirect]);
 
-  const errorOnClose = () => {   //We can reach this point after logout from footer and it crashes the app
-    if (error.errorCode === 401) {    //So we wat to if logout if user is already logged out
+  const errorOnClose = () => {
+    //We can reach this point after logout from footer and it crashes the app
+    if (error.errorCode === 401) {
+      //So we wat to if logout if user is already logged out
       if (cookies[config.cookies.userType] !== undefined) {
         removeCookie(config.cookies.token, { path: "/" });
         removeCookie(config.cookies.userType, { path: "/" });
