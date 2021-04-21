@@ -43,8 +43,13 @@ public class UserServiceTest {
         assertEquals("Email is invalid", result.getValue1());
         assertNull(result.getValue0());
 
+        userInfo.setEmail("b.gates@mail.com");
+        result = userService.EditUser(10001, userInfo);
+        assertEquals("Email is already used", result.getValue1());
+        assertNull(result.getValue0());
+
         userInfo.setEmail("new@mail.com");
-        userInfo.setName("Elon Musk");
+        userInfo.setName("Bill Gates");
         result = userService.EditUser(10001, userInfo);
         assertEquals("Name is already used", result.getValue1());
         assertNull(result.getValue0());
@@ -71,9 +76,31 @@ public class UserServiceTest {
         assertEquals("User does not exist", result.getValue1());
         assertNull(result.getValue0());
 
+        //Proper update
         result = userService.EditUser(10001, userInfo);
         assertEquals("", result.getValue1());
         assertNotNull(result.getValue0());
         assertEquals("+48 788 64 00 00", result.getValue0().getPhoneNumber());
+
+        //Update ONLY name
+        userInfo.setName("New Name 2");
+        result = userService.EditUser(10001, userInfo);
+        assertEquals("", result.getValue1());
+        assertNotNull(result.getValue0());
+        assertEquals("New Name 2", result.getValue0().getName());
+
+        //Update ONLY email
+        userInfo.setEmail("even.newer@email.com");
+        result = userService.EditUser(10001, userInfo);
+        assertEquals("", result.getValue1());
+        assertNotNull(result.getValue0());
+        assertEquals("even.newer@email.com", result.getValue0().getEmail());
+
+        //Update ONLY phone number
+        userInfo.setPhoneNumber("784092997");
+        result = userService.EditUser(10001, userInfo);
+        assertEquals("", result.getValue1());
+        assertNotNull(result.getValue0());
+        assertEquals("784092997", result.getValue0().getPhoneNumber());
     }
 }
