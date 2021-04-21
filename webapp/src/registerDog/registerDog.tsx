@@ -71,7 +71,7 @@ export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
   const classes = useStyles();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
     isInputNotNull

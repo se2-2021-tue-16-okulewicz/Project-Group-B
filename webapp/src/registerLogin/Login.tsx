@@ -70,7 +70,8 @@ export default function Login() {
 
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const history = useHistory();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  // eslint-disable-next-line
+  const [cookies, setCookie] = useCookies();
 
   const handleChange = (prop: keyof internalState) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -97,10 +98,7 @@ export default function Login() {
     );
   };
 
-  const goToUserRegister = () => {
-    history.push("/register/user");
-  };
-
+  const goToUserRegister = () => { history.push("/register/user");};
   const goToShelterRegister = () => {};
 
   useEffect(() => {
@@ -110,14 +108,14 @@ export default function Login() {
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
       history.push("/listDogs");
-    }
+    }// eslint-disable-next-line
   }, [loginInfo]);
 
   //THIS makes the web app skip the log in
   /*useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
-    }
+    }// eslint-disable-next-line
   }, []);*/
 
   return (

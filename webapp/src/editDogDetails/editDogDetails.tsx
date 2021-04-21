@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 const EditDogDetails = (props: any) => {
-  //if enable is session storage is null, the form has just been opened
+  // eslint-disable-next-line
   const { path } = useRouteMatch();
   const history = useHistory();
   const classes = useStyles();
@@ -90,9 +90,8 @@ const EditDogDetails = (props: any) => {
     }
   }, [editedDog]);
   const [isNewPicture, setIsNewPicture] = useState(false);
-  const dogId =
-    props.dogId == 0 ? sessionStorage.getItem("editDogId") : props.dogId;
-  let isInputNotNull = sessionStorage.getItem("editDogFields") != null;
+  const dogId = props.dogId === 0 ? sessionStorage.getItem("editDogId") : props.dogId;
+  let isInputNotNull = sessionStorage.getItem("editDogFields") !== null;
   const [editDogFields, setEditDogFields] = useState<ILostDog>(
     isInputNotNull
       ? JSON.parse(sessionStorage.getItem("editDogFields") as string)
@@ -155,7 +154,7 @@ const EditDogDetails = (props: any) => {
 
   const onSubmitEditClicked = () => {
     try {
-      if (picture == initPicture) {
+      if (picture === initPicture) {
         setPicture(editedDog.picture as IPicture);
       }
       updateDog(editDogFields, picture as IPicture);

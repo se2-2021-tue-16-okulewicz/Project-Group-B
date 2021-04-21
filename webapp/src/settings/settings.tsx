@@ -31,6 +31,7 @@ import { ExitToApp, HouseRounded } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
+import { IFilters } from "../utilityComponents/uitilities";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -64,8 +65,8 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
       alignSelf: "center",
       marginLeft: "1%",
-      borderBottomColor: "black",
       fontSize: "0.7em",
+      color:"gray"
     },
     cardContent: {
       justifyContent: "center",
@@ -168,7 +169,7 @@ export default function Settings() {
   const history = useHistory();
   const { path } = useRouteMatch();
   const [isListVisible, setListVisible] = useState(true);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
     ownerId: Number.parseInt(cookies[config.cookies.userId]),
@@ -197,7 +198,7 @@ export default function Settings() {
     if (pageRefresh && !listFetched) {
       store.dispatch(clearDogList);
       setPageRefresh(false);
-    }
+    }// eslint-disable-next-line
   }, [pageRefresh]);
 
   // fetch and append page 0
@@ -210,7 +211,7 @@ export default function Settings() {
               ...filters,
               page: config.defaultFilters.page,
             },
-            cookies: config.cookies.token,
+            cookies: cookies,
           }) //filters
         );
       } catch (err) {
@@ -233,7 +234,7 @@ export default function Settings() {
               ...filters,
               page: filters.page,
             },
-            cookies: config.cookies.token,
+            cookies: cookies,
           }) //filters
         );
       } catch (err) {
@@ -242,7 +243,7 @@ export default function Settings() {
         setFilters({ ...filters, page: filters.page + 1 });
         setPageRefresh(false);
       }
-    }
+    }// eslint-disable-next-line
   }, [refreshRequired, lastPage, pages]);
 
   //filter
@@ -257,7 +258,7 @@ export default function Settings() {
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
       setPageRefresh(false);
-    }
+    }// eslint-disable-next-line
   }, [refreshRequired, lastPage]);
 
   const fetchMore = () => {
@@ -344,9 +345,9 @@ export default function Settings() {
             <MenuItem
               className={classes.copyright}
               data-testid="copyrightButton"
-              color="primary"
+              disabled={true}
             >
-              <FontAwesomeIcon icon={faCopyright} className="Github" color="black"/>{" "}
+              <FontAwesomeIcon icon={faCopyright} className="Github"/>{" "}
               <Grid item xs={1} />
               All Rights Reserved.
               </MenuItem>

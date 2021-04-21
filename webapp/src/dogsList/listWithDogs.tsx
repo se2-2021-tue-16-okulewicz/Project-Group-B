@@ -24,13 +24,13 @@ import { useSelector } from "react-redux";
 import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Footer from "../utilityComponents/Footer";
 import { ExitToApp, Pets, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
+import { IFilters } from "../utilityComponents/uitilities";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: "1%",
       borderBottomColor: "black",
       fontSize: "0.7em",
+      color:"gray"
     },
     registerButton: {
       minWidth: "100%",
@@ -180,7 +181,7 @@ export default function ListWithDogs() {
   );
   const pages = useSelector((state: State) => state.pages as number);
   const [pageRefresh, setPageRefresh] = useState(true);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
     isFound: false, //for after the filters will be implemented in the backend
@@ -234,7 +235,7 @@ export default function ListWithDogs() {
               ...filters,
               page: config.defaultFilters.page,
             },
-            cookies: config.cookies.token,
+            cookies: cookies,
           }) //filters
         );
       } catch (err) {
@@ -257,7 +258,7 @@ export default function ListWithDogs() {
               ...filters,
               page: filters.page,
             },
-            cookies: config.cookies.token,
+            cookies: cookies,
           }) //filters
         );
       } catch (err) {
@@ -266,7 +267,7 @@ export default function ListWithDogs() {
         setFilters({ ...filters, page: filters.page + 1 });
         setPageRefresh(false);
       }
-    }
+    }// eslint-disable-next-line
   }, [refreshRequired, lastPage, pages]);
 
   //filters dog list (temporary solution, before backend is implemented)
@@ -280,7 +281,7 @@ export default function ListWithDogs() {
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
       setPageRefresh(false);
-    }
+    }// eslint-disable-next-line
   }, [refreshRequired, lastPage]);
 
   //display more dogs on the grid
@@ -362,6 +363,7 @@ export default function ListWithDogs() {
 
             </MenuItem>
             <MenuItem
+              disabled={true}
               className={classes.copyright}
               data-testid="copyrightButton"
               color="primary"

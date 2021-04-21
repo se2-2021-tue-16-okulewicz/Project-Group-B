@@ -30,6 +30,7 @@ import { faDog } from "@fortawesome/free-solid-svg-icons";
 import { clearDogList } from "../../app/actions";
 import { wait } from "@testing-library/dom";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
+import { IFilters } from "../../utilityComponents/uitilities";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -153,7 +154,7 @@ export default function NewListWithDogs() {
   );
   const [initialRefresh, setInitialRefresh] = useState(true);
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
     isFound: false, //for after the filters will be implemented in the backend

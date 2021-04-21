@@ -8,6 +8,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
+import { IFilters, IFiltersAndCookies } from "../utilityComponents/uitilities";
 
 export const markDogAsFoundThunk = createAsyncThunk<
   RequestResponse<null>,
@@ -145,31 +146,38 @@ export const logoutThunk = createAsyncThunk<
   return response as RequestResponse<null>;
 });
 
-export const fetchDogsThunk = createAsyncThunk(
+export const fetchDogsThunk = createAsyncThunk<
+RequestResponse<ILostDogWithPicture[]>,
+{ filters: IFilters; cookies: { [name: string]: any } },
+{ rejectValue: RequestResponse<ILostDogWithPicture[]> }
+>(
   "fetchAllDogs",
-  async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<
-      ILostDogWithPicture[] | null
-    > = await Fetching.fetchDogs(item.filters, item.cookies);
+  async (item: IFiltersAndCookies, { rejectWithValue }) => {
+    const response: RequestResponse<ILostDogWithPicture[]> = 
+    await Fetching.fetchDogs(item.filters, item.cookies);
 
     if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<null>);
+      return rejectWithValue(response as RequestResponse<ILostDogWithPicture[]>);
     }
 
     return response as RequestResponse<ILostDogWithPicture[]>;
   }
 );
 
-export const fetchOneDogThunk = createAsyncThunk(
+export const fetchOneDogThunk = createAsyncThunk<
+RequestResponse<ILostDogWithPicture>,
+{ id: number; cookies: { [name: string]: any } },
+{ rejectValue: RequestResponse<ILostDogWithPicture>}
+>(
   "fetchOneDog",
-  async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPicture | null> = await Fetching.fetchOneDog(
+  async (item: IFilters, { rejectWithValue }) => {
+    const response: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
       item.id,
       item.cookies
     );
 
     if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<null>);
+      return rejectWithValue(response as RequestResponse<ILostDogWithPicture>);
     }
     return response as RequestResponse<ILostDogWithPicture>;
   }

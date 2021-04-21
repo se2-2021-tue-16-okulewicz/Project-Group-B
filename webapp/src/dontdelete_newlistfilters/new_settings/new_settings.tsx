@@ -39,6 +39,7 @@ import { filter } from "lodash";
 import DogDetails from "../../editDogDetails/editDogDetails";
 import { clearDogList } from "../../app/actions";
 import { cleanup } from "@testing-library/react";
+import { IFilters } from "../../utilityComponents/uitilities";
 //import EditDetails from "./"
 
 const SidebarTrigger = getSidebarTrigger(styled);
@@ -161,7 +162,7 @@ export default function NewSettings() {
 
   const history = useHistory();
   const [isListOn, setListOn] = useState(true);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
     ownerId: Number.parseInt(cookies[config.cookies.userId]),
@@ -192,7 +193,7 @@ export default function NewSettings() {
               ...filters,
               page: config.defaultFilters.page,
             },
-            cookies: config.cookies.token,
+            cookies: cookies,
           }) //filters
         );
       } catch (err) {
@@ -213,7 +214,7 @@ export default function NewSettings() {
             ...filters,
             page: filters.page,
           },
-          cookies: config.cookies.token,
+          cookies: cookies,
         }) //filters
       );
     } catch (err) {
