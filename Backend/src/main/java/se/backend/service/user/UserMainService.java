@@ -48,10 +48,12 @@ public class UserMainService implements  UserService {
 
         editedInfo.setEmail(editedInfo.getEmail().toLowerCase());
 
-        if(userAccountRepository.existsByAssociatedEmail(editedInfo.getEmail()))
+        if(!editedInfo.getEmail().equals(originalAccount.get().getAssociatedEmail()) &&
+                userAccountRepository.existsByAssociatedEmail(editedInfo.getEmail()))
             return new Pair<>(null, "Email is already used");
 
-        if(userAccountRepository.existsByName(editedInfo.getName()))
+        if(!editedInfo.getName().equals(originalAccount.get().getName()) &&
+                userAccountRepository.existsByName(editedInfo.getName()))
             return new Pair<>(null, "Name is already used");
 
         if(!StringUtils.IsStringAPhoneNumber(editedInfo.getPhoneNumber()))
