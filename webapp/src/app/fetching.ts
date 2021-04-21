@@ -19,9 +19,8 @@ const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   return result;
 };
 
-//Reimplement stringifing date
-const zeroPad = (num: number, places: number) =>
-  String(num).padStart(places, "0");
+const zeroPad = (num: number, places: number) => 
+  String(num).padStart(places, "0"); //Reimplement stringifing date
 
 //eslint-disable-next-line no-extend-native
 Date.prototype.toJSON = function (key?: any): string {
