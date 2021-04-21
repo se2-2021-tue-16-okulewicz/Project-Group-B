@@ -147,41 +147,36 @@ export const logoutThunk = createAsyncThunk<
 });
 
 export const fetchDogsThunk = createAsyncThunk<
-RequestResponse<ILostDogWithPicture[]>,
-{ filters: IFilters; cookies: { [name: string]: any } },
-{ rejectValue: RequestResponse<ILostDogWithPicture[]> }
->(
-  "fetchAllDogs",
-  async (item: IFiltersAndCookies, { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPicture[]> = 
-    await Fetching.fetchDogs(item.filters, item.cookies);
+  RequestResponse<ILostDogWithPicture[]>,
+  { filters: IFilters; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<ILostDogWithPicture[]> }
+>("fetchAllDogs", async (item: IFiltersAndCookies, { rejectWithValue }) => {
+  const response: RequestResponse<
+    ILostDogWithPicture[]
+  > = await Fetching.fetchDogs(item.filters, item.cookies);
 
-    if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<ILostDogWithPicture[]>);
-    }
-
-    return response as RequestResponse<ILostDogWithPicture[]>;
+  if (response.response.successful !== true) {
+    return rejectWithValue(response as RequestResponse<ILostDogWithPicture[]>);
   }
-);
+
+  return response as RequestResponse<ILostDogWithPicture[]>;
+});
 
 export const fetchOneDogThunk = createAsyncThunk<
-RequestResponse<ILostDogWithPicture>,
-{ id: number; cookies: { [name: string]: any } },
-{ rejectValue: RequestResponse<ILostDogWithPicture>}
->(
-  "fetchOneDog",
-  async (item: IFilters, { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
-      item.id,
-      item.cookies
-    );
+  RequestResponse<ILostDogWithPicture>,
+  { id: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<ILostDogWithPicture> }
+>("fetchOneDog", async (item: IFilters, { rejectWithValue }) => {
+  const response: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
+    item.id,
+    item.cookies
+  );
 
-    if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<ILostDogWithPicture>);
-    }
-    return response as RequestResponse<ILostDogWithPicture>;
+  if (response.response.successful !== true) {
+    return rejectWithValue(response as RequestResponse<ILostDogWithPicture>);
   }
-);
+  return response as RequestResponse<ILostDogWithPicture>;
+});
 
 export const registerRegularUserThunk = createAsyncThunk<
   RequestResponse<ILoginResults>,

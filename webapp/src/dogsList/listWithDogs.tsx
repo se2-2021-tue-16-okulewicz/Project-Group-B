@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: "1%",
       borderBottomColor: "black",
       fontSize: "0.7em",
-      color: "gray"
+      color: "gray",
     },
     registerButton: {
       minWidth: "100%",
@@ -267,7 +267,7 @@ export default function ListWithDogs() {
         setFilters({ ...filters, page: filters.page + 1 });
         setPageRefresh(false);
       }
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [refreshRequired, lastPage, pages]);
 
   //filters dog list (temporary solution, before backend is implemented)
@@ -281,7 +281,7 @@ export default function ListWithDogs() {
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
       setPageRefresh(false);
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [refreshRequired, lastPage]);
 
   //display more dogs on the grid
@@ -359,11 +359,9 @@ export default function ListWithDogs() {
                   className="Github"
                 >
                   <FontAwesomeIcon icon={faGithub} color="black" />
-
                 </a>
                 <Grid item xs={1} />
-              SE2 Group B, {new Date().getFullYear()}
-
+                SE2 Group B, {new Date().getFullYear()}
               </MenuItem>
               <MenuItem
                 disabled={true}
@@ -371,9 +369,13 @@ export default function ListWithDogs() {
                 data-testid="copyrightButton"
                 color="primary"
               >
-                <FontAwesomeIcon icon={faCopyright} className="Github" color="black" />{" "}
+                <FontAwesomeIcon
+                  icon={faCopyright}
+                  className="Github"
+                  color="black"
+                />{" "}
                 <Grid item xs={1} />
-              All Rights Reserved.
+                All Rights Reserved.
               </MenuItem>
             </Grid>
           )}

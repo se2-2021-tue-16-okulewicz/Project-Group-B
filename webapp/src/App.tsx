@@ -55,7 +55,7 @@ function Layout() {
     if (redirect !== null) {
       history.push(redirect);
       store.dispatch(clearRedirect());
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [redirect]);
 
   const errorOnClose = () => {

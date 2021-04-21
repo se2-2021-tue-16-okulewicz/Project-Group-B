@@ -98,7 +98,9 @@ export default function Login() {
     );
   };
 
-  const goToUserRegister = () => { history.push("/register/user");};
+  const goToUserRegister = () => {
+    history.push("/register/user");
+  };
   const goToShelterRegister = () => {};
 
   useEffect(() => {
@@ -108,7 +110,7 @@ export default function Login() {
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
       history.push("/listDogs");
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [loginInfo]);
 
   //THIS makes the web app skip the log in

@@ -90,7 +90,8 @@ const EditDogDetails = (props: any) => {
     }
   }, [editedDog]);
   const [isNewPicture, setIsNewPicture] = useState(false);
-  const dogId = props.dogId === 0 ? sessionStorage.getItem("editDogId") : props.dogId;
+  const dogId =
+    props.dogId === 0 ? sessionStorage.getItem("editDogId") : props.dogId;
   let isInputNotNull = sessionStorage.getItem("editDogFields") !== null;
   const [editDogFields, setEditDogFields] = useState<ILostDog>(
     isInputNotNull

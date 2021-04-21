@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignSelf: "center",
       marginLeft: "1%",
       fontSize: "0.7em",
-      color:"gray"
+      color: "gray",
     },
     cardContent: {
       justifyContent: "center",
@@ -198,7 +198,7 @@ export default function Settings() {
     if (pageRefresh && !listFetched) {
       store.dispatch(clearDogList);
       setPageRefresh(false);
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [pageRefresh]);
 
   // fetch and append page 0
@@ -243,7 +243,7 @@ export default function Settings() {
         setFilters({ ...filters, page: filters.page + 1 });
         setPageRefresh(false);
       }
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [refreshRequired, lastPage, pages]);
 
   //filter
@@ -258,7 +258,7 @@ export default function Settings() {
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
       setPageRefresh(false);
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [refreshRequired, lastPage]);
 
   const fetchMore = () => {
@@ -348,7 +348,7 @@ export default function Settings() {
               data-testid="copyrightButton"
               disabled={true}
             >
-              <FontAwesomeIcon icon={faCopyright} className="Github"/>{" "}
+              <FontAwesomeIcon icon={faCopyright} className="Github" />{" "}
               <Grid item xs={1} />
               All Rights Reserved.
             </MenuItem>

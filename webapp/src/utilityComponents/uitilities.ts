@@ -3,7 +3,8 @@ export interface IFiltersAndCookies {
   cookies: {
     [name: string]: any;
   };
-};
+}
 
-export interface IFilters{
-  [name: string]: any;}
+export interface IFilters {
+  [name: string]: any;
+}

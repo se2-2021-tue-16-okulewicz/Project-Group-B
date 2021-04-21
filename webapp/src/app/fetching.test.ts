@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-
 import thunk from "redux-thunk";
 import expect from "expect"; // You can use any testing library
 
@@ -36,8 +35,6 @@ const errorObject = {
 };
 
 test("add the dog with a wrong token results in an error", async () => {
- 
-
   const data: RequestResponse<ILostDogWithPicture> = await Fetching.addDog(
     initLostDogProps,
     initPicture,
@@ -47,7 +44,6 @@ test("add the dog with a wrong token results in an error", async () => {
 });
 
 test("fetch the dogs with a wrong token results in an error", async () => {
- 
   const data: RequestResponse<ILostDogWithPicture[]> = await Fetching.fetchDogs(
     {},
     config.cookies
@@ -56,35 +52,30 @@ test("fetch the dogs with a wrong token results in an error", async () => {
 });
 
 test("fetching one dog with a wrong token results in an error", async () => {
- 
   const data: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
-    0,//id
+    0, //id
     config.cookies
   );
   expect(data).toEqual(errorObject);
 });
 
 test("updating the dog with a wrong token results in an error", async () => {
- 
   const data: RequestResponse<ILostDogWithPicture> = await Fetching.updateDog(
-    initLostDogWithPictureProps,//dog
+    initLostDogWithPictureProps, //dog
     config.cookies
   );
   expect(data).toEqual(errorObject);
 });
 
 test("marking the dog as found with a wrong token results in an error", async () => {
- 
   const data: RequestResponse<null> = await Fetching.markLostDogAsFound(
-    0,//dog id
+    0, //dog id
     {} //empty token
   );
   expect(data).toEqual(errorObject);
 });
 
 test("register with wrong data", async () => {
- 
-
   const data: RequestResponse<null> = await Fetching.registerRegularUser(
     initRegisterRegularUserProps
   );
@@ -92,8 +83,6 @@ test("register with wrong data", async () => {
 });
 
 test("login with wrong data", async () => {
- 
-
   const data: RequestResponse<ILoginResults> = await Fetching.login(
     initLoginProps
   );
@@ -101,8 +90,6 @@ test("login with wrong data", async () => {
 });
 
 test("logout without being logged in", async () => {
- 
-
   const data: RequestResponse<null> = await Fetching.logout(config.cookies);
   expect(data).toEqual(errorObject);
 });

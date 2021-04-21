@@ -142,7 +142,7 @@ export default function RegisterRegularUser() {
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, []);
 
   return (
