@@ -322,9 +322,12 @@ export default function Settings() {
             >
               <ExitToApp />
               <Grid item xs={1} />
-                Logout
-              </MenuItem>
-              <Divider className={classes.menuItem} style={{display:"flex", marginBottom:"10%"}}/>
+              Logout
+            </MenuItem>
+            <Divider
+              className={classes.menuItem}
+              style={{ display: "flex", marginBottom: "10%" }}
+            />
             <MenuItem
               className={classes.copyright}
               data-testid="copyrightButton"
@@ -335,12 +338,10 @@ export default function Settings() {
                 rel="noreferrer"
                 className="Github"
               >
-                <FontAwesomeIcon icon={faGithub} color="black"/>
-               
+                <FontAwesomeIcon icon={faGithub} color="black" />
               </a>
               <Grid item xs={1} />
-              SE2 Group B, {new Date().getFullYear()} 
-
+              SE2 Group B, {new Date().getFullYear()}
             </MenuItem>
             <MenuItem
               className={classes.copyright}
@@ -350,8 +351,7 @@ export default function Settings() {
               <FontAwesomeIcon icon={faCopyright} className="Github"/>{" "}
               <Grid item xs={1} />
               All Rights Reserved.
-              </MenuItem>
-
+            </MenuItem>
           </Grid>
         </SidebarContent>
       </DrawerSidebar>
