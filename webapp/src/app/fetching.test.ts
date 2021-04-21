@@ -2,23 +2,12 @@
  * @jest-environment jsdom
  */
 
-import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act, createRenderer } from "react-dom/test-utils";
-import { isNull } from "lodash";
-import { Button } from "@material-ui/core";
-import imageGrid from "../commoncomponents/imageGrid";
-
-//import configureMockStore from 'redux-mock-store'
 import thunk from "redux-thunk";
-import * as actions from "./actions";
-//import fetchMock from 'fetch-mock'
 import expect from "expect"; // You can use any testing library
 
 const middlewares = [thunk];
 //const mockStore = configureMockStore(middlewares)
 
-import axios from "axios";
 import * as Fetching from "./fetching";
 import {
   initLostDogProps,
@@ -33,7 +22,6 @@ import {
   initLoginProps,
   initRegisterRegularUserProps,
 } from "../registerLogin/registerLogintest";
-//import { addDog } from './fetching';
 
 jest.mock("axios");
 
@@ -47,8 +35,6 @@ const errorObject = {
 };
 
 test("add the dog with a wrong token results in an error", async () => {
-  //expect.assertions(1);
-
   const data: RequestResponse<ILostDogWithPicture> = await Fetching.addDog(
     initLostDogProps,
     initPicture,
@@ -58,8 +44,6 @@ test("add the dog with a wrong token results in an error", async () => {
 });
 
 test("fetch the dogs with a wrong token results in an error", async () => {
-  //expect.assertions(1);
-
   const data: RequestResponse<ILostDogWithPicture[]> = await Fetching.fetchDogs(
     {},
     config.cookies
@@ -67,9 +51,31 @@ test("fetch the dogs with a wrong token results in an error", async () => {
   expect(data).toEqual(errorObject);
 });
 
-test("register with wrong data", async () => {
-  //expect.assertions(1);
+test("fetching one dog with a wrong token results in an error", async () => {
+  const data: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
+    0, //id
+    config.cookies
+  );
+  expect(data).toEqual(errorObject);
+});
 
+test("updating the dog with a wrong token results in an error", async () => {
+  const data: RequestResponse<ILostDogWithPicture> = await Fetching.updateDog(
+    initLostDogWithPictureProps, //dog
+    config.cookies
+  );
+  expect(data).toEqual(errorObject);
+});
+
+test("marking the dog as found with a wrong token results in an error", async () => {
+  const data: RequestResponse<null> = await Fetching.markLostDogAsFound(
+    0, //dog id
+    {} //empty token
+  );
+  expect(data).toEqual(errorObject);
+});
+
+test("register with wrong data", async () => {
   const data: RequestResponse<null> = await Fetching.registerRegularUser(
     initRegisterRegularUserProps
   );
@@ -77,8 +83,6 @@ test("register with wrong data", async () => {
 });
 
 test("login with wrong data", async () => {
-  //expect.assertions(1);
-
   const data: RequestResponse<ILoginResults> = await Fetching.login(
     initLoginProps
   );
@@ -86,11 +90,20 @@ test("login with wrong data", async () => {
 });
 
 test("logout without being logged in", async () => {
-  //expect.assertions(1);
-
   const data: RequestResponse<null> = await Fetching.logout(config.cookies);
   expect(data).toEqual(errorObject);
 });
+
+/*test("fetch the dogs with a test token", async () => {
+   const data: RequestResponse<ILostDogWithPicture[]> = await Fetching.fetchDogs(
+    {//filters
+      page:0,
+      size:15
+    },//cookies
+    {token:"regularUserTestToken"},
+  );
+  expect(data).toEqual(0);
+});*/
 
 /*describe('addDog', () => {
   it('fetches successfully data from an API', async () => {

@@ -49,13 +49,13 @@ function Layout() {
   const redirect = useSelector((state: State) => state.redirect);
   const history = useHistory();
   const classes = useStyles();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, removeCookie] = useCookies();
 
   useEffect(() => {
     if (redirect !== null) {
       history.push(redirect);
       store.dispatch(clearRedirect());
-    }
+    } // eslint-disable-next-line
   }, [redirect]);
 
   const errorOnClose = () => {
@@ -86,9 +86,11 @@ function Layout() {
       <Switch>
         <Route exact path="/">
           <Login />
+          <Footer />
         </Route>
         <Route path="/register/user">
           <RegisterRegularUser />
+          <Footer />
         </Route>
         <Route path="/listDogs">
           <ListWithDogs />
@@ -98,10 +100,10 @@ function Layout() {
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />
+          <Footer />
         </Route>
         <Redirect to="/" />
       </Switch>
-      <Footer />
     </div>
   );
 }

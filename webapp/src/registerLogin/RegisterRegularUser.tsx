@@ -22,7 +22,6 @@ import { useHistory } from "react-router-dom";
 import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
-import { isString } from "lodash";
 import { registerRegularUserThunk } from "../app/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -67,7 +66,7 @@ interface internalState {
 export default function RegisterRegularUser() {
   const classes = useStyles();
   const history = useHistory();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies] = useCookies();
   const [values, setValues] = useState<internalState>({
     username: "",
     email: "",
@@ -135,6 +134,7 @@ export default function RegisterRegularUser() {
 
   function isStringValidEmail(email: string): boolean {
     //Should catch like 99%+ of valid emails
+    // eslint-disable-next-line
     let emailRegex: RegExp = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
     return emailRegex.test(email);
   }
@@ -142,7 +142,7 @@ export default function RegisterRegularUser() {
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
-    }
+    } // eslint-disable-next-line
   }, []);
 
   return (

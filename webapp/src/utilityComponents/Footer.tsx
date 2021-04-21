@@ -10,7 +10,7 @@ import { logoutThunk } from "../app/actions";
 import config from "../config/config";
 
 const Footer = () => {
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, removeCookie] = useCookies();
   const history = useHistory();
 
   const logOut = () => {
@@ -42,6 +42,7 @@ const Footer = () => {
         <a
           href="https://github.com/se2-2021-tue-16-okulewicz/Project-Group-B"
           target="_blank"
+          rel="noreferrer"
           className="Github"
         >
           <FontAwesomeIcon icon={faGithub} />

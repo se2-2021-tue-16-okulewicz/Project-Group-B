@@ -1,5 +1,5 @@
 import "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import {
   Button,
@@ -28,16 +28,13 @@ import {
   BreedTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
+import { ILostDog, IPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
-import { useHistory, useParams, useRouteMatch } from "react-router-dom";
-import config from "../config/config";
-import { useSelector } from "react-redux";
-import { State } from "../app/reducer";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -62,19 +59,17 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "aliceblue",
       backgroundColor: "aliceblue",
     },
+    mainForm: {
+      marginTop: "4%",
+    },
   })
 );
+
 const DogDetails = (props: any) => {
   //if enable is session storage is null, the form has just been opened
-  //const id = Number(useParams());
-  const { path } = useRouteMatch();
-  const dogId = props.dogId;
-  //console.log(path);
+  //need to finish details
   const history = useHistory();
   const classes = useStyles();
-  const editedDog = useSelector(
-    (state: State) => state.editedDog as ILostDogWithPicture
-  );
   const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
@@ -82,7 +77,6 @@ const DogDetails = (props: any) => {
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
   );
-
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
@@ -119,38 +113,27 @@ const DogDetails = (props: any) => {
 
   const onSubmitClicked = () => {
     try {
-      markDogAsFound(dogId);
-      history.push("/settings");
+      registerDog(lostDogFields, picture);
+      history.push("/listDogs");
     } catch (err) {
-      console.error("Failed to fetch the dog: ", err);
+      console.error("Failed to save the dog: ", err);
     }
   };
 
   const onCancelClick = () => {
-    try {
-      fetchDog(dogId);
-    } catch (err) {
-      console.error("Failed to fetch the dog: ", err);
-    }
+    history.push("/listDogs");
   };
 
-  function fetchDog(dogId: Number) {
+  function registerDog(dog: ILostDog, picture: IPicture) {
     store.dispatch(
-      Actions.fetchOneDogThunk({
-        dogId: dogId,
-        cookies: config.cookies.token,
-      }) //filters
+      Actions.addDogThunk({
+        dog: dog,
+        picture: picture,
+        cookies: cookies,
+      })
     );
   }
 
-  function markDogAsFound(dogId: Number) {
-    store.dispatch(
-      Actions.markDogAsFoundThunk({
-        dogId: dogId as number,
-        cookies: cookies,
-      }) //filters
-    );
-  }
   const handlePicturesChange = (event: any) => {
     if (event) {
       (event as File).arrayBuffer().then((fileBuffer) => {
@@ -345,8 +328,8 @@ const DogDetails = (props: any) => {
               native
               labelId="mark-label"
               label="specialmark "
-              name="specialMarks"
-              value={lostDogFields.specialMarks}
+              name="specialMark"
+              value={lostDogFields.specialMark}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -463,22 +446,12 @@ const DogDetails = (props: any) => {
           </FormControl>
           <FormControl className={classes.formControl}>
             <Button
-              data-testid="submit-button"
-              variant="contained"
-              onClick={() => onSubmitClicked()}
-              color="primary"
-            >
-              Mark Dog As Found
-            </Button>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <Button
               data-testid="cancel-button"
               variant="contained"
               onClick={onCancelClick}
-              color="secondary"
+              color="primary"
             >
-              Fetch Dog
+              Shelter
             </Button>
           </FormControl>
         </Grid>

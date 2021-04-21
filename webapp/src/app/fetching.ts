@@ -7,7 +7,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
-import { IContactInfo } from "../settings/contactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -70,19 +70,16 @@ export async function fetchDogs(
   const filtersString = Object.keys(filters)
     .map((filterName) => {
       const value = String(filters[filterName]).trim();
-      //if (filterName != "size") {
       return value ? `${filterName}=${value}` : "";
-      //}
     })
     .filter((x) => x !== "")
     .join("&");
-  //console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
         },
       }
     )
@@ -95,10 +92,10 @@ export async function fetchOneDog(
 ): Promise<RequestResponse<ILostDogWithPicture>> {
   return getResponse(
     axios.get(
-      `http://${config.backend.ip}:${config.backend.port}/lostdogs?${id}`,
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${id}`,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
         },
       }
     )
@@ -135,7 +132,7 @@ export async function addDog(
       formData,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
         },
@@ -173,7 +170,7 @@ export async function updateDog(
       formData,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
         },
@@ -189,11 +186,10 @@ export async function markLostDogAsFound(
   return getResponse(
     axios.put(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/found`,
+      undefined,
       {
         headers: {
-          token: getToken(cookies),
-          //Accept: "application/json",
-          //"Content-Type": "multipart/form-data",
+          Authorization: getToken(cookies),
         },
       }
     )
@@ -209,9 +205,7 @@ export async function fetchUserInfo(
       `http://${config.backend.ip}:${config.backend.port}/user/${userId}`,
       {
         headers: {
-          token: getToken(cookies),
-          //Accept: "application/json",
-          //"Content-Type": "multipart/form-data",
+          Authorization: getToken(cookies),
         },
       }
     )
@@ -260,7 +254,7 @@ export async function logout(cookies: {
       undefined,
       {
         headers: {
-          token: getToken(cookies),
+          Authorization: getToken(cookies),
           Accept: "application/json",
         },
       }
@@ -312,7 +306,4 @@ export async function registerRegularUser(
       }
     )
   );
-}
-function setCookies(email: string) {
-  throw new Error("Function not implemented.");
 }
