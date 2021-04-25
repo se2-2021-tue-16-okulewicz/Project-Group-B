@@ -20,6 +20,10 @@ const Register = ({ navigation }: any) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
   const status = useSelector((state: State) => state.status);
+  const [isUsernameError, setIsUsernameError] = React.useState(false);
+  const [isEmailError, setIsEmailError] = React.useState(false);
+  const [isPhoneError, setIsPhoneError] = React.useState(false);
+  const [isPasswordError, setIsPasswordError] = React.useState(false);
 
   function isStringValidPassword(password: string): boolean {
     return password.length <= 32 && password.length >= 6;
@@ -49,6 +53,51 @@ const Register = ({ navigation }: any) => {
     }
   }, [errorMessage]);
 
+  function handleUsernameError() {
+    if (isStringValidUsername(userName)) {
+      setIsUsernameError(false);
+      return;
+    }
+    setIsUsernameError(true);
+  }
+  function handleEmailError() {
+    if (isStringValidEmail(email)) {
+      setIsEmailError(false);
+      return;
+    }
+    setIsEmailError(true);
+  }
+  function handlePhoneError() {
+    if (isStringValidPhoneNumeber(phoneNumber)) {
+      setIsPhoneError(false);
+      return;
+    }
+    setIsPhoneError(true);
+  }
+  function handlePasswordError() {
+    if (isStringValidPassword(password)) {
+      setIsPasswordError(false);
+      return;
+    }
+    setIsPasswordError(true);
+  }
+
+  function handleUsername(e: string) {
+    setUserName(e);
+    if (isStringValidUsername(e)) setIsUsernameError(false)
+  }
+  function handleEmail(e: string) {
+    setEmail(e); 
+    if (isStringValidEmail(e)) setIsEmailError(false)
+  }
+  function handlePhone(e: string) {
+    setPhoneNumber(e); 
+    if (isStringValidPhoneNumeber(e)) setIsPhoneError(false)
+  }
+  function handlePassword(e: string) {
+    setPassword(e); 
+    if (isStringValidPassword(e)) setIsPasswordError(false)
+  }
 
   async function register() {
     store.dispatch(
@@ -60,30 +109,6 @@ const Register = ({ navigation }: any) => {
       })
     );
   }
-
-  // React.useEffect(() => {
-  //   if (status == "redirectToDogs") {
-  //     navigation.push("DogsList");
-  //   }
-  // }, [status]);
-
-  // const status = useSelector((state) => state.status);
-  // React.useEffect(() => {
-  //   if (status === "redirectToLogin") {
-  //     setReady(false);
-  //     store.dispatch(Actions.setIdle());
-  //     navigation.pop();
-  //     return;
-  //   }
-  //   if (status === "registering") {
-  //     setReady(false);
-  //     return;
-  //   }
-  //   if (status === "registerError") {
-  //     setReady(true);
-  //     setModalVisible(true);
-  //   }
-  // }, [status])
 
   React.useEffect(() => {
     if (isStringValidEmail(email) && isStringValidUsername(userName) && isStringValidPhoneNumeber(phoneNumber) && isStringValidPassword(password)) {
@@ -124,13 +149,27 @@ const Register = ({ navigation }: any) => {
         />
       </View>
       <View>
-        <TextInput placeholder="Username" style={styles.styles.textInput} onChangeText={(e) => setUserName(e)}></TextInput>
-        <TextInput placeholder="E-mail" style={styles.styles.textInput} onChangeText={(e) => setEmail(e)}></TextInput>
-        <TextInput placeholder="Phone number" style={styles.styles.textInput} onChangeText={(e) => setPhoneNumber(e)}></TextInput>
-        <TextInput maxLength={32} secureTextEntry={true} placeholder="Password" style={styles.styles.textInput} onChangeText={(e) => setPassword(e)}></TextInput>
-        <TouchableOpacity disabled={!ready} style={ready ? style.button : style.disabledButton} onPress={() => register()}>
-          <Text style={style.buttonText}>Register </Text>
-        </TouchableOpacity>
+        <View style={style.margin}>
+          <TextInput placeholder="Username" style={styles.styles.textInput} onChangeText={(e) => handleUsername(e)} onBlur={(e) => handleUsernameError()} ></TextInput>
+          <Text style={isUsernameError ? style.error : [{ display: 'none' }]}>Username must be at least 3 characters long</Text>
+        </View>
+        <View style={style.margin}>
+          <TextInput keyboardType={"email-address"} placeholder="E-mail" style={styles.styles.textInput} onChangeText={(e) => handleEmail(e)} onBlur={(e) => handleEmailError()}></TextInput>
+          <Text style={isEmailError ? style.error : [{ display: 'none' }]}>Email is incorrect</Text>
+        </View>
+        <View style={style.margin}>
+          <TextInput placeholder="Phone number" keyboardType="decimal-pad" style={styles.styles.textInput} onChangeText={(e) => handlePhone(e)} onBlur={(e) => handlePhoneError()}></TextInput>
+          <Text style={isPhoneError ? style.error : [{ display: 'none' }]}>Phone number is in a wrong format</Text>
+        </View>
+        <View style={style.margin}>
+          <TextInput maxLength={32} secureTextEntry={true} placeholder="Password" style={styles.styles.textInput} onChangeText={(e) => handlePassword(e)} onBlur={(e) => handlePasswordError()}></TextInput>
+          <Text style={isPasswordError ? style.error : [{ display: 'none' }]}>Password must be at least 6 characters long</Text>
+        </View>
+        <View>
+          <TouchableOpacity disabled={!ready} style={ready ? style.button : style.disabledButton} onPress={() => register()}>
+            <Text style={style.buttonText}>Register </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <SafeAreaView style={styles.styles.bottomView}>
         <Text style={styles.styles.textStyle}>Already have an account?</Text>
@@ -143,6 +182,14 @@ const Register = ({ navigation }: any) => {
 };
 
 const style = StyleSheet.create({
+  margin: {
+    margin: 7
+  },
+  error: {
+    marginLeft: 15,
+    fontSize: 10,
+    color: 'red'
+  },
   tinyLogo: {
     width: 50,
     height: 50,
