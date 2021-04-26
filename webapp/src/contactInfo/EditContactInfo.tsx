@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       verticalAlign:"center",
       marginLeft:"10%",
       marginRight:"10%",
-      marginTop:"5%",
+      marginTop:"7%",
     },
     margin: {
       margin: theme.spacing(3),
@@ -114,7 +114,8 @@ export default function EditContactInfo() {
       console.error("Failed to fetch the dogs: ", err);
     } finally {
       if(!isError.total && displayMsg===""){
-      history.push("/settings");}
+      history.push("/settings");
+      history.go(0);}
     }
 
   };

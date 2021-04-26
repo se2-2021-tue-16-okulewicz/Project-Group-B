@@ -172,7 +172,7 @@ export default function Settings(props: any) {
   const classes = useStyles();
   const history = useHistory();
   const { path } = useRouteMatch();
-  const [isListVisible, setListVisible] = useState(true);
+  const [isListVisible, setListVisible] = useState(sessionStorage.getItem("listVisible")!==null?sessionStorage.getItem("listVisible"):true);
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
@@ -181,13 +181,16 @@ export default function Settings(props: any) {
   function clearStorage() {
     sessionStorage.removeItem("dogId");
     sessionStorage.removeItem("listFetched");
+    sessionStorage.removeItem("listVisible");
     sessionStorage.clear();
   }
   const onDogsListClicked = () => {
     setListVisible(true);
+    sessionStorage.setItem("listVisible", JSON.stringify(true));
   };
   const onInfoClicked = () => {
     setListVisible(false); /*getContactInfo();*/
+    sessionStorage.setItem("listVisible", JSON.stringify(false));
   };
   const onShelterClicked = () => {
     store.dispatch(clearDogList());
