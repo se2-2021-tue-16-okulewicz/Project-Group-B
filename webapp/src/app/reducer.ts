@@ -103,7 +103,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    console.log(payload.payload.response.data);
     newState.contactInfo = payload.payload.response.data as IContactInfo;
     return newState;
   },
@@ -119,7 +118,6 @@ export const reducer = createReducer(init, {
       errorCode: errorResponse.code,
       erorMessage: errorResponse.response.message,
     };
-    console.log(newState.error);
     return newState;
   },
 
@@ -266,7 +264,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    console.log(JSON.stringify(payload.payload.response.data));
     newState.contactInfo=payload.payload.response.data as IContactInfo;
     return newState;
   },
@@ -276,7 +273,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
-    console.log(JSON.stringify(payload.payload));
     newState.loading = false;
     newState.error = {
       hasError: true,

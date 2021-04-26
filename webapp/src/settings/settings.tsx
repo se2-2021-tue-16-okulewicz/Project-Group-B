@@ -34,14 +34,12 @@ import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
 import ContactInfo from "../contactInfo/ContactInfo";
 import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
-
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
 const SidebarContent = getSidebarContent(styled);
-
 const scheme = Layout();
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -172,7 +170,6 @@ export default function Settings(props: any) {
   const classes = useStyles();
   const history = useHistory();
   const { path } = useRouteMatch();
-  console.log(sessionStorage.getItem("listVisible"));
   const isInputNotNull = sessionStorage.getItem("listVisible") !== null;
   const [isListVisible, setListVisible] = useState<boolean>(isInputNotNull?JSON.parse(sessionStorage.getItem("listVisible" )as string):true);
   const [filters, setFilters] = useState<IFilters>({
