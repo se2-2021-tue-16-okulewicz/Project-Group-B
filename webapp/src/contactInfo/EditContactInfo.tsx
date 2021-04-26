@@ -5,6 +5,7 @@ import {
   createStyles,
   FormControl,
   FormHelperText,
+  Grid,
   IconButton,
   Input,
   InputAdornment,
@@ -27,13 +28,14 @@ import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, i
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
+    mainForm: {
       display: "flex",
       flexWrap: "wrap",
       "& > * + *": {
         marginLeft: theme.spacing(2),
       },
-      fontSize: "17px",
+      alignSelf:"center",
+      margin: "5%",
     },
     margin: {
       margin: theme.spacing(1),
@@ -50,6 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     card: {
       backgroundColor: "aliceblue",
+      
     },
   })
 );
@@ -64,7 +67,7 @@ interface internalState {
   showRepeatedPassword: boolean;
 }
 
-export default function RegisterRegularUser() {
+export default function EditContactInfo() {
   const classes = useStyles();
   const history = useHistory(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -103,31 +106,26 @@ export default function RegisterRegularUser() {
 
   const onRegisterClicked = () => {
     //temporary before adding endpoint for fetching user's data
-    store.dispatch(
-      registerRegularUserThunk({
+    /*store.dispatch(
+        updateContactInfo({
         username: values.username,
         password: values.password,
         email: values.email,
         phone: values.phone,
       })
-    );
+    );*/
   };
+
+  const onCancelClicked = () => {
+  };
+
 
   const goToLogin = () => {
     history.push("/");
   };
 
-  useEffect(() => {
-    if (cookies[config.cookies.userType] !== undefined) {
-      history.push("/listDogs");
-    } // eslint-disable-next-line
-  }, []);
-
   return (
-    <div className="Register">
-      <div className="Title">Lost Dogs and Shelters</div>
-      <div>
-        <FormControl className={classes.formControl}>
+        <FormControl className={classes.mainForm}>
           <Card className={classes.card} variant="outlined">
             <CardHeader title="" />
             <div className="AccountListWrapper">
@@ -235,7 +233,9 @@ export default function RegisterRegularUser() {
               </div>
               <div>
                 <FormControl className={classes.formControl}>
+                  <Grid container spacing={2} style={{alignContent:"space-evenly", alignSelf:"stretch"}}>
                   <Button
+                    className="save"
                     data-testid="submit-button"
                     variant="contained"
                     onClick={() => onRegisterClicked()}
@@ -250,26 +250,30 @@ export default function RegisterRegularUser() {
                       )
                     }
                   >
-                    Register
+                    Save
                   </Button>
+                  <Button
+                    data-testid="submit-button"
+                    variant="contained"
+                    onClick={() => onCancelClicked()}
+                    color="primary"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    data-testid="submit-button"
+                    variant="contained"
+                    onClick={() => onCancelClicked()}
+                    color="primary"
+                  >
+                    Cancel
+                  </Button>
+                  </Grid>
                 </FormControl>
+              
               </div>
             </div>
           </Card>
         </FormControl>
-      </div>
-      <div className="LowerText">Already have an account?</div>
-      <div>
-        <Link
-          className={classes.root}
-          component="button"
-          onClick={() => goToLogin()}
-          //color="inherit"
-          variant="body2"
-        >
-          Login
-        </Link>
-      </div>
-    </div>
   );
 }

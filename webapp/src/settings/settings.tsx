@@ -32,6 +32,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
+import EditContactInfo from "../contactInfo/EditContactInfo";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -386,7 +387,7 @@ export default function Settings(props: any) {
             />
           </InfiniteScroll>
         )}
-        {!isListVisible && <Card></Card>}
+        {!isListVisible && <EditContactInfo/>}
       </Content>
     </Root>
   );

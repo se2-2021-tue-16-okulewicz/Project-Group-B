@@ -35,7 +35,7 @@ import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import { ValidateFetchedDog } from "../utilityComponents/utilities";
+import { ValidateFetchedDog } from "../utilityComponents/validation";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

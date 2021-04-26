@@ -6,7 +6,7 @@ import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import config from "../config/config";
 import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
-import { ValidateFetchedDog } from "../utilityComponents/utilities";
+import { ValidateFetchedDog } from "../utilityComponents/validation";
 
 export type Error = {
   hasError: boolean;
