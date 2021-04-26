@@ -18,5 +18,3 @@ export interface internalState {
   showPassword: boolean;
   showRepeatedPassword: boolean;
 }
-
-

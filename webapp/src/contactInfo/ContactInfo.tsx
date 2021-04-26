@@ -23,7 +23,12 @@ import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
 import { fetchContactInfoThunk } from "../app/actions";
-import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, isStringValidPassword } from "../utilityComponents/validation";
+import {
+  isStringValidUsername,
+  isStringValidEmail,
+  isStringValidPhoneNumeber,
+  isStringValidPassword,
+} from "../utilityComponents/validation";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
 import { internalState } from "../utilityComponents/utilities";
@@ -34,10 +39,10 @@ const useStyles = makeStyles((theme: Theme) =>
     mainForm: {
       display: "flex",
       flexWrap: "wrap",
-      alignSelf:"center",
+      alignSelf: "center",
       marginTop: "10%",
-      marginLeft:"10%",
-      marginRight:"10%",
+      marginLeft: "10%",
+      marginRight: "10%",
     },
     margin: {
       margin: theme.spacing(3),
@@ -47,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     textField: {
       width: "45ch",
-      fontSize:"20px"
+      fontSize: "20px",
     },
     formControl: {
       margin: theme.spacing(3),
@@ -59,63 +64,64 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ContactInfo(props:any) {
+export default function ContactInfo(props: any) {
   const classes = useStyles();
   const history = useHistory(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  const values = useSelector((state: State) => state.contactInfo as IContactInfo);
+  const values = useSelector(
+    (state: State) => state.contactInfo as IContactInfo
+  );
 
   const onEditClicked = () => {
     history.push("/info/edit");
   };
 
-
   return (
-        <FormControl className={classes.mainForm}>
-          <Card className={classes.card} variant="outlined">
-            <CardHeader title="" />
-            <div className="AccountListWrapper">
-              <div>
-                <TextField
-                  className={clsx(classes.margin, classes.textField)}
-                  label="Name"
-                  type={"text"}
-                  value={values.name}
-                  disabled
-                />
-              </div>
-              <div>
-                <TextField
-                  className={clsx(classes.margin, classes.textField)}
-                  label="E-mail"
-                  type={"text"}
-                  value={values.email}
-                  disabled
-                />
-              </div>
-              <div>
-                <TextField
-                  className={clsx(classes.margin, classes.textField)}
-                  label="Phone number"
-                  type={"text"}
-                  value={values.phoneNumber}
-                  disabled
-                />
-              </div>
-              <div>
-                <FormControl className={classes.formControl}>
-                  <Button
-                  className="edit"
-                    variant="contained"
-                    onClick={() => onEditClicked()}
-                    color="primary"
-                  >
-                    Edit
-                  </Button>
-                </FormControl>
-              </div>
-            </div>
-          </Card>
-        </FormControl>
+    <FormControl className={classes.mainForm}>
+      <Card className={classes.card} variant="outlined">
+        <CardHeader title="" />
+        <div className="AccountListWrapper">
+          <div>
+            <TextField
+              className={clsx(classes.margin, classes.textField)}
+              label="Name"
+              type={"text"}
+              value={values.name}
+              disabled
+            />
+          </div>
+          <div>
+            <TextField
+              className={clsx(classes.margin, classes.textField)}
+              label="E-mail"
+              type={"text"}
+              value={values.email}
+              disabled
+            />
+          </div>
+          <div>
+            <TextField
+              className={clsx(classes.margin, classes.textField)}
+              label="Phone number"
+              type={"text"}
+              value={values.phoneNumber}
+              disabled
+            />
+          </div>
+          <div>
+            <FormControl className={classes.formControl}>
+              <Button
+                className="edit"
+                variant="contained"
+                onClick={() => onEditClicked()}
+                color="primary"
+              >
+                Edit
+              </Button>
+            </FormControl>
+          </div>
+        </div>
+      </Card>
+    </FormControl>
   );
 }

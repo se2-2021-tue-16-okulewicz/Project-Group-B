@@ -23,7 +23,12 @@ import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
 import { registerRegularUserThunk } from "../app/actions";
-import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, isStringValidPassword } from "../utilityComponents/validation";
+import {
+  isStringValidUsername,
+  isStringValidEmail,
+  isStringValidPhoneNumeber,
+  isStringValidPassword,
+} from "../utilityComponents/validation";
 import { internalState } from "../utilityComponents/utilities";
 
 const useStyles = makeStyles((theme: Theme) =>

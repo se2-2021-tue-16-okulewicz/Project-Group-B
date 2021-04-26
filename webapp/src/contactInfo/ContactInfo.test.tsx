@@ -8,10 +8,7 @@ import { act } from "react-dom/test-utils";
 import { isNull } from "lodash";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
-import {
-  Route,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import EditContactInfo from "./EditContactInfo";
 
 let container: HTMLDivElement | null = null;

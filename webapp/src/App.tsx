@@ -107,8 +107,8 @@ function Layout() {
           <Footer />
         </Route>
         <Route path="/info/edit">
-            <EditContactInfo/>
-            <Footer />
+          <EditContactInfo />
+          <Footer />
         </Route>
         <Route path="/listDogs">
           <ListWithDogs />
