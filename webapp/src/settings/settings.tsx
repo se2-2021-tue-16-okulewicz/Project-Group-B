@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Card, Divider, Grid, MenuItem } from "@material-ui/core";
+import { Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useRouteMatch, useHistory } from "react-router-dom";

@@ -10,7 +10,6 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-  Link,
   makeStyles,
   TextField,
   Theme,
@@ -23,7 +22,7 @@ import { useHistory } from "react-router-dom";
 import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
-import { registerRegularUserThunk } from "../app/actions";
+import { fetchContactInfoThunk } from "../app/actions";
 import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, isStringValidPassword } from "../utilityComponents/validation";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,9 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
     mainForm: {
       display: "flex",
       flexWrap: "wrap",
-      "& > * + *": {
-        marginLeft: theme.spacing(2),
-      },
       alignSelf:"center",
       margin: "5%",
     },
@@ -117,11 +113,6 @@ export default function EditContactInfo() {
   };
 
   const onCancelClicked = () => {
-  };
-
-
-  const goToLogin = () => {
-    history.push("/");
   };
 
   return (
@@ -236,7 +227,6 @@ export default function EditContactInfo() {
                   <Grid container spacing={2} style={{alignContent:"space-evenly", alignSelf:"stretch"}}>
                   <Button
                     className="save"
-                    data-testid="submit-button"
                     variant="contained"
                     onClick={() => onRegisterClicked()}
                     color="primary"
@@ -253,7 +243,6 @@ export default function EditContactInfo() {
                     Save
                   </Button>
                   <Button
-                    data-testid="submit-button"
                     variant="contained"
                     onClick={() => onCancelClicked()}
                     color="primary"
@@ -261,7 +250,6 @@ export default function EditContactInfo() {
                     Edit
                   </Button>
                   <Button
-                    data-testid="submit-button"
                     variant="contained"
                     onClick={() => onCancelClicked()}
                     color="primary"
