@@ -23,7 +23,7 @@ public class ExceptionHelper {
     @ExceptionHandler(value = { UnauthorizedException.class })
     public ResponseEntity<Response<Object>> handleUnauthorizedException(UnauthorizedException ex) {
         logger.error("GenericBadRequestException: {}", ex.getMessage());
-        return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = { MissingServletRequestPartException.class })

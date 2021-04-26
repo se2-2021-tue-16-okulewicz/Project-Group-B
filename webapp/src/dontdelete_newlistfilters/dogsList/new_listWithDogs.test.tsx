@@ -4,10 +4,12 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act, createRenderer } from "react-dom/test-utils";
-import EditDetails from "./editDetails";
+import { act } from "react-dom/test-utils";
+import NewListWithDogs from "./new_listWithDogs";
 import { isNull } from "lodash";
-import { Button } from "@material-ui/core";
+import { store } from "../../app/store";
+import { Provider } from "react-redux";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -25,19 +27,20 @@ afterEach(() => {
   }
 });
 
-it("Rendered register form button", () => {
+it("Rendered list of dogs", () => {
   act(() => {
-    render(<EditDetails />, container);
+    render(
+      <Provider store={store}>
+        <Router>
+          <Route path="/listDogs">
+            <NewListWithDogs />
+          </Route>
+        </Router>
+      </Provider>,
+      container
+    );
   });
-  expect(container?.getElementsByClassName("mainForm").length).toEqual(1);
   expect(
-    container?.getElementsByClassName("classes.formControl").length
+    container?.getElementsByClassName("loader").length
   ).toBeGreaterThanOrEqual(0);
-});
-
-it("test only register button", () => {
-  act(() => {
-    render(<EditDetails />, container);
-  });
-  const myRegisterClicked = jest.fn();
 });

@@ -6,15 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import se.backend.SEBackend;
+import se.backend.service.login.LoginService;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -36,7 +34,7 @@ public class DogsControllerTest {
         //Get all dogs
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
             .andExpect(jsonPath("successful", is(true)))
             .andExpect(jsonPath("message", is("4 dog(s) found")))
@@ -48,18 +46,18 @@ public class DogsControllerTest {
         //Unauthorized
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs")
-                        .header("token", "tokenIsInvalid")
-        ).andExpect(status().isForbidden())
-                .andExpect(jsonPath("successful", is(false)))
-                .andExpect(jsonPath("data").value(IsNull.nullValue()));
-    }
+                        .header(LoginService.authorizationHeader, "tokenIsInvalid")
+        ).andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("successful", is(false)))
+            .andExpect(jsonPath("data").value(IsNull.nullValue()));
+}
 
     @Test
     public void AddTest() throws Exception {
 
-        MockMultipartFile fullDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
-        MockMultipartFile dogWithMissingElements = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"color\":\"pink\",\"earsType\":\"\",\"hairLength\":\"long\",\"name\":\"\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
-        MockMultipartFile badlyFormattedDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-3-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile fullDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile dogWithMissingElements = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"color\":\"pink\",\"earsType\":\"\",\"hairLength\":\"long\",\"name\":\"\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile badlyFormattedDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-3-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
 
 
         MockMultipartFile validPicture = new MockMultipartFile("picture", "image_name.png", "image/png", validImageData);
@@ -70,7 +68,7 @@ public class DogsControllerTest {
                 MockMvcRequestBuilders.multipart("/lostdogs")
                         .file(fullDog)
                         .file(validPicture)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data.name", is("Pinky")))
@@ -84,8 +82,8 @@ public class DogsControllerTest {
                 MockMvcRequestBuilders.multipart("/lostdogs")
                         .file(fullDog)
                         .file(validPicture)
-                        .header("token", "tokenIsInvalid")
-        ).andExpect(status().isForbidden())
+                        .header(LoginService.authorizationHeader, "tokenIsInvalid")
+        ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
 
@@ -94,7 +92,7 @@ public class DogsControllerTest {
                 MockMvcRequestBuilders.multipart("/lostdogs")
                         .file(dogWithMissingElements)
                         .file(validPicture)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Dog does not have complete data")))
@@ -105,7 +103,7 @@ public class DogsControllerTest {
                 MockMvcRequestBuilders.multipart("/lostdogs")
                         .file(fullDog)
                         .file(invalidPicture)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Picture is not valid")))
@@ -115,7 +113,7 @@ public class DogsControllerTest {
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/lostdogs")
                         .file(fullDog)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Missing part of a request")))
@@ -126,7 +124,7 @@ public class DogsControllerTest {
                 MockMvcRequestBuilders.multipart("/lostdogs")
                         .file(badlyFormattedDog)
                         .file(validPicture)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Could not read provided data")))
@@ -139,7 +137,7 @@ public class DogsControllerTest {
         //Deleting dog
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/10001")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data", is(true)));
@@ -147,7 +145,7 @@ public class DogsControllerTest {
         //Deleting not existing dog
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/20001")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Failed to delete dog with id: 20001")));
@@ -155,8 +153,8 @@ public class DogsControllerTest {
         //Unauthorized
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/20001")
-                        .header("token", "tokenIsInvalid")
-        ).andExpect(status().isForbidden())
+                        .header(LoginService.authorizationHeader, "tokenIsInvalid")
+        ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
     }
@@ -167,7 +165,7 @@ public class DogsControllerTest {
         //Getting existing dog
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs/10001")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data.name", is("Pinky")))
@@ -177,7 +175,7 @@ public class DogsControllerTest {
         //Getting non-existing dog
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs/20001")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Failed to fetch dog with id: 20001")));
@@ -186,9 +184,9 @@ public class DogsControllerTest {
     @Test
     public void UpdateDogTest() throws Exception {
 
-        MockMultipartFile fullDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"John\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
-        MockMultipartFile dogWithMissingElements = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"color\":\"pink\",\"earsType\":\"\",\"hairLength\":\"long\",\"name\":\"\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
-        MockMultipartFile badlyFormattedDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMarks\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-3-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile fullDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"John\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile dogWithMissingElements = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"color\":\"pink\",\"earsType\":\"\",\"hairLength\":\"long\",\"name\":\"\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-03-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile badlyFormattedDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"dateLost\":\"2021-3-15\",\"location\":{\"city\":\"Lublin\",\"district\":\"LSM\"},\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
 
 
         MockMultipartFile validPicture = new MockMultipartFile("picture", "image_name.png", "image/png", validImageData);
@@ -208,7 +206,7 @@ public class DogsControllerTest {
         mockMvc.perform(existingDogBuilder
                 .file(fullDog)
                 .file(validPicture)
-                .header("token", "regularUserTestToken")
+                .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data.name", is("John")))
@@ -226,8 +224,8 @@ public class DogsControllerTest {
         mockMvc.perform(existingDogBuilder
                 .file(fullDog)
                 .file(validPicture)
-                .header("token", "tokenIsInvalid")
-        ).andExpect(status().isForbidden())
+                .header(LoginService.authorizationHeader, "tokenIsInvalid")
+        ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
 
@@ -242,7 +240,7 @@ public class DogsControllerTest {
         mockMvc.perform(existingDogBuilder
                         .file(dogWithMissingElements)
                         .file(validPicture)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Dog does not have complete data")))
@@ -258,7 +256,7 @@ public class DogsControllerTest {
         mockMvc.perform(existingDogBuilder
                         .file(fullDog)
                         .file(invalidPicture)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Picture is not valid")))
@@ -273,7 +271,7 @@ public class DogsControllerTest {
 
         mockMvc.perform(existingDogBuilder
                         .file(fullDog)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Missing part of a request")))
@@ -289,7 +287,7 @@ public class DogsControllerTest {
         mockMvc.perform(existingDogBuilder
                         .file(badlyFormattedDog)
                         .file(validPicture)
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Could not read provided data")))
@@ -305,7 +303,7 @@ public class DogsControllerTest {
         mockMvc.perform(nonexistingDogBuilder
                 .file(fullDog)
                 .file(validPicture)
-                .header("token", "regularUserTestToken")
+                .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Failed to update dog - No dog with id: 20001 was found")));
@@ -316,36 +314,36 @@ public class DogsControllerTest {
         //Getting existing dog and checking that it is not found
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs/10001")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("data.isFound", is(false)));
 
         //Marking dog as found
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/lostdogs/10001/found")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)));
 
         //Getting existing dog and checking that it is found now
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/lostdogs/10001")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("data.isFound", is(true)));
 
         //Marking non-existing dog as found
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/lostdogs/20001/found")
-                        .header("token", "regularUserTestToken")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)));
 
         //Invalid token
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/lostdogs/10001/found")
-                        .header("token", "invalidToken")
-        ).andExpect(status().isForbidden())
+                        .header(LoginService.authorizationHeader, "invalidToken")
+        ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)));
     }
 }

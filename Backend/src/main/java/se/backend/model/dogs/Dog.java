@@ -18,7 +18,7 @@ public class Dog {
     private long pictureId;
     private String size;
     private String color;
-    private String specialMarks;
+    private String specialMark;
     private String name;
     private String hairLength;
     private String earsType;
@@ -31,7 +31,7 @@ public class Dog {
         age = another.age;
         size = another.size;
         color = another.color;
-        specialMarks = another.specialMarks;
+        specialMark = another.specialMark;
         name = another.name;
         hairLength = another.hairLength;
         earsType = another.earsType;
@@ -44,7 +44,7 @@ public class Dog {
         return StringUtils.IsValidString(breed) &&
                 StringUtils.IsValidString(size) &&
                 StringUtils.IsValidString(color) &&
-                StringUtils.IsValidString(specialMarks) &&
+                StringUtils.IsValidString(specialMark) &&
                 StringUtils.IsValidString(name) &&
                 StringUtils.IsValidString(hairLength) &&
                 StringUtils.IsValidString(earsType) &&

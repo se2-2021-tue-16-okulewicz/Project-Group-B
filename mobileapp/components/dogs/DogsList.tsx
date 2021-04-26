@@ -25,7 +25,9 @@ export default function DogsList({ navigation }: any) {
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
   const isLoading = useSelector((state: State) => state.loadingDogs);
-  const cookies = useSelector((state: State) => state.loginInformation?.token);
+  const Authorization = useSelector(
+    (state: State) => state.loginInformation?.token
+  );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh
   );
@@ -46,7 +48,7 @@ export default function DogsList({ navigation }: any) {
             ...filters,
             page: config.defaultFilters.page,
           },
-          cookies: cookies,
+          Authorization: Authorization,
         }) //filters
       );
       //set page number to 0
@@ -68,7 +70,7 @@ export default function DogsList({ navigation }: any) {
     store.dispatch(
       Actions.fetchDogsThunk({
         filters: { ...filters, page: filters.page + 1 },
-        cookies: cookies,
+        Authorization: Authorization,
       }) //filters
     );
     setFilters({ ...filters, page: filters.page + 1 });
@@ -76,15 +78,18 @@ export default function DogsList({ navigation }: any) {
 
   function markDogAsFound(id: number) {
     store.dispatch(
-      Actions.markLostDogAsFoundThunk({ cookies: cookies, dogID: id })
+      Actions.markLostDogAsFoundThunk({
+        Authorization: Authorization,
+        dogID: id,
+      })
     );
   }
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
-    <View style={styles.item}>
+    <View style={[styles.item]}>
       <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
-        <View style={styles.rowP}>
+        <View style={[{ flexDirection: "row" }]}>
           <Image
             style={styles.picture}
             source={{
@@ -93,9 +98,13 @@ export default function DogsList({ navigation }: any) {
               }`,
             }}
           />
-          <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
-            <Text style={styles.right}>Mark as found</Text>
-          </TouchableOpacity>
+          {!dog.isFound ? (
+            <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
+              <Text style={styles.lost}>Mark as found</Text>
+            </TouchableOpacity>
+          ) : (
+            <Text style={styles.found}>Found</Text>
+          )}
         </View>
 
         <View style={styles.row}>
@@ -114,7 +123,7 @@ export default function DogsList({ navigation }: any) {
         <Text>Loading...</Text>
       ) : (
         <View>
-          <Text>Displaying {myDogs.length} dogs</Text>
+          <Text>Displaying dogs: {myDogs.length}</Text>
 
           <FlatList
             data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
@@ -172,9 +181,16 @@ const styles = StyleSheet.create({
   rowP: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems: "baseline",
+    textAlignVertical: "center",
   },
   right: {
-    marginLeft: 50,
+    // marginLeft: 50,
+  },
+  found: {
+    marginLeft: "33%",
+    color: "green",
+  },
+  lost: {
+    marginLeft: "37%",
   },
 });

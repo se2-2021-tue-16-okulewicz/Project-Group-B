@@ -13,7 +13,7 @@ export interface IPicture {
   id: number;
   fileName: string;
   fileType: string;
-  data: ArrayBuffer;
+  data: ArrayBuffer | string;
 }
 export interface IDog {
   id: number;
@@ -26,7 +26,7 @@ export interface IDog {
   size: SizeTypes | "";
   earsType: EarsTypes | "";
   tailLength: TailTypes | "";
-  specialMarks: SpecialMarkTypes | "";
+  specialMark: SpecialMarkTypes | "";
   behaviors: BehaviorsTypes[];
   location: { city: string; district: string };
 }

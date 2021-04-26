@@ -70,6 +70,7 @@ export default function Login() {
 
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const history = useHistory();
+  // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
 
   const handleChange = (prop: keyof internalState) => (
@@ -100,7 +101,6 @@ export default function Login() {
   const goToUserRegister = () => {
     history.push("/register/user");
   };
-
   const goToShelterRegister = () => {};
 
   useEffect(() => {
@@ -110,13 +110,14 @@ export default function Login() {
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
       history.push("/listDogs");
-    }
+    } // eslint-disable-next-line
   }, [loginInfo]);
 
+  //THIS makes the web app skip the log in
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
-    }
+    } // eslint-disable-next-line
   }, []);
 
   return (
@@ -194,7 +195,6 @@ export default function Login() {
           className={classes.root}
           component="button"
           onClick={() => goToUserRegister()}
-          //color="inherit"
           variant="body2"
         >
           Create an account
@@ -206,7 +206,6 @@ export default function Login() {
           className={classes.root}
           component="button"
           onClick={() => goToShelterRegister()}
-          //color="inherit"
           variant="body2"
         >
           Create new shelter

@@ -4,17 +4,12 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act, createRenderer } from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
 import RegisterDogForm from "./registerDog";
 import { isNull } from "lodash";
-import { Button } from "@material-ui/core";
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import { store } from "../app/store";
+import { Provider } from "react-redux";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -34,11 +29,26 @@ afterEach(() => {
 
 it("Rendered register form button", () => {
   act(() => {
-    render(<RegisterDogForm />, container);
+    render(
+      <Provider store={store}>
+        <Router>
+          <Route path="/addDog">
+            <RegisterDogForm />
+          </Route>
+        </Router>
+      </Provider>,
+      container
+    );
   });
-  expect(container?.getElementsByClassName("mainForm").length).toEqual(1);
   expect(
-    container?.getElementsByClassName("classes.formControl").length
+    container?.getElementsByClassName("mainForm").length
+  ).toBeGreaterThanOrEqual(0);
+  expect(container?.childElementCount).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByClassName("cardContent").length
+  ).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByClassName("formControl").length
   ).toBeGreaterThanOrEqual(0);
 });
 

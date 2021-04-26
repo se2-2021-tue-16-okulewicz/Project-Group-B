@@ -4,19 +4,12 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act, createRenderer } from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
 import Settings from "./settings";
 import { isNull } from "lodash";
-import { Button } from "@material-ui/core";
 import { store } from "../app/store";
 import { Provider } from "react-redux";
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {

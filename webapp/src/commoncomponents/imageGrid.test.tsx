@@ -35,7 +35,7 @@ afterEach(() => {
   }
 });
 
-it("Rendered list of gridlistitems", () => {
+it("Rendered list of dog cards", () => {
   act(() => {
     render(
       <Provider store={store}>
@@ -50,9 +50,9 @@ it("Rendered list of gridlistitems", () => {
   });
   //expect(container).toMatchSnapshot();
   //container?.getElementsByTagName("registerButton")
-  /*expect(container?.getElementsByClassName("tile").length).toEqual(
+  expect(container?.getElementsByClassName("tile").length).toEqual(
     testDogList.length
   );
-
-  expect(container?.getElementsByClassName("Alex").length).toEqual(1);*/
+  //check if dog named alex was rendered
+  expect(container?.getElementsByClassName("Alex").length).toEqual(1);
 });

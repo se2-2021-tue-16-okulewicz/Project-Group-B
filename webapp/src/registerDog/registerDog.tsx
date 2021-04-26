@@ -5,8 +5,8 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
   Input,
+  InputAdornment,
   MenuItem,
   Select,
   TextField,
@@ -35,15 +35,16 @@ import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
+import { ValidateFetchedDog } from "../utilityComponents/utilities";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formControl: {
-      margin: theme.spacing(1),
+      marginBottom: theme.spacing(1.5),
       minWidth: 120,
     },
     selectEmpty: {
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(1),
     },
     chips: {
       display: "flex",
@@ -59,13 +60,18 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "aliceblue",
       backgroundColor: "aliceblue",
     },
+    mainForm: {
+      marginLeft: "0.5%",
+      marginRight: "0.5%",
+      marginTop: "0.009%",
+    },
   })
 );
 
 export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
-  const classes = useStyles();
+  const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
@@ -73,6 +79,7 @@ export default function RegisterDogForm() {
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
   );
+
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
@@ -107,20 +114,32 @@ export default function RegisterDogForm() {
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
 
+  function clearStorage() {
+    sessionStorage.removeItem("lostDogFields");
+    sessionStorage.removeItem("inputField");
+    sessionStorage.clear();
+  }
+
   const onSubmitClicked = () => {
     try {
       registerDog(lostDogFields, picture);
-      history.push("/listDogs");
+      store.dispatch(Actions.clearDogList);
+      clearStorage();
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }
+    history.push("/listDogs");
+    history.go(0);
   };
 
   const onCancelClick = () => {
+    clearStorage();
+    store.dispatch(Actions.clearDogList);
     history.push("/listDogs");
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
+    dog = ValidateFetchedDog(dog);
     store.dispatch(
       Actions.addDogThunk({
         dog: dog,
@@ -145,19 +164,12 @@ export default function RegisterDogForm() {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
       <Grid
-        className="mainForm"
+        className={classes.mainForm}
         container
         alignContent="space-between"
-        spacing={5}
+        spacing={7}
       >
-        <Grid
-          container
-          item
-          xs={5}
-          direction="column"
-          alignContent="stretch"
-          spacing={1}
-        >
+        <Grid container item xs={5} direction="column" alignContent="stretch">
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
               Name
@@ -184,26 +196,22 @@ export default function RegisterDogForm() {
             </Card>
           </FormControl>
         </Grid>
-        <Grid
-          container
-          item
-          xs={3}
-          direction="column"
-          alignContent="stretch"
-          spacing={1}
-        >
+        <Grid container item xs={3} direction="column" alignContent="stretch">
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="age-label">
-              Age
-            </InputLabel>
             <TextField
-              data-testid="age-input"
+              label="Age"
               type="number"
               id="age"
               name="age"
               value={lostDogFields.age}
               onChange={inputsHandler}
-              required
+              InputProps={{
+                inputProps: { min: 0, max: 30 },
+                startAdornment: (
+                  <InputAdornment position="start">Years</InputAdornment>
+                ),
+              }}
+              variant="outlined"
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
@@ -324,8 +332,8 @@ export default function RegisterDogForm() {
               native
               labelId="mark-label"
               label="specialmark "
-              name="specialMarks"
-              value={lostDogFields.specialMarks}
+              name="specialMark"
+              value={lostDogFields.specialMark}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -362,14 +370,7 @@ export default function RegisterDogForm() {
             </Select>
           </FormControl>
         </Grid>
-        <Grid
-          container
-          item
-          xs={4}
-          direction="column"
-          alignContent="stretch"
-          spacing={1}
-        >
+        <Grid container item xs={4} direction="column" alignContent="stretch">
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel shrink id="calendar-label">
               Dog was lost on

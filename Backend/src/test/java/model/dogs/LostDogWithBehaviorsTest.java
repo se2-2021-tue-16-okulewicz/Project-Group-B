@@ -20,7 +20,7 @@ public class LostDogWithBehaviorsTest {
         dog.setBreed("0");
         dog.setSize("a");
         dog.setColor("b");
-        dog.setSpecialMarks("c");
+        dog.setSpecialMark("c");
         dog.setName("d");
         dog.setHairLength("e");
         dog.setEarsType("f");
@@ -42,7 +42,7 @@ public class LostDogWithBehaviorsTest {
         dog.setBreed("0");
         dog.setSize("a");
         dog.setColor("b");
-        dog.setSpecialMarks("c");
+        dog.setSpecialMark("c");
         dog.setName("d");
         dog.setHairLength("e");
         dog.setEarsType("f");
@@ -64,7 +64,7 @@ public class LostDogWithBehaviorsTest {
         dog.setBreed("0");
         dog.setSize("a");
         dog.setColor("b");
-        dog.setSpecialMarks("c");
+        dog.setSpecialMark("c");
         dog.setName("d");
         dog.setHairLength("e");
         dog.setEarsType("f");
@@ -86,7 +86,7 @@ public class LostDogWithBehaviorsTest {
         dog.setBreed("0");
         dog.setSize("a");
         dog.setColor("b");
-        dog.setSpecialMarks("c");
+        dog.setSpecialMark("c");
         dog.setName("d");
         dog.setHairLength("e");
         dog.setEarsType("f");
@@ -108,7 +108,7 @@ public class LostDogWithBehaviorsTest {
         dog.setBreed("0");
         dog.setSize("a");
         dog.setColor("b");
-        dog.setSpecialMarks("c");
+        dog.setSpecialMark("c");
         //dog.setName("d");
         dog.setHairLength("e");
         dog.setEarsType("f");

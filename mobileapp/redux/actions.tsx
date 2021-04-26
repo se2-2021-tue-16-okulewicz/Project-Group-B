@@ -36,7 +36,7 @@ export const fetchDogsThunk = createAsyncThunk(
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<
       ILostDogWithPicture[] | null
-    > = await Fetching.fetchDogs(item.filters, item.cookies);
+    > = await Fetching.fetchDogs(item.filters, item.Authorization);
 
     if (response.response.successful !== true) {
       return rejectWithValue(
@@ -65,7 +65,7 @@ export const markLostDogAsFoundThunk = createAsyncThunk(
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<
       ILostDogWithPicture[] | null
-    > = await Fetching.markLostDogAsFound(item.dogID, item.cookies);
+    > = await Fetching.markLostDogAsFound(item.dogID, item.Authorization);
 
     if (response.response.successful !== true) {
       return rejectWithValue(

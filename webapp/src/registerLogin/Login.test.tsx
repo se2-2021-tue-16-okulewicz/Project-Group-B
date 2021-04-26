@@ -73,6 +73,7 @@ describe("reducer", () => {
         erorMessage: "",
       },
       loginInformation: null,
+      pages: 0,
       redirect: null,
       settingsRequireRefresh: true,
     });
