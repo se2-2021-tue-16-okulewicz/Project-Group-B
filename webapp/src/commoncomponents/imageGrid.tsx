@@ -12,6 +12,7 @@ import EditDogDetails from "../editDogDetails/editDogDetails";
 import { store } from "../app/store";
 import * as Actions from "../app/actions";
 import { Edit } from "@material-ui/icons";
+import DogDetails from "../dogDetails/dogDetails";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,25 +38,8 @@ export default function ImageGrid(props: any) {
   const dogs = props.dogs as ILostDogWithPicture[];
   const [dogId, setDogId] = useState(0);
   const history = useHistory();
-  /*const editedDog = useSelector(
-    (state: State) => state.editedDog as ILostDogWithPicture
-  );*/
-  const redirectToEditDetails = (id: number) => {
-    //console.log(props.cookies);
-    try {
-      store.dispatch(
-        Actions.fetchOneDogThunk({
-          id: id as number,
-          cookies: props.cookies,
-        })
-      );
-    } catch (err) {
-      console.error("Failed to fetch the dog: ", err);
-    } finally {
-      sessionStorage.setItem("editDogId", JSON.stringify(id));
-      //sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
-      history.push(`${props.path}/edit/${id}`);
-    }
+  const redirectToDogDetailsOrEdit = (id: number) => {
+    props.redirectToDogDetailsOrEdit(id);
   };
   const { path } = useRouteMatch();
   return (
@@ -87,12 +71,13 @@ export default function ImageGrid(props: any) {
                     aria-label={`info about ${dog.name}`}
                     className={classes.icon}
                     onClick={() => {
-                      if (props.path === "/listDogs") {
+                       /*if (props.path === "/listDogs") {
                         history.push(`${props.path}/${dog.id}`);
-                      } else {
+                      } else {*/
                         setDogId(dog.id as number);
-                        redirectToEditDetails(dog.id as number);
-                      }
+                        redirectToDogDetailsOrEdit(dog.id as number);
+                        //history.push(`${props.path}/${props.edit}${dog.id}`);
+                      //}
                     }}
                   >
                     {props.path === "/listDogs" ? <InfoIcon /> : <Edit />}
@@ -109,10 +94,7 @@ export default function ImageGrid(props: any) {
       />
       <Route
         path={`${props.path}/:id`}
-        children={
-          <GridListTile>
-            Work in progress...
-          </GridListTile> /*<DogDetails cookies={props.cookies} dogId={dogId} />*/
+        children={<DogDetails cookies={props.cookies} dogId={dogId} />
         }
       />
     </Switch>

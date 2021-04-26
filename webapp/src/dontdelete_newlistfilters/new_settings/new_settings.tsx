@@ -39,7 +39,7 @@ import { filter } from "lodash";
 import DogDetails from "../../editDogDetails/editDogDetails";
 import { clearDogList } from "../../app/actions";
 import { cleanup } from "@testing-library/react";
-import { IFilters } from "../../utilityComponents/uitilities";
+import { IFilters } from "../../utilityComponents/utilities";
 //import EditDetails from "./"
 
 const SidebarTrigger = getSidebarTrigger(styled);

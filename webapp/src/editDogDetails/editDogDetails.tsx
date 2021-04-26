@@ -37,6 +37,10 @@ import { store } from "../app/store";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
+import { base64StringToBlob } from 'blob-util';
+import { clearDogList } from "../app/actions";
+import LoadingPopup from "../utilityComponents/LoadingPopup";
+import { useCookies } from "react-cookie";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>
@@ -61,46 +65,90 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       color: "aliceblue",
       backgroundColor: "aliceblue",
+      width:'inherit'
+    },
+    imgFit:{
+      objectFit:"cover",
+      width:"100%",
+      height:"100%"
     },
     mainForm: {
-      marginTop: "4%",
+      marginLeft: "0.5%",
+      marginRight: "0.5%",
+      display:"stretch"
     },
   })
 );
+
 const EditDogDetails = (props: any) => {
   // eslint-disable-next-line
-  const { path } = useRouteMatch();
+  //const { path } = useRouteMatch();
+  const dogId = props.dogId?props.dogId:JSON.parse(sessionStorage.getItem("dogId") as string);
   const history = useHistory();
   const classes = useStyles();
-  //const [pageRefresh, setPageRefresh] = useState(true);
-  const refreshRequired = useSelector(
-    (state: State) => state.dogsRequireRefresh
-  ) as boolean;
+  const [dogSession, setDogSession] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies();
   const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
   );
-  useEffect(() => {
-    if (editedDog) {
-      sessionStorage.setItem(
-        "editDogFields",
-        JSON.stringify(editedDog as ILostDog)
-      );
-      setPicture(editedDog.picture as IPicture);
-      setEditDogFields(editedDog as ILostDog);
-    }
-  }, [editedDog]);
   const [isNewPicture, setIsNewPicture] = useState(false);
-  const dogId =
-    props.dogId === 0 ? sessionStorage.getItem("editDogId") : props.dogId;
-  let isInputNotNull = sessionStorage.getItem("editDogFields") !== null;
-  const [editDogFields, setEditDogFields] = useState<ILostDog>(
-    isInputNotNull
-      ? JSON.parse(sessionStorage.getItem("editDogFields") as string)
-      : initLostDogWithPictureProps
+  const [pageRefresh, setPageRefresh] = useState(true);
+  const refreshRequired = useSelector(
+    (state: State) => state.settingsRequireRefresh as boolean
   );
-  sessionStorage.setItem("editDogFields", JSON.stringify(editDogFields));
+  const isInputNotNull = sessionStorage.getItem("editDogFields") !== null;
+  const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(initLostDogWithPictureProps);
   const [picture, setPicture] = useState<IPicture>(initPicture);
 
+  useEffect(()=>{
+    if(pageRefresh)
+    {
+      try {
+        store.dispatch(
+          Actions.fetchOneDogThunk({
+            id: dogId as number,
+            cookies: cookies,
+          })
+        );
+      } catch (err) {
+        console.error("Failed to fetch the dog: ", err);
+      } finally {
+        ////console.log(props.path);
+      //setDogSession(true);
+      setPageRefresh(false);}
+    }
+  },[pageRefresh, dogSession])
+
+  useEffect(() => {
+    console.log(refreshRequired);
+      
+      if(!refreshRequired && !pageRefresh){
+        
+        const blob = base64StringToBlob(editedDog.picture.data as string, editedDog.picture.fileType);
+        (blob as File).arrayBuffer().then((fileBuffer) => {
+        setPicture({
+          id: 0,
+          fileName: editedDog.picture.fileName, //event.name,
+          fileType: editedDog.picture.fileType,
+          data: fileBuffer
+        } as IPicture);
+      });
+      if(isInputNotNull)
+      {
+        //console.log("here");
+        setEditDogFields(JSON.parse(sessionStorage.getItem("editDogFields") as string));
+        //console.log(editDogFields.picture.fileName);
+      }
+      else{
+        //console.log("not here"+ editedDog.name);
+        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog as ILostDogWithPicture));
+        setEditDogFields(editedDog as ILostDogWithPicture);
+      }
+      setDogSession(false);
+      store.dispatch(Actions.finishRefreshing);}
+      ////console.log(str2ab(editedDog.picture.data));
+  }, [refreshRequired, pageRefresh]);
+  
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     let newField = { ...editDogFields, [e.target.name]: e.target.value };
     setEditDogFields(newField);
@@ -135,19 +183,28 @@ const EditDogDetails = (props: any) => {
   function clearStorage() {
     sessionStorage.removeItem("editDogFields");
     sessionStorage.removeItem("inputEditField");
-    sessionStorage.removeItem("editDogId");
+    sessionStorage.removeItem("dogId");
+    sessionStorage.removeItem("listFetched");
     sessionStorage.clear();
+  }
+
+  function checkStorage() {
+    console.log("id "+props.dogId);
+    console.log(editedDog);
+    console.log(JSON.parse(sessionStorage.getItem("editDogFields") as string));
+    console.log(editDogFields);
   }
 
   const onMarkDogClicked = () => {
     try {
       markDogAsFound(dogId);
+      store.dispatch(Actions.clearDogList);
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     } finally {
-      store.dispatch(Actions.clearDogList);
       store.dispatch(Actions.startRefreshing);
       clearStorage();
+      checkStorage();
       history.push("/settings");
       history.go(0);
     }
@@ -155,19 +212,16 @@ const EditDogDetails = (props: any) => {
 
   const onSubmitEditClicked = () => {
     try {
-      if (picture === initPicture) {
-        setPicture(editedDog.picture as IPicture);
-      }
       updateDog(editDogFields, picture as IPicture);
+      store.dispatch(Actions.clearDogList);
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     } finally {
-      store.dispatch(Actions.clearDogList);
       store.dispatch(Actions.startRefreshing);
       clearStorage();
+      checkStorage();
       history.push("/settings");
       history.go(0);
-      //window.location.reload(false);
     }
   };
 
@@ -175,15 +229,17 @@ const EditDogDetails = (props: any) => {
     store.dispatch(Actions.clearDogList);
     clearStorage();
     history.push("/settings");
+    window.location.reload();
+    //history.go(0);
+
   };
 
   function updateDog(dog: ILostDog, picture: IPicture) {
-    let tmp = dog as ILostDogWithPicture;
-    tmp.picture = picture as IPicture;
     store.dispatch(
       Actions.updateDogThunk({
-        dog: tmp,
-        cookies: props.cookies,
+        dog: dog,
+        picture: picture,
+        cookies: cookies,
       }) //filters
     );
   }
@@ -192,14 +248,14 @@ const EditDogDetails = (props: any) => {
     store.dispatch(
       Actions.markDogAsFoundThunk({
         dogId: dogId as number,
-        cookies: props.cookies,
+        cookies: cookies,
       }) //filters
     );
   }
   const handlePicturesChange = (event: any) => {
     if (event) {
       (event as File).arrayBuffer().then((fileBuffer) => {
-        setPicture({
+        setPicture( {
           id: 0,
           fileName: event.name, //event.name,
           fileType: event.type,
@@ -209,35 +265,21 @@ const EditDogDetails = (props: any) => {
     }
     setIsNewPicture(true);
   };
-  return (
-    <div>
-      {!editDogFields && (
-        <Grid className={classes.mainForm}>
-          <FormControl className={classes.formControl}>
-            <Button
-              data-testid="submit-button"
-              variant="contained"
-              onClick={() => onMarkDogClicked()}
-              color="primary"
-              disabled={editedDog ? editedDog.isFound : true}
-            >
-              {editedDog
-                ? editedDog.isFound
-                  ? "Dog was found!"
-                  : "Mark Dog as Found"
-                : "Dog not fetched"}
-            </Button>
-          </FormControl>
-        </Grid>
-      )}
-      {!refreshRequired && editDogFields && (
-        <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
+  ////console.log(editDogFields.name);
+  ////console.log(editedDog);
+  ////console.log(editDogFields);
+  checkStorage();
+  return (  
           <Grid
-            className={classes.mainForm}
             container
-            alignContent="space-between"
-            spacing={7}
           >
+            {(pageRefresh)&&(
+              <LoadingPopup/>
+            )}
+            {!pageRefresh && !dogSession &&(
+              <Grid className={classes.mainForm}
+              container alignContent="space-between"
+              spacing={7}>
             <Grid
               container
               item
@@ -262,14 +304,13 @@ const EditDogDetails = (props: any) => {
                   <CardContent className={classes.cardContent}>
                     {editedDog && !isNewPicture && (
                       <img
-                        className="image"
-                        src={`data:${editedDog.picture.fileType};base64,${
-                          editedDog.picture.data as ArrayBuffer
-                        }`}
+                        className={classes.imgFit}
+                        src={`data:${editedDog.picture.fileType};base64,${editedDog.picture.data as ArrayBuffer
+                          }`}
                         alt={editedDog.picture.fileName}
                       />
                     )}
-                    <ImageUpload
+                    <ImageUpload className={classes.imgFit}
                       data-testid="img-upload"
                       handlePicturesChange={(
                         file: React.ChangeEvent<{ value: unknown }>
@@ -295,6 +336,7 @@ const EditDogDetails = (props: any) => {
                   value={editDogFields.age}
                   onChange={inputsHandler}
                   InputProps={{
+                    inputProps:{min:0, max:30},
                     startAdornment: (
                       <InputAdornment position="start">Years</InputAdornment>
                     ),
@@ -469,6 +511,7 @@ const EditDogDetails = (props: any) => {
                 <InputLabel shrink id="calendar-label">
                   Dog was lost on
                 </InputLabel>
+                <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
                 <DatePicker
                   data-testid="date-select"
                   disableToolbar
@@ -481,6 +524,7 @@ const EditDogDetails = (props: any) => {
                   name="dateLost"
                   onChange={(date: any) => calendarHandler(date)}
                 />
+                </MuiPickersUtilsProvider>
               </FormControl>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel shrink id="city-label">
@@ -575,10 +619,8 @@ const EditDogDetails = (props: any) => {
                 </Button>
               </FormControl>
             </Grid>
+           </Grid>)}
           </Grid>
-        </MuiPickersUtilsProvider>
-      )}
-    </div>
   );
 };
 

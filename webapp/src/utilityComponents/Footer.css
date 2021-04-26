@@ -52,6 +52,18 @@ a {
   background-color: #000000;
   transition: 0.4s;
 }
+.GithubFooter {
+  font-size: 10px;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.GithubFooter:hover {
+  background-color: white;
+  transition: 0.4s;
+}
+
 .Facebook {
   font-size: 20px;
   background: #25252b;

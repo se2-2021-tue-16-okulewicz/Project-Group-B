@@ -66,7 +66,7 @@ interface internalState {
 export default function RegisterRegularUser() {
   const classes = useStyles();
   const history = useHistory();
-  const [cookies] = useCookies();
+  const [cookies,  setCookie, removeCookie] = useCookies();
   const [values, setValues] = useState<internalState>({
     username: "",
     email: "",

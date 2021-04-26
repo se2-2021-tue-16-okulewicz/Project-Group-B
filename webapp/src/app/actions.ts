@@ -8,7 +8,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
-import { IFilters, IFiltersAndCookies } from "../utilityComponents/uitilities";
+import { IFilters, IFiltersAndCookies } from "../utilityComponents/utilities";
 
 export const markDogAsFoundThunk = createAsyncThunk<
   RequestResponse<null>,
@@ -92,19 +92,21 @@ export const addDogThunk = createAsyncThunk<
 
 export const updateDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture>,
-  { dog: ILostDogWithPicture; cookies: { [name: string]: any } },
+  { dog: ILostDog;  picture: IPicture; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<ILostDogWithPicture> }
 >(
   "UpdateDog",
   async (
     dogAndPictureAndCookies: {
-      dog: ILostDogWithPicture;
+      dog: ILostDog;
+      picture: IPicture;
       cookies: { [name: string]: any };
     },
     { rejectWithValue }
   ) => {
     const response: RequestResponse<ILostDogWithPicture> = await Fetching.updateDog(
       dogAndPictureAndCookies.dog,
+      dogAndPictureAndCookies.picture,
       dogAndPictureAndCookies.cookies
     );
 

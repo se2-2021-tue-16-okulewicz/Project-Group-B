@@ -71,7 +71,7 @@ export default function Login() {
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const history = useHistory();
   // eslint-disable-next-line
-  const [cookies, setCookie] = useCookies();
+  const [cookies,  setCookie, removeCookie] = useCookies();
 
   const handleChange = (prop: keyof internalState) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -114,11 +114,12 @@ export default function Login() {
   }, [loginInfo]);
 
   //THIS makes the web app skip the log in
-  useEffect(() => {
+  /*useEffect(() => {
+    console.log(cookies[config.cookies.userType]);
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
     }// eslint-disable-next-line
-  }, []);
+  }, []);*/
 
   return (
     <div className="Login">

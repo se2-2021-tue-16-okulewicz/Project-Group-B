@@ -2,10 +2,13 @@ import * as Actions from "./actions";
 import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import { ILostDog, ILostDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import config from "../config/config";
 import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+import { base64StringToBlob } from "blob-util";
+import { BreedTypes } from "../dog/dogEnums";
+import { ValidateFetchedDog } from "../utilityComponents/utilities";
 
 export type Error = {
   hasError: boolean;
@@ -75,6 +78,7 @@ export const reducer = createReducer(init, {
     newState.dogsRequireRefresh = true;
     newState.dogsLastPage = false;
     newState.editedDog = null;
+    //console.log(newState.editedDog);
     return newState;
   },
   [Actions.startRefreshing.type]: (state: State) => {
@@ -85,6 +89,7 @@ export const reducer = createReducer(init, {
   [Actions.finishRefreshing.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.dogsRequireRefresh = false;
+    newState.settingsRequireRefresh = true;
     return newState;
   },
   [Actions.fetchContactInfoThunk.pending.toString()]: (
@@ -225,6 +230,7 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
+    console.log("dogs");
     // if page filter not specified - set to default
     const pageNumber = _.get(
       payload,
@@ -291,6 +297,7 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = true;
+    //newState.settingsRequireRefresh=true;
     return newState;
   },
 
@@ -300,7 +307,16 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.editedDog = payload.payload.response.data as ILostDogWithPicture;
+    newState.editedDog = ValidateFetchedDog(payload.payload.response.data as ILostDogWithPicture);
+    newState.editedDog.picture.data = (payload.payload.response.data as ILostDogWithPicture).picture.data as string;
+    //newState.editedDog.picture.id = 0;
+    //console.log(newState.editedDog);
+    newState.dogsRequireRefresh=false;
+    newState.settingsRequireRefresh=false;
+   // const blob = base64StringToBlob((payload.payload.response.data as ILostDogWithPicture).picture.data as string, (payload.payload.response.data as ILostDogWithPicture).picture.fileType);
+    //(blob as File).arrayBuffer().then((fileBuffer) => {
+     // newState.editedDog.picture.data=fileBuffer as ArrayBuffer});
+    // sessionStorage.setItem("editDogFields", JSON.stringify(newState.editedDog as ILostDogWithPicture));
     return newState;
   },
 
@@ -402,3 +418,6 @@ export const reducer = createReducer(init, {
     return newState;
   },
 });
+
+
+

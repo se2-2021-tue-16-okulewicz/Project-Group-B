@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
-import { useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch, useHistory, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
@@ -31,7 +31,8 @@ import { ExitToApp, HouseRounded } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
-import { IFilters } from "../utilityComponents/uitilities";
+import { IFilters } from "../utilityComponents/utilities";
+import EditDogDetails from "../editDogDetails/editDogDetails";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -149,10 +150,10 @@ scheme.configureEdgeSidebar((builder) => {
     });
 });
 
-export default function Settings() {
+export default function Settings(props:any) {
   const [displayLoader, setDisplayLoader] = useState(false);
   const [listFetched, setListFetched] = useState(false);
-  const [cookies, removeCookie] = useCookies();
+  const [cookies,  setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
@@ -172,8 +173,14 @@ export default function Settings() {
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    ownerId: Number.parseInt(cookies[config.cookies.userId]),
+    //ownerId: Number.parseInt(cookies[config.cookies.userId]),
   });
+  console.log(listFetched);
+  function clearStorage() {
+    sessionStorage.removeItem("dogId");
+    sessionStorage.removeItem("listFetched");
+    sessionStorage.clear();
+  }
   const onDogsListClicked = () => {
     setListVisible(true);
   };
@@ -189,6 +196,7 @@ export default function Settings() {
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
     removeCookie(config.cookies.userId, { path: "/" });
+    clearStorage();
     store.dispatch(logoutThunk(cookies));
     history.push("/");
   };
@@ -204,6 +212,7 @@ export default function Settings() {
   // fetch and append page 0
   useEffect(() => {
     if (refreshRequired && !listFetched) {
+      console.log(cookies["token"]);
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -270,6 +279,11 @@ export default function Settings() {
     }, 700);
   };
 
+
+  function redirectToDogDetailsOrEdit(id: number) {
+    props.redirectToDogDetailsOrEdit(id);
+  }
+
   return (
     <Root scheme={scheme}>
       <CssBaseline />
@@ -311,7 +325,7 @@ export default function Settings() {
             >
               <HouseRounded />
               <Grid item xs={1} />
-              Shelter
+              Lost Dogs
             </MenuItem>
             <MenuItem
               className={classes.menuItem}
@@ -366,9 +380,11 @@ export default function Settings() {
               (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
             }
           >
-            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
+            <ImageGrid dogs={displayedDogs}  path={path}  redirectToDogDetailsOrEdit={(
+                    id: number
+                  ) => redirectToDogDetailsOrEdit(id)}/>
           </InfiniteScroll>
-        )}
+          )}
         {!isListVisible && <Card></Card>}
       </Content>
     </Root>

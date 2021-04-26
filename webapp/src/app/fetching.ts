@@ -12,6 +12,7 @@ import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
 }) => {
+  console.log(cookies["token"]);
   let result =
     cookies[config.cookies.token] === undefined
       ? config.testTokens.regular
@@ -141,7 +142,8 @@ export async function addDog(
 }
 
 export async function updateDog(
-  dog: ILostDogWithPicture,
+  dog: ILostDog,
+  picture: IPicture,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture>> {
   let formData = new FormData();
@@ -159,10 +161,9 @@ export async function updateDog(
   );
   formData.append(
     "picture",
-    new Blob([dog.picture.data], { type: dog.picture.fileType }),
-    dog.picture.fileName
+    new Blob([picture.data], { type: picture.fileType }),
+    picture.fileName
   );
-
   return getResponse(
     axios.put(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dog.id}`,

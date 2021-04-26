@@ -61,7 +61,8 @@ test("fetching one dog with a wrong token results in an error", async () => {
 
 test("updating the dog with a wrong token results in an error", async () => {
   const data: RequestResponse<ILostDogWithPicture> = await Fetching.updateDog(
-    initLostDogWithPictureProps, //dog
+    initLostDogProps, //dog
+    initPicture,
     config.cookies
   );
   expect(data).toEqual(errorObject);

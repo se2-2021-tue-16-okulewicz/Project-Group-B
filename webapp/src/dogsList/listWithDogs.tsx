@@ -2,7 +2,7 @@ import "date-fns";
 import React, { useEffect, useState } from "react";
 import { Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
@@ -30,7 +30,8 @@ import LoadingPopup from "../utilityComponents/LoadingPopup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
-import { IFilters } from "../utilityComponents/uitilities";
+import { IFilters } from "../utilityComponents/utilities";
+import DogDetails from "../dogDetails/dogDetails";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -168,6 +169,7 @@ scheme.configureEdgeSidebar((builder) => {
 export default function ListWithDogs() {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
+  const [dogId, setDogId]=useState(0);
   //const [isListDifferent, setIsListDifferent] = useState(false);
   const [listFetched, setListFetched] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
@@ -187,7 +189,7 @@ export default function ListWithDogs() {
     isFound: false, //for after the filters will be implemented in the backend
   });
 
-  const [cookies, removeCookie] = useCookies();
+  const [cookies,  setCookie, removeCookie] = useCookies();
   const history = useHistory();
   const classes = useStyles();
   const { path } = useRouteMatch();
@@ -216,7 +218,8 @@ export default function ListWithDogs() {
 
         },600000)
   }*/
-
+  
+  console.log(refreshRequired);
   //clears dog list, when page is refreshed or changed
   useEffect(() => {
     if (pageRefresh) {
@@ -225,9 +228,16 @@ export default function ListWithDogs() {
     }
   }, [pageRefresh]);
 
+  function redirectToDogDetailsOrEdit(id: number) {
+    setDogId(id);
+    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    history.push(`${path}/${id}`);
+  }
+
   //fetches first page of dog list
   useEffect(() => {
     if (refreshRequired) {
+      console.log(cookies["token"]);
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -308,7 +318,7 @@ export default function ListWithDogs() {
             setMenuCollapsed(!isMenuCollapsed);
           }}
         />
-        <SidebarContent name="sidebar">
+        <SidebarContent name="sidebar" style={{maxWidth:"98%"}}>
           {!isMenuCollapsed && (
             <Grid container className={classes.main} spacing={1}>
               {}
@@ -383,6 +393,8 @@ export default function ListWithDogs() {
       </DrawerSidebar>
       <Content>
         {lastPage && listFetched && (
+              <Switch>
+              <Route exact path={path}>
           <InfiniteScroll
             dataLength={displayedDogs.length}
             scrollThreshold={0.5}
@@ -392,10 +404,20 @@ export default function ListWithDogs() {
               (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
             }
           >
-            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
+            <ImageGrid dogs={displayedDogs} path={path} redirectToDogDetailsOrEdit={(
+                    id: number
+                  ) => redirectToDogDetailsOrEdit(id)}/>
           </InfiniteScroll>
+          </Route>
+          <Route
+                path={`${path}/:id`}
+                children={<DogDetails dogId={dogId} />}
+            />
+            </Switch>
         )}
       </Content>
     </Root>
   );
 }
+
+

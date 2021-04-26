@@ -30,7 +30,7 @@ import { faDog } from "@fortawesome/free-solid-svg-icons";
 import { clearDogList } from "../../app/actions";
 import { wait } from "@testing-library/dom";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
-import { IFilters } from "../../utilityComponents/uitilities";
+import { IFilters } from "../../utilityComponents/utilities";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
