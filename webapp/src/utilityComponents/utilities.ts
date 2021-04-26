@@ -1,4 +1,3 @@
-import { isNull } from "lodash";
 import { BreedTypes, ColorTypes, EarsTypes, HairTypes, SizeTypes, SpecialMarkTypes, TailTypes } from "../dog/dogEnums";
 import { ILostDog, ILostDogWithPicture } from "../dog/dogInterfaces";
 

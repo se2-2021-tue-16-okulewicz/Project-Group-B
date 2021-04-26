@@ -9,7 +9,7 @@ import { store } from "../app/store";
 import { logoutThunk } from "../app/actions";
 import config from "../config/config";
 
-const Footer = () => {
+const Footer = () => {// eslint-disable-next-line
   const [cookies,  setCookie, removeCookie] = useCookies();
   const history = useHistory();
 

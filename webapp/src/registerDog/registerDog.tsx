@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
-  const classes = useStyles();
+  const classes = useStyles();// eslint-disable-next-line
   const [cookies,  setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(

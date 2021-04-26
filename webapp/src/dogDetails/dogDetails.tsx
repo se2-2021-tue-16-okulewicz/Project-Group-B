@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
   Input,
   InputAdornment,
   MenuItem,
@@ -14,24 +13,12 @@ import {
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
-import DateFnsUtils from "@date-io/date-fns";
-import ImageUpload from "../registerDog/ImageUpload";
 import {
-  ColorTypes,
-  HairTypes,
-  SizeTypes,
-  EarsTypes,
-  TailTypes,
-  SpecialMarkTypes,
   BehaviorsTypes,
-  BreedTypes,
 } from "../dog/dogEnums";
-import { initLostDogProps, initLostDogWithPictureProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
+import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
@@ -93,11 +80,11 @@ const DogDetails = (props: any) => {
       } finally {
       setPageRefresh(false);
       store.dispatch(Actions.finishRefreshing);}
-    }
+    }// eslint-disable-next-line
   },[pageRefresh])
  
   const history = useHistory();
-  const classes = useStyles();
+  const classes = useStyles();// eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
 
   const onCancelClick = () => {
@@ -106,7 +93,7 @@ const DogDetails = (props: any) => {
     history.push("/listDogs");
   };
 
-  return (<div>{!pageRefresh && dog!=null &&(
+  return (<div>{!pageRefresh && dog &&(
       <Grid
         className={classes.mainForm}
         container
@@ -114,6 +101,7 @@ const DogDetails = (props: any) => {
         spacing={7}
       >
         <Grid
+          className="grid"
           container
           item
           xs={5}
@@ -147,6 +135,7 @@ const DogDetails = (props: any) => {
           </FormControl>
         </Grid>
         <Grid
+        className="grid"
           container
           item
           xs={3}
@@ -247,6 +236,7 @@ const DogDetails = (props: any) => {
           </FormControl>
         </Grid>
         <Grid
+        className="grid"
           container
           item
           xs={4}

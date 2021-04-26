@@ -187,7 +187,7 @@ export default function ListWithDogs() {
     size: config.defaultFilters.size,
     isFound: false, //for after the filters will be implemented in the backend
   });
-
+// eslint-disable-next-line
   const [cookies,  setCookie, removeCookie] = useCookies();
   const history = useHistory();
   const classes = useStyles();

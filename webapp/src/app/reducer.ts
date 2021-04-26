@@ -2,12 +2,10 @@ import * as Actions from "./actions";
 import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
-import { ILostDog, ILostDogWithPicture } from "../dog/dogInterfaces";
+import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import config from "../config/config";
 import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
-import { base64StringToBlob } from "blob-util";
-import { BreedTypes } from "../dog/dogEnums";
 import { ValidateFetchedDog } from "../utilityComponents/utilities";
 
 export type Error = {

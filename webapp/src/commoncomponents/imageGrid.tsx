@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -6,8 +6,6 @@ import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import { useHistory } from "react-router";
-import { useRouteMatch } from "react-router-dom";
 import { Edit } from "@material-ui/icons";
 import { store } from "../app/store";
 import { fetchOneDogThunk } from "../app/actions";
@@ -34,10 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ImageGrid(props: any) {
   const classes = useStyles();
-  const dogs = props.dogs as ILostDogWithPicture[];
+  const dogs = props.dogs as ILostDogWithPicture[];// eslint-disable-next-line
   const [cookies,  setCookie, removeCookie] = useCookies();
-  const [dogId, setDogId] = useState(0);
-  const history = useHistory();
   const redirectToDogDetailsOrEdit = (id: number) => {
     store.dispatch(
       fetchOneDogThunk({
@@ -47,7 +43,7 @@ export default function ImageGrid(props: any) {
     );
     props.redirectToDogDetailsOrEdit(id);
   };
-  const { path } = useRouteMatch();
+  
   return (
         <GridList cols={3} spacing={3}>
           {dogs.map((dog: ILostDogWithPicture) => (
@@ -75,7 +71,6 @@ export default function ImageGrid(props: any) {
                     aria-label={`info about ${dog.name}`}
                     className={classes.icon}
                     onClick={() => {
-                        setDogId(dog.id as number);
                         redirectToDogDetailsOrEdit(dog.id as number);
                     }}
                   >

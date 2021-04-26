@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
-import { useRouteMatch, useHistory, Switch, Route } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
@@ -32,7 +32,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
-import EditDogDetails from "../editDogDetails/editDogDetails";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -152,7 +151,7 @@ scheme.configureEdgeSidebar((builder) => {
 
 export default function Settings(props:any) {
   const [displayLoader, setDisplayLoader] = useState(false);
-  const [listFetched, setListFetched] = useState(false);
+  const [listFetched, setListFetched] = useState(false);// eslint-disable-next-line
   const [cookies,  setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const dogs = useSelector(

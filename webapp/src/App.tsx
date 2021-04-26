@@ -50,7 +50,7 @@ function Layout() {
   const redirect = useSelector((state: State) => state.redirect);
   const [dogId, setDogId]=useState(0);
   const history = useHistory();
-  const classes = useStyles();
+  const classes = useStyles();// eslint-disable-next-line
   const [cookies,  setCookie, removeCookie] = useCookies();
 
   useEffect(() => {

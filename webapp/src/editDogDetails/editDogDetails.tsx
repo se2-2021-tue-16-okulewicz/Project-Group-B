@@ -34,11 +34,10 @@ import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
 import { base64StringToBlob } from 'blob-util';
-import { clearDogList } from "../app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 
@@ -81,11 +80,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const EditDogDetails = (props: any) => {
-  // eslint-disable-next-line
   const dogId = props.dogId?props.dogId:JSON.parse(sessionStorage.getItem("dogId") as string);
   const history = useHistory();
   const classes = useStyles();
-  const [dogSession, setDogSession] = useState(false);
+  const [dogSession, setDogSession] = useState(false);// eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
@@ -113,7 +111,7 @@ const EditDogDetails = (props: any) => {
         console.error("Failed to fetch the dog: ", err);
       } finally {
       setPageRefresh(false);}
-    }
+    }// eslint-disable-next-line
   },[pageRefresh, dogSession])
 
   useEffect(() => {
@@ -139,7 +137,7 @@ const EditDogDetails = (props: any) => {
         setEditDogFields(editedDog as ILostDogWithPicture);
       }
       setDogSession(false);
-      store.dispatch(Actions.finishRefreshing);}
+      store.dispatch(Actions.finishRefreshing);}// eslint-disable-next-line
   }, [refreshRequired, pageRefresh]);
   
   const inputsHandler = (e: { target: { name: any; value: any } }) => {

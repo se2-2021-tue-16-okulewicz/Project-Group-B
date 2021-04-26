@@ -75,7 +75,7 @@ describe("reducer", () => {
       loginInformation: null,
       pages: 0,
       redirect: null,
-      settingsRequireRefresh: false,
+      settingsRequireRefresh: true,
     });
   });
 });
