@@ -24,6 +24,7 @@ import config from "../config/config";
 import { useCookies } from "react-cookie";
 import { registerRegularUserThunk } from "../app/actions";
 import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, isStringValidPassword } from "../utilityComponents/validation";
+import { internalState } from "../utilityComponents/utilities";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,16 +54,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-interface internalState {
-  username: string;
-  email: string;
-  phone: string;
-  password: string;
-  repeatedPassword: string;
-  showPassword: boolean;
-  showRepeatedPassword: boolean;
-}
 
 export default function RegisterRegularUser() {
   const classes = useStyles();

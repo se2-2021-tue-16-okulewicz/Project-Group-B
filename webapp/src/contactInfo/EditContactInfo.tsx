@@ -24,6 +24,9 @@ import config from "../config/config";
 import { useCookies } from "react-cookie";
 import { fetchContactInfoThunk } from "../app/actions";
 import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, isStringValidPassword } from "../utilityComponents/validation";
+import { useSelector } from "react-redux";
+import { State } from "../app/reducer";
+import { internalState } from "../utilityComponents/utilities";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,20 +56,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface internalState {
-  username: string;
-  email: string;
-  phone: string;
-  password: string;
-  repeatedPassword: string;
-  showPassword: boolean;
-  showRepeatedPassword: boolean;
-}
-
 export default function EditContactInfo() {
   const classes = useStyles();
   const history = useHistory(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
+  const contactInfo = useSelector((state: State) => state.contactInfo);
   const [values, setValues] = useState<internalState>({
     username: "",
     email: "",
@@ -100,7 +94,9 @@ export default function EditContactInfo() {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const onRegisterClicked = () => {
+  const onSaveClicked = () => {
+    console.log("save");
+    
     //temporary before adding endpoint for fetching user's data
     /*store.dispatch(
         updateContactInfo({
@@ -113,7 +109,17 @@ export default function EditContactInfo() {
   };
 
   const onCancelClicked = () => {
+    console.log("cancel");
   };
+
+  const onEditClicked = () => {
+    store.dispatch(fetchContactInfoThunk({
+      userId:cookies[config.cookies.userId],
+      cookies:cookies
+    })
+    );
+  };
+
 
   return (
         <FormControl className={classes.mainForm}>
@@ -125,7 +131,7 @@ export default function EditContactInfo() {
                   className={clsx(classes.margin, classes.textField)}
                   label="Username"
                   type={"text"}
-                  value={values.username}
+                  value={contactInfo?contactInfo.username: values.username}
                   onChange={handleChange("username")}
                   error={!isStringValidUsername(values.username)}
                   helperText="Should have between 3 and 32 characters"
@@ -228,7 +234,7 @@ export default function EditContactInfo() {
                   <Button
                     className="save"
                     variant="contained"
-                    onClick={() => onRegisterClicked()}
+                    onClick={() => onSaveClicked()}
                     color="primary"
                     disabled={
                       !(
@@ -243,13 +249,15 @@ export default function EditContactInfo() {
                     Save
                   </Button>
                   <Button
+                  className="edit"
                     variant="contained"
-                    onClick={() => onCancelClicked()}
+                    onClick={() => onEditClicked()}
                     color="primary"
                   >
                     Edit
                   </Button>
                   <Button
+                  className="cancel"
                     variant="contained"
                     onClick={() => onCancelClicked()}
                     color="primary"
