@@ -53,74 +53,75 @@ export default function ContactInfo(props: any) {
   const classes = useStyles();
   const history = useHistory(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  const values = useSelector((state: State) => state.contactInfo as IContactInfo);
-  const [pageRefresh, setPageRefresh]=useState(true);
+  const values = useSelector(
+    (state: State) => state.contactInfo as IContactInfo
+  );
+  const [pageRefresh, setPageRefresh] = useState(true);
 
   const onEditClicked = () => {
     history.push("/info/edit");
   };
 
-  useEffect(()=>{
-    if(pageRefresh)
-    {
-     store.dispatch(
-       Actions.fetchContactInfoThunk({
-         userId:cookies[config.cookies.userId],
-         cookies:cookies
-       }));
-       setPageRefresh(false);// eslint-disable-next-line
-    }},[pageRefresh]);
-
+  useEffect(() => {
+    if (pageRefresh) {
+      store.dispatch(
+        Actions.fetchContactInfoThunk({
+          userId: cookies[config.cookies.userId],
+          cookies: cookies,
+        })
+      );
+      setPageRefresh(false); // eslint-disable-next-line
+    }
+  }, [pageRefresh]);
 
   return (
-    
-        <FormControl className={classes.mainForm}>
-          {values!=null && (
-          <Card className={classes.card} variant="outlined">
-            <CardHeader title="" />
-            <div className="AccountListWrapper">
-              <div>
-                <TextField
-                  className={clsx(classes.margin, classes.textField)}
-                  label="Name"
-                  type={"text"}
-                  value={values.name}
-                  disabled
-                />
-              </div>
-              <div>
-                <TextField
-                  className={clsx(classes.margin, classes.textField)}
-                  label="E-mail"
-                  type={"text"}
-                  value={values.email}
-                  disabled
-                />
-              </div>
-              <div>
-                <TextField
-                  className={clsx(classes.margin, classes.textField)}
-                  label="Phone number"
-                  type={"text"}
-                  value={values.phoneNumber}
-                  disabled
-                />
-              </div>
-              <div>
-                <FormControl className={classes.formControl}>
-                  <Button
-                  className="edit"
-                    variant="contained"
-                    onClick={() => onEditClicked()}
-                    color="primary"
-                  >
-                    Edit
-                  </Button>
-                </FormControl>
-              </div>
+    <FormControl className={classes.mainForm}>
+      {values != null && (
+        <Card className={classes.card} variant="outlined">
+          <CardHeader title="" />
+          <div className="AccountListWrapper">
+            <div>
+              <TextField
+                className={clsx(classes.margin, classes.textField)}
+                label="Name"
+                type={"text"}
+                value={values.name}
+                disabled
+              />
             </div>
-          </Card>
-          )}       
-        </FormControl>
+            <div>
+              <TextField
+                className={clsx(classes.margin, classes.textField)}
+                label="E-mail"
+                type={"text"}
+                value={values.email}
+                disabled
+              />
+            </div>
+            <div>
+              <TextField
+                className={clsx(classes.margin, classes.textField)}
+                label="Phone number"
+                type={"text"}
+                value={values.phoneNumber}
+                disabled
+              />
+            </div>
+            <div>
+              <FormControl className={classes.formControl}>
+                <Button
+                  className="edit"
+                  variant="contained"
+                  onClick={() => onEditClicked()}
+                  color="primary"
+                >
+                  Edit
+                </Button>
+              </FormControl>
+            </div>
+          </div>
+        </Card>
+      )}
+    </FormControl>
   );
 }

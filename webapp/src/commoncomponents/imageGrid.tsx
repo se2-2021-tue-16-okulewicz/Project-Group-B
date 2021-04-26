@@ -49,7 +49,7 @@ export default function ImageGrid(props: any) {
             actionIcon={
               <IconButton
                 aria-label={`info about ${dog.name}`}
-                style={{color: "rgba(255, 255, 255, 0.54)"}}
+                style={{ color: "rgba(255, 255, 255, 0.54)" }}
                 onClick={() => {
                   redirectToDogDetailsOrEdit(dog.id as number);
                 }}

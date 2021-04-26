@@ -171,7 +171,11 @@ export default function Settings(props: any) {
   const history = useHistory();
   const { path } = useRouteMatch();
   const isInputNotNull = sessionStorage.getItem("listVisible") !== null;
-  const [isListVisible, setListVisible] = useState<boolean>(isInputNotNull?JSON.parse(sessionStorage.getItem("listVisible" )as string):true);
+  const [isListVisible, setListVisible] = useState<boolean>(
+    isInputNotNull
+      ? JSON.parse(sessionStorage.getItem("listVisible") as string)
+      : true
+  );
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,

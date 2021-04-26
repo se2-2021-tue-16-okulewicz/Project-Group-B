@@ -10,13 +10,17 @@ import {
 } from "../dog/dogEnums";
 import { ILostDog, ILostDogWithPicture } from "../dog/dogInterfaces";
 
-export function isInvalidContactInfo(info:IContactInfo){
-    return({
-        name: !isStringValidUsername(info.name),
-        email: !isStringValidEmail(info.email),
-        phoneNumber: !isStringValidPhoneNumeber(info.phoneNumber),
-        total: !(isStringValidEmail(info.email) && isStringValidUsername(info.name) && isStringValidPhoneNumeber(info.phoneNumber))
-    } as ErrorInfos);
+export function isInvalidContactInfo(info: IContactInfo) {
+  return {
+    name: !isStringValidUsername(info.name),
+    email: !isStringValidEmail(info.email),
+    phoneNumber: !isStringValidPhoneNumeber(info.phoneNumber),
+    total: !(
+      isStringValidEmail(info.email) &&
+      isStringValidUsername(info.name) &&
+      isStringValidPhoneNumeber(info.phoneNumber)
+    ),
+  } as ErrorInfos;
 }
 
 //validate login/register

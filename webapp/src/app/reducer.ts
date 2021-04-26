@@ -264,7 +264,7 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.contactInfo=payload.payload.response.data as IContactInfo;
+    newState.contactInfo = payload.payload.response.data as IContactInfo;
     return newState;
   },
   [Actions.updateContactInfoThunk.rejected.toString()]: (
@@ -277,7 +277,7 @@ export const reducer = createReducer(init, {
     newState.error = {
       hasError: true,
       errorCode: errorResponse.code,
-      erorMessage: errorResponse.response.message
+      erorMessage: errorResponse.response.message,
     };
     return newState;
   },

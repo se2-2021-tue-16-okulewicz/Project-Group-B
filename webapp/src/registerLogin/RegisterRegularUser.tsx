@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(2),
       },
       fontSize: "17px",
-      marginBottom:"10%",
-      justifyContent:"center",
-      alignItems:"center"
+      marginBottom: "10%",
+      justifyContent: "center",
+      alignItems: "center",
     },
     margin: {
       margin: theme.spacing(1),

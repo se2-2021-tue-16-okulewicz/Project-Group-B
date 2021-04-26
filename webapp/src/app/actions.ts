@@ -64,14 +64,18 @@ export const fetchContactInfoThunk = createAsyncThunk<
 
 export const updateContactInfoThunk = createAsyncThunk<
   RequestResponse<IContactInfo>,
-  { userId:number, contactInfo:IContactInfo, cookies: { [name: string]: any } },
+  {
+    userId: number;
+    contactInfo: IContactInfo;
+    cookies: { [name: string]: any };
+  },
   { rejectValue: RequestResponse<IContactInfo> }
 >(
   "UpdateContactInfo",
   async (
     userAndContactInfoAndCookies: {
       userId: number;
-      contactInfo:IContactInfo;
+      contactInfo: IContactInfo;
       cookies: { [name: string]: any };
     },
     { rejectWithValue }
@@ -84,7 +88,7 @@ export const updateContactInfoThunk = createAsyncThunk<
 
     if (response.response.successful !== true) {
       return rejectWithValue(response as RequestResponse<IContactInfo>);
-    }  
+    }
     return response as RequestResponse<IContactInfo>;
   }
 );
@@ -249,4 +253,3 @@ export const clearRedirect = createAction("clearRedirect");
 export const clearDogList = createAction("clearDogList");
 export const startRefreshing = createAction("startRefreshing");
 export const finishRefreshing = createAction("finishRefreshing");
-
