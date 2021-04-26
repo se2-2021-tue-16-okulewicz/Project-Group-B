@@ -387,7 +387,7 @@ export default function Settings(props: any) {
             />
           </InfiniteScroll>
         )}
-        {!isListVisible && <EditContactInfo/>}
+        {!isListVisible && <EditContactInfo />}
       </Content>
     </Root>
   );

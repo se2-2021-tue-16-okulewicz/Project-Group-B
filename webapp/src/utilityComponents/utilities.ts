@@ -1,5 +1,3 @@
-
-
 export interface IFiltersAndCookies {
   filters: IFilters;
   cookies: {
@@ -10,5 +8,3 @@ export interface IFiltersAndCookies {
 export interface IFilters {
   [name: string]: any;
 }
-
-
