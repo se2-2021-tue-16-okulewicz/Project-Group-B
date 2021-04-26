@@ -250,10 +250,10 @@ export default function Settings(props: any) {
         );
         store.dispatch(
           Actions.fetchContactInfoThunk({
-            userId:cookies[config.cookies.userId],
-            cookies:cookies
+            userId: cookies[config.cookies.userId],
+            cookies: cookies,
           })
-        )
+        );
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
@@ -398,7 +398,7 @@ export default function Settings(props: any) {
             />
           </InfiniteScroll>
         )}
-        {!isListVisible && <ContactInfo contactInfo={contactInfo}/>}
+        {!isListVisible && <ContactInfo contactInfo={contactInfo} />}
       </Content>
     </Root>
   );

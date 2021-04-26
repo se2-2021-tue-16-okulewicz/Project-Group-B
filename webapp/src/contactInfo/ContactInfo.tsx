@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme: Theme) =>
     mainForm: {
       display: "flex",
       flexWrap: "wrap",
-      alignSelf:"center",
+      alignSelf: "center",
       marginTop: "10%",
-      marginLeft:"10%",
-      marginRight:"10%",
+      marginLeft: "10%",
+      marginRight: "10%",
     },
     margin: {
       margin: theme.spacing(3),
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     textField: {
       width: "45ch",
-      fontSize:"20px"
+      fontSize: "20px",
     },
     formControl: {
       margin: theme.spacing(3),
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ContactInfo(props:any) {
+export default function ContactInfo(props: any) {
   const classes = useStyles();
   const history = useHistory(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
