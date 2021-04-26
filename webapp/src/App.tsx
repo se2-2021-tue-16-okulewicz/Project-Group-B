@@ -27,6 +27,7 @@ import config from "./config/config";
 import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
 import Settings from "./settings/settings";
 import EditDogDetails from "./editDogDetails/editDogDetails";
+import EditContactInfo from "./contactInfo/EditContactInfo";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -103,6 +104,10 @@ function Layout() {
         </Route>
         <Route path="/register/user">
           <RegisterRegularUser />
+          <Footer />
+        </Route>
+        <Route path="/info/edit">
+          <EditContactInfo />
           <Footer />
         </Route>
         <Route path="/listDogs">

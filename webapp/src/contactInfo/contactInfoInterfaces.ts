@@ -1,5 +1,16 @@
 export interface IContactInfo {
-  username: string;
+  name: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
 }
+
+export interface ErrorInfos {
+  [name: string]: boolean;
+  total: boolean;
+}
+export const initErrorInfo: ErrorInfos = {
+  name: false,
+  email: false,
+  phone: false,
+  total: false,
+};

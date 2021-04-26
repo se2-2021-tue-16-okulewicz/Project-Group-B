@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Card, Divider, Grid, MenuItem } from "@material-ui/core";
+import { Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useRouteMatch, useHistory } from "react-router-dom";
@@ -32,14 +32,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
-
+import ContactInfo from "../contactInfo/ContactInfo";
+import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
 const SidebarContent = getSidebarContent(styled);
-
 const scheme = Layout();
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -159,7 +159,9 @@ export default function Settings(props: any) {
   );
   const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
   const [displayedDogs, setDisplayedDogs] = useState<ILostDogWithPicture[]>([]);
-  //const contactInfo = {cookies[username]}
+  const contactInfo = useSelector(
+    (state: State) => state.contactInfo as IContactInfo
+  );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
@@ -168,7 +170,12 @@ export default function Settings(props: any) {
   const classes = useStyles();
   const history = useHistory();
   const { path } = useRouteMatch();
-  const [isListVisible, setListVisible] = useState(true);
+  const isInputNotNull = sessionStorage.getItem("listVisible") !== null;
+  const [isListVisible, setListVisible] = useState<boolean>(
+    isInputNotNull
+      ? JSON.parse(sessionStorage.getItem("listVisible") as string)
+      : true
+  );
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
@@ -177,12 +184,15 @@ export default function Settings(props: any) {
   function clearStorage() {
     sessionStorage.removeItem("dogId");
     sessionStorage.removeItem("listFetched");
+    sessionStorage.removeItem("listVisible");
     sessionStorage.clear();
   }
   const onDogsListClicked = () => {
+    sessionStorage.setItem("listVisible", JSON.stringify(true));
     setListVisible(true);
   };
   const onInfoClicked = () => {
+    sessionStorage.setItem("listVisible", JSON.stringify(false));
     setListVisible(false); /*getContactInfo();*/
   };
   const onShelterClicked = () => {
@@ -241,6 +251,12 @@ export default function Settings(props: any) {
             },
             cookies: cookies,
           }) //filters
+        );
+        store.dispatch(
+          Actions.fetchContactInfoThunk({
+            userId: cookies[config.cookies.userId],
+            cookies: cookies,
+          })
         );
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
@@ -386,7 +402,7 @@ export default function Settings(props: any) {
             />
           </InfiniteScroll>
         )}
-        {!isListVisible && <Card></Card>}
+        {!isListVisible && <ContactInfo contactInfo={contactInfo} />}
       </Content>
     </Root>
   );

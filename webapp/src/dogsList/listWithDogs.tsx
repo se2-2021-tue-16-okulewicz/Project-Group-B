@@ -43,9 +43,6 @@ const SidebarContent = getSidebarContent(styled);
 const scheme = Layout();
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    icon: {
-      color: "rgba(255, 255, 255, 0.54)",
-    },
     menuItem: {
       minWidth: "100%",
       display: "flex",
@@ -99,24 +96,6 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       color: "aliceblue",
       backgroundColor: "aliceblue",
-    },
-    root: {
-      width: "100%",
-      backgroundColor: theme.palette.background.paper,
-      position: "relative",
-      overflow: "auto",
-      maxHeight: 300,
-    },
-    listSection: {
-      backgroundColor: "inherit",
-    },
-    ul: {
-      backgroundColor: "inherit",
-      padding: 0,
-    },
-    Card: {
-      minWidth: "30px",
-      minHeight: "40px",
     },
     main: {
       justifyContent: "center",

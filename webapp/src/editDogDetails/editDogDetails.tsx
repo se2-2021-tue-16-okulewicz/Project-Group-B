@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
     imgFit: {
       objectFit: "cover",
       width: "100%",
-      height: "100%",
+      borderRadius: "10px",
     },
     mainForm: {
       marginLeft: "0.5%",
@@ -120,7 +120,7 @@ const EditDogDetails = (props: any) => {
 
   useEffect(() => {
     if (!refreshRequired && !pageRefresh) {
-      if (editedDog.picture) {
+      if (editedDog.picture != null) {
         const blob = base64StringToBlob(
           editedDog.picture.data as string,
           editedDog.picture.fileType
@@ -292,7 +292,6 @@ const EditDogDetails = (props: any) => {
                     />
                   )}
                   <ImageUpload
-                    className={classes.imgFit}
                     data-testid="img-upload"
                     handlePicturesChange={(
                       file: React.ChangeEvent<{ value: unknown }>

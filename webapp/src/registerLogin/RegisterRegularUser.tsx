@@ -23,6 +23,13 @@ import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
 import { registerRegularUserThunk } from "../app/actions";
+import {
+  isStringValidUsername,
+  isStringValidEmail,
+  isStringValidPhoneNumeber,
+  isStringValidPassword,
+} from "../utilityComponents/validation";
+import { internalState } from "../utilityComponents/utilities";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,12 +40,15 @@ const useStyles = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(2),
       },
       fontSize: "17px",
+      marginBottom: "10%",
+      justifyContent: "center",
+      alignItems: "center",
     },
     margin: {
       margin: theme.spacing(1),
     },
     withoutLabel: {
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(2),
     },
     textField: {
       width: "45ch",
@@ -52,16 +62,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-interface internalState {
-  username: string;
-  email: string;
-  phone: string;
-  password: string;
-  repeatedPassword: string;
-  showPassword: boolean;
-  showRepeatedPassword: boolean;
-}
 
 export default function RegisterRegularUser() {
   const classes = useStyles();
@@ -115,29 +115,6 @@ export default function RegisterRegularUser() {
   const goToLogin = () => {
     history.push("/");
   };
-
-  function isStringValidPassword(password: string): boolean {
-    return password.length <= 32 && password.length >= 6;
-  }
-
-  function isStringValidUsername(username: string): boolean {
-    return username.length <= 32 && username.length >= 3;
-  }
-
-  function isStringValidPhoneNumeber(phone: string): boolean {
-    let phoneNumberGarbage = new RegExp("[()\\s-]+", "g");
-    let phoneNumber = new RegExp("^((\\+[1-9]?[0-9])|0)?[7-9]?[0-9]{9}$");
-    if (phone === "") return false;
-    phone = phone.replace(phoneNumberGarbage, "");
-    return phoneNumber.test(phone);
-  }
-
-  function isStringValidEmail(email: string): boolean {
-    //Should catch like 99%+ of valid emails
-    // eslint-disable-next-line
-    let emailRegex: RegExp = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
-    return emailRegex.test(email);
-  }
 
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
@@ -281,7 +258,7 @@ export default function RegisterRegularUser() {
         </FormControl>
       </div>
       <div className="LowerText">Already have an account?</div>
-      <div>
+      <div className="LowerText">
         <Link
           className={classes.root}
           component="button"

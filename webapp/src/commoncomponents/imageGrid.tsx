@@ -11,27 +11,7 @@ import { store } from "../app/store";
 import { fetchOneDogThunk } from "../app/actions";
 import { useCookies } from "react-cookie";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "space-around",
-      overflow: "hidden",
-      backgroundColor: theme.palette.background.paper,
-    },
-    gridList: {
-      width: 500,
-      height: 450,
-    },
-    icon: {
-      color: "rgba(255, 255, 255, 0.54)",
-    },
-  })
-);
-
 export default function ImageGrid(props: any) {
-  const classes = useStyles();
   const dogs = props.dogs as ILostDogWithPicture[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const redirectToDogDetailsOrEdit = (id: number) => {
@@ -45,7 +25,7 @@ export default function ImageGrid(props: any) {
   };
 
   return (
-    <GridList cols={3} spacing={3}>
+    <GridList cols={3} spacing={8}>
       {dogs.map((dog: ILostDogWithPicture) => (
         <GridListTile
           key={dog.id}
@@ -69,7 +49,7 @@ export default function ImageGrid(props: any) {
             actionIcon={
               <IconButton
                 aria-label={`info about ${dog.name}`}
-                className={classes.icon}
+                style={{ color: "rgba(255, 255, 255, 0.54)" }}
                 onClick={() => {
                   redirectToDogDetailsOrEdit(dog.id as number);
                 }}

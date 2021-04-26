@@ -6,7 +6,7 @@ import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import config from "../config/config";
 import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
-import { ValidateFetchedDog } from "../utilityComponents/utilities";
+import { ValidateFetchedDog } from "../utilityComponents/validation";
 
 export type Error = {
   hasError: boolean;
@@ -104,7 +104,6 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.contactInfo = payload.payload.response.data as IContactInfo;
-    newState.dogsRequireRefresh = true;
     return newState;
   },
   [Actions.fetchContactInfoThunk.rejected.toString()]: (
@@ -259,6 +258,39 @@ export const reducer = createReducer(init, {
     //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
     return newState;
   },
+  [Actions.updateContactInfoThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IContactInfo>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.contactInfo = payload.payload.response.data as IContactInfo;
+    return newState;
+  },
+  [Actions.updateContactInfoThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IContactInfo>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+
+  [Actions.updateContactInfoThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+
   [Actions.fetchDogsThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<undefined>>
