@@ -1,5 +1,3 @@
-
-
 export interface IFiltersAndCookies {
   filters: IFilters;
   cookies: {

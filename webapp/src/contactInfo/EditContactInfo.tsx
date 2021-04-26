@@ -51,7 +51,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     card: {
       backgroundColor: "aliceblue",
-      
     },
   })
 );
@@ -152,39 +151,13 @@ export default function EditContactInfo() {
                 <FormControl
                   className={clsx(classes.margin, classes.textField)}
                 >
-                  <InputLabel htmlFor="password">Password</InputLabel>
-                  <Input
-                    id="password"
-                    type={values.showPassword ? "text" : "password"}
-                    value={values.password}
-                    onChange={handleChange("password")}
-                    error={!isStringValidPassword(values.password)}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {values.showPassword ? (
-                            <Visibility />
-                          ) : (
-                            <VisibilityOff />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                  <FormHelperText
-                    error={!isStringValidPassword(values.password)}
-                  >
-                    Should have between 6 and 32 characters
-                  </FormHelperText>
-                </FormControl>
-              </div>
-              <div>
-                <FormControl
-                  className={clsx(classes.margin, classes.textField)}
+                  Edit
+                </Button>
+                <Button
+                  data-testid="submit-button"
+                  variant="contained"
+                  onClick={() => onCancelClicked()}
+                  color="primary"
                 >
                   <InputLabel htmlFor="repeatPassword">
                     Repeat password
