@@ -103,8 +103,8 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
+    console.log(payload.payload.response.data);
     newState.contactInfo = payload.payload.response.data as IContactInfo;
-    newState.dogsRequireRefresh = true;
     return newState;
   },
   [Actions.fetchContactInfoThunk.rejected.toString()]: (

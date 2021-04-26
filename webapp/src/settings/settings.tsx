@@ -32,7 +32,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
-import EditContactInfo from "../contactInfo/EditContactInfo";
+import ContactInfo from "../contactInfo/ContactInfo";
+import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -160,7 +161,9 @@ export default function Settings(props: any) {
   );
   const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
   const [displayedDogs, setDisplayedDogs] = useState<ILostDogWithPicture[]>([]);
-  //const contactInfo = {cookies[username]}
+  const contactInfo = useSelector(
+    (state: State) => state.contactInfo as IContactInfo
+  );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
@@ -243,6 +246,12 @@ export default function Settings(props: any) {
             cookies: cookies,
           }) //filters
         );
+        store.dispatch(
+          Actions.fetchContactInfoThunk({
+            userId:cookies[config.cookies.userId],
+            cookies:cookies
+          })
+        )
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
@@ -387,7 +396,7 @@ export default function Settings(props: any) {
             />
           </InfiniteScroll>
         )}
-        {!isListVisible && <EditContactInfo/>}
+        {!isListVisible && <ContactInfo contactInfo={contactInfo}/>}
       </Content>
     </Root>
   );

@@ -14,7 +14,7 @@ import {
   TextField,
   Theme,
 } from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { HistorySharp, Visibility, VisibilityOff } from "@material-ui/icons";
 import React from "react";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -109,17 +109,8 @@ export default function EditContactInfo() {
   };
 
   const onCancelClicked = () => {
-    console.log("cancel");
+    history.push("/settings");
   };
-
-  const onEditClicked = () => {
-    store.dispatch(fetchContactInfoThunk({
-      userId:cookies[config.cookies.userId],
-      cookies:cookies
-    })
-    );
-  };
-
 
   return (
         <FormControl className={classes.mainForm}>
@@ -131,7 +122,7 @@ export default function EditContactInfo() {
                   className={clsx(classes.margin, classes.textField)}
                   label="Username"
                   type={"text"}
-                  value={contactInfo?contactInfo.username: values.username}
+                  value={contactInfo?contactInfo.name: values.username}
                   onChange={handleChange("username")}
                   error={!isStringValidUsername(values.username)}
                   helperText="Should have between 3 and 32 characters"
@@ -246,15 +237,7 @@ export default function EditContactInfo() {
                       )
                     }
                   >
-                    Save
-                  </Button>
-                  <Button
-                  className="edit"
-                    variant="contained"
-                    onClick={() => onEditClicked()}
-                    color="primary"
-                  >
-                    Edit
+                    Submit
                   </Button>
                   <Button
                   className="cancel"

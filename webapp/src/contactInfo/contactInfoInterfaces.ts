@@ -1,5 +1,5 @@
 export interface IContactInfo {
-  username: string;
+  name: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
 }

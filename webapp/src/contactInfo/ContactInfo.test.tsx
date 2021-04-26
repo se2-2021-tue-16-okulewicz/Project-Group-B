@@ -12,7 +12,7 @@ import {
   Route,
   BrowserRouter as Router,
 } from "react-router-dom";
-import ContactInfo from "./ContactInfo";
+import EditContactInfo from "./EditContactInfo";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -36,7 +36,7 @@ it("Test editing the contact information", () => {
       <Provider store={store}>
         <Router>
           <Route path="/settings">
-            <ContactInfo />
+            <EditContactInfo />
           </Route>
         </Router>
       </Provider>,
