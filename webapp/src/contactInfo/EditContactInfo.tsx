@@ -115,7 +115,8 @@ export default function EditContactInfo() {
     } finally {
       if(!isError.total && displayMsg===""){
       history.push("/settings");
-      history.go(0);}
+      //history.go(0);
+    }
     }
 
   };

@@ -8,13 +8,16 @@ import {
   TextField,
   Theme,
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
 import { IContactInfo } from "./contactInfoInterfaces";
+import { store } from "../app/store";
+import config from "../config/config";
+import * as Actions from "../app/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,14 +54,28 @@ export default function ContactInfo(props:any) {
   const history = useHistory(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const values = useSelector((state: State) => state.contactInfo as IContactInfo);
+  const [pageRefresh, setPageRefresh]=useState(true);
 
   const onEditClicked = () => {
     history.push("/info/edit");
   };
 
+  useEffect(()=>{
+    if(pageRefresh)
+    {
+     store.dispatch(
+       Actions.fetchContactInfoThunk({
+         userId:cookies[config.cookies.userId],
+         cookies:cookies
+       }));
+       setPageRefresh(false);// eslint-disable-next-line
+    }},[pageRefresh]);
+
 
   return (
+    
         <FormControl className={classes.mainForm}>
+          {values!=null && (
           <Card className={classes.card} variant="outlined">
             <CardHeader title="" />
             <div className="AccountListWrapper">
@@ -103,6 +120,7 @@ export default function ContactInfo(props:any) {
               </div>
             </div>
           </Card>
+          )}       
         </FormControl>
   );
 }
