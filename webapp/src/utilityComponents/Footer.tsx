@@ -10,7 +10,8 @@ import { logoutThunk } from "../app/actions";
 import config from "../config/config";
 
 const Footer = () => {
-  const [cookies, removeCookie] = useCookies();
+  // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
 
   const logOut = () => {
@@ -43,9 +44,9 @@ const Footer = () => {
           href="https://github.com/se2-2021-tue-16-okulewicz/Project-Group-B"
           target="_blank"
           rel="noreferrer"
-          className="Github"
+          className="GithubFooter"
         >
-          <FontAwesomeIcon icon={faGithub} />
+          <FontAwesomeIcon icon={faGithub} size="2x" />
         </a>
       </div>
     </footer>

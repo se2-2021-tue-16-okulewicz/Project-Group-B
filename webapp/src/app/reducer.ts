@@ -6,6 +6,7 @@ import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import config from "../config/config";
 import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+import { ValidateFetchedDog } from "../utilityComponents/utilities";
 
 export type Error = {
   hasError: boolean;
@@ -85,6 +86,7 @@ export const reducer = createReducer(init, {
   [Actions.finishRefreshing.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.dogsRequireRefresh = false;
+    newState.settingsRequireRefresh = true;
     return newState;
   },
   [Actions.fetchContactInfoThunk.pending.toString()]: (
@@ -291,6 +293,7 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = true;
+    //newState.settingsRequireRefresh=true;
     return newState;
   },
 
@@ -300,7 +303,13 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.editedDog = payload.payload.response.data as ILostDogWithPicture;
+    newState.editedDog = ValidateFetchedDog(
+      payload.payload.response.data as ILostDogWithPicture
+    );
+    newState.editedDog.picture.data = (payload.payload.response
+      .data as ILostDogWithPicture).picture.data as string;
+    newState.dogsRequireRefresh = false;
+    newState.settingsRequireRefresh = false;
     return newState;
   },
 

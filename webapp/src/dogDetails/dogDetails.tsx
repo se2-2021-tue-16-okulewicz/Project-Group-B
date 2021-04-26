@@ -1,49 +1,34 @@
 import "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import {
   Button,
   Card,
   CardContent,
-  CardHeader,
   Input,
+  InputAdornment,
   MenuItem,
   Select,
   TextField,
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
-import DateFnsUtils from "@date-io/date-fns";
-import ImageUpload from "../registerDog/ImageUpload";
-import {
-  ColorTypes,
-  HairTypes,
-  SizeTypes,
-  EarsTypes,
-  TailTypes,
-  SpecialMarkTypes,
-  BehaviorsTypes,
-  BreedTypes,
-} from "../dog/dogEnums";
-import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture } from "../dog/dogInterfaces";
+import { BehaviorsTypes } from "../dog/dogEnums";
+import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { State } from "../app/reducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
     },
     chips: {
       display: "flex",
@@ -58,405 +43,309 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       color: "aliceblue",
       backgroundColor: "aliceblue",
+      width: "inherit",
+    },
+    imgFit: {
+      objectFit: "cover",
+      width: "100%",
+      height: "100%",
     },
     mainForm: {
-      marginTop: "4%",
+      marginTop: "1vh",
+      maxWidth: "98%",
     },
   })
 );
 
 const DogDetails = (props: any) => {
-  //if enable is session storage is null, the form has just been opened
-  //need to finish details
-  const history = useHistory();
-  const classes = useStyles();
-  const [cookies, setCookie, removeCookie] = useCookies();
-  let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  const [lostDogFields, setLostDogFields] = useState<ILostDog>(
-    isInputNotNull
-      ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
-      : initLostDogProps
+  const dog = useSelector(
+    (state: State) => state.editedDog as ILostDogWithPicture
   );
-  sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
-  const [picture, setPicture] = useState<IPicture>(initPicture);
+  const dogId = props.dogId
+    ? props.dogId
+    : JSON.parse(sessionStorage.getItem("dogId") as string);
+  const [pageRefresh, setPageRefresh] = useState(true);
+  useEffect(() => {
+    if (pageRefresh) {
+      try {
+        store.dispatch(
+          Actions.fetchOneDogThunk({
+            id: dogId as number,
+            cookies: cookies,
+          })
+        );
+      } catch (err) {
+        console.error("Failed to fetch the dog: ", err);
+      } finally {
+        setPageRefresh(false);
+        store.dispatch(Actions.finishRefreshing);
+      }
+    } // eslint-disable-next-line
+  }, [pageRefresh]);
 
-  const inputsHandler = (e: { target: { name: any; value: any } }) => {
-    let newField = { ...lostDogFields, [e.target.name]: e.target.value };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
-  };
-
-  function calendarHandler(date: MaterialUiPickersDate): void {
-    let newField = { ...lostDogFields, dateLost: date as Date };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
-  }
-
-  const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
-    let newField = {
-      ...lostDogFields,
-      location: { ...lostDogFields.location, [e.target.name]: e.target.value },
-    };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
-  };
-  const selectsHandler = (
-    e: React.ChangeEvent<{ name?: string; value: unknown }>
-  ) => {
-    let newField = {
-      ...lostDogFields,
-      [e.target.name as string]: e.target.value,
-    };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
-  };
-
-  const onSubmitClicked = () => {
-    try {
-      registerDog(lostDogFields, picture);
-      history.push("/listDogs");
-    } catch (err) {
-      console.error("Failed to save the dog: ", err);
-    }
-  };
+  const history = useHistory();
+  const classes = useStyles(); // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const onCancelClick = () => {
+    sessionStorage.removeItem("dogId");
+    sessionStorage.clear();
     history.push("/listDogs");
   };
 
-  function registerDog(dog: ILostDog, picture: IPicture) {
-    store.dispatch(
-      Actions.addDogThunk({
-        dog: dog,
-        picture: picture,
-        cookies: cookies,
-      })
-    );
-  }
-
-  const handlePicturesChange = (event: any) => {
-    if (event) {
-      (event as File).arrayBuffer().then((fileBuffer) => {
-        setPicture({
-          id: 0,
-          fileName: event.name, //event.name,
-          fileType: event.type,
-          data: fileBuffer,
-        } as IPicture);
-      });
-    }
-  };
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
-      <Grid
-        className="mainForm"
-        container
-        alignContent="space-between"
-        spacing={5}
-      >
+    <div>
+      {!pageRefresh && dog && (
         <Grid
+          className={classes.mainForm}
           container
-          item
-          xs={5}
-          direction="column"
-          alignContent="stretch"
-          spacing={1}
+          alignContent="space-between"
+          spacing={7}
         >
-          <FormControl className={classes.formControl}>
-            <InputLabel shrink id="name-label">
-              Name
-            </InputLabel>
-            <Input
-              data-testid="name-input"
-              id="name"
-              name="name"
-              value={lostDogFields.name}
-              onChange={inputsHandler}
-              required
-            />
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <Card className={classes.cardContent}>
-              <CardContent className={classes.cardContent}>
-                <ImageUpload
-                  data-testid="img-upload"
-                  handlePicturesChange={(
-                    file: React.ChangeEvent<{ value: unknown }>
-                  ) => handlePicturesChange(file)}
-                />
-              </CardContent>
-            </Card>
-          </FormControl>
-        </Grid>
-        <Grid
-          container
-          item
-          xs={3}
-          direction="column"
-          alignContent="stretch"
-          spacing={1}
-        >
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="age-label">
-              Age
-            </InputLabel>
-            <TextField
-              data-testid="age-input"
-              type="number"
-              id="age"
-              name="age"
-              value={lostDogFields.age}
-              onChange={inputsHandler}
-              required
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="color-label">Color</InputLabel>
-            <Select
-              data-testid="color-select"
-              native
-              label="Color"
-              labelId="color-label"
-              id="color"
-              name="color"
-              value={lostDogFields.color}
-              onChange={selectsHandler}
-              displayEmpty
-            >
-              <option key={"color-key"} aria-label="None" value="" />
-              {Object.values(ColorTypes)
-                .filter((k) => isNaN(Number(k)))
-                .map((type: string | ColorTypes) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="hair-label">Hair</InputLabel>
-            <Select
-              data-testid="hair-select"
-              native
-              label="hair"
-              labelId="hair-label"
-              value={lostDogFields.hairLength}
-              name="hairLength"
-              onChange={selectsHandler}
-              displayEmpty
-            >
-              <option key={"hair-type"} aria-label="None" value="" />
-              {Object.values(HairTypes)
-                .filter((k) => isNaN(Number(k)))
-                .map((type: string | HairTypes) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="size-label">Size</InputLabel>
-            <Select
-              data-testid="size-select"
-              native
-              labelId="size-label"
-              label="size"
-              name="size"
-              value={lostDogFields.size}
-              onChange={selectsHandler}
-              displayEmpty
-            >
-              <option key={"size-type"} aria-label="None" value="" />
-              {Object.values(SizeTypes)
-                .filter((k) => isNaN(Number(k)))
-                .map((type: string | SizeTypes) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="ears-label">Ears</InputLabel>
-            <Select
-              data-testid="ears-select"
-              native
-              labelId="ears-label"
-              label="ears"
-              name="earsType"
-              value={lostDogFields.earsType}
-              onChange={selectsHandler}
-              displayEmpty
-            >
-              <option key={"ears-type"} aria-label="None" value="" />
-              {Object.values(EarsTypes)
-                .filter((k) => isNaN(Number(k)))
-                .map((type: string | EarsTypes) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="tail-label">Tail</InputLabel>
-            <Select
-              data-testid="tail-select"
-              native
-              labelId="tail-label"
-              label="tail"
-              name="tailLength"
-              value={lostDogFields.tailLength}
-              onChange={selectsHandler}
-              displayEmpty
-            >
-              <option key={"tail-type"} aria-label="None" value="" />
-              {Object.values(TailTypes)
-                .filter((k) => isNaN(Number(k)))
-                .map((type: string | TailTypes) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="mark-label">Special Mark</InputLabel>
-            <Select
-              data-testid="mark-select"
-              native
-              labelId="mark-label"
-              label="specialmark "
-              name="specialMark"
-              value={lostDogFields.specialMark}
-              onChange={selectsHandler}
-              displayEmpty
-            >
-              <option key={"mark-type"} aria-label="None" value="" />
-              {Object.values(SpecialMarkTypes)
-                .filter((k) => isNaN(Number(k)))
-                .map((type: string | SpecialMarkTypes) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="breed-label">Breed</InputLabel>
-            <Select
-              data-testid="breed-select"
-              native
-              labelId="breed-label"
-              label="breed "
-              name="breed"
-              value={lostDogFields.breed}
-              onChange={selectsHandler}
-              displayEmpty
-            >
-              <option key={"breed-type"} aria-label="None" value="" />
-              {Object.values(BreedTypes)
-                .filter((k) => isNaN(Number(k)))
-                .map((type: string | BreedTypes) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid
-          container
-          item
-          xs={4}
-          direction="column"
-          alignContent="stretch"
-          spacing={1}
-        >
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="calendar-label">
-              Dog was lost on
-            </InputLabel>
-            <DatePicker
-              data-testid="date-select"
-              disableToolbar
-              variant="inline"
-              format="yyyy-MM-dd"
-              margin="normal"
-              id="date-picker-inline"
-              value={lostDogFields.dateLost}
-              maxDate={new Date()}
-              name="dateLost"
-              onChange={(date: any) => calendarHandler(date)}
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="city-label">
-              City
-            </InputLabel>
-            <Input
-              data-testid="city-input"
-              name="city"
-              value={lostDogFields.location.city}
-              onChange={inputArrayHandler}
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="district-label">
-              District
-            </InputLabel>
-            <Input
-              data-testid="district-input"
-              name="district"
-              value={lostDogFields.location.district}
-              onChange={inputArrayHandler}
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink htmlFor="behavior-label">
-              Behavior
-            </InputLabel>
-            <Select
-              multiple
-              labelId="behavior-label"
-              label="Behavior"
-              name="behaviors"
-              value={lostDogFields.behaviors}
-              onChange={selectsHandler}
-              input={<Input />}
-              displayEmpty
-              renderValue={(selected: any) => (
-                <div className={classes.chips}>
-                  {(selected as string[]).map((value) => (
-                    <Chip key={value} label={value} className={classes.chip} />
+          <Grid
+            className="grid"
+            container
+            item
+            xs={5}
+            direction="column"
+            alignContent="stretch"
+          >
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="name-label">
+                Name
+              </InputLabel>
+              <TextField
+                data-testid="name-input"
+                id="name"
+                name="name"
+                value={dog.name}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <Card className={classes.cardContent}>
+                <CardContent className={classes.cardContent}>
+                  <img
+                    className={classes.imgFit}
+                    src={`data:${dog.picture.fileType};base64,${
+                      dog.picture.data as ArrayBuffer
+                    }`}
+                    alt={dog.picture.fileName}
+                  />
+                </CardContent>
+              </Card>
+            </FormControl>
+          </Grid>
+          <Grid
+            className="grid"
+            container
+            item
+            xs={3}
+            direction="column"
+            alignContent="stretch"
+          >
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="age-label">
+                Age
+              </InputLabel>
+              <TextField
+                data-testid="age-input"
+                type="number"
+                id="age"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">Years</InputAdornment>
+                  ),
+                }}
+                value={dog.age}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="color-label">
+                Color
+              </InputLabel>
+              <TextField
+                data-testid="color-select"
+                id="color"
+                name="color"
+                value={dog.color}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="hair-label">
+                Hair
+              </InputLabel>
+              <TextField
+                data-testid="hair-select"
+                id="hair"
+                value={dog.hairLength}
+                name="hairLength"
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="size-label">
+                Size
+              </InputLabel>
+              <TextField
+                data-testid="size-select"
+                id="size"
+                name="size"
+                value={dog.size}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="ears-label">
+                Ears
+              </InputLabel>
+              <TextField
+                data-testid="ears-select"
+                id="ears"
+                name="earsType"
+                value={dog.earsType}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="tail-label">
+                Tail
+              </InputLabel>
+              <TextField
+                data-testid="tail-select"
+                id="tail"
+                name="tailLength"
+                value={dog.tailLength}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="mark-label">
+                Special Mark
+              </InputLabel>
+              <TextField
+                data-testid="mark-select"
+                value={dog.specialMark}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="breed-label">
+                Breed
+              </InputLabel>
+              <TextField
+                data-testid="breed-select"
+                id="breed"
+                value={dog.breed}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+          </Grid>
+          <Grid
+            className="grid"
+            container
+            item
+            xs={4}
+            direction="column"
+            alignContent="stretch"
+          >
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="calendar-label">
+                Dog was lost on
+              </InputLabel>
+              <TextField
+                data-testid="date-select"
+                margin="normal"
+                id="date-picker-inline"
+                value={dog.dateLost as Date}
+                name="dateLost"
+                disabled={true}
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="city-label">
+                City
+              </InputLabel>
+              <TextField
+                data-testid="city-input"
+                name="city"
+                value={dog.location.city}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="district-label">
+                District
+              </InputLabel>
+              <TextField
+                data-testid="district-input"
+                name="district"
+                value={dog.location.district}
+                disabled={true}
+                margin="normal"
+              />
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink htmlFor="behavior-label">
+                Behaviors
+              </InputLabel>
+              <Select
+                multiple
+                labelId="behavior-label"
+                label="Behavior"
+                name="behaviors"
+                value={dog.behaviors}
+                disabled={true}
+                input={<Input />}
+                displayEmpty
+                renderValue={(selected: any) => (
+                  <div className={classes.chips}>
+                    {(selected as string[]).map((value) => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        className={classes.chip}
+                      />
+                    ))}
+                  </div>
+                )}
+              >
+                <MenuItem aria-label="None" value="" />
+                {Object.values(BehaviorsTypes)
+                  .filter((k) => isNaN(Number(k)))
+                  .map((type: string | BehaviorsTypes) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
                   ))}
-                </div>
-              )}
-            >
-              <MenuItem aria-label="None" value="" />
-              {Object.values(BehaviorsTypes)
-                .filter((k) => isNaN(Number(k)))
-                .map((type: string | BehaviorsTypes) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <Button
-              data-testid="cancel-button"
-              variant="contained"
-              onClick={onCancelClick}
-              color="primary"
-            >
-              Shelter
-            </Button>
-          </FormControl>
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <Button
+                data-testid="cancel-button"
+                variant="contained"
+                onClick={onCancelClick}
+                color="primary"
+              >
+                Lost Dogs
+              </Button>
+            </FormControl>
+          </Grid>
         </Grid>
-      </Grid>
-    </MuiPickersUtilsProvider>
+      )}
+    </div>
   );
 };
 

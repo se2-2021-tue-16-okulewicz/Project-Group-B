@@ -19,9 +19,8 @@ const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   return result;
 };
 
-//Reimplement stringifing date
 const zeroPad = (num: number, places: number) =>
-  String(num).padStart(places, "0");
+  String(num).padStart(places, "0"); //Reimplement stringifing date
 
 //eslint-disable-next-line no-extend-native
 Date.prototype.toJSON = function (key?: any): string {
@@ -142,7 +141,8 @@ export async function addDog(
 }
 
 export async function updateDog(
-  dog: ILostDogWithPicture,
+  dog: ILostDog,
+  picture: IPicture,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture>> {
   let formData = new FormData();
@@ -160,10 +160,9 @@ export async function updateDog(
   );
   formData.append(
     "picture",
-    new Blob([dog.picture.data], { type: dog.picture.fileType }),
-    dog.picture.fileName
+    new Blob([picture.data], { type: picture.fileType }),
+    picture.fileName
   );
-
   return getResponse(
     axios.put(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dog.id}`,

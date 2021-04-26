@@ -2,7 +2,7 @@ import "date-fns";
 import React, { useEffect, useState } from "react";
 import { Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
@@ -30,7 +30,8 @@ import LoadingPopup from "../utilityComponents/LoadingPopup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
-import { IFilters } from "../utilityComponents/uitilities";
+import { IFilters } from "../utilityComponents/utilities";
+import DogDetails from "../dogDetails/dogDetails";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -168,7 +169,7 @@ scheme.configureEdgeSidebar((builder) => {
 export default function ListWithDogs() {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
-  //const [isListDifferent, setIsListDifferent] = useState(false);
+  const [dogId, setDogId] = useState(0);
   const [listFetched, setListFetched] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
   const dogs = useSelector(
@@ -186,8 +187,8 @@ export default function ListWithDogs() {
     size: config.defaultFilters.size,
     isFound: false, //for after the filters will be implemented in the backend
   });
-
-  const [cookies, removeCookie] = useCookies();
+  // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
   const classes = useStyles();
   const { path } = useRouteMatch();
@@ -201,7 +202,6 @@ export default function ListWithDogs() {
     history.push("/settings");
   };
   const onLogOutClicked = () => {
-    console.log(cookies["token"]);
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
     removeCookie(config.cookies.userId, { path: "/" });
@@ -216,7 +216,6 @@ export default function ListWithDogs() {
 
         },600000)
   }*/
-
   //clears dog list, when page is refreshed or changed
   useEffect(() => {
     if (pageRefresh) {
@@ -224,6 +223,12 @@ export default function ListWithDogs() {
       setPageRefresh(false);
     }
   }, [pageRefresh]);
+
+  function redirectToDogDetailsOrEdit(id: number) {
+    setDogId(id);
+    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    history.push(`${path}/${id}`);
+  }
 
   //fetches first page of dog list
   useEffect(() => {
@@ -299,7 +304,7 @@ export default function ListWithDogs() {
       <Header className={classes.header}>
         <Toolbar>
           <SidebarTrigger sidebarId="unique_id" />
-          Shelter
+          Lost Dogs
         </Toolbar>
       </Header>
       <DrawerSidebar sidebarId="unique_id">
@@ -308,7 +313,7 @@ export default function ListWithDogs() {
             setMenuCollapsed(!isMenuCollapsed);
           }}
         />
-        <SidebarContent name="sidebar">
+        <SidebarContent name="sidebar" style={{ maxWidth: "98%" }}>
           {!isMenuCollapsed && (
             <Grid container className={classes.main} spacing={1}>
               {}
@@ -383,17 +388,32 @@ export default function ListWithDogs() {
       </DrawerSidebar>
       <Content>
         {lastPage && listFetched && (
-          <InfiniteScroll
-            dataLength={displayedDogs.length}
-            scrollThreshold={0.5}
-            next={fetchMore}
-            hasMore={filteredDogs.length > displayedDogs.length}
-            loader={
-              (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
-            }
-          >
-            <ImageGrid dogs={displayedDogs} cookies={cookies} path={path} />
-          </InfiniteScroll>
+          <Switch>
+            <Route exact path={path}>
+              <InfiniteScroll
+                dataLength={displayedDogs.length}
+                scrollThreshold={0.5}
+                next={fetchMore}
+                hasMore={filteredDogs.length > displayedDogs.length}
+                loader={
+                  (displayLoader && <LoadingPopup />) ||
+                  (!displayLoader && <></>)
+                }
+              >
+                <ImageGrid
+                  dogs={displayedDogs}
+                  path={path}
+                  redirectToDogDetailsOrEdit={(id: number) =>
+                    redirectToDogDetailsOrEdit(id)
+                  }
+                />
+              </InfiniteScroll>
+            </Route>
+            <Route
+              path={`${path}/:id`}
+              children={<DogDetails dogId={dogId} />}
+            />
+          </Switch>
         )}
       </Content>
     </Root>

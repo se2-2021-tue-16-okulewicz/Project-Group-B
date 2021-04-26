@@ -13,7 +13,7 @@ export interface IPicture {
   id: number;
   fileName: string;
   fileType: string;
-  data: ArrayBuffer;
+  data: ArrayBuffer | string;
 }
 export interface IDog {
   id: number;

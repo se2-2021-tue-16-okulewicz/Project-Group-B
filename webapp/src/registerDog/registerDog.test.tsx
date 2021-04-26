@@ -40,7 +40,6 @@ it("Rendered register form button", () => {
       container
     );
   });
-  //console.log(container?.classList.toString());
   expect(
     container?.getElementsByClassName("mainForm").length
   ).toBeGreaterThanOrEqual(0);

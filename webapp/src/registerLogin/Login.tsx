@@ -71,7 +71,7 @@ export default function Login() {
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const history = useHistory();
   // eslint-disable-next-line
-  const [cookies, setCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const handleChange = (prop: keyof internalState) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -114,11 +114,11 @@ export default function Login() {
   }, [loginInfo]);
 
   //THIS makes the web app skip the log in
-  /*useEffect(() => {
+  useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
-    }// eslint-disable-next-line
-  }, []);*/
+    } // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="Login">
@@ -195,7 +195,6 @@ export default function Login() {
           className={classes.root}
           component="button"
           onClick={() => goToUserRegister()}
-          //color="inherit"
           variant="body2"
         >
           Create an account
@@ -207,7 +206,6 @@ export default function Login() {
           className={classes.root}
           component="button"
           onClick={() => goToShelterRegister()}
-          //color="inherit"
           variant="body2"
         >
           Create new shelter

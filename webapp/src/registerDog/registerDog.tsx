@@ -35,6 +35,7 @@ import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
+import { ValidateFetchedDog } from "../utilityComponents/utilities";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -70,8 +71,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
-  const classes = useStyles();
-  const [cookies] = useCookies();
+  const classes = useStyles(); // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
     isInputNotNull
@@ -138,6 +139,7 @@ export default function RegisterDogForm() {
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
+    dog = ValidateFetchedDog(dog);
     store.dispatch(
       Actions.addDogThunk({
         dog: dog,
@@ -204,6 +206,7 @@ export default function RegisterDogForm() {
               value={lostDogFields.age}
               onChange={inputsHandler}
               InputProps={{
+                inputProps: { min: 0, max: 30 },
                 startAdornment: (
                   <InputAdornment position="start">Years</InputAdornment>
                 ),
