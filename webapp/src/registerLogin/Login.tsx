@@ -114,12 +114,11 @@ export default function Login() {
   }, [loginInfo]);
 
   //THIS makes the web app skip the log in
-  /*useEffect(() => {
-    console.log(cookies[config.cookies.userType]);
+  useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       history.push("/listDogs");
     }// eslint-disable-next-line
-  }, []);*/
+  }, []);
 
   return (
     <div className="Login">

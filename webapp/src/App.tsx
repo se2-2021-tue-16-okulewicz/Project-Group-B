@@ -73,7 +73,6 @@ function Layout() {
         removeCookie(config.cookies.userType, { path: "/" });
         removeCookie(config.cookies.userId, { path: "/" });
         store.dispatch(logoutThunk(cookies));
-        console.log("here");
         history.push("/");
       }
     }
@@ -103,9 +102,7 @@ function Layout() {
           <ListWithDogs />
         </Route>
         <Route path="/settings">
-          <Settings redirectToDogDetailsOrEdit={(
-                    id: number
-                  ) => redirectToDogDetailsOrEdit(id)}/>
+          <Settings redirectToDogDetailsOrEdit={(id: number) => redirectToDogDetailsOrEdit(id)}/>
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />

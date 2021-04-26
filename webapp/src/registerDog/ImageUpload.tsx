@@ -3,16 +3,13 @@ import "./ImageUpload.css";
 import { Input, InputLabel } from "@material-ui/core";
 
 const ImageUpload = (props: any) => {
-  //let refresh = sessionStorage.getItem("newImage") === "true";
   const [file, setFile] = useState(null);
   const [newImage, setNewImage] = useState(false);
 
   const handleChange = (event: any) => {
     let newFile = event.target.files[0];
     setFile(newFile);
-    //sessionStorage.setItem("file", JSON.stringify(newFile));
     setNewImage(true);
-    //sessionStorage.setItem("newImage", "true");
     let f = event.target.files[0];
     props.handlePicturesChange(f);
   };

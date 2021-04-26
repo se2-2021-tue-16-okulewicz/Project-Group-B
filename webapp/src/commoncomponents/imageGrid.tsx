@@ -7,12 +7,11 @@ import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { useHistory } from "react-router";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
-import EditDogDetails from "../editDogDetails/editDogDetails";
-import { store } from "../app/store";
-import * as Actions from "../app/actions";
+import { useRouteMatch } from "react-router-dom";
 import { Edit } from "@material-ui/icons";
-import DogDetails from "../dogDetails/dogDetails";
+import { store } from "../app/store";
+import { fetchOneDogThunk } from "../app/actions";
+import { useCookies } from "react-cookie";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,15 +35,20 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ImageGrid(props: any) {
   const classes = useStyles();
   const dogs = props.dogs as ILostDogWithPicture[];
+  const [cookies,  setCookie, removeCookie] = useCookies();
   const [dogId, setDogId] = useState(0);
   const history = useHistory();
   const redirectToDogDetailsOrEdit = (id: number) => {
+    store.dispatch(
+      fetchOneDogThunk({
+        id: id as number,
+        cookies: cookies,
+      })
+    );
     props.redirectToDogDetailsOrEdit(id);
   };
   const { path } = useRouteMatch();
   return (
-    <Switch>
-      <Route exact path={path}>
         <GridList cols={3} spacing={3}>
           {dogs.map((dog: ILostDogWithPicture) => (
             <GridListTile
@@ -71,13 +75,8 @@ export default function ImageGrid(props: any) {
                     aria-label={`info about ${dog.name}`}
                     className={classes.icon}
                     onClick={() => {
-                       /*if (props.path === "/listDogs") {
-                        history.push(`${props.path}/${dog.id}`);
-                      } else {*/
                         setDogId(dog.id as number);
                         redirectToDogDetailsOrEdit(dog.id as number);
-                        //history.push(`${props.path}/${props.edit}${dog.id}`);
-                      //}
                     }}
                   >
                     {props.path === "/listDogs" ? <InfoIcon /> : <Edit />}
@@ -87,16 +86,5 @@ export default function ImageGrid(props: any) {
             </GridListTile>
           ))}
         </GridList>
-      </Route>
-      <Route
-        path={`${props.path}/edit/:id`}
-        children={<EditDogDetails cookies={props.cookies} dogId={dogId} />}
-      />
-      <Route
-        path={`${props.path}/:id`}
-        children={<DogDetails cookies={props.cookies} dogId={dogId} />
-        }
-      />
-    </Switch>
   );
 }

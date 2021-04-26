@@ -170,7 +170,6 @@ export default function ListWithDogs() {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
   const [dogId, setDogId]=useState(0);
-  //const [isListDifferent, setIsListDifferent] = useState(false);
   const [listFetched, setListFetched] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
   const dogs = useSelector(
@@ -203,7 +202,6 @@ export default function ListWithDogs() {
     history.push("/settings");
   };
   const onLogOutClicked = () => {
-    console.log(cookies["token"]);
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
     removeCookie(config.cookies.userId, { path: "/" });
@@ -218,8 +216,6 @@ export default function ListWithDogs() {
 
         },600000)
   }*/
-  
-  console.log(refreshRequired);
   //clears dog list, when page is refreshed or changed
   useEffect(() => {
     if (pageRefresh) {
@@ -237,7 +233,6 @@ export default function ListWithDogs() {
   //fetches first page of dog list
   useEffect(() => {
     if (refreshRequired) {
-      console.log(cookies["token"]);
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -309,7 +304,7 @@ export default function ListWithDogs() {
       <Header className={classes.header}>
         <Toolbar>
           <SidebarTrigger sidebarId="unique_id" />
-          Shelter
+          Lost Dogs
         </Toolbar>
       </Header>
       <DrawerSidebar sidebarId="unique_id">

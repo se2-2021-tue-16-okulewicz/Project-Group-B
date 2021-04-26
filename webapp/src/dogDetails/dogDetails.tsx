@@ -81,7 +81,6 @@ const DogDetails = (props: any) => {
   useEffect(()=>{
     if(pageRefresh)
     {
-      console.log("fetch");
       try {
         store.dispatch(
           Actions.fetchOneDogThunk({
@@ -92,7 +91,6 @@ const DogDetails = (props: any) => {
       } catch (err) {
         console.error("Failed to fetch the dog: ", err);
       } finally {
-        //console.log(props.path);
       setPageRefresh(false);
       store.dispatch(Actions.finishRefreshing);}
     }
@@ -330,7 +328,7 @@ const DogDetails = (props: any) => {
               onClick={onCancelClick}
               color="primary"
             >
-              Shelter
+              Lost Dogs
             </Button>
           </FormControl>
         </Grid>

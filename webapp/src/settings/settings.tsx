@@ -175,7 +175,6 @@ export default function Settings(props:any) {
     size: config.defaultFilters.size,
     //ownerId: Number.parseInt(cookies[config.cookies.userId]),
   });
-  console.log(listFetched);
   function clearStorage() {
     sessionStorage.removeItem("dogId");
     sessionStorage.removeItem("listFetched");
@@ -192,7 +191,6 @@ export default function Settings(props:any) {
     history.push("/listDogs");
   };
   const onLogOutClicked = () => {
-    console.log(cookies["token"]);
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
     removeCookie(config.cookies.userId, { path: "/" });
@@ -212,7 +210,6 @@ export default function Settings(props:any) {
   // fetch and append page 0
   useEffect(() => {
     if (refreshRequired && !listFetched) {
-      console.log(cookies["token"]);
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -303,7 +300,8 @@ export default function Settings(props:any) {
               color="primary"
               onClick={onInfoClicked}
             >
-              {!isListVisible && <SendIcon />}
+              {!isListVisible && <SendIcon /> }
+              {!isListVisible && <Grid item xs={1} />}
               Contact Info
             </MenuItem>
             <MenuItem
@@ -313,6 +311,7 @@ export default function Settings(props:any) {
               onClick={onDogsListClicked}
             >
               {isListVisible && <SendIcon />}
+              {isListVisible && <Grid item xs={1} />}
               My Dogs
             </MenuItem>
             <Grid item xs={12} />

@@ -15,11 +15,8 @@ export interface IFilters {
 
 //fix enum types
 export function ValidateFetchedDog(dog: ILostDogWithPicture|ILostDog) {
-  console.log(dog.breed);
   dog.breed= ValidateSelectedFeatures(dog.breed);
-  console.log(dog.breed);
   dog.breed = Object.values(BreedTypes).includes(dog.breed)?dog.breed:"";
-  console.log(dog.breed);
   dog.specialMark= ValidateSelectedFeatures(dog.specialMark);
   dog.specialMark=Object.values(SpecialMarkTypes).includes(dog.specialMark as SpecialMarkTypes)?dog.specialMark:SpecialMarkTypes.None;
   dog.size= ValidateSelectedFeatures(dog.size);

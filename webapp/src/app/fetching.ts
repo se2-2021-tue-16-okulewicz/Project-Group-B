@@ -12,7 +12,6 @@ import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
 }) => {
-  console.log(cookies["token"]);
   let result =
     cookies[config.cookies.token] === undefined
       ? config.testTokens.regular

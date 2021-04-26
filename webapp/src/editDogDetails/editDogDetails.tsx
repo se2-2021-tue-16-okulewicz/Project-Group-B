@@ -82,7 +82,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const EditDogDetails = (props: any) => {
   // eslint-disable-next-line
-  //const { path } = useRouteMatch();
   const dogId = props.dogId?props.dogId:JSON.parse(sessionStorage.getItem("dogId") as string);
   const history = useHistory();
   const classes = useStyles();
@@ -113,17 +112,14 @@ const EditDogDetails = (props: any) => {
       } catch (err) {
         console.error("Failed to fetch the dog: ", err);
       } finally {
-        ////console.log(props.path);
-      //setDogSession(true);
       setPageRefresh(false);}
     }
   },[pageRefresh, dogSession])
 
   useEffect(() => {
-    console.log(refreshRequired);
       
       if(!refreshRequired && !pageRefresh){
-        
+        if(editedDog.picture){
         const blob = base64StringToBlob(editedDog.picture.data as string, editedDog.picture.fileType);
         (blob as File).arrayBuffer().then((fileBuffer) => {
         setPicture({
@@ -133,20 +129,17 @@ const EditDogDetails = (props: any) => {
           data: fileBuffer
         } as IPicture);
       });
+    }
       if(isInputNotNull)
       {
-        //console.log("here");
         setEditDogFields(JSON.parse(sessionStorage.getItem("editDogFields") as string));
-        //console.log(editDogFields.picture.fileName);
       }
       else{
-        //console.log("not here"+ editedDog.name);
         sessionStorage.setItem("editDogFields", JSON.stringify(editedDog as ILostDogWithPicture));
         setEditDogFields(editedDog as ILostDogWithPicture);
       }
       setDogSession(false);
       store.dispatch(Actions.finishRefreshing);}
-      ////console.log(str2ab(editedDog.picture.data));
   }, [refreshRequired, pageRefresh]);
   
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
@@ -188,13 +181,6 @@ const EditDogDetails = (props: any) => {
     sessionStorage.clear();
   }
 
-  function checkStorage() {
-    console.log("id "+props.dogId);
-    console.log(editedDog);
-    console.log(JSON.parse(sessionStorage.getItem("editDogFields") as string));
-    console.log(editDogFields);
-  }
-
   const onMarkDogClicked = () => {
     try {
       markDogAsFound(dogId);
@@ -204,7 +190,6 @@ const EditDogDetails = (props: any) => {
     } finally {
       store.dispatch(Actions.startRefreshing);
       clearStorage();
-      checkStorage();
       history.push("/settings");
       history.go(0);
     }
@@ -219,7 +204,6 @@ const EditDogDetails = (props: any) => {
     } finally {
       store.dispatch(Actions.startRefreshing);
       clearStorage();
-      checkStorage();
       history.push("/settings");
       history.go(0);
     }
@@ -265,10 +249,6 @@ const EditDogDetails = (props: any) => {
     }
     setIsNewPicture(true);
   };
-  ////console.log(editDogFields.name);
-  ////console.log(editedDog);
-  ////console.log(editDogFields);
-  checkStorage();
   return (  
           <Grid
             container
