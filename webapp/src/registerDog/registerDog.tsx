@@ -71,8 +71,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function RegisterDogForm() {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
-  const classes = useStyles();// eslint-disable-next-line
-  const [cookies,  setCookie, removeCookie] = useCookies();
+  const classes = useStyles(); // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
     isInputNotNull
@@ -206,7 +206,7 @@ export default function RegisterDogForm() {
               value={lostDogFields.age}
               onChange={inputsHandler}
               InputProps={{
-                inputProps:{min:0, max:30},
+                inputProps: { min: 0, max: 30 },
                 startAdornment: (
                   <InputAdornment position="start">Years</InputAdornment>
                 ),
@@ -337,7 +337,7 @@ export default function RegisterDogForm() {
               onChange={selectsHandler}
               displayEmpty
             >
-              <option key={"mark-type"} aria-label="None" value=""/>
+              <option key={"mark-type"} aria-label="None" value="" />
               {Object.values(SpecialMarkTypes)
                 .filter((k) => isNaN(Number(k)))
                 .map((type: string | SpecialMarkTypes) => (

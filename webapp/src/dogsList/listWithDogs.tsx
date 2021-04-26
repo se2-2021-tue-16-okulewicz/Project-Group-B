@@ -169,7 +169,7 @@ scheme.configureEdgeSidebar((builder) => {
 export default function ListWithDogs() {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
-  const [dogId, setDogId]=useState(0);
+  const [dogId, setDogId] = useState(0);
   const [listFetched, setListFetched] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
   const dogs = useSelector(
@@ -187,8 +187,8 @@ export default function ListWithDogs() {
     size: config.defaultFilters.size,
     isFound: false, //for after the filters will be implemented in the backend
   });
-// eslint-disable-next-line
-  const [cookies,  setCookie, removeCookie] = useCookies();
+  // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
   const classes = useStyles();
   const { path } = useRouteMatch();
@@ -313,7 +313,7 @@ export default function ListWithDogs() {
             setMenuCollapsed(!isMenuCollapsed);
           }}
         />
-        <SidebarContent name="sidebar" style={{maxWidth:"98%"}}>
+        <SidebarContent name="sidebar" style={{ maxWidth: "98%" }}>
           {!isMenuCollapsed && (
             <Grid container className={classes.main} spacing={1}>
               {}
@@ -388,31 +388,34 @@ export default function ListWithDogs() {
       </DrawerSidebar>
       <Content>
         {lastPage && listFetched && (
-              <Switch>
-              <Route exact path={path}>
-          <InfiniteScroll
-            dataLength={displayedDogs.length}
-            scrollThreshold={0.5}
-            next={fetchMore}
-            hasMore={filteredDogs.length > displayedDogs.length}
-            loader={
-              (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
-            }
-          >
-            <ImageGrid dogs={displayedDogs} path={path} redirectToDogDetailsOrEdit={(
-                    id: number
-                  ) => redirectToDogDetailsOrEdit(id)}/>
-          </InfiniteScroll>
-          </Route>
-          <Route
-                path={`${path}/:id`}
-                children={<DogDetails dogId={dogId} />}
+          <Switch>
+            <Route exact path={path}>
+              <InfiniteScroll
+                dataLength={displayedDogs.length}
+                scrollThreshold={0.5}
+                next={fetchMore}
+                hasMore={filteredDogs.length > displayedDogs.length}
+                loader={
+                  (displayLoader && <LoadingPopup />) ||
+                  (!displayLoader && <></>)
+                }
+              >
+                <ImageGrid
+                  dogs={displayedDogs}
+                  path={path}
+                  redirectToDogDetailsOrEdit={(id: number) =>
+                    redirectToDogDetailsOrEdit(id)
+                  }
+                />
+              </InfiniteScroll>
+            </Route>
+            <Route
+              path={`${path}/:id`}
+              children={<DogDetails dogId={dogId} />}
             />
-            </Switch>
+          </Switch>
         )}
       </Content>
     </Root>
   );
 }
-
-

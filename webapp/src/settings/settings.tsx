@@ -149,10 +149,10 @@ scheme.configureEdgeSidebar((builder) => {
     });
 });
 
-export default function Settings(props:any) {
+export default function Settings(props: any) {
   const [displayLoader, setDisplayLoader] = useState(false);
-  const [listFetched, setListFetched] = useState(false);// eslint-disable-next-line
-  const [cookies,  setCookie, removeCookie] = useCookies();
+  const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
@@ -275,7 +275,6 @@ export default function Settings(props:any) {
     }, 700);
   };
 
-
   function redirectToDogDetailsOrEdit(id: number) {
     props.redirectToDogDetailsOrEdit(id);
   }
@@ -299,7 +298,7 @@ export default function Settings(props:any) {
               color="primary"
               onClick={onInfoClicked}
             >
-              {!isListVisible && <SendIcon /> }
+              {!isListVisible && <SendIcon />}
               {!isListVisible && <Grid item xs={1} />}
               Contact Info
             </MenuItem>
@@ -378,11 +377,15 @@ export default function Settings(props:any) {
               (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
             }
           >
-            <ImageGrid dogs={displayedDogs}  path={path}  redirectToDogDetailsOrEdit={(
-                    id: number
-                  ) => redirectToDogDetailsOrEdit(id)}/>
+            <ImageGrid
+              dogs={displayedDogs}
+              path={path}
+              redirectToDogDetailsOrEdit={(id: number) =>
+                redirectToDogDetailsOrEdit(id)
+              }
+            />
           </InfiniteScroll>
-          )}
+        )}
         {!isListVisible && <Card></Card>}
       </Content>
     </Root>

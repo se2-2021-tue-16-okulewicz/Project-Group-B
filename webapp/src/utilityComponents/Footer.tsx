@@ -9,8 +9,9 @@ import { store } from "../app/store";
 import { logoutThunk } from "../app/actions";
 import config from "../config/config";
 
-const Footer = () => {// eslint-disable-next-line
-  const [cookies,  setCookie, removeCookie] = useCookies();
+const Footer = () => {
+  // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
 
   const logOut = () => {
@@ -45,7 +46,7 @@ const Footer = () => {// eslint-disable-next-line
           rel="noreferrer"
           className="GithubFooter"
         >
-          <FontAwesomeIcon icon={faGithub} size="2x"/>
+          <FontAwesomeIcon icon={faGithub} size="2x" />
         </a>
       </div>
     </footer>

@@ -92,7 +92,7 @@ export const addDogThunk = createAsyncThunk<
 
 export const updateDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture>,
-  { dog: ILostDog;  picture: IPicture; cookies: { [name: string]: any } },
+  { dog: ILostDog; picture: IPicture; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<ILostDogWithPicture> }
 >(
   "UpdateDog",

@@ -8,7 +8,12 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import { clearError, clearRedirect, finishRefreshing, logoutThunk } from "./app/actions";
+import {
+  clearError,
+  clearRedirect,
+  finishRefreshing,
+  logoutThunk,
+} from "./app/actions";
 import { State } from "./app/reducer";
 import { store } from "./app/store";
 import RegisterDogForm from "./registerDog/registerDog";
@@ -48,10 +53,10 @@ function Layout() {
   const error = useSelector((state: State) => state.error);
   const loading = useSelector((state: State) => state.loading);
   const redirect = useSelector((state: State) => state.redirect);
-  const [dogId, setDogId]=useState(0);
+  const [dogId, setDogId] = useState(0);
   const history = useHistory();
-  const classes = useStyles();// eslint-disable-next-line
-  const [cookies,  setCookie, removeCookie] = useCookies();
+  const classes = useStyles(); // eslint-disable-next-line
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   useEffect(() => {
     if (redirect !== null) {
@@ -66,8 +71,10 @@ function Layout() {
     store.dispatch(finishRefreshing);
     history.push(`/edit/${id}`);
   }
-  const errorOnClose = () => {   //We can reach this point after logout from footer and it crashes the app
-    if (error.errorCode === 401) {    //So we wat to if logout if user is already logged out
+  const errorOnClose = () => {
+    //We can reach this point after logout from footer and it crashes the app
+    if (error.errorCode === 401) {
+      //So we wat to if logout if user is already logged out
       if (cookies[config.cookies.userType] !== undefined) {
         removeCookie(config.cookies.token, { path: "/" });
         removeCookie(config.cookies.userType, { path: "/" });
@@ -102,18 +109,20 @@ function Layout() {
           <ListWithDogs />
         </Route>
         <Route path="/settings">
-          <Settings redirectToDogDetailsOrEdit={(id: number) => redirectToDogDetailsOrEdit(id)}/>
+          <Settings
+            redirectToDogDetailsOrEdit={(id: number) =>
+              redirectToDogDetailsOrEdit(id)
+            }
+          />
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />
           <Footer />
         </Route>
-        <Route
-                path={`/edit/:id`}
-            >
-              <EditDogDetails dogId={dogId} />
-              <Footer/>
-            </Route>
+        <Route path={`/edit/:id`}>
+          <EditDogDetails dogId={dogId} />
+          <Footer />
+        </Route>
         <Redirect to="/" />
       </Switch>
     </div>

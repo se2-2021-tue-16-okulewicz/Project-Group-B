@@ -303,10 +303,13 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.editedDog = ValidateFetchedDog(payload.payload.response.data as ILostDogWithPicture);
-    newState.editedDog.picture.data = (payload.payload.response.data as ILostDogWithPicture).picture.data as string;
-    newState.dogsRequireRefresh=false;
-    newState.settingsRequireRefresh=false;
+    newState.editedDog = ValidateFetchedDog(
+      payload.payload.response.data as ILostDogWithPicture
+    );
+    newState.editedDog.picture.data = (payload.payload.response
+      .data as ILostDogWithPicture).picture.data as string;
+    newState.dogsRequireRefresh = false;
+    newState.settingsRequireRefresh = false;
     return newState;
   },
 
@@ -408,6 +411,3 @@ export const reducer = createReducer(init, {
     return newState;
   },
 });
-
-
-

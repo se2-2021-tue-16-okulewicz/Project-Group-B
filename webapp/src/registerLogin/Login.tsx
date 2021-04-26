@@ -71,7 +71,7 @@ export default function Login() {
   const loginInfo = useSelector((state: State) => state.loginInformation);
   const history = useHistory();
   // eslint-disable-next-line
-  const [cookies,  setCookie, removeCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const handleChange = (prop: keyof internalState) => (
     event: React.ChangeEvent<HTMLInputElement>

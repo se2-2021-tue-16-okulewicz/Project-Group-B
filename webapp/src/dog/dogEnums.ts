@@ -2,7 +2,7 @@ export enum BreedTypes {
   "Labrador",
   "German Shepherd",
   "Bulldog",
-  "random"
+  "random",
 }
 
 export enum ColorTypes {
@@ -47,10 +47,10 @@ export enum TailTypes {
 }
 
 export enum SpecialMarkTypes {
-  Tattoo= "Tattoo",
-  Collar= "Collar",
-  Scar= "Scar",
-  None= "None",
+  Tattoo = "Tattoo",
+  Collar = "Collar",
+  Scar = "Scar",
+  None = "None",
 }
 
 export enum BehaviorsTypes {
