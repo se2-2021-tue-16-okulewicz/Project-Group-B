@@ -35,12 +35,15 @@ const useStyles = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(2),
       },
       fontSize: "17px",
+      marginBottom:"10%",
+      justifyContent:"center",
+      alignItems:"center"
     },
     margin: {
       margin: theme.spacing(1),
     },
     withoutLabel: {
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(2),
     },
     textField: {
       width: "45ch",
@@ -250,7 +253,7 @@ export default function RegisterRegularUser() {
         </FormControl>
       </div>
       <div className="LowerText">Already have an account?</div>
-      <div>
+      <div className="LowerText">
         <Link
           className={classes.root}
           component="button"

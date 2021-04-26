@@ -62,6 +62,33 @@ export const fetchContactInfoThunk = createAsyncThunk<
   }
 );
 
+export const updateContactInfoThunk = createAsyncThunk<
+  RequestResponse<IContactInfo>,
+  { userId:number, contactInfo:IContactInfo, cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IContactInfo> }
+>(
+  "UpdateContactInfo",
+  async (
+    userAndContactInfoAndCookies: {
+      userId: number;
+      contactInfo:IContactInfo;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IContactInfo> = await Fetching.updateContactInfo(
+      userAndContactInfoAndCookies.userId,
+      userAndContactInfoAndCookies.contactInfo,
+      userAndContactInfoAndCookies.cookies
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<IContactInfo>);
+    }  
+    return response as RequestResponse<IContactInfo>;
+  }
+);
+
 export const addDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture>,
   { dog: ILostDog; picture: IPicture; cookies: { [name: string]: any } },
@@ -222,3 +249,4 @@ export const clearRedirect = createAction("clearRedirect");
 export const clearDogList = createAction("clearDogList");
 export const startRefreshing = createAction("startRefreshing");
 export const finishRefreshing = createAction("finishRefreshing");
+

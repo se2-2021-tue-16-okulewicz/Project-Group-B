@@ -178,6 +178,35 @@ export async function updateDog(
   );
 }
 
+export async function updateContactInfo(
+  userId: number,
+  contactInfo: IContactInfo,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<IContactInfo>> {
+  let userdata = new FormData();
+
+  userdata.append(
+    "userdata",
+    new Blob([JSON.stringify(contactInfo)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  return getResponse(
+    axios.put(
+      `http://${config.backend.ip}:${config.backend.port}/user/${userId}`,
+      userdata,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+  );
+}
+
 export async function markLostDogAsFound(
   dogId: number,
   cookies: { [name: string]: any }

@@ -119,6 +119,7 @@ export const reducer = createReducer(init, {
       errorCode: errorResponse.code,
       erorMessage: errorResponse.response.message,
     };
+    console.log(newState.error);
     return newState;
   },
 
@@ -259,6 +260,41 @@ export const reducer = createReducer(init, {
     //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
     return newState;
   },
+  [Actions.updateContactInfoThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IContactInfo>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    console.log(JSON.stringify(payload.payload.response.data));
+    newState.contactInfo=payload.payload.response.data as IContactInfo;
+    return newState;
+  },
+  [Actions.updateContactInfoThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IContactInfo>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    console.log(JSON.stringify(payload.payload));
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message
+    };
+    return newState;
+  },
+
+  [Actions.updateContactInfoThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+
   [Actions.fetchDogsThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<undefined>>

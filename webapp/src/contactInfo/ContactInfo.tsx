@@ -4,29 +4,16 @@ import {
   CardHeader,
   createStyles,
   FormControl,
-  FormHelperText,
-  Grid,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
   makeStyles,
   TextField,
   Theme,
 } from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
 import React from "react";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { store } from "../app/store";
-import config from "../config/config";
 import { useCookies } from "react-cookie";
-import { fetchContactInfoThunk } from "../app/actions";
-import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, isStringValidPassword } from "../utilityComponents/validation";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
-import { internalState } from "../utilityComponents/utilities";
 import { IContactInfo } from "./contactInfoInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>

@@ -6,15 +6,10 @@ import {
   FormControl,
   FormHelperText,
   Grid,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
   makeStyles,
   TextField,
   Theme,
 } from "@material-ui/core";
-import { HistorySharp, Visibility, VisibilityOff } from "@material-ui/icons";
 import React from "react";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -22,11 +17,11 @@ import { useHistory } from "react-router-dom";
 import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
-import { fetchContactInfoThunk } from "../app/actions";
-import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, isStringValidPassword } from "../utilityComponents/validation";
+import { isStringValidUsername, isStringValidEmail, isStringValidPhoneNumeber, isInvalidContactInfo } from "../utilityComponents/validation";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
-import { internalState } from "../utilityComponents/utilities";
+import { ErrorInfos, IContactInfo, initErrorInfo } from "./contactInfoInterfaces";
+import * as Actions from "../app/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,19 +29,23 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexWrap: "wrap",
       alignSelf:"center",
-      margin: "5%",
+      verticalAlign:"center",
+      marginLeft:"10%",
+      marginRight:"10%",
+      marginTop:"5%",
     },
     margin: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(3),
     },
     withoutLabel: {
       marginTop: theme.spacing(3),
     },
     textField: {
       width: "45ch",
+      fontSize:"20px"
     },
     formControl: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(3),
       minWidth: 120,
     },
     card: {
@@ -60,51 +59,64 @@ export default function EditContactInfo() {
   const history = useHistory(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const contactInfo = useSelector((state: State) => state.contactInfo);
-  const [values, setValues] = useState<internalState>({
-    username: "",
+  const errorMessage = useSelector((state: State)=>state.error.erorMessage);
+  const [displayMsg, setDisplayMsg] = useState("");
+  const [pageRefresh, setPageRefresh]=useState(true);
+  const [isError, setIsError] = useState<ErrorInfos>(initErrorInfo);
+  const [values, setValues] = useState<IContactInfo>({
+    name: "",
     email: "",
-    phone: "",
-    password: "",
-    repeatedPassword: "",
-    showPassword: false,
-    showRepeatedPassword: false,
+    phoneNumber: "",
   });
+  
+   useEffect(()=>{
+   if(pageRefresh)
+   {
+    store.dispatch(
+      Actions.fetchContactInfoThunk({
+        userId:cookies[config.cookies.userId],
+        cookies:cookies
+      }));
+      setPageRefresh(false);// eslint-disable-next-line
+   }},[pageRefresh])
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
+  useEffect(()=>{
+   if(contactInfo && !isError.total && !pageRefresh){
+     setValues(contactInfo);
+     setDisplayMsg("");
+   }// eslint-disable-next-line
+  },[contactInfo])
 
-  const handleClickShowRepeatedPassword = () => {
-    setValues({
-      ...values,
-      showRepeatedPassword: !values.showRepeatedPassword,
-    });
-  };
+  useEffect(()=>{
+    if(errorMessage!==""){
+      setDisplayMsg(errorMessage);
+    }// eslint-disable-next-line
+   },[errorMessage])
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleChange = (prop: keyof internalState) => (
+  const handleChange = (prop: keyof IContactInfo) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setValues({ ...values, [prop]: event.target.value });
+    let tmp = { ...values, [prop]: event.target.value };
+    setValues(tmp);
+    setIsError(isInvalidContactInfo(tmp));
   };
 
-  const onSaveClicked = () => {
-    console.log("save");
-    
-    //temporary before adding endpoint for fetching user's data
-    /*store.dispatch(
-        updateContactInfo({
-        username: values.username,
-        password: values.password,
-        email: values.email,
-        phone: values.phone,
+  const onSubmitClicked = () => {
+    try {
+    store.dispatch(
+        Actions.updateContactInfoThunk({
+        userId: cookies[config.cookies.userId],
+        contactInfo: values as IContactInfo,
+        cookies: cookies
       })
-    );*/
+    );
+    }catch (err) {
+      console.error("Failed to fetch the dogs: ", err);
+    } finally {
+      if(!isError.total && displayMsg===""){
+      history.push("/settings");}
+    }
+
   };
 
   const onCancelClicked = () => {
@@ -115,16 +127,22 @@ export default function EditContactInfo() {
         <FormControl className={classes.mainForm}>
           <Card className={classes.card} variant="outlined">
             <CardHeader title="" />
+            {!pageRefresh&&(
             <div className="AccountListWrapper">
+              {displayMsg && isError &&(<div>
+                <FormHelperText
+                  style={{color:"gray", fontSize:"13px", fontStyle:"italic"}}
+                >{displayMsg}</FormHelperText>
+              </div>)}
               <div>
                 <TextField
                   className={clsx(classes.margin, classes.textField)}
                   label="Username"
                   type={"text"}
-                  value={contactInfo?contactInfo.name: values.username}
-                  onChange={handleChange("username")}
-                  error={!isStringValidUsername(values.username)}
-                  helperText="Should have between 3 and 32 characters"
+                  value={values.name}
+                  onChange={handleChange("name")}
+                  error={!isStringValidUsername(values.name)}
+                  helperText={isError.name && isError.total?"Should have between 3 and 32 characters":""}
                 />
               </div>
               <div>
@@ -135,6 +153,7 @@ export default function EditContactInfo() {
                   value={values.email}
                   onChange={handleChange("email")}
                   error={!isStringValidEmail(values.email)}
+                  helperText={isError.email && isError.total?"There are some invalid characters":""}
                 />
               </div>
               <div>
@@ -142,76 +161,26 @@ export default function EditContactInfo() {
                   className={clsx(classes.margin, classes.textField)}
                   label="Phone number"
                   type={"text"}
-                  value={values.phone}
-                  onChange={handleChange("phone")}
-                  error={!isStringValidPhoneNumeber(values.phone)}
+                  value={values.phoneNumber}
+                  onChange={handleChange("phoneNumber")}
+                  error={!isStringValidPhoneNumeber(values.phoneNumber)}
+                  helperText={isError.phoneNumber&& isError.total?"There are some invalid characters":""}
                 />
-              </div>
-              <div>
-                <FormControl
-                  className={clsx(classes.margin, classes.textField)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  data-testid="submit-button"
-                  variant="contained"
-                  onClick={() => onCancelClicked()}
-                  color="primary"
-                >
-                  <InputLabel htmlFor="repeatPassword">
-                    Repeat password
-                  </InputLabel>
-                  <Input
-                    id="repeatPassword"
-                    type={values.showRepeatedPassword ? "text" : "password"}
-                    value={values.repeatedPassword}
-                    onChange={handleChange("repeatedPassword")}
-                    error={!(values.password === values.repeatedPassword)}
-                    aria-describedby="repeatedPasswordHelper"
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowRepeatedPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {values.showRepeatedPassword ? (
-                            <Visibility />
-                          ) : (
-                            <VisibilityOff />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                  <FormHelperText
-                    error={!(values.password === values.repeatedPassword)}
-                  >
-                    Must be the same as password
-                  </FormHelperText>
-                </FormControl>
               </div>
               <div>
                 <FormControl className={classes.formControl}>
                   <Grid container spacing={2} style={{alignContent:"space-evenly", alignSelf:"stretch"}}>
+                    <Grid item>
                   <Button
                     className="save"
                     variant="contained"
-                    onClick={() => onSaveClicked()}
+                    onClick={() => onSubmitClicked()}
                     color="primary"
-                    disabled={
-                      !(
-                        isStringValidEmail(values.email) &&
-                        isStringValidUsername(values.username) &&
-                        isStringValidPhoneNumeber(values.phone) &&
-                        isStringValidPassword(values.password) &&
-                        values.password === values.repeatedPassword
-                      )
-                    }
                   >
                     Submit
                   </Button>
+                  </Grid>
+                  <Grid item>
                   <Button
                   className="cancel"
                     variant="contained"
@@ -221,10 +190,11 @@ export default function EditContactInfo() {
                     Cancel
                   </Button>
                   </Grid>
+                  </Grid>
                 </FormControl>
               
               </div>
-            </div>
+            </div>)}
           </Card>
         </FormControl>
   );
