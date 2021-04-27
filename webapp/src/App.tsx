@@ -81,8 +81,8 @@ function Layout() {
         removeCookie(config.cookies.userType, { path: "/" });
         removeCookie(config.cookies.userId, { path: "/" });
         store.dispatch(logoutThunk(cookies));
-        history.push("/");
       }
+      history.push("/");
     }
     store.dispatch(clearError());
   };
