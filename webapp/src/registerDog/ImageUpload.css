@@ -10,7 +10,8 @@
   min-height: 200px;
   height: 50vh;
   max-height: 380px;
-  align-self: center;}
+  align-self: center;
+}
 
 .imageContainer {
   justify-content: center;
