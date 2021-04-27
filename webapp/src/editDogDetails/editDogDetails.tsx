@@ -64,13 +64,12 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       color: "aliceblue",
       backgroundColor: "aliceblue",
-      width: "inherit",
+      width:"inherit",
     },
     imgFit: {
-      objectFit: "cover",
-      width: "100%",
-      height: "100%",
+      maxHeight:"90vh",
       borderRadius: "10px",
+      width: "auto",
     },
     mainForm: {
       marginLeft: "0.5%",
@@ -121,7 +120,7 @@ const EditDogDetails = (props: any) => {
 
   useEffect(() => {
     if (!refreshRequired && !pageRefresh) {
-      if (editedDog.picture != null) {
+      if (editedDog!= null) {
         const blob = base64StringToBlob(
           editedDog.picture.data as string,
           editedDog.picture.fileType
