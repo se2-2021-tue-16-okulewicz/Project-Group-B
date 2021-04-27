@@ -7,6 +7,7 @@ import {
 } from "../components/loginRegisterInterfaces";
 import { APIResponse, RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
+import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
 
 async function getResponse<T>(
   axiosRequest: Promise<AxiosResponse<any>>
@@ -95,6 +96,28 @@ export async function markLostDogAsFound(
       {
         headers: {
           Authorization: Authorization,
+        },
+      }
+    )
+  );
+}
+
+export async function registerRegularUser(
+  newUserInfo: IRegisterRegularUserInformation
+): Promise<RequestResponse<null>> {
+  let formData = new FormData();
+  formData.append("username", newUserInfo.username);
+  formData.append("password", newUserInfo.password);
+  formData.append("phone_number", newUserInfo.phone);
+  formData.append("email", newUserInfo.email);
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/register`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
         },
       }
     )

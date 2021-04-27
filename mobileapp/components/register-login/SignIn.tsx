@@ -7,6 +7,7 @@ import {
   Platform,
   Pressable,
   Image,
+  SafeAreaView,
 } from "react-native";
 import * as React from "react";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
@@ -110,20 +111,25 @@ const SignIn = ({ navigation }: any) => {
         />
       </View>
       <View>
-        <TextInput
-          placeholder="Username"
-          style={styles.styles.textInput}
-          onChangeText={(e) => setUsername(e)}
-          value={username}
-        ></TextInput>
-        <TextInput
-          maxLength={32}
-          secureTextEntry={true}
-          placeholder="Password"
-          style={styles.styles.textInput}
-          onChangeText={(e) => setPassword(e)}
-          value={password}
-        ></TextInput>
+        <View style={style.margin}>
+          <TextInput
+            placeholder="Username"
+            style={styles.styles.textInput}
+            onChangeText={(e) => setUsername(e)}
+            value={username}
+          ></TextInput>
+        </View>
+
+        <View style={style.margin}>
+          <TextInput
+            maxLength={32}
+            secureTextEntry={true}
+            placeholder="Password"
+            style={styles.styles.textInput}
+            onChangeText={(e) => setPassword(e)}
+            value={password}
+          ></TextInput>
+        </View>
         <TouchableOpacity
           disabled={!ready}
           style={ready ? style.button : style.disabledButton}
@@ -132,16 +138,19 @@ const SignIn = ({ navigation }: any) => {
           <Text style={style.buttonText}>Sign in</Text>
         </TouchableOpacity>
       </View>
-      {/* <SafeAreaView style={styles.styles.bottomView}>
+      <SafeAreaView style={styles.styles.bottomView}>
         <Text style={styles.styles.textStyle}>Don't have an account?</Text>
         <TouchableOpacity onPress={() => navigation.push("Register")}>
           <Text style={styles.styles.link}>Register now</Text>
         </TouchableOpacity>
-      </SafeAreaView> */}
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };
 const style = StyleSheet.create({
+  margin: {
+    margin: 7,
+  },
   tinyLogo: {
     width: 50,
     height: 50,

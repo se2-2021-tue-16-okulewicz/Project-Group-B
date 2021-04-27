@@ -6,6 +6,7 @@ import {
 } from "../components/loginRegisterInterfaces";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
+import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
 
 /**
  * Thunk for logging into an account
@@ -76,5 +77,43 @@ export const markLostDogAsFoundThunk = createAsyncThunk(
     //let dogs = response.response.data as ILostDogWithPicture[];
 
     return response;
+  }
+);
+/**
+ * Register a regular user
+ */
+export const registerRegularUserThunk = createAsyncThunk<
+  RequestResponse<ILoginResults>,
+  IRegisterRegularUserInformation,
+  { rejectValue: RequestResponse<null> }
+>(
+  "registeregularUser",
+  async (newUserInfo: IRegisterRegularUserInformation, { rejectWithValue }) => {
+    const response: RequestResponse<null> = await Fetching.registerRegularUser(
+      newUserInfo
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<null>);
+    }
+
+    //On success we want to acutally login
+    const responseLogin: RequestResponse<ILoginResults> = await Fetching.login({
+      username: newUserInfo.username,
+      password: newUserInfo.password,
+    });
+
+    if (response.response.successful !== true) {
+      return rejectWithValue({
+        code: responseLogin.code,
+        response: {
+          message: responseLogin.response.message,
+          successful: responseLogin.response.successful,
+          data: null,
+        },
+      });
+    }
+
+    return responseLogin as RequestResponse<ILoginResults>;
   }
 );
