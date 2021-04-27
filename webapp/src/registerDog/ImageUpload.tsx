@@ -17,7 +17,7 @@ const ImageUpload = (props: any) => {
   return (
     <>
       <div className="imageContainer">
-        {newImage ? (
+        {newImage && file ?  (
           <img className="image" src={URL.createObjectURL(file)} alt="" />
         ) : (
           <div className="image"> </div>
