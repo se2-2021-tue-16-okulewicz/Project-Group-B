@@ -9,11 +9,6 @@ import {
   TailTypes,
 } from "./dogEnums";
 
-export interface IBehaviour {
-  id: number;
-  behavior: string;
-  dogId: number;
-}
 export interface IPicture {
   id: number;
   fileName: string;
