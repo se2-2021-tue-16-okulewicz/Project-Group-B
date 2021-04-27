@@ -61,7 +61,7 @@ export async function login(
 
 export async function fetchDogs(
   filters: { [name: string]: any },
-  cookies: { [name: string]: any }
+  Authorization: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture[]>> {
   const filtersString = Object.keys(filters)
     .map((filterName) => {
@@ -78,7 +78,7 @@ export async function fetchDogs(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
       {
         headers: {
-          token: cookies,
+          Authorization: Authorization,
         },
       }
     )
@@ -87,7 +87,7 @@ export async function fetchDogs(
 
 export async function markLostDogAsFound(
   dogId: number,
-  cookies: { [name: string]: any }
+  Authorization: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture[]>> {
   return getResponse(
     axios.put(
@@ -95,7 +95,7 @@ export async function markLostDogAsFound(
       undefined,
       {
         headers: {
-          token: cookies,
+          Authorization: Authorization,
         },
       }
     )

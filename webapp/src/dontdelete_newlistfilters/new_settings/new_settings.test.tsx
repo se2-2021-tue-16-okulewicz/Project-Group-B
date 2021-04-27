@@ -5,9 +5,9 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import RegisterDogForm from "./registerDog";
+import NewSettings from "./new_settings";
 import { isNull } from "lodash";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 
@@ -27,13 +27,13 @@ afterEach(() => {
   }
 });
 
-it("Rendered register form button", () => {
+it("Rendered list of dogs", () => {
   act(() => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/addDog">
-            <RegisterDogForm />
+          <Route path="/settings">
+            <NewSettings />
           </Route>
         </Router>
       </Provider>,
@@ -41,20 +41,6 @@ it("Rendered register form button", () => {
     );
   });
   expect(
-    container?.getElementsByClassName("mainForm").length
+    container?.getElementsByClassName("loader").length
   ).toBeGreaterThanOrEqual(0);
-  expect(container?.childElementCount).toBeGreaterThanOrEqual(0);
-  expect(
-    container?.getElementsByClassName("cardContent").length
-  ).toBeGreaterThanOrEqual(0);
-  expect(
-    container?.getElementsByClassName("formControl").length
-  ).toBeGreaterThanOrEqual(0);
-});
-
-it("test only register button", () => {
-  act(() => {
-    render(<RegisterDogForm />, container);
-  });
-  const myRegisterClicked = jest.fn();
 });

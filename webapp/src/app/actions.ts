@@ -2,13 +2,13 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
-import { Item } from "../utilityComponents/uitilities";
-import { IContactInfo } from "../settings/contactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 import {
   ILoginInformation,
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/loginRegisterInterfaces";
+import { IFilters, IFiltersAndCookies } from "../utilityComponents/utilities";
 
 export const markDogAsFoundThunk = createAsyncThunk<
   RequestResponse<null>,
@@ -62,6 +62,37 @@ export const fetchContactInfoThunk = createAsyncThunk<
   }
 );
 
+export const updateContactInfoThunk = createAsyncThunk<
+  RequestResponse<IContactInfo>,
+  {
+    userId: number;
+    contactInfo: IContactInfo;
+    cookies: { [name: string]: any };
+  },
+  { rejectValue: RequestResponse<IContactInfo> }
+>(
+  "UpdateContactInfo",
+  async (
+    userAndContactInfoAndCookies: {
+      userId: number;
+      contactInfo: IContactInfo;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IContactInfo> = await Fetching.updateContactInfo(
+      userAndContactInfoAndCookies.userId,
+      userAndContactInfoAndCookies.contactInfo,
+      userAndContactInfoAndCookies.cookies
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<IContactInfo>);
+    }
+    return response as RequestResponse<IContactInfo>;
+  }
+);
+
 export const addDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture>,
   { dog: ILostDog; picture: IPicture; cookies: { [name: string]: any } },
@@ -92,19 +123,21 @@ export const addDogThunk = createAsyncThunk<
 
 export const updateDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture>,
-  { dog: ILostDogWithPicture; cookies: { [name: string]: any } },
+  { dog: ILostDog; picture: IPicture; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<ILostDogWithPicture> }
 >(
   "UpdateDog",
   async (
     dogAndPictureAndCookies: {
-      dog: ILostDogWithPicture;
+      dog: ILostDog;
+      picture: IPicture;
       cookies: { [name: string]: any };
     },
     { rejectWithValue }
   ) => {
     const response: RequestResponse<ILostDogWithPicture> = await Fetching.updateDog(
       dogAndPictureAndCookies.dog,
+      dogAndPictureAndCookies.picture,
       dogAndPictureAndCookies.cookies
     );
 
@@ -146,44 +179,37 @@ export const logoutThunk = createAsyncThunk<
   return response as RequestResponse<null>;
 });
 
-export const fetchDogsThunk = createAsyncThunk(
-  "fetchAllDogs",
-  async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<
-      ILostDogWithPicture[] | null
-    > = await Fetching.fetchDogs(item.filters, item.cookies);
+export const fetchDogsThunk = createAsyncThunk<
+  RequestResponse<ILostDogWithPicture[]>,
+  { filters: IFilters; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<ILostDogWithPicture[]> }
+>("fetchAllDogs", async (item: IFiltersAndCookies, { rejectWithValue }) => {
+  const response: RequestResponse<
+    ILostDogWithPicture[]
+  > = await Fetching.fetchDogs(item.filters, item.cookies);
 
-    if (response.response.successful !== true) {
-      return rejectWithValue(
-        response as RequestResponse<ILostDogWithPicture | null>
-      );
-    }
-
-    //let dogs = response.response.data as ILostDogWithPicture[];
-
-    return response;
+  if (response.response.successful !== true) {
+    return rejectWithValue(response as RequestResponse<ILostDogWithPicture[]>);
   }
-);
 
-export const fetchOneDogThunk = createAsyncThunk(
-  "fetchOneDog",
-  async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
-      item.id,
-      item.cookies
-    );
+  return response as RequestResponse<ILostDogWithPicture[]>;
+});
 
-    if (response.response.successful !== true) {
-      return rejectWithValue(
-        response as RequestResponse<ILostDogWithPicture | null>
-      );
-    }
+export const fetchOneDogThunk = createAsyncThunk<
+  RequestResponse<ILostDogWithPicture>,
+  { id: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<ILostDogWithPicture> }
+>("fetchOneDog", async (item: IFilters, { rejectWithValue }) => {
+  const response: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
+    item.id,
+    item.cookies
+  );
 
-    //let dogs = response.response.data as ILostDogWithPicture[];
-
-    return response;
+  if (response.response.successful !== true) {
+    return rejectWithValue(response as RequestResponse<ILostDogWithPicture>);
   }
-);
+  return response as RequestResponse<ILostDogWithPicture>;
+});
 
 export const registerRegularUserThunk = createAsyncThunk<
   RequestResponse<ILoginResults>,
@@ -200,8 +226,8 @@ export const registerRegularUserThunk = createAsyncThunk<
       return rejectWithValue(response as RequestResponse<null>);
     }
 
-    //On success we want to acutally login
     const responseLogin: RequestResponse<ILoginResults> = await Fetching.login({
+      //On success we want to acutally login
       username: newUserInfo.username,
       password: newUserInfo.password,
     });
@@ -224,3 +250,6 @@ export const registerRegularUserThunk = createAsyncThunk<
 export const clearError = createAction("clearError");
 export const clearLoginInformation = createAction("clearLoginInformation");
 export const clearRedirect = createAction("clearRedirect");
+export const clearDogList = createAction("clearDogList");
+export const startRefreshing = createAction("startRefreshing");
+export const finishRefreshing = createAction("finishRefreshing");

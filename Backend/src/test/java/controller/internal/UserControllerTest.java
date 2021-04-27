@@ -57,6 +57,7 @@ public class UserControllerTest {
     public void EditUserTest() throws Exception {
         MockMultipartFile validData = new MockMultipartFile("userdata", "", "application/json", "{\"name\":\"NewName\",\"phoneNumber\":\"788 640 000\", \"email\":\"new@mail.com\"}".getBytes());
         MockMultipartFile usedData = new MockMultipartFile("userdata", "", "application/json", "{\"name\":\"Bill Gates\",\"phoneNumber\":\"788 640 000\", \"email\":\"new@mail.com\"}".getBytes());
+        MockMultipartFile validDataOnlyNameChanged = new MockMultipartFile("userdata", "", "application/json", "{\"name\":\"New Name 2\",\"phoneNumber\":\"788 640 000\", \"email\":\"new@mail.com\"}".getBytes());
 
         MockMultipartHttpServletRequestBuilder updateBuilder;
 
@@ -116,5 +117,19 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data.name", is("NewName")));
+
+        //Successful edit changing only name
+        updateBuilder = MockMvcRequestBuilders.multipart("/user/10001");
+        updateBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+        mockMvc.perform(
+                updateBuilder
+                        .file(validDataOnlyNameChanged)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("New Name 2")));
     }
 }

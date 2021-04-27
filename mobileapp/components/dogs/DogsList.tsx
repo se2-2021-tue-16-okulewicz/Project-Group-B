@@ -25,7 +25,9 @@ export default function DogsList({ navigation }: any) {
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
   const isLoading = useSelector((state: State) => state.loadingDogs);
-  const cookies = useSelector((state: State) => state.loginInformation?.token);
+  const Authorization = useSelector(
+    (state: State) => state.loginInformation?.token
+  );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh
   );
@@ -46,7 +48,7 @@ export default function DogsList({ navigation }: any) {
             ...filters,
             page: config.defaultFilters.page,
           },
-          cookies: cookies,
+          Authorization: Authorization,
         }) //filters
       );
       //set page number to 0
@@ -68,7 +70,7 @@ export default function DogsList({ navigation }: any) {
     store.dispatch(
       Actions.fetchDogsThunk({
         filters: { ...filters, page: filters.page + 1 },
-        cookies: cookies,
+        Authorization: Authorization,
       }) //filters
     );
     setFilters({ ...filters, page: filters.page + 1 });
@@ -76,7 +78,10 @@ export default function DogsList({ navigation }: any) {
 
   function markDogAsFound(id: number) {
     store.dispatch(
-      Actions.markLostDogAsFoundThunk({ cookies: cookies, dogID: id })
+      Actions.markLostDogAsFoundThunk({
+        Authorization: Authorization,
+        dogID: id,
+      })
     );
   }
 
