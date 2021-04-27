@@ -15,7 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import { BehaviorsTypes } from "../dog/dogEnums";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import { IBehaviour, ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
@@ -312,10 +312,10 @@ const DogDetails = (props: any) => {
                 displayEmpty
                 renderValue={(selected: any) => (
                   <div className={classes.chips}>
-                    {(selected as string[]).map((value) => (
+                    {(selected as IBehaviour[]).map((value) => (
                       <Chip
-                        key={value}
-                        label={value}
+                        key={value.id}
+                        label={value.behavior}
                         className={classes.chip}
                       />
                     ))}
