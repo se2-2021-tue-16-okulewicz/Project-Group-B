@@ -69,6 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
     imgFit: {
       objectFit: "cover",
       width: "100%",
+      height: "100%",
       borderRadius: "10px",
     },
     mainForm: {
