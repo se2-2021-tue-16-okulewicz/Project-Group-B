@@ -130,7 +130,7 @@ const Register = ({ navigation }: any) => {
       return;
     }
     setReady(false);
-  }, [email, password]);
+  }, [userName, phoneNumber, email, password]);
 
   return (
     <KeyboardAvoidingView
@@ -151,7 +151,7 @@ const Register = ({ navigation }: any) => {
             <Text style={style.modalText}>{errorMessage}</Text>
             <Pressable
               style={[style.modalButton, style.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => setModalVisible(false)}
             >
               <Text style={style.textStyle}>OK</Text>
             </Pressable>
