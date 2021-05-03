@@ -145,6 +145,8 @@ scheme.configureEdgeSidebar((builder) => {
     });
 });
 
+/*TODO: remove filtering in frontend (folder dontdelete)*/
+
 export default function ListWithDogs() {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);

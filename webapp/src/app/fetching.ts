@@ -6,8 +6,8 @@ import {
   ILoginInformation,
   ILoginResults,
   IRegisterRegularUserInformation,
-} from "../registerLogin/loginRegisterInterfaces";
-import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+} from "../registerLogin/LoginRegisterInterfaces";
+import { IContactInfo } from "../contactInfo/ContactInfoInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;

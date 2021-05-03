@@ -29,7 +29,7 @@ import {
   ErrorInfos,
   IContactInfo,
   initErrorInfo,
-} from "./contactInfoInterfaces";
+} from "./ContactInfoInterfaces";
 import * as Actions from "../app/actions";
 
 const useStyles = makeStyles((theme: Theme) =>

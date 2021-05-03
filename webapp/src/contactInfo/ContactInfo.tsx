@@ -14,7 +14,7 @@ import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
-import { IContactInfo } from "./contactInfoInterfaces";
+import { IContactInfo } from "./ContactInfoInterfaces";
 import { store } from "../app/store";
 import config from "../config/config";
 import * as Actions from "../app/actions";
@@ -48,6 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
+/*TODO: create form control component*/
 
 export default function ContactInfo(props: any) {
   const classes = useStyles();

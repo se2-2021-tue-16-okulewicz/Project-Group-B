@@ -3,9 +3,9 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
+import { ILoginResults } from "../registerLogin/LoginRegisterInterfaces";
 import config from "../config/config";
-import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/ContactInfoInterfaces";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
 
 export type Error = {
@@ -13,6 +13,8 @@ export type Error = {
   errorCode: number;
   erorMessage: string;
 };
+  
+/*TODO: change any in the State*/
 
 export type State = {
   dogs: ILostDogWithPicture[] | any; //if these are not any, the clear actions throw an error (only for dogs with pictures)

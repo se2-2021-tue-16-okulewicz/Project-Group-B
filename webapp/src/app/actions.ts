@@ -2,13 +2,15 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
-import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/ContactInfoInterfaces";
 import {
   ILoginInformation,
   ILoginResults,
   IRegisterRegularUserInformation,
-} from "../registerLogin/loginRegisterInterfaces";
+} from "../registerLogin/LoginRegisterInterfaces";
 import { IFilters, IFiltersAndCookies } from "../utilityComponents/utilities";
+
+/*TODO: fix any*/
 
 export const markDogAsFoundThunk = createAsyncThunk<
   RequestResponse<null>,
