@@ -72,7 +72,7 @@ test("updating the dog with a wrong token results in an error", async () => {
 test("updating the contact info with a wrong token results in an error", async () => {
   const data: RequestResponse<IContactInfo> = await Fetching.updateContactInfo(
     0, //dog id
-    {name:"aaa", email:"a@a.a", phoneNumber:"123456789"} as IContactInfo,
+    { name: "aaa", email: "a@a.a", phoneNumber: "123456789" } as IContactInfo,
     {} //empty token
   );
   expect(data).toEqual(errorObject);

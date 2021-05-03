@@ -13,7 +13,7 @@ export type Error = {
   errorCode: number;
   erorMessage: string;
 };
-  
+
 /*TODO: change any in the State*/
 
 export type State = {
