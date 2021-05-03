@@ -140,6 +140,7 @@ export async function addDog(
   );
 }
 
+/*TODO: dog update does not need a picture anymore*/
 export async function updateDog(
   dog: ILostDog,
   picture: IPicture,

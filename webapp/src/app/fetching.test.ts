@@ -22,6 +22,7 @@ import {
   initLoginProps,
   initRegisterRegularUserProps,
 } from "../registerLogin/registerLogintest";
+import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
 
 jest.mock("axios");
 
@@ -64,6 +65,23 @@ test("updating the dog with a wrong token results in an error", async () => {
     initLostDogProps, //dog
     initPicture,
     config.cookies
+  );
+  expect(data).toEqual(errorObject);
+});
+
+test("updating the contact info with a wrong token results in an error", async () => {
+  const data: RequestResponse<IContactInfo> = await Fetching.updateContactInfo(
+    0, //dog id
+    {name:"aaa", email:"a@a.a", phoneNumber:"123456789"} as IContactInfo,
+    {} //empty token
+  );
+  expect(data).toEqual(errorObject);
+});
+
+test("getting the contact info with a wrong token results in an error", async () => {
+  const data: RequestResponse<IContactInfo> = await Fetching.fetchUserInfo(
+    0, //dog id
+    {} //empty token
   );
   expect(data).toEqual(errorObject);
 });
