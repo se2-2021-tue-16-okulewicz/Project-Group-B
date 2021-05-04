@@ -97,28 +97,50 @@ const EditDogDetails = (props: any) => {
   );
   const isInputNotNull = sessionStorage.getItem("editDogFields") !== null;
   const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(
-    initLostDogWithPictureProps
+    editedDog ? editedDog : initLostDogWithPictureProps
   );
   const [picture, setPicture] = useState<IPicture>();
 
   useEffect(() => {
     if (pageRefresh) {
-      try {
-        store.dispatch(
-          Actions.fetchOneDogThunk({
-            id: dogId as number,
-            cookies: cookies,
-          })
+      if (isInputNotNull) {
+        setEditDogFields(
+          JSON.parse(sessionStorage.getItem("editDogFields") as string)
         );
-      } catch (err) {
-        console.error("Failed to fetch the dog: ", err);
-      } finally {
         setPageRefresh(false);
+      }
+      else {
+        try {
+          store.dispatch(
+            Actions.fetchOneDogThunk({
+              id: dogId as number,
+              cookies: cookies,
+            })
+          );
+        } catch (err) {
+          console.error("Failed to fetch the dog: ", err);
+        } finally {
+          setPageRefresh(false);
+        }
       }
     } // eslint-disable-next-line
   }, [pageRefresh, dogSession]);
 
   useEffect(() => {
+    if (!pageRefresh && !isInputNotNull) {
+
+      sessionStorage.setItem(
+        "editDogFields",
+        JSON.stringify(editedDog as ILostDogWithPicture)
+      );
+      setEditDogFields(editedDog as ILostDogWithPicture);
+    }
+  }, [pageRefresh, isInputNotNull]);
+
+
+
+
+  /*useEffect(() => {
     if (!refreshRequired && !pageRefresh) {
       if (editedDog != null) {
         const blob = base64StringToBlob(
@@ -138,18 +160,20 @@ const EditDogDetails = (props: any) => {
         setEditDogFields(
           JSON.parse(sessionStorage.getItem("editDogFields") as string)
         );
-      } else {
+      } 
+      else if (!isInputNotNull && editedDog)
+      {
         sessionStorage.setItem(
           "editDogFields",
           JSON.stringify(editedDog as ILostDogWithPicture)
         );
         setEditDogFields(editedDog as ILostDogWithPicture);
       }
-      setDogSession(false);
       store.dispatch(Actions.finishRefreshing);
+      setDogSession(false);
     } // eslint-disable-next-line
   }, [refreshRequired, pageRefresh]);
-
+*/
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     let newField = { ...editDogFields, [e.target.name]: e.target.value };
     setEditDogFields(newField);
@@ -268,7 +292,7 @@ const EditDogDetails = (props: any) => {
   return (
     <Grid container>
       {pageRefresh && <LoadingPopup />}
-      {!pageRefresh && !dogSession && (
+      {!pageRefresh && !dogSession && editDogFields != null && (
         <Grid
           className={classes.mainForm}
           container
@@ -294,9 +318,8 @@ const EditDogDetails = (props: any) => {
                   {editedDog && !isNewPicture && (
                     <img
                       className={classes.imgFit}
-                      src={`data:${editedDog.picture.fileType};base64,${
-                        editedDog.picture.data as ArrayBuffer
-                      }`}
+                      src={`data:${editedDog.picture.fileType};base64,${editedDog.picture.data as ArrayBuffer
+                        }`}
                       alt={editedDog.picture.fileName}
                     />
                   )}

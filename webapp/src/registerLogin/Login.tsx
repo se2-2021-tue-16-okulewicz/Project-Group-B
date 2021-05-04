@@ -200,7 +200,7 @@ export default function Login() {
           Create an account
         </Link>
       </div>
-      <div className="LowerText">Want to regster new shelter?</div>
+      <div className="LowerText">Want to register new shelter?</div>
       <div>
         <Link
           className={classes.root}
