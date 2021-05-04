@@ -31,29 +31,31 @@ const errorObject = {
     data: null,
     message: "Connection error",
     successful: false,
-    metadata: null
+    metadata: null,
   },
 };
 
 test("add the dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture, undefined> = await Fetching.addDog(
-    initLostDogProps,
-    initPicture,
-    config.cookies
-  );
+  const data: RequestResponse<
+    ILostDogWithPicture,
+    undefined
+  > = await Fetching.addDog(initLostDogProps, initPicture, config.cookies);
   expect(data).toEqual(errorObject);
 });
 
 test("fetch the dogs with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture[], number> = await Fetching.fetchDogs(
-    {},
-    config.cookies
-  );
+  const data: RequestResponse<
+    ILostDogWithPicture[],
+    number
+  > = await Fetching.fetchDogs({}, config.cookies);
   expect(data).toEqual(errorObject);
 });
 
 test("fetching one dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture, undefined> = await Fetching.fetchOneDog(
+  const data: RequestResponse<
+    ILostDogWithPicture,
+    undefined
+  > = await Fetching.fetchOneDog(
     0, //id
     config.cookies
   );
@@ -61,7 +63,10 @@ test("fetching one dog with a wrong token results in an error", async () => {
 });
 
 test("updating the dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture, undefined> = await Fetching.updateDog(
+  const data: RequestResponse<
+    ILostDogWithPicture,
+    undefined
+  > = await Fetching.updateDog(
     initLostDogProps, //dog
     initPicture,
     config.cookies
@@ -70,7 +75,10 @@ test("updating the dog with a wrong token results in an error", async () => {
 });
 
 test("marking the dog as found with a wrong token results in an error", async () => {
-  const data: RequestResponse<null, undefined> = await Fetching.markLostDogAsFound(
+  const data: RequestResponse<
+    null,
+    undefined
+  > = await Fetching.markLostDogAsFound(
     0, //dog id
     {} //empty token
   );
@@ -78,9 +86,10 @@ test("marking the dog as found with a wrong token results in an error", async ()
 });
 
 test("register with wrong data", async () => {
-  const data: RequestResponse<null, undefined> = await Fetching.registerRegularUser(
-    initRegisterRegularUserProps
-  );
+  const data: RequestResponse<
+    null,
+    undefined
+  > = await Fetching.registerRegularUser(initRegisterRegularUserProps);
   expect(data).toEqual(errorObject);
 });
 
@@ -92,7 +101,9 @@ test("login with wrong data", async () => {
 });
 
 test("logout without being logged in", async () => {
-  const data: RequestResponse<null, undefined> = await Fetching.logout(config.cookies);
+  const data: RequestResponse<null, undefined> = await Fetching.logout(
+    config.cookies
+  );
   expect(data).toEqual(errorObject);
 });
 
