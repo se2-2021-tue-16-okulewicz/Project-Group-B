@@ -125,7 +125,7 @@ export const addDogThunk = createAsyncThunk<
 
 export const updateDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture>,
-  { dog: ILostDog; cookies: { [name: string]: any }; picture?: IPicture; },
+  { dog: ILostDog; cookies: { [name: string]: any }; picture?: IPicture },
   { rejectValue: RequestResponse<ILostDogWithPicture> }
 >(
   "UpdateDog",
@@ -133,7 +133,7 @@ export const updateDogThunk = createAsyncThunk<
     dogAndPictureAndCookies: {
       dog: ILostDog;
       cookies: { [name: string]: any };
-      
+
       picture?: IPicture;
     },
     { rejectWithValue }
@@ -141,7 +141,7 @@ export const updateDogThunk = createAsyncThunk<
     const response: RequestResponse<ILostDogWithPicture> = await Fetching.updateDog(
       dogAndPictureAndCookies.dog,
       dogAndPictureAndCookies.cookies,
-      dogAndPictureAndCookies.picture,
+      dogAndPictureAndCookies.picture
     );
 
     if (response.response.successful !== true) {

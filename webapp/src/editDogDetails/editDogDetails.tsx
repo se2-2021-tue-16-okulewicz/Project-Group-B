@@ -226,21 +226,19 @@ const EditDogDetails = (props: any) => {
   };
 
   function updateDog(dog: ILostDog, picture: IPicture) {
-    if (picture){
-    store.dispatch(
-      Actions.updateDogThunk({
-        dog: dog,
-        cookies: cookies,
-        picture: picture
-      }) //filters
-    );
-    }
-    else
-    {
+    if (picture) {
       store.dispatch(
         Actions.updateDogThunk({
           dog: dog,
-          cookies: cookies
+          cookies: cookies,
+          picture: picture,
+        }) //filters
+      );
+    } else {
+      store.dispatch(
+        Actions.updateDogThunk({
+          dog: dog,
+          cookies: cookies,
         }) //filters
       );
     }
