@@ -2,12 +2,8 @@ import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
 import axios, { AxiosResponse } from "axios";
-import {
-  ILoginInformation,
-  ILoginResults,
-  IRegisterRegularUserInformation,
-} from "../registerLogin/LoginRegisterInterfaces";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
+import { ILoginInformation, ILoginResults, IRegisterRegularUserInformation } from "../registerLogin/LoginRegisterInterface";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;

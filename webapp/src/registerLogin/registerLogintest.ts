@@ -1,7 +1,7 @@
 import {
   ILoginInformation,
   IRegisterRegularUserInformation,
-} from "./LoginRegisterInterfaces";
+} from "./LoginRegisterInterface";
 
 export const initRegisterRegularUserProps: IRegisterRegularUserInformation = {
   username: "",

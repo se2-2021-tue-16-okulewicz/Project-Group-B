@@ -3,10 +3,10 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import { ILoginResults } from "../registerLogin/LoginRegisterInterfaces";
 import config from "../config/config";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
+import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 
 export type Error = {
   hasError: boolean;
