@@ -9,7 +9,7 @@ import { isNull } from "lodash";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
 import { Route, BrowserRouter as Router } from "react-router-dom";
-import ContactInfo from "./ContactInfo";
+import EditContactInfo from "./editContactInformation";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -33,7 +33,7 @@ it("Test editing the contact information", () => {
       <Provider store={store}>
         <Router>
           <Route path="/settings">
-            <ContactInfo />
+            <EditContactInfo />
           </Route>
         </Router>
       </Provider>,

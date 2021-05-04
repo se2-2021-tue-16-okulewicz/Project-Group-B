@@ -27,7 +27,7 @@ import config from "./config/config";
 import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
 import Settings from "./settings/settings";
 import EditDogDetails from "./editDogDetails/editDogDetails";
-import EditContactInfo from "./contactInfo/EditContactInfo";
+import EditContactInfo from "./contactInfo/editContactInformation";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

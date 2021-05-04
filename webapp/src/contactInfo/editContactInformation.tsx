@@ -25,12 +25,8 @@ import {
 } from "../utilityComponents/validation";
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
-import {
-  ErrorInformation,
-  IContactInfo,
-  initErrorInfo,
-} from "./ContactInfoInterfaces";
 import * as Actions from "../app/actions";
+import { ErrorInformation, IContactInfo, initErrorInfo } from "./contactInfoInterface";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

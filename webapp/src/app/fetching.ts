@@ -7,7 +7,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterfaces";
-import { IContactInfo } from "../contactInfo/ContactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;

@@ -5,7 +5,7 @@ import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterfaces";
 import config from "../config/config";
-import { IContactInfo } from "../contactInfo/ContactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
 
 export type Error = {

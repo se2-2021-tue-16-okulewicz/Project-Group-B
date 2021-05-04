@@ -1,9 +1,9 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Card, Grid, MenuItem } from "@material-ui/core";
+import { Card, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
-import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
 import { State } from "../../app/reducer";
@@ -25,20 +25,8 @@ import config from "../../config/config";
 import ImageGrid from "../../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from "../../utilityComponents/Footer";
-import {
-  ILoginInformation,
-  ILoginResults,
-} from "../../registerLogin/LoginRegisterInterfaces";
-import { IContactInfo } from "../../contactInfo/contactInfoInterfaces";
-import DraftsIcon from "@material-ui/icons/Drafts";
 import SendIcon from "@material-ui/icons/Send";
-import { Home } from "@material-ui/icons";
-import { classicNameResolver } from "typescript";
-import { faAlignJustify } from "@fortawesome/free-solid-svg-icons";
-import { filter } from "lodash";
-import DogDetails from "../../editDogDetails/editDogDetails";
 import { clearDogList } from "../../app/actions";
-import { cleanup } from "@testing-library/react";
 import { IFilters } from "../../utilityComponents/utilities";
 //import EditDetails from "./"
 
