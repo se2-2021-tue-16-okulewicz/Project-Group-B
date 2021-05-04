@@ -25,7 +25,7 @@ async function getResponse<T, K>(
           message: "Connection error",
           successful: false,
           data: null,
-          metadata: null
+          metadata: null,
         },
       };
     }
