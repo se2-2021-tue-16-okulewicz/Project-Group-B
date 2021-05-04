@@ -26,7 +26,7 @@ import {
 import { useSelector } from "react-redux";
 import { State } from "../app/reducer";
 import {
-  ErrorInfos,
+  ErrorInformation,
   IContactInfo,
   initErrorInfo,
 } from "./ContactInfoInterfaces";
@@ -71,7 +71,7 @@ export default function EditContactInfo() {
   const errorMessage = useSelector((state: State) => state.error.erorMessage);
   const [displayMsg, setDisplayMsg] = useState("");
   const [pageRefresh, setPageRefresh] = useState(true);
-  const [isError, setIsError] = useState<ErrorInfos>(initErrorInfo);
+  const [isError, setIsError] = useState<ErrorInformation>(initErrorInfo);
   const [values, setValues] = useState<IContactInfo>({
     name: "",
     email: "",

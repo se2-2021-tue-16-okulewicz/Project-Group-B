@@ -143,8 +143,8 @@ export async function addDog(
 /*TODO: dog update does not need a picture anymore*/
 export async function updateDog(
   dog: ILostDog,
-  picture: IPicture,
-  cookies: { [name: string]: any }
+  cookies: { [name: string]: any },
+  picture?: IPicture,
 ): Promise<RequestResponse<ILostDogWithPicture>> {
   let formData = new FormData();
 
@@ -159,11 +159,12 @@ export async function updateDog(
     }),
     ""
   );
+  if (picture) {
   formData.append(
     "picture",
     new Blob([picture.data], { type: picture.fileType }),
     picture.fileName
-  );
+  );}
   return getResponse(
     axios.put(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dog.id}`,

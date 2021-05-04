@@ -28,7 +28,7 @@ import Footer from "../../utilityComponents/Footer";
 import {
   ILoginInformation,
   ILoginResults,
-} from "../../registerLogin/loginRegisterInterfaces";
+} from "../../registerLogin/LoginRegisterInterfaces";
 import { IContactInfo } from "../../contactInfo/contactInfoInterfaces";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import SendIcon from "@material-ui/icons/Send";

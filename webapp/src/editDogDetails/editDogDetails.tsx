@@ -99,7 +99,7 @@ const EditDogDetails = (props: any) => {
   const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(
     initLostDogWithPictureProps
   );
-  const [picture, setPicture] = useState<IPicture>(initPicture);
+  const [picture, setPicture] = useState<IPicture>();
 
   useEffect(() => {
     if (pageRefresh) {
@@ -226,13 +226,24 @@ const EditDogDetails = (props: any) => {
   };
 
   function updateDog(dog: ILostDog, picture: IPicture) {
+    if (picture){
     store.dispatch(
       Actions.updateDogThunk({
         dog: dog,
-        picture: picture,
         cookies: cookies,
+        picture: picture
       }) //filters
     );
+    }
+    else
+    {
+      store.dispatch(
+        Actions.updateDogThunk({
+          dog: dog,
+          cookies: cookies
+        }) //filters
+      );
+    }
   }
 
   function markDogAsFound(dogId: Number) {
