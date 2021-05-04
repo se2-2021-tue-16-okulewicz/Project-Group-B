@@ -1,5 +1,7 @@
-
-import { ErrorInformation, IContactInfo } from "../contactInfo/contactInfoInterface";
+import {
+  ErrorInformation,
+  IContactInfo,
+} from "../contactInfo/contactInfoInterface";
 import {
   BreedTypes,
   ColorTypes,
