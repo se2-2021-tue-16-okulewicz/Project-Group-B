@@ -87,7 +87,7 @@ export default function EditContactInfo() {
         })
       );
       setPageRefresh(false); // eslint-disable-next-line
-    }
+    }// eslint-disable-next-line
   }, [pageRefresh]);
 
   useEffect(() => {
