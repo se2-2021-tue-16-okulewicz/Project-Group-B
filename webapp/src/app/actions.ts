@@ -4,7 +4,11 @@ import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import { IFilters, IFiltersAndCookies } from "../utilityComponents/utilities";
-import { ILoginInformation, ILoginResults, IRegisterRegularUserInformation } from "../registerLogin/LoginRegisterInterface";
+import {
+  ILoginInformation,
+  ILoginResults,
+  IRegisterRegularUserInformation,
+} from "../registerLogin/LoginRegisterInterface";
 
 /*TODO: fix any*/
 
