@@ -46,7 +46,7 @@ public class UsersController {
     }
 
     @GetMapping(path = "/{userId}")
-    public ResponseEntity<Response<UserInfo>> GetUser(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<UserInfo, Object>> GetUser(@RequestHeader HttpHeaders headers,
                                                       @PathVariable("userId") long userId) {
         logHeaders(headers);
 
@@ -60,11 +60,11 @@ public class UsersController {
         if(result == null)
             throw new GenericBadRequestException("User does not exist");
 
-        return ResponseEntity.ok(new Response<>("User found", true, result));
+        return ResponseEntity.ok(new Response<>("User found", true, result, null));
     }
 
     @PutMapping(path = "/{userId}")
-    public ResponseEntity<Response<UserInfo>> Authenticate(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<UserInfo, Object>> Authenticate(@RequestHeader HttpHeaders headers,
                                                                         @PathVariable("userId") long userId,
                                                                         @RequestPart("userdata") UserInfo userInfo) {
         logHeaders(headers);
@@ -74,7 +74,7 @@ public class UsersController {
             throw new UnauthorizedException();
         }
         if(authorization.getValue1() != userId) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response<>("You cannot edit other users' data", false, null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response<>("You cannot edit other users' data", false, null, null));
         }
 
         var result = userService.EditUser(userId, userInfo);
@@ -82,11 +82,11 @@ public class UsersController {
             throw new GenericBadRequestException(result.getValue1());
         }
 
-        return ResponseEntity.ok(new Response<>("Updated successfully", true, result.getValue0()));
+        return ResponseEntity.ok(new Response<>("Updated successfully", true, result.getValue0(), null));
     }
 
     @PostMapping(path = "/logout")
-    public ResponseEntity<Response<Object>> Logout(@RequestHeader HttpHeaders headers) {
+    public ResponseEntity<Response<Object, Object>> Logout(@RequestHeader HttpHeaders headers) {
         logHeaders(headers);
 
         var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
@@ -101,7 +101,7 @@ public class UsersController {
         if(!loginService.Logout(token))
             throw new GenericBadRequestException("Failed to logout");
 
-        return ResponseEntity.ok(new Response<>("Logout successful", true, null));
+        return ResponseEntity.ok(new Response<>("Logout successful", true, null, null));
     }
 
 }

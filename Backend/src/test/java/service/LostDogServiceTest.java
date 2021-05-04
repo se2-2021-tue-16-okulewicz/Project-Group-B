@@ -37,7 +37,7 @@ public class LostDogServiceTest {
 
         //Checking initial size
         var allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(allDogs.size(), 4);
+        assertEquals(allDogs.getValue0().size(), 4);
 
         //Adding dogs
         LostDog newDog1 = new LostDog();
@@ -83,31 +83,32 @@ public class LostDogServiceTest {
 
         //Getting all dogs again
         allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(allDogs.size(), 7);
+        assertEquals(allDogs.getValue0().size(), 7);
     }
 
     @Test
     public void DeleteDogTest() {
         // Checking initial size
         var allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(allDogs.size(), 4);
+        assertEquals(allDogs.getValue0().size(), 4);
 
-        var res = service.DeleteDog(10001);
+        var res = service.DeleteDog(10001, 10001);
         assertTrue(res);
 
-        var res2 = service.DeleteDog(-1);
+        var res2 = service.DeleteDog(-1, 0);
         assertFalse(res2);
 
         // Getting all dogs one final time
         allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(allDogs.size(), 3);
+        assertEquals(allDogs.getValue0().size(), 3);
     }
 
     @Test
     public void UpdateDogTest() {
         // Checking initial size
         var allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(allDogs.size(), 4);
+        assertEquals(allDogs.getValue0().size(), 4);
+        assertEquals(allDogs.getValue1(), 1);
 
         // Adding dogs
         LostDog newDog1 = new LostDog();
@@ -148,7 +149,7 @@ public class LostDogServiceTest {
 
         //Getting all dogs again
         allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(5, allDogs.size());
+        assertEquals(5, allDogs.getValue0().size());
     }
 
     @Test
@@ -156,7 +157,7 @@ public class LostDogServiceTest {
     {
         // Checking initial size
         var allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(allDogs.size(), 4);
+        assertEquals(allDogs.getValue0().size(), 4);
 
         var result1 = service.GetDogDetails(10001);
         var result2 = service.GetDogDetails(-1);
@@ -168,7 +169,7 @@ public class LostDogServiceTest {
 
         //Getting all dogs again
         allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
-        assertEquals(allDogs.size(), 4);
+        assertEquals(allDogs.getValue0().size(), 4);
     }
 
     @Test
@@ -177,9 +178,9 @@ public class LostDogServiceTest {
         var warsawDogs = service.GetLostDogs(Specification.where(isFromWarsaw()), PageRequest.of(0, 15));
         var allDogsWithOr = service.GetLostDogs(Specification.where(isFromLublin()).or(isFromWarsaw()), PageRequest.of(0, 15));
 
-        assertEquals(3, lublinDogs.size());
-        assertEquals(1, warsawDogs.size());
-        assertEquals(4, allDogsWithOr.size());
+        assertEquals(3, lublinDogs.getValue0().size());
+        assertEquals(1, warsawDogs.getValue0().size());
+        assertEquals(4, allDogsWithOr.getValue0().size());
     }
 
     @Test
@@ -189,7 +190,7 @@ public class LostDogServiceTest {
        assertFalse(result1.isIsFound());
 
        //Mark as found
-       var markResult1 = service.MarkLostDogAsFound(10001);
+       var markResult1 = service.MarkLostDogAsFound(10001, 10001);
        assertTrue(markResult1);
 
         //Check if dog is found - should be true now
@@ -197,7 +198,7 @@ public class LostDogServiceTest {
         assertTrue(result2.isIsFound());
 
         //Mark as found again - should return true but not change anything
-        var markResult2 = service.MarkLostDogAsFound(10001);
+        var markResult2 = service.MarkLostDogAsFound(10001, 10001);
         assertTrue(markResult2);
 
         //Check if dog is found - should be still true
@@ -209,7 +210,7 @@ public class LostDogServiceTest {
         assertFalse(result4.isIsFound());
 
         //Try to mark non-existing dog as found
-        var markResult3 = service.MarkLostDogAsFound(20001);
+        var markResult3 = service.MarkLostDogAsFound(20001, 0);
         assertFalse(markResult3);
     }
 }

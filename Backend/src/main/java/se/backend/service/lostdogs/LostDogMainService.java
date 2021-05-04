@@ -1,5 +1,6 @@
 package se.backend.service.lostdogs;
 
+import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.backend.dao.DogBehaviorRepository;
 import se.backend.dao.LostDogRepository;
 import se.backend.dao.PictureRepository;
+import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.dogs.DogBehavior;
 import se.backend.model.dogs.LostDog;
@@ -38,8 +40,9 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
-    public List<LostDogWithBehaviorsAndWithPicture> GetLostDogs(Specification<LostDog> filters, Pageable page) {
-        var dogs = lostDogRepository.findAll(filters, page).getContent();
+    public Pair<List<LostDogWithBehaviorsAndWithPicture>, Integer> GetLostDogs(Specification<LostDog> filters, Pageable page) {
+        var dogPage = lostDogRepository.findAll(filters, page);
+        var dogs = dogPage.getContent();
         var dogsWithBehaviorsAndPictures = new ArrayList<LostDogWithBehaviorsAndWithPicture>();
 
         for(var dog : dogs){
@@ -55,7 +58,7 @@ public class LostDogMainService implements LostDogService{
             dogWithBehaviorAndWithPicture.setPicture(picture.orElse(new Picture(-1, "", "", new byte[0])));
             dogsWithBehaviorsAndPictures.add(dogWithBehaviorAndWithPicture);
         }
-        return dogsWithBehaviorsAndPictures;
+        return new Pair<>(dogsWithBehaviorsAndPictures, dogPage.getTotalPages());
     }
 
     @Override
@@ -88,7 +91,7 @@ public class LostDogMainService implements LostDogService{
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public boolean DeleteDog(long dogId) {
+    public boolean DeleteDog(long dogId, long ownerId) {
         if(IsInvalidDogId(dogId))
             return false;
 
@@ -97,6 +100,9 @@ public class LostDogMainService implements LostDogService{
             return false;
 
         var dog = foundDog.get();
+
+        if(dog.getOwnerId() != ownerId)
+            throw new UnauthorizedException();
 
         var behaviors = dogBehaviorRepository.findAllByDogId(dog.getId());
         for(var behavior : behaviors) {
@@ -123,6 +129,9 @@ public class LostDogMainService implements LostDogService{
         var oldDog = lostDogRepository.findById(dogId);
         if(oldDog.isEmpty())
             return null;
+
+        if(oldDog.get().getOwnerId() != ownerId)
+            throw new UnauthorizedException();
 
         for(var oldBehavior : dogBehaviorRepository.findAllByDogId(oldDog.get().getId())) {
             if(dogBehaviorRepository.existsById(oldBehavior.getId()))
@@ -189,9 +198,14 @@ public class LostDogMainService implements LostDogService{
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public boolean MarkLostDogAsFound(long dogId) {
+    public boolean MarkLostDogAsFound(long dogId, long ownerId) {
         if(IsInvalidDogId(dogId))
             return false;
+        var dog = lostDogRepository.findById(dogId);
+        if(dog.isEmpty())
+            return false;
+        if(dog.get().getOwnerId() != ownerId)
+            throw new UnauthorizedException();
         lostDogRepository.markLostDogFound(dogId);
         return true;
     }
