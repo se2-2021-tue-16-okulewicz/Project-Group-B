@@ -1,4 +1,4 @@
-import { IContactInfo, ErrorInfos } from "../contactInfo/ContactInfoInterfaces";
+import { IContactInfo, ErrorInformation } from "../contactInfo/ContactInfoInterfaces";
 import {
   BreedTypes,
   ColorTypes,
@@ -20,7 +20,7 @@ export function isInvalidContactInfo(info: IContactInfo) {
       isStringValidUsername(info.name) &&
       isStringValidPhoneNumeber(info.phoneNumber)
     ),
-  } as ErrorInfos;
+  } as ErrorInformation;
 }
 
 //validate login/register
