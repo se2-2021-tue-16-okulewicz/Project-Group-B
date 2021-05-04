@@ -21,6 +21,7 @@ export type State = {
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
+  image: string
 };
 
 const init: State = {
@@ -36,6 +37,7 @@ const init: State = {
     erorMessage: "",
   },
   loginInformation: null,
+  image: ""
 };
 
 export const reducer = createReducer(init, {
@@ -52,6 +54,13 @@ export const reducer = createReducer(init, {
     newState.error.errorCode = 1;
     newState.error.erorMessage =
       "Mobile application is not available for admins or shelter managers";
+    return newState;
+  },
+
+
+  [Actions.setImage.type]: (state: State, payload: string) => {
+    let newState = _.cloneDeep(state);
+    newState.image = payload;
     return newState;
   },
 

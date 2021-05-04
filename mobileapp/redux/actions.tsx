@@ -57,6 +57,12 @@ export const fetchDogsThunk = createAsyncThunk(
 export const setIdle = createAction("setIdle");
 export const clearLoginInformation = createAction("clearLoginInformation");
 export const incorrectUserType = createAction("incorrectUserType");
+export const setImage = createAction("setImage", function prepare(uri: string){
+  return {
+    payload: uri
+  }
+});
+
 
 /*
 Marking lost dog as foud.
