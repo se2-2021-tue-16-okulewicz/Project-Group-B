@@ -58,9 +58,10 @@ export const reducer = createReducer(init, {
   },
 
 
-  [Actions.setImage.type]: (state: State, payload: string) => {
+  [Actions.setImage.type]: (state: State, payload: PayloadAction<string>) => {
     let newState = _.cloneDeep(state);
-    newState.image = payload;
+    newState.image = payload.payload;
+    console.log(newState.image);
     return newState;
   },
 
