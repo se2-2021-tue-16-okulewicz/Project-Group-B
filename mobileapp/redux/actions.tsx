@@ -17,12 +17,15 @@ export const loginThunk = createAsyncThunk<
   ILoginInformation,
   { rejectValue: RequestResponse<ILoginResults, undefined> }
 >("login", async (credentials: ILoginInformation, { rejectWithValue }) => {
-  const response: RequestResponse<ILoginResults, undefined> = await Fetching.login(
-    credentials
-  );
+  const response: RequestResponse<
+    ILoginResults,
+    undefined
+  > = await Fetching.login(credentials);
 
   if (response.response.successful !== true) {
-    return rejectWithValue(response as RequestResponse<ILoginResults, undefined>);
+    return rejectWithValue(
+      response as RequestResponse<ILoginResults, undefined>
+    );
   }
 
   return response as RequestResponse<ILoginResults, undefined>;
@@ -35,7 +38,8 @@ export const fetchDogsThunk = createAsyncThunk(
   "fetchAllDogs",
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<
-      ILostDogWithPicture[], number
+      ILostDogWithPicture[],
+      number
     > = await Fetching.fetchDogs(item.filters, item.Authorization);
 
     if (response.response.successful !== true) {
@@ -64,13 +68,12 @@ export const markLostDogAsFoundThunk = createAsyncThunk(
   "markLostDogAsFound",
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<
-      null, undefined
+      null,
+      undefined
     > = await Fetching.markLostDogAsFound(item.dogID, item.Authorization);
 
     if (response.response.successful !== true) {
-      return rejectWithValue(
-        response as RequestResponse<null, undefined>
-      );
+      return rejectWithValue(response as RequestResponse<null, undefined>);
     }
 
     //let dogs = response.response.data as ILostDogWithPicture[];
