@@ -1,6 +1,10 @@
 package se.backend.controller.internal;
 
 import lombok.SneakyThrows;
+import net.kaczmarzyk.spring.data.jpa.domain.*;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
+import org.mockito.internal.matchers.StartsWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,12 +58,27 @@ public class DogsController {
 
     //<editor-fold desc="/lostdogs">
     @GetMapping(path = "")
-    public ResponseEntity<Response<Collection<LostDogWithBehaviorsAndWithPicture>, Integer>> GetLostDogs(@RequestHeader HttpHeaders headers,
-                                                                                                @PageableDefault(
-                                                                                                   sort = "dateLost",
-                                                                                                   direction = Sort.Direction.DESC,
-                                                                                                   value=15
-                                                                                               ) Pageable pageable) {
+    public ResponseEntity<Response<Collection<LostDogWithBehaviorsAndWithPicture>, Integer>> GetLostDogs(
+            @RequestHeader HttpHeaders headers,
+            @PageableDefault(
+                    sort = "dateLost",
+                    direction = Sort.Direction.DESC,
+                    value=15
+            ) Pageable pageable,
+            @And({
+                    @Spec(path="breed", params="filter.breed", spec= StartingWithIgnoreCase.class),
+                    @Spec(path="age", params="filter.ageFrom" , spec= GreaterThanOrEqual.class),
+                    @Spec(path="age", params="filter.ageTo", spec= LessThanOrEqual.class),
+                    @Spec(path="size", params="filter.size", spec= StartingWithIgnoreCase.class),
+                    @Spec(path="color", params="filter.color", spec= StartingWithIgnoreCase.class),
+                    @Spec(path="name", params="filter.name", spec= StartingWithIgnoreCase.class),
+                    @Spec(path="ownerId", params="filter.ownerId", spec= Equal.class),
+                    @Spec(path="location.city", params="filter.location.city", spec= StartingWithIgnoreCase.class),
+                    @Spec(path="location.district", params="filter.location.district", spec= StartingWithIgnoreCase.class),
+                    @Spec(path="dateLost", params="filter.dateLostAfter" , spec= GreaterThanOrEqual.class),
+                    @Spec(path="dateLost", params="filter.dateLostBefore", spec= LessThanOrEqual.class),
+            }) Specification<LostDog> dogSpecification) {
+
         logHeaders(headers);
 
         var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
@@ -67,8 +86,7 @@ public class DogsController {
             throw new UnauthorizedException();
         }
 
-        //TODO: Filters
-        var result = lostDogService.GetLostDogs(Specification.where(null), pageable);
+        var result = lostDogService.GetLostDogs(dogSpecification, pageable);
 
         return ResponseEntity.ok(new Response<>(String.format("%d dog(s) found", result.getValue0().size()), true, result.getValue0(), result.getValue1()));
     }

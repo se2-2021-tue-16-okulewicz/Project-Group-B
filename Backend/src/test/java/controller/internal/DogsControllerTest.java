@@ -50,6 +50,97 @@ public class DogsControllerTest {
         ).andExpect(status().isUnauthorized())
             .andExpect(jsonPath("successful", is(false)))
             .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Filter by location (exact)
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs?filter.location.city=Lublin")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("message", is("3 dog(s) found")))
+                .andExpect(jsonPath("data", hasSize(3)))
+                .andExpect(jsonPath("data[0].location.city", is("Lublin")))
+                .andExpect(jsonPath("data[1].location.city", is("Lublin")))
+                .andExpect(jsonPath("data[2].location.city", is("Lublin")));
+
+        //Filter by location (partial)
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs?filter.location.city=lub")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("message", is("3 dog(s) found")))
+                .andExpect(jsonPath("data", hasSize(3)))
+                .andExpect(jsonPath("data[0].location.city", is("Lublin")))
+                .andExpect(jsonPath("data[1].location.city", is("Lublin")))
+                .andExpect(jsonPath("data[2].location.city", is("Lublin")));
+
+        //Filter by date lost (only lower bound)
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs?filter.dateLostAfter=2021-03-05")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("message", is("3 dog(s) found")))
+                .andExpect(jsonPath("data", hasSize(3)))
+                .andExpect(jsonPath("data[0].dateLost", is("2021-03-07")))
+                .andExpect(jsonPath("data[1].dateLost", is("2021-03-06")))
+                .andExpect(jsonPath("data[2].dateLost", is("2021-03-05")));
+
+        //Invalid date
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs?filter.dateLostAfter=invalid")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("message", is("0 dog(s) found")))
+                .andExpect(jsonPath("data", hasSize(0)));
+
+        //Filter by date lost
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs?filter.dateLostAfter=2021-03-05&filter.dateLostBefore=2021-03-06")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("message", is("2 dog(s) found")))
+                .andExpect(jsonPath("data", hasSize(2)))
+                .andExpect(jsonPath("data[0].dateLost", is("2021-03-06")))
+                .andExpect(jsonPath("data[1].dateLost", is("2021-03-05")));
+
+        //Filter by owner id
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs?filter.ownerId=10001")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("message", is("2 dog(s) found")))
+                .andExpect(jsonPath("data", hasSize(2)))
+                .andExpect(jsonPath("data[0].ownerId", is(10001)))
+                .andExpect(jsonPath("data[1].ownerId", is(10001)));
+
+        //Combine filters (owner id and location)
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs?filter.ownerId=10002&filter.location.city=lub")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("message", is("1 dog(s) found")))
+                .andExpect(jsonPath("data", hasSize(1)))
+                .andExpect(jsonPath("data[0].ownerId", is(10002)))
+                .andExpect(jsonPath("data[0].location.city", is("Lublin")));
+
+        //Sorting
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs?sort=color,ASC")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("message", is("4 dog(s) found")))
+                .andExpect(jsonPath("data", hasSize(4)))
+                .andExpect(jsonPath("data[0].color", is("blonde")))
+                .andExpect(jsonPath("data[1].color", is("blue")))
+                .andExpect(jsonPath("data[2].color", is("brown")))
+                .andExpect(jsonPath("data[3].color", is("pink")));
 }
 
     @Test
