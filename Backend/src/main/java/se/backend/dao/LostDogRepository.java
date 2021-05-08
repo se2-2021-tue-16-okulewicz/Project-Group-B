@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import se.backend.model.dogs.LostDog;
 
+import java.util.List;
+
 public interface LostDogRepository extends JpaRepository<LostDog, Long>, JpaSpecificationExecutor<LostDog> {
     @Modifying
     @Query("update LostDog d set d.isIsFound = 1 where d.id = :dogId")

@@ -68,7 +68,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.loginThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILoginResults>>
+    payload: PayloadAction<RequestResponse<ILoginResults, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
@@ -81,7 +81,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.loginThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILoginResults>>
+    payload: PayloadAction<RequestResponse<ILoginResults, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
@@ -104,7 +104,7 @@ export const reducer = createReducer(init, {
 
   [Actions.fetchDogsThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture[], number>>
   ) => {
     let newState = _.cloneDeep(state);
     const pageNumber = _.get(
@@ -130,7 +130,7 @@ export const reducer = createReducer(init, {
 
   [Actions.fetchDogsThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture[], number>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
@@ -153,7 +153,7 @@ export const reducer = createReducer(init, {
 
   [Actions.markLostDogAsFoundThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
+    payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     const pageNumber = _.get(
@@ -176,7 +176,7 @@ export const reducer = createReducer(init, {
 
   [Actions.markLostDogAsFoundThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture[]>>
+    payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
