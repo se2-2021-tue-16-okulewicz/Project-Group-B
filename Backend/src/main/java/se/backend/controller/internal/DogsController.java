@@ -54,7 +54,7 @@ public class DogsController {
 
     //<editor-fold desc="/lostdogs">
     @GetMapping(path = "")
-    public ResponseEntity<Response<Collection<LostDogWithBehaviorsAndWithPicture>>> GetLostDogs(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<Collection<LostDogWithBehaviorsAndWithPicture>, Integer>> GetLostDogs(@RequestHeader HttpHeaders headers,
                                                                                                 @PageableDefault(
                                                                                                    sort = "dateLost",
                                                                                                    direction = Sort.Direction.DESC,
@@ -70,12 +70,12 @@ public class DogsController {
         //TODO: Filters
         var result = lostDogService.GetLostDogs(Specification.where(null), pageable);
 
-        return ResponseEntity.ok(new Response<>(String.format("%d dog(s) found", result.size()), true, result));
+        return ResponseEntity.ok(new Response<>(String.format("%d dog(s) found", result.getValue0().size()), true, result.getValue0(), result.getValue1()));
     }
 
     @SneakyThrows
     @PostMapping(path = "")
-    public ResponseEntity<Response<LostDog>> AddLostDog(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<LostDog, Object>> AddLostDog(@RequestHeader HttpHeaders headers,
                                                         @RequestPart("dog") LostDogWithBehaviors newDog,
                                                         @RequestPart("picture") MultipartFile picture) {
         logHeaders(headers);
@@ -105,13 +105,13 @@ public class DogsController {
             throw new GenericBadRequestException("Failed to save the dog");
         }
 
-        return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+        return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog, null));
     }
     //</editor-fold>
 
     //<editor-fold desc="/lostdogs/{dogId}">
     @DeleteMapping(path = "/{dogId}")
-    public ResponseEntity<Response<Boolean>> DeleteLostDog(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<Boolean, Object>> DeleteLostDog(@RequestHeader HttpHeaders headers,
                                                            @PathVariable("dogId") long dogId) {
         logHeaders(headers);
 
@@ -120,14 +120,14 @@ public class DogsController {
             throw new UnauthorizedException();
         }
 
-        if(lostDogService.DeleteDog(dogId))
-            return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true));
+        if(lostDogService.DeleteDog(dogId, authorization.getValue1()))
+            return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true, null));
         else
-            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to delete dog with id: %d", dogId), false, false));
+            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to delete dog with id: %d", dogId), false, false, null));
     }
 
     @GetMapping(path = "/{dogId}")
-    public ResponseEntity<Response<LostDog>> GetLostDogDetails(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<LostDog, Object>> GetLostDogDetails(@RequestHeader HttpHeaders headers,
                                                                @PathVariable("dogId") long dogId) {
         logHeaders(headers);
 
@@ -138,14 +138,14 @@ public class DogsController {
 
         LostDog savedDog = lostDogService.GetDogDetails(dogId);
         if(savedDog != null)
-            return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+            return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog, null));
         else
-            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null));
+            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null, null));
     }
 
     @SneakyThrows
     @PutMapping(path = "/{dogId}")
-    public ResponseEntity<Response<LostDog>> UpdateDog(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<LostDog, Object>> UpdateDog(@RequestHeader HttpHeaders headers,
                                                        @PathVariable("dogId") long dogId,
                                                        @RequestPart("dog") LostDogWithBehaviors updatedDog,
                                                        @RequestPart("picture") MultipartFile picture) {
@@ -177,7 +177,7 @@ public class DogsController {
             var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture, authorization.getValue1());
 
             if(savedDog != null)
-                return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog));
+                return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog, null));
             else
                 throw new GenericBadRequestException(String.format("Failed to update dog with id: %d", dogId));
         } catch (IOException e) {
@@ -188,7 +188,7 @@ public class DogsController {
 
     //<editor-fold desc="/lostdogs/{dogId}/found">
     @PutMapping(path = "/{dogId}/found")
-    public ResponseEntity<Response<Object>> MarkAsFound(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<Object, Object>> MarkAsFound(@RequestHeader HttpHeaders headers,
                                                         @PathVariable("dogId") long dogId) {
         logHeaders(headers);
 
@@ -197,12 +197,12 @@ public class DogsController {
             throw new UnauthorizedException();
         }
 
-        boolean wasMarked = lostDogService.MarkLostDogAsFound(dogId);
+        boolean wasMarked = lostDogService.MarkLostDogAsFound(dogId, authorization.getValue1());
 
         if(!wasMarked)
             throw new GenericBadRequestException("Failed to mark dog as found");
 
-        return ResponseEntity.ok(new Response<>("Dog marked as found", true, null));
+        return ResponseEntity.ok(new Response<>("Dog marked as found", true, null, null));
     }
     //</editor-fold>
 }

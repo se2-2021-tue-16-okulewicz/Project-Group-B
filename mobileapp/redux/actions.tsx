@@ -14,19 +14,22 @@ import { IRegisterRegularUserInformation } from "../components/register-login/lo
  */
 
 export const loginThunk = createAsyncThunk<
-  RequestResponse<ILoginResults>,
+  RequestResponse<ILoginResults, undefined>,
   ILoginInformation,
-  { rejectValue: RequestResponse<ILoginResults> }
+  { rejectValue: RequestResponse<ILoginResults, undefined> }
 >("login", async (credentials: ILoginInformation, { rejectWithValue }) => {
-  const response: RequestResponse<ILoginResults> = await Fetching.login(
-    credentials
-  );
+  const response: RequestResponse<
+    ILoginResults,
+    undefined
+  > = await Fetching.login(credentials);
 
   if (response.response.successful !== true) {
-    return rejectWithValue(response as RequestResponse<ILoginResults>);
+    return rejectWithValue(
+      response as RequestResponse<ILoginResults, undefined>
+    );
   }
 
-  return response as RequestResponse<ILoginResults>;
+  return response as RequestResponse<ILoginResults, undefined>;
 });
 
 /*
@@ -36,12 +39,13 @@ export const fetchDogsThunk = createAsyncThunk(
   "fetchAllDogs",
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<
-      ILostDogWithPicture[] | null
+      ILostDogWithPicture[],
+      number
     > = await Fetching.fetchDogs(item.filters, item.Authorization);
 
     if (response.response.successful !== true) {
       return rejectWithValue(
-        response as RequestResponse<ILostDogWithPicture | null>
+        response as RequestResponse<ILostDogWithPicture[], number>
       );
     }
 
@@ -65,13 +69,12 @@ export const markLostDogAsFoundThunk = createAsyncThunk(
   "markLostDogAsFound",
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<
-      ILostDogWithPicture[] | null
+      null,
+      undefined
     > = await Fetching.markLostDogAsFound(item.dogID, item.Authorization);
 
     if (response.response.successful !== true) {
-      return rejectWithValue(
-        response as RequestResponse<ILostDogWithPicture | null>
-      );
+      return rejectWithValue(response as RequestResponse<null, undefined>);
     }
 
     //let dogs = response.response.data as ILostDogWithPicture[];

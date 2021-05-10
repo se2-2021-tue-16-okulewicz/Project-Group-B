@@ -73,7 +73,7 @@ export default function ContactInfo(props: any) {
         })
       );
       setPageRefresh(false); // eslint-disable-next-line
-    }
+    } // eslint-disable-next-line
   }, [pageRefresh]);
 
   return (

@@ -29,14 +29,14 @@ Date.prototype.toJSON = function (key?: any): string {
   );
 };
 
-async function getResponse<T>(
+async function getResponse<T, K>(
   axiosRequest: Promise<AxiosResponse<any>>
-): Promise<RequestResponse<T>> {
+): Promise<RequestResponse<T, K>> {
   try {
     const response = await axiosRequest;
     return {
       code: response.status,
-      response: response.data as APIResponse<T>,
+      response: response.data as APIResponse<T, K>,
     };
   } catch (error) {
     if (error instanceof TypeError || error.message === "Network Error") {
@@ -46,6 +46,7 @@ async function getResponse<T>(
           message: "Connection error",
           successful: false,
           data: null,
+          metadata: null,
         },
       };
     }
@@ -53,7 +54,7 @@ async function getResponse<T>(
     let response_1 = error.response;
     return {
       code: response_1.status,
-      response: response_1.data as APIResponse<T>,
+      response: response_1.data as APIResponse<T, K>,
     };
   }
 }
@@ -61,7 +62,7 @@ async function getResponse<T>(
 export async function fetchDogs(
   filters: { [name: string]: any },
   cookies: { [name: string]: any }
-): Promise<RequestResponse<ILostDogWithPicture[]>> {
+): Promise<RequestResponse<ILostDogWithPicture[], number>> {
   const filtersString = Object.keys(filters)
     .map((filterName) => {
       const value = String(filters[filterName]).trim();
@@ -84,7 +85,7 @@ export async function fetchDogs(
 export async function fetchOneDog(
   id: Number,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<ILostDogWithPicture>> {
+): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${id}`,
@@ -101,7 +102,7 @@ export async function addDog(
   dog: ILostDog,
   picture: IPicture,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<ILostDogWithPicture>> {
+): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
   let formData = new FormData();
 
   const privateProperties = ["id", "pictureId", "ownerId"];
@@ -141,7 +142,7 @@ export async function updateDog(
   dog: ILostDog,
   cookies: { [name: string]: any },
   picture?: IPicture
-): Promise<RequestResponse<ILostDogWithPicture>> {
+): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
   let formData = new FormData();
 
   const privateProperties = ["id", "pictureId", "ownerId"];
@@ -181,7 +182,7 @@ export async function updateContactInfo(
   userId: number,
   contactInfo: IContactInfo,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<IContactInfo>> {
+): Promise<RequestResponse<IContactInfo, undefined>> {
   let userdata = new FormData();
 
   userdata.append(
@@ -209,7 +210,7 @@ export async function updateContactInfo(
 export async function markLostDogAsFound(
   dogId: number,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<null>> {
+): Promise<RequestResponse<null, undefined>> {
   return getResponse(
     axios.put(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/found`,
@@ -226,7 +227,7 @@ export async function markLostDogAsFound(
 export async function fetchUserInfo(
   userId: number,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<IContactInfo>> {
+): Promise<RequestResponse<IContactInfo, undefined>> {
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/user/${userId}`,
@@ -241,7 +242,7 @@ export async function fetchUserInfo(
 
 export async function login(
   credentials: ILoginInformation
-): Promise<RequestResponse<ILoginResults>> {
+): Promise<RequestResponse<ILoginResults, undefined>> {
   let formData = new FormData();
   formData.append(
     "username",
@@ -274,7 +275,7 @@ export async function login(
 
 export async function logout(cookies: {
   [name: string]: any;
-}): Promise<RequestResponse<null>> {
+}): Promise<RequestResponse<null, undefined>> {
   return getResponse(
     axios.post(
       `http://${config.backend.ip}:${config.backend.port}/logout`,
@@ -291,7 +292,7 @@ export async function logout(cookies: {
 
 export async function registerRegularUser(
   newUserInfo: IRegisterRegularUserInformation
-): Promise<RequestResponse<null>> {
+): Promise<RequestResponse<null, undefined>> {
   let formData = new FormData();
   formData.append(
     "username",
