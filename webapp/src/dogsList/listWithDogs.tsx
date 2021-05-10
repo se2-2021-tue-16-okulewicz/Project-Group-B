@@ -32,6 +32,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
 import DogDetails from "../dogDetails/dogDetails";
+import Footer from "../utilityComponents/Footer";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -108,7 +109,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-scheme.configureHeader((builder) => {
+/*scheme.configureHeader((builder) => {
   builder
 
     .registerConfig("xs", {
@@ -260,9 +261,10 @@ export default function ListWithDogs() {
   useEffect(() => {
     if (!refreshRequired && lastPage) {
       let tmp = dogs;
-      let addDogs = tmp.filter(
+      /*let addDogs = tmp.filter(
         (dog: ILostDogWithPicture) => dog.isFound === false
-      );
+      );*/
+      let addDogs = dogs;
       setFilteredDogs(addDogs);
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
@@ -279,7 +281,83 @@ export default function ListWithDogs() {
       setDisplayLoader(false);
     }, 700);
   };
+
   return (
+    <Root scheme={scheme}>
+      <CssBaseline />
+      <Header className={classes.header}>
+        <Toolbar>
+          <SidebarTrigger sidebarId="unique_id" />
+          <Content>
+            {!isMenuCollapsed && (
+              <span className={classes.main}>
+                <MenuItem
+                  className={classes.registerButton}
+                  data-testid="registerButton"
+                  color="primary"
+                  onClick={onRegisterClicked}
+                >
+                  <Pets />
+                </MenuItem>
+                <Grid item xs={12} />
+                <MenuItem
+                  className={classes.registerButton}
+                  data-testid="settingsButton"
+                  color="primary"
+                  onClick={onSettingsClicked}
+                >
+                  <Settings />
+                </MenuItem>
+                <MenuItem
+                  className={classes.registerButton}
+                  data-testid="logoutsButton"
+                  disabled={cookies["userType"] === undefined}
+                  color="primary"
+                  onClick={onLogOutClicked}
+                >
+                  <ExitToApp />
+                </MenuItem>
+
+              </span>
+            )}
+          </Content>
+        </Toolbar>
+      </Header>
+      <Content>
+        {lastPage && listFetched && (
+          <Switch>
+            <Route exact path={path}>
+              <InfiniteScroll
+                dataLength={displayedDogs.length}
+                scrollThreshold={0.5}
+                next={fetchMore}
+                hasMore={filteredDogs.length > displayedDogs.length}
+                loader={
+                  (displayLoader && <LoadingPopup />) ||
+                  (!displayLoader && <></>)
+                }
+              >
+                <ImageGrid
+                  dogs={displayedDogs}
+                  path={path}
+                  redirectToDogDetailsOrEdit={(id: number) =>
+                    redirectToDogDetailsOrEdit(id)
+                  }
+                />
+              </InfiniteScroll>
+              <Footer position="list" />
+            </Route>
+            <Route
+              path={`${path}/:id`}
+              children={<DogDetails dogId={dogId} />}
+            />
+          </Switch>
+        )}
+      </Content>
+    </Root>
+  );
+
+  /*(
     <Root scheme={scheme}>
       <CssBaseline />
       <Header className={classes.header}>
@@ -398,5 +476,5 @@ export default function ListWithDogs() {
         )}
       </Content>
     </Root>
-  );
+  );*/
 }

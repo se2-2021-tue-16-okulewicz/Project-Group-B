@@ -9,6 +9,7 @@ import { Edit } from "@material-ui/icons";
 import { store } from "../app/store";
 import { fetchOneDogThunk } from "../app/actions";
 import { useCookies } from "react-cookie";
+import Footer from "../utilityComponents/Footer";
 
 export default function ImageGrid(props: any) {
   const dogs = props.dogs as ILostDogWithPicture[]; // eslint-disable-next-line
@@ -24,7 +25,7 @@ export default function ImageGrid(props: any) {
   };
 
   return (
-    <GridList cols={3} spacing={8}>
+    <GridList cols={3} spacing={8} style={{margin:"5"}}>
       {dogs.map((dog: ILostDogWithPicture) => (
         <GridListTile
           key={dog.id}
@@ -58,7 +59,7 @@ export default function ImageGrid(props: any) {
             }
           />
         </GridListTile>
-      ))}
+      ))}   
     </GridList>
   );
 }
