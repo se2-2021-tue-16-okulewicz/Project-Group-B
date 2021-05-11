@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Divider, Grid, MenuItem } from "@material-ui/core";
+import { Button, Divider, Grid, MenuItem, Paper, Typography } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
@@ -17,6 +17,7 @@ import Layout, {
   getSidebarTrigger,
   getSidebarContent,
   getCollapseBtn,
+  useSidebarTrigger,
 } from "@mui-treasury/layout";
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -24,7 +25,7 @@ import { useSelector } from "react-redux";
 import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ExitToApp, Pets, Settings } from "@material-ui/icons";
+import { ExitToApp, Filter, Pets, Search, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,6 +34,7 @@ import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
 import DogDetails from "../dogDetails/dogDetails";
 import Footer from "../utilityComponents/Footer";
+import FilterForm from "./filterForm";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -80,16 +82,18 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: "1.4em",
     },
     header: {
-      background: "palealiceblue",
+      justifyContent: "center",
+      alignItems: "center",
+      alignSelf: "center",
+      display: "flex",
+    },
+    title:{
+      align: "center",
       color: "black",
       fontStyle: "oblique",
       fontSize: "2em",
       fontFamily: "Gill Sans Extrabold",
       fontWeight: "bolder",
-      justifyContent: "center",
-      alignItems: "center",
-      alignSelf: "center",
-      display: "flex",
     },
     cardContent: {
       justifyContent: "center",
@@ -100,51 +104,34 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     main: {
       justifyContent: "center",
+      width:"100%",
       display: "flex",
       alignItems: "center",
       marginTop: "2vh",
-      flexGrow: 1,
+      //flexGrow: 1,
       alignSelf: "center",
     },
   })
 );
 
-/*scheme.configureHeader((builder) => {
+scheme.configureHeader((builder) => {
   builder
 
     .registerConfig("xs", {
       position: "absolute",
-      initialHeight: "8%", // won't stick to top when scroll down
+      initialHeight: "10%", // won't stick to top when scroll down
     })
     .registerConfig("sm", {
       position: "absolute",
-      initialHeight: "8%", // won't stick to top when scroll down
+      initialHeight: "10%", // won't stick to top when scroll down
     })
     .registerConfig("md", {
       position: "absolute",
-      initialHeight: "8%",
+      initialHeight: "10%",
     });
 });
 
-scheme.configureEdgeSidebar((builder) => {
-  builder
-    .create("unique_id", { anchor: "left" })
-    .registerPermanentConfig("xs", {
-      width: "25%", // px, (%, rem, em is compatible)
-      collapsible: true,
-      collapsedWidth: "10%",
-    })
-    .registerPermanentConfig("sm", {
-      width: "20%", // px, (%, rem, em is compatible)
-      collapsible: true,
-      collapsedWidth: "8%",
-    })
-    .registerPermanentConfig("md", {
-      width: "15%", // px, (%, rem, em is compatible)
-      collapsible: true,
-      collapsedWidth: "6%",
-    });
-});
+
 
 /*TODO: remove filtering in frontend (folder dontdelete)*/
 
@@ -154,6 +141,29 @@ export default function ListWithDogs() {
   const [dogId, setDogId] = useState(0);
   const [listFetched, setListFetched] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
+
+  scheme.configureEdgeSidebar((builder) => {
+    builder
+      .create("unique_id", { anchor: "left" })
+      .registerPermanentConfig("xs", {
+        width: "30%", // px, (%, rem, em is compatible)
+        collapsible: true,
+        collapsedWidth: "0%",
+      })
+      .registerPermanentConfig("sm", {
+        width: "25%", // px, (%, rem, em is compatible)
+        collapsible: true,
+        collapsedWidth: "0%",
+      })
+      .registerPermanentConfig("md", {
+        width: "20%", // px, (%, rem, em is compatible)
+        collapsible: true,
+        collapsedWidth: "0%",
+      });
+        builder.hide("unique_id", isMenuCollapsed);
+  });
+  
+  //const sidebar = useSidebarTrigger("unique_id", "header");
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
@@ -210,6 +220,12 @@ export default function ListWithDogs() {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
     history.push(`${path}/${id}`);
+  }
+
+  function updateFilters(filters:any) {
+    //setDogId(id);
+    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    //history.push(`${path}/${id}`);
   }
 
   //fetches first page of dog list
@@ -285,44 +301,65 @@ export default function ListWithDogs() {
   return (
     <Root scheme={scheme}>
       <CssBaseline />
-      <Header className={classes.header}>
-        <Toolbar>
-          <SidebarTrigger sidebarId="unique_id" />
-          <Content>
-            {!isMenuCollapsed && (
-              <span className={classes.main}>
-                <MenuItem
-                  className={classes.registerButton}
-                  data-testid="registerButton"
-                  color="primary"
-                  onClick={onRegisterClicked}
-                >
-                  <Pets />
-                </MenuItem>
-                <Grid item xs={12} />
-                <MenuItem
-                  className={classes.registerButton}
-                  data-testid="settingsButton"
-                  color="primary"
-                  onClick={onSettingsClicked}
-                >
-                  <Settings />
-                </MenuItem>
-                <MenuItem
-                  className={classes.registerButton}
-                  data-testid="logoutsButton"
-                  disabled={cookies["userType"] === undefined}
-                  color="primary"
-                  onClick={onLogOutClicked}
-                >
-                  <ExitToApp />
-                </MenuItem>
-
-              </span>
-            )}
-          </Content>
+      <Header className={classes.header} id="header">
+        <Toolbar className={classes.main}>
+          <Grid container spacing={4}>
+              <Grid xs={9}>
+                <Typography align="center" className={classes.title}>
+                Lost Dogs
+                </Typography>
+                  </Grid>
+                  <Grid container spacing={1} xs={3} alignContent="space-between" direction="row">
+                  <Grid xs={3}>
+                  <Button
+                    data-testid="registerButton"
+                    color="primary"
+                    onClick={onRegisterClicked}
+                  >
+                    <Pets />
+                  </Button>
+                  </Grid><Grid xs={3}>
+                  <Button
+                    data-testid="settingsButton"
+                    color="primary"
+                    onClick={onSettingsClicked}
+                  >
+                    <Settings />
+                  </Button>
+                  </Grid><Grid xs={3}>
+                  <Button
+                    data-testid="filterButton"
+                    color="primary"
+                    onClick={() => {
+                      setMenuCollapsed(!isMenuCollapsed);
+                      //sidebar.setOpen("unique_id", true);
+                    }}
+                  >
+                    <Search/>
+                  </Button>              
+                  </Grid><Grid xs={3}>   
+                  <Button
+                    data-testid="logoutsButton"
+                    disabled={cookies["userType"] === undefined}
+                    color="primary"
+                    onClick={onLogOutClicked}
+                  >
+                    <ExitToApp />
+                  </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
         </Toolbar>
       </Header>
+      {!isMenuCollapsed && (
+      <DrawerSidebar sidebarId="unique_id">
+        <SidebarContent name="sidebar" >
+           <FilterForm
+           updateFilters={(filters : any) =>
+            updateFilters(filters)
+          }/>
+        </SidebarContent>
+      </DrawerSidebar>)}
       <Content>
         {lastPage && listFetched && (
           <Switch>

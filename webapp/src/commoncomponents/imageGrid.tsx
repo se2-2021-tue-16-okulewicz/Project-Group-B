@@ -25,7 +25,7 @@ export default function ImageGrid(props: any) {
   };
 
   return (
-    <GridList cols={3} spacing={8} style={{margin:"5"}}>
+    <GridList cols={3} spacing={8} style={{margin:"10"}}>
       {dogs.map((dog: ILostDogWithPicture) => (
         <GridListTile
           key={dog.id}

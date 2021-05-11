@@ -7,7 +7,7 @@
 
 .list {
   position: absolute;
-  width:100%
+  width:inherit;
 }
 
 a {
