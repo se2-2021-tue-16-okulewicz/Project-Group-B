@@ -1,6 +1,13 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Grid, MenuItem, Paper, Typography } from "@material-ui/core";
+import {
+  Button,
+  Divider,
+  Grid,
+  MenuItem,
+  Paper,
+  Typography,
+} from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
@@ -88,7 +95,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignSelf: "center",
       display: "flex",
     },
-    title:{
+    title: {
       align: "center",
       color: "black",
       fontStyle: "oblique",
@@ -105,7 +112,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     main: {
       justifyContent: "center",
-      width:"100%",
+      width: "100%",
       display: "flex",
       alignItems: "center",
       marginTop: "2vh",
@@ -131,8 +138,6 @@ scheme.configureHeader((builder) => {
       initialHeight: "10%",
     });
 });
-
-
 
 /*TODO: remove filtering in frontend (folder dontdelete)*/
 
@@ -162,9 +167,9 @@ export default function ListWithDogs() {
         collapsible: true,
         collapsedWidth: "0%",
       });
-        builder.hide("unique_id", isMenuCollapsed);
+    builder.hide("unique_id", isMenuCollapsed);
   });
-  
+
   //const sidebar = useSidebarTrigger("unique_id", "header");
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
@@ -224,7 +229,7 @@ export default function ListWithDogs() {
     history.push(`${path}/${id}`);
   }
 
-  function updateFilters(filters:IFilterSort) {
+  function updateFilters(filters: IFilterSort) {
     setFilters(filters);
     setMenuCollapsed(true);
     //store.dispatch(Actions.startRefreshing);
@@ -258,7 +263,7 @@ export default function ListWithDogs() {
 
   //fetches next pages of dogs list
   useEffect(() => {
-    if (!refreshRequired && !lastPage || filtered) {
+    if ((!refreshRequired && !lastPage) || filtered) {
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -309,63 +314,72 @@ export default function ListWithDogs() {
       <Header className={classes.header} id="header">
         <Toolbar className={classes.main}>
           <Grid container spacing={4}>
-              <Grid xs={9}>
-                <Typography align="center" className={classes.title}>
+            <Grid xs={9}>
+              <Typography align="center" className={classes.title}>
                 Lost Dogs
-                </Typography>
-                  </Grid>
-                  <Grid container spacing={1} xs={3} alignContent="space-between" direction="row">
-                  <Grid xs={3}>
-                  <Button
-                    data-testid="registerButton"
-                    color="primary"
-                    onClick={onRegisterClicked}
-                  >
-                    <Pets />
-                  </Button>
-                  </Grid><Grid xs={3}>
-                  <Button
-                    data-testid="settingsButton"
-                    color="primary"
-                    onClick={onSettingsClicked}
-                  >
-                    <Settings />
-                  </Button>
-                  </Grid><Grid xs={3}>
-                  <Button
-                    data-testid="filterButton"
-                    color="primary"
-                    onClick={() => {
-                      setMenuCollapsed(!isMenuCollapsed);
-                      //sidebar.setOpen("unique_id", true);
-                    }}
-                  >
-                    <Search/>
-                  </Button>              
-                  </Grid><Grid xs={3}>   
-                  <Button
-                    data-testid="logoutsButton"
-                    disabled={cookies["userType"] === undefined}
-                    color="primary"
-                    onClick={onLogOutClicked}
-                  >
-                    <ExitToApp />
-                  </Button>
-                  </Grid>
-                </Grid>
+              </Typography>
+            </Grid>
+            <Grid
+              container
+              spacing={1}
+              xs={3}
+              alignContent="space-between"
+              direction="row"
+            >
+              <Grid xs={3}>
+                <Button
+                  data-testid="registerButton"
+                  color="primary"
+                  onClick={onRegisterClicked}
+                >
+                  <Pets />
+                </Button>
               </Grid>
+              <Grid xs={3}>
+                <Button
+                  data-testid="settingsButton"
+                  color="primary"
+                  onClick={onSettingsClicked}
+                >
+                  <Settings />
+                </Button>
+              </Grid>
+              <Grid xs={3}>
+                <Button
+                  data-testid="filterButton"
+                  color="primary"
+                  onClick={() => {
+                    setMenuCollapsed(!isMenuCollapsed);
+                    //sidebar.setOpen("unique_id", true);
+                  }}
+                >
+                  <Search />
+                </Button>
+              </Grid>
+              <Grid xs={3}>
+                <Button
+                  data-testid="logoutsButton"
+                  disabled={cookies["userType"] === undefined}
+                  color="primary"
+                  onClick={onLogOutClicked}
+                >
+                  <ExitToApp />
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </Toolbar>
       </Header>
       {!isMenuCollapsed && (
-      <DrawerSidebar sidebarId="unique_id">
-        <SidebarContent name="sidebar" >
-           <FilterForm
-           filters={filters}
-           updateFilters={(filters : any) =>
-            updateFilters(filters)
-          }/>
-        </SidebarContent>
-      </DrawerSidebar>)}
+        <DrawerSidebar sidebarId="unique_id">
+          <SidebarContent name="sidebar">
+            <FilterForm
+              filters={filters}
+              updateFilters={(filters: any) => updateFilters(filters)}
+            />
+          </SidebarContent>
+        </DrawerSidebar>
+      )}
       <Content>
         {lastPage && listFetched && (
           <Switch>

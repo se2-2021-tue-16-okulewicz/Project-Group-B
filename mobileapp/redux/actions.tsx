@@ -18,10 +18,8 @@ export const loginThunk = createAsyncThunk<
   ILoginInformation,
   { rejectValue: RequestResponse<ILoginResults, undefined> }
 >("login", async (credentials: ILoginInformation, { rejectWithValue }) => {
-  const response: RequestResponse<
-    ILoginResults,
-    undefined
-  > = await Fetching.login(credentials);
+  const response: RequestResponse<ILoginResults, undefined> =
+    await Fetching.login(credentials);
 
   if (response.response.successful !== true) {
     return rejectWithValue(
@@ -38,10 +36,8 @@ fetching dogs
 export const fetchDogsThunk = createAsyncThunk(
   "fetchAllDogs",
   async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<
-      ILostDogWithPicture[],
-      number
-    > = await Fetching.fetchDogs(item.filters, item.Authorization);
+    const response: RequestResponse<ILostDogWithPicture[], number> =
+      await Fetching.fetchDogs(item.filters, item.Authorization);
 
     if (response.response.successful !== true) {
       return rejectWithValue(
@@ -68,10 +64,8 @@ Marking lost dog as foud.
 export const markLostDogAsFoundThunk = createAsyncThunk(
   "markLostDogAsFound",
   async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<
-      null,
-      undefined
-    > = await Fetching.markLostDogAsFound(item.dogID, item.Authorization);
+    const response: RequestResponse<null, undefined> =
+      await Fetching.markLostDogAsFound(item.dogID, item.Authorization);
 
     if (response.response.successful !== true) {
       return rejectWithValue(response as RequestResponse<null, undefined>);
