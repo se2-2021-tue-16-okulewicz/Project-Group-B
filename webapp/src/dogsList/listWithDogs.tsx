@@ -35,6 +35,7 @@ import { IFilters } from "../utilityComponents/utilities";
 import DogDetails from "../dogDetails/dogDetails";
 import Footer from "../utilityComponents/Footer";
 import FilterForm from "./filterForm";
+import { IFilterSort, initFilterProps } from "./filterInterface";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -141,6 +142,7 @@ export default function ListWithDogs() {
   const [dogId, setDogId] = useState(0);
   const [listFetched, setListFetched] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(false);
+  const [filtered, setFiltered] = useState(false);
 
   scheme.configureEdgeSidebar((builder) => {
     builder
@@ -177,7 +179,7 @@ export default function ListWithDogs() {
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    isFound: false, //for after the filters will be implemented in the backend
+    isIsFound: false, //for after the filters will be implemented in the backend
   });
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -222,7 +224,10 @@ export default function ListWithDogs() {
     history.push(`${path}/${id}`);
   }
 
-  function updateFilters(filters:any) {
+  function updateFilters(filters:IFilterSort) {
+    setFilters(filters);
+    setMenuCollapsed(true);
+    //store.dispatch(Actions.startRefreshing);
     //setDogId(id);
     //sessionStorage.setItem("dogId", JSON.stringify(id as number));
     //history.push(`${path}/${id}`);
@@ -249,11 +254,11 @@ export default function ListWithDogs() {
       }
     }
     // eslint-disable-next-line
-  }, [refreshRequired]);
+  }, [refreshRequired, filters]);
 
   //fetches next pages of dogs list
   useEffect(() => {
-    if (!refreshRequired && !lastPage) {
+    if (!refreshRequired && !lastPage || filtered) {
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -355,6 +360,7 @@ export default function ListWithDogs() {
       <DrawerSidebar sidebarId="unique_id">
         <SidebarContent name="sidebar" >
            <FilterForm
+           filters={filters}
            updateFilters={(filters : any) =>
             updateFilters(filters)
           }/>

@@ -37,6 +37,8 @@ import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
+import { IFilters } from "../utilityComponents/utilities";
+import { IFilterSort, initFilterProps } from "./filterInterface";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -85,6 +87,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: "bolder",
       width:"80%", 
       margin:"10%",
+      minWidth: "140"
       //marginLeft:"20%",
       //marginRight:"20%",
 
@@ -94,48 +97,40 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function FilterForm(props:any) {
   //if enable is session storage is null, the form has just been opened
-  const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  const [lostDogFields, setLostDogFields] = useState<ILostDog>(
-    isInputNotNull
-      ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
-      : initLostDogProps
-  );
-
-  sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
-  const [picture, setPicture] = useState<IPicture>(initPicture);
-
+  const [filterFields, setFilterFields] = useState<IFilterSort>(props.filters);
+  const [lostDogFields, setLostDogFields] = useState<IFilterSort>({...initFilterProps});
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     let newField = { ...lostDogFields, [e.target.name]: e.target.value };
     setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
 
-  function calendarHandler(date: MaterialUiPickersDate): void {
-    let newField = { ...lostDogFields, dateLost: date as Date };
+  function calendarHandler(date: MaterialUiPickersDate, name: string): void {
+    if(date){
+    let newField = { ...lostDogFields, 
+      filter:{...lostDogFields.filter,  [name]: date as Date }};
     setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
+  }
   }
 
   const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
-    let newField = {
-      ...lostDogFields,
-      location: { ...lostDogFields.location, [e.target.name]: e.target.value },
-    };
+    if(lostDogFields.filter){
+    let newField = { ...lostDogFields, 
+      filter:{...lostDogFields.filter,
+      location: { ...lostDogFields.filter.location, [e.target.name]: e.target.value },
+    }};  
     setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
+  }
   };
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
-    let newField = {
-      ...lostDogFields,
+    let newField = { ...lostDogFields, 
+      filter:{...lostDogFields.filter, 
       [e.target.name as string]: e.target.value,
-    };
+    }};
     setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
 
   function clearStorage() {
@@ -145,21 +140,11 @@ export default function FilterForm(props:any) {
   }
 
   const onSubmitClicked = () => {
-    try {
-      registerDog(lostDogFields, picture);
-      store.dispatch(Actions.clearDogList);
-      clearStorage();
-    } catch (err) {
-      console.error("Failed to save the dog: ", err);
-    }
-    history.push("/listDogs");
-    history.go(0);
+    props.updateFilters(lostDogFields);
   };
 
   const onCancelClick = () => {
-    clearStorage();
-    store.dispatch(Actions.clearDogList);
-    history.push("/listDogs");
+    props.updateFilters(initFilterProps);
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
@@ -172,17 +157,46 @@ export default function FilterForm(props:any) {
       })
     );
   }
-  const updateFilters = (filters: any) => {
-    props.updateFilters(filters);
-  };
+  /*const updateFilters = (filters: any) => {
+    
+  };*/
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
       <Paper className={classes.title}>
                 <Typography className={classes.title}>
-                {"Find Your Dog"}
+                {"Sort The Dogs"}
                   </Typography>
       </Paper>
       <Grid  className={classes.mainForm} item xs={1}>
+      <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel htmlFor="color-label">Color</InputLabel>
+            <Select
+              data-testid="color-select"
+              native
+              label="Color"
+              labelId="color-label"
+              id="color"
+              name="color"
+              value={lostDogFields.filter?.color}
+              onChange={selectsHandler}
+              displayEmpty
+            >
+              <option key={"color-key"} aria-label="None" value="" />
+              {Object.values(ColorTypes)
+                .filter((k) => isNaN(Number(k)))
+                .map((type: string | ColorTypes) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+            </Select>
+            </FormControl>
+            
+      <Paper className={classes.formControl} style={{minWidth:"160"}}>
+                <Typography className={classes.title}>
+                {"FindYourDog"}
+                  </Typography>
+      </Paper>
         <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
               Name
@@ -191,7 +205,7 @@ export default function FilterForm(props:any) {
               data-testid="name-input"
               id="name"
               name="name"
-              value={lostDogFields.name}
+              value={lostDogFields.filter?.name}
               onChange={inputsHandler}
               required
             />
@@ -202,7 +216,7 @@ export default function FilterForm(props:any) {
               type="number"
               id="age"
               name="age"
-              value={lostDogFields.age}
+              value={lostDogFields.filter?.age}
               onChange={inputsHandler}
               InputProps={{
                 inputProps: { min: 0, max: 30 },
@@ -222,7 +236,7 @@ export default function FilterForm(props:any) {
               labelId="color-label"
               id="color"
               name="color"
-              value={lostDogFields.color}
+              value={lostDogFields.filter?.color}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -243,7 +257,7 @@ export default function FilterForm(props:any) {
               native
               label="hair"
               labelId="hair-label"
-              value={lostDogFields.hairLength}
+              value={lostDogFields.filter?.hairLength}
               name="hairLength"
               onChange={selectsHandler}
               displayEmpty
@@ -288,7 +302,7 @@ export default function FilterForm(props:any) {
               labelId="ears-label"
               label="ears"
               name="earsType"
-              value={lostDogFields.earsType}
+              value={lostDogFields.filter?.earsType}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -310,7 +324,7 @@ export default function FilterForm(props:any) {
               labelId="tail-label"
               label="tail"
               name="tailLength"
-              value={lostDogFields.tailLength}
+              value={lostDogFields.filter?.tailLength}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -332,7 +346,7 @@ export default function FilterForm(props:any) {
               labelId="mark-label"
               label="specialmark "
               name="specialMark"
-              value={lostDogFields.specialMark}
+              value={lostDogFields.filter?.specialMark}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -354,7 +368,7 @@ export default function FilterForm(props:any) {
               labelId="breed-label"
               label="breed "
               name="breed"
-              value={lostDogFields.breed}
+              value={lostDogFields.filter?.breed}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -370,7 +384,7 @@ export default function FilterForm(props:any) {
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel shrink id="calendar-label">
-              Dog was lost on
+              Lost before
             </InputLabel>
             <DatePicker
               data-testid="date-select"
@@ -379,10 +393,29 @@ export default function FilterForm(props:any) {
               format="yyyy-MM-dd"
               margin="normal"
               id="date-picker-inline"
-              value={lostDogFields.dateLost}
+              value={lostDogFields.filter?.dateLostBefore}
+              minDate={lostDogFields.filter?.dateLostAfter ? lostDogFields.filter?.dateLostAfter : new Date(1950, 1, 1, 0, 0, 0, 0)}
               maxDate={new Date()}
-              name="dateLost"
-              onChange={(date: any) => calendarHandler(date)}
+              name="dateLostBefore"
+              onChange={(date: any) => calendarHandler(date, "dateLostBefore")}
+            />
+          </FormControl>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel shrink id="calendar-label">
+              Lost after
+            </InputLabel>
+            <DatePicker
+              data-testid="date-select"
+              disableToolbar
+              variant="inline"
+              format="yyyy-MM-dd"
+              margin="normal"
+              id="date-picker-inline"
+              value={lostDogFields.filter?.dateLostAfter}
+              maxDate={lostDogFields.filter?.dateLostBefore ? lostDogFields.filter?.dateLostBefore : new Date()}
+              minDate={new Date(1950, 1, 1, 0, 0, 0, 0)}
+              name="dateLostAfter"
+              onChange={(date: any) => calendarHandler(date, "dateLostAfter")}
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
@@ -392,7 +425,7 @@ export default function FilterForm(props:any) {
             <Input
               data-testid="city-input"
               name="city"
-              value={lostDogFields.location.city}
+              value={lostDogFields.filter?.location?.city}
               onChange={inputArrayHandler}
             />
           </FormControl>
@@ -403,7 +436,7 @@ export default function FilterForm(props:any) {
             <Input
               data-testid="district-input"
               name="district"
-              value={lostDogFields.location.district}
+              value={lostDogFields.filter?.location?.district}
               onChange={inputArrayHandler}
             />
           </FormControl>
@@ -416,7 +449,7 @@ export default function FilterForm(props:any) {
               labelId="behavior-label"
               label="Behavior"
               name="behaviors"
-              value={lostDogFields.behaviors}
+              value={lostDogFields.filter?.behaviors}
               onChange={selectsHandler}
               input={<Input />}
               displayEmpty
