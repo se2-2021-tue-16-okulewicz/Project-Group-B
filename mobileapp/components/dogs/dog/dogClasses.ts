@@ -1,4 +1,4 @@
-import { ILostDog, IPicture } from "./dogInterfaces";
+import { IDogCharacteristics, ILostDog, IPicture } from "./dogInterfaces";
 
 export const initPicture: IPicture = {
   id: 0,
@@ -19,9 +19,22 @@ export const initLostDogProps: ILostDog = {
   size: "",
   earsType: "",
   tailLength: "",
-  specialMarks: "",
+  specialMark: "",
   behaviors: [],
   location: { city: "", district: "" },
   dateLost: new Date(2012, 1, 1, 0, 0, 0, 0),
   isFound: false,
+};
+
+export const initLostDogCharacteristics: IDogCharacteristics = {
+  name: "",
+  breed: "",
+  age: 0,
+  hairLength: "",
+  color: "",
+  size: "",
+  earsType: "",
+  tailLength: "",
+  specialMark: "",
+  behaviors: []
 };

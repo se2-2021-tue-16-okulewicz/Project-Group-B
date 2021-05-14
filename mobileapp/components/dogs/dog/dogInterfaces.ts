@@ -41,3 +41,16 @@ export interface ILostDog extends IDog {
 export interface ILostDogWithPicture extends ILostDog {
   picture: IPicture;
 }
+
+export interface IDogCharacteristics {
+  name: string;
+  breed: BreedTypes | "";
+  age: number;
+  hairLength: HairTypes | "";
+  color: ColorTypes | "";
+  size: SizeTypes | "";
+  earsType: EarsTypes | "";
+  tailLength: TailTypes | "";
+  specialMark: SpecialMarkTypes| "";
+  behaviors: BehaviorsTypes[];
+}
