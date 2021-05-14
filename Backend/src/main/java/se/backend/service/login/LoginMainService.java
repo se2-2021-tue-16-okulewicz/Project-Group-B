@@ -10,11 +10,11 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import se.backend.dao.AdminAccountRepository;
-import se.backend.dao.DogShelterAccountRepository;
+import se.backend.dao.DogShelterRepository;
 import se.backend.dao.UserAccountRepository;
 import se.backend.model.account.Account;
 import se.backend.model.account.AdminAccount;
-import se.backend.model.account.DogShelterAccount;
+import se.backend.model.account.Shelter;
 import se.backend.model.account.UserAccount;
 import se.backend.utils.StringUtils;
 import se.backend.wrapper.account.AuthenticationResults;
@@ -32,7 +32,7 @@ public class LoginMainService implements LoginService {
     private final Logger logger = LoggerFactory.getLogger(LoginMainService.class);
 
     private final UserAccountRepository userAccountRepository;
-    private final DogShelterAccountRepository dogShelterAccountRepository;
+    private final DogShelterRepository dogShelterRepository;
     private final AdminAccountRepository adminAccountRepository;
 
     private static Long GetLongFromString(String s) {
@@ -55,7 +55,7 @@ public class LoginMainService implements LoginService {
             .withIgnoreCase();
 
     private static final ExampleMatcher LOGIN_SHELTER_INFORMATION_MATCHER = ExampleMatcher.matching()
-            .withIgnorePaths("id", "shelter_id")
+            .withIgnorePaths("id", "name", "phone_number", "city", "street", "post_code", "building_number", "additional_address_line")
             .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.ignoreCase())
             .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.caseSensitive())
             .withIgnoreCase();
@@ -67,7 +67,7 @@ public class LoginMainService implements LoginService {
 
     @Autowired
     public LoginMainService (UserAccountRepository userAccountRepository,
-                             DogShelterAccountRepository dogShelterAccountRepository,
+                             DogShelterRepository dogShelterRepository,
                              AdminAccountRepository adminAccountRepository,
                              @Value("${testToken.regularId:0}") String userTestTokenId,
                              @Value("${testToken.shelterId:0}") String shelterTestTokenId,
@@ -87,7 +87,7 @@ public class LoginMainService implements LoginService {
             sessions.put(adminTestToken, new Pair<>(UserType.Admin,  GetLongFromString(adminTestTokenId)));
 
         this.userAccountRepository = userAccountRepository;
-        this.dogShelterAccountRepository = dogShelterAccountRepository;
+        this.dogShelterRepository = dogShelterRepository;
         this.adminAccountRepository = adminAccountRepository;
     }
 
@@ -108,11 +108,13 @@ public class LoginMainService implements LoginService {
         }
 
         //Dog shelter account
-        DogShelterAccount dogShelterProbe = new DogShelterAccount();
+        Shelter dogShelterProbe = new Shelter();
         dogShelterProbe.setPassword(getSHA256Hash(password));
         dogShelterProbe.setAssociatedEmail(username);
-        Example<DogShelterAccount> shelterExample = Example.of(dogShelterProbe, LOGIN_SHELTER_INFORMATION_MATCHER);
-        var shelterUser = dogShelterAccountRepository.findOne(shelterExample);
+        dogShelterProbe.setActive(true);
+        Example<Shelter> shelterExample = Example.of(dogShelterProbe, LOGIN_SHELTER_INFORMATION_MATCHER);
+        System.out.println(shelterExample.toString());
+        var shelterUser = dogShelterRepository.findOne(shelterExample);
         if(shelterUser.isPresent()){
             var result = new AuthenticationResults(UserType.Shelter);
             result.setId(shelterUser.get().getId());

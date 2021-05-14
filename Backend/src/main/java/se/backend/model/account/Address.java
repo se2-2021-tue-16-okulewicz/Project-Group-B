@@ -8,10 +8,9 @@ import javax.persistence.Embeddable;
 @Data
 @Embeddable
 public class Address {
-    private String country;
-    private String town;
+    private String city;
     private String street;
-    
-    @Column(name = "house_number")
-    private String houseNumber;
+    private String postCode;
+    private String buildingNumber;
+    private String additionalAddressLine;
 }
