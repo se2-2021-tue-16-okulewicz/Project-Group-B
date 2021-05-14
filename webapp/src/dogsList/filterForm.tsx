@@ -1,5 +1,6 @@
 import "date-fns";
 import React, { useState } from "react";
+import clsx from 'clsx';
 import Grid from "@material-ui/core/Grid";
 import {
   Button,
@@ -29,6 +30,7 @@ import {
   BehaviorsTypes,
   BreedTypes,
   CategoryTypes,
+  OrderTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
 import { ILostDog, IPicture } from "../dog/dogInterfaces";
@@ -47,9 +49,11 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formControl: {
       alignSelf:"center",
-      marginBottom: theme.spacing(1.5),
+      marginBottom: theme.spacing(1),
       minWidth: 140,
-      margin:"5%"
+      maxHeight: 40,
+      margin:"5%",
+      height:50
     },
     paper:{
       alignSelf:"center",
@@ -95,6 +99,13 @@ const useStyles = makeStyles((theme: Theme) =>
       //marginRight:"20%",
 
     },
+    main:{
+      //margin:"5%",
+      minWidth:"160px",
+      width:"15vw",
+      margin:"1vw",
+      display:"flex",
+    }
   })
 );
 
@@ -139,6 +150,7 @@ export default function FilterForm(props:any) {
       [e.target.name as string]: e.target.value,
     }};
     setLostDogFields(newField);
+    console.log(lostDogFields);
   };
 
   const updateOrder = (
@@ -183,22 +195,104 @@ export default function FilterForm(props:any) {
   /*const updateFilters = (filters: any) => {
     
   };*/
+
+  const SelectFormControl = (props: any) => {
+    const [selectedValue, setSelectedValue] = useState(props.value?props.value:"");
+    console.log(selectedValue);
+    const updateForm = (e: { target: { name?: any; value: any } }) => {
+      setSelectedValue(e.target.value);
+      props.updateForm(e as React.ChangeEvent<{ name?: string, value: unknown }>);
+    }
+  return(<FormControl variant="outlined" className={props.class} margin="dense">
+  <InputLabel htmlFor={(props.name as string)+"-label"}>{(props.name as string).charAt(0).toUpperCase()+props.name.slice(1)}</InputLabel>
+  <Select
+    native
+    label={(props.name as string)}
+    labelId={(props.name as string)+"-label"}
+    name={props.name}
+    value={selectedValue}
+    onChange={updateForm}
+    displayEmpty
+  >
+    <option key={(props.name as string)+"-key"} aria-label="None" value="" />
+    {Object.entries(props.options)
+              .map(([key, value]) => (
+                <option key={value as string} value={String(key as string).split('_').join('.')}>
+                  {value as string}
+                </option>
+              ))}
+  </Select>
+</FormControl>);
+  }
+
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
-      <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
-        <Grid item className={classes.title}>
-          <ListSubheader>
-              <Typography style={{textAlign:"center"}}>
+    <Grid container direction="column" justify="center" alignItems="center" spacing={2} className={classes.main}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <ListSubheader style={{textAlign:"center", display:"flex"}} className={classes.title}>
                 {"Sort The Dogs"}
-              </Typography>
           </ListSubheader>
-        </Grid>
-        <FormControl variant="outlined" className={classes.formControl}>
+        <SelectFormControl name="sort" value={lostDogFields.sort} options={CategoryTypes} class={classes.formControl} updateForm={(
+                    updatedInput: React.ChangeEvent<{ name?: string, value: unknown }>) => inputsHandler(updatedInput)}/>
+        <FormControl variant="outlined" className={classes.formControl} margin="dense">
+          <InputLabel variant="outlined" htmlFor="sort-label">Categories</InputLabel>
+          <Select
+            native
+            variant="outlined"
+            label="Categories"
+            labelId="sort-label"
+            name="sort"
+            value={lostDogFields.sort}
+            onChange={inputsHandler}
+            displayEmpty
+          >
+            <option key={"color-key"} aria-label="None" value=""/>
+            {Object.entries(CategoryTypes)
+              .map(([key, value]) => (
+                <option key={value} value={String(key).split('_').join('.')}>
+                  {value}
+                </option>
+              ))}
+          </Select>
+        </FormControl>
+        <FormControl variant="outlined" className={classes.formControl} margin="dense">
+          <InputLabel htmlFor="direction-label">Direction</InputLabel>
+          <Select
+            data-testid="color-select"
+            native
+            //disabled={String(lostDogFields.sort).includes(",")}
+            label="Direction"
+            labelId="direction-label"
+            id="direction"
+            name="sort"
+            value={order}
+            onChange={updateOrder}
+            displayEmpty
+          >
+            <option key={"direction-key"} aria-label="None" value="" />
+            <option key={"desc-key"} value={"DESC"}>{"Descending"}</option>
+            <option key={"asd-key"} value={"ASC"}>{"Ascending"}</option>
+          </Select>
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <Button
+            data-testid="submit-button"
+            variant="contained"
+            //disabled={lostDogFields.sort}
+            onClick={() => onSubmitClicked()}
+            color="primary"
+          >
+            Sort
+          </Button>
+        </FormControl>
+        <ListSubheader style={{textAlign:"center", display:"flex"}} className={classes.title}>
+                {"Filter The Dogs"}
+        </ListSubheader>
+        <FormControl variant="outlined" className={classes.formControl} margin="dense">
           <InputLabel variant="outlined" htmlFor="sort-label">Categories</InputLabel>
           <Select
             data-testid="sort-select"
-            variant="outlined"
             native
+            variant="outlined"
             label="Categories"
             labelId="sort-label"
             id="sort"
@@ -210,44 +304,14 @@ export default function FilterForm(props:any) {
             <option key={"color-key"} aria-label="None" value="" />
             {Object.entries(CategoryTypes)
               .map(([key, value]) => (
-                <option key={value} value={String(key).split('_').join('.').concat(",")}>
+                <option key={value} value={String(key).split('_').join('.')}>
                   {value}
                 </option>
               ))}
           </Select>
         </FormControl>
-        <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="direction-label">Direction</InputLabel>
-            <Select
-              data-testid="color-select"
-              native
-              //disabled={String(lostDogFields.sort).includes(",")}
-              label="Direction"
-              labelId="direction-label"
-              id="direction"
-              name="sort"
-              value={order}
-              onChange={updateOrder}
-              displayEmpty
-            >
-              <option key={"direction-key"} aria-label="None" value="" />
-              <option key={"desc-key"} value={"DESC"}>{"Descending"}</option>
-              <option key={"asd-key"} value={"ASC"}>{"Ascending"}</option>
-            </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-            <Button
-              data-testid="submit-button"
-              variant="contained"
-              //disabled={lostDogFields.sort}
-              onClick={() => onSubmitClicked()}
-              color="primary"
-            >
-              Sort
-            </Button>
-          </FormControl>
+        </MuiPickersUtilsProvider>
     </Grid>
-    </MuiPickersUtilsProvider>
   );
 }
 

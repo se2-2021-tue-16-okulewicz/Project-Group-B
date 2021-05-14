@@ -5,33 +5,37 @@ export enum BreedTypes {
   "random",
 }
 
-export const CategoryTypes = {
-  name: "Dog's name",
-  age: "Age",
-  color:"Color",
-  breed:"Breed",
-  location_city:"City",
-  location_district:"District",
-  dateLost:"Date lost",
-  hairLength:"Hair length",
-  size:"Size",
-  earsType: "Type of ears",
-  tailLength:"Tail length",
-  specialMark:"Special mark",
+export enum CategoryTypes {
+  name = "Dog's name",
+  age = "Age",
+  color = "Color",
+  breed ="Breed",
+  location_city = "City",
+  location_district = "District",
+  dateLost = "Date lost",
+  hairLength = "Hair length",
+  size = "Size",
+  earsType = "Type of ears",
+  tailLength = "Tail length",
+  specialMark = "Special mark",
+}
 
+export enum OrderTypes {
+  ASC = "Ascending",
+  DESC = "Descending"
 }
 
 export enum ColorTypes {
-  "Black",
-  "White",
-  "Brown",
-  "Ginger",
-  "Gold",
-  "Blue",
-  "Gray",
-  "Cream",
-  "Yellow",
-  "Other",
+  Black = "Black",
+  White = "White",
+  Brown = "Brown",
+  Ginger = "Ginger",
+  Gold = "Gold",
+  Blue = "Blue",
+  Gray = "Gray",
+  Cream = "Cream",
+  Yellow = "Yellow",
+  Other = "Other",
 }
 
 export enum HairTypes {

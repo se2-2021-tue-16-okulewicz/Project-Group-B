@@ -73,7 +73,7 @@ export function ValidateFetchedDog(dog: ILostDogWithPicture | ILostDog) {
   dog.size = ValidateSelectedFeatures(dog.size);
   dog.size = Object.values(SizeTypes).includes(dog.size) ? dog.size : "";
   dog.color = ValidateSelectedFeatures(dog.color);
-  dog.color = Object.values(ColorTypes).includes(dog.color) ? dog.color : "";
+  dog.color = Object.values(ColorTypes).includes(dog.color as ColorTypes) ? dog.color : "";
   dog.tailLength = ValidateSelectedFeatures(dog.tailLength);
   dog.tailLength = Object.values(TailTypes).includes(dog.tailLength)
     ? dog.tailLength

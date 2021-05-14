@@ -1,7 +1,7 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
 import { Button, Divider, Drawer, Grid, MenuItem, Paper, Typography } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme, unstable_createMuiStrictModeTheme } from "@material-ui/core/styles";
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
@@ -31,11 +31,14 @@ import LoadingPopup from "../utilityComponents/LoadingPopup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
+import { ThemeProvider } from '@material-ui/core/styles';
 import { IFilters } from "../utilityComponents/utilities";
 import DogDetails from "../dogDetails/dogDetails";
 import Footer from "../utilityComponents/Footer";
 import FilterForm from "./filterForm";
 import { IFilterSort, initFilterProps } from "./filterInterface";
+
+const theme = unstable_createMuiStrictModeTheme();
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -45,7 +48,7 @@ const Header = getHeader(styled);
 const SidebarContent = getSidebarContent(styled);
 
 const scheme = Layout();
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme:Theme) =>
   createStyles({
     menuItem: {
       minWidth: "100%",
@@ -85,6 +88,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       alignSelf: "center",
       display: "flex",
+      left:0,
+      right:0
     },
     title:{
       align: "center",      
@@ -108,12 +113,15 @@ const useStyles = makeStyles((theme: Theme) =>
       //flexGrow: 1,
       alignSelf: "center",
     },
+    drawer: {
+      width: 250,
+      flexShrink: 0,
+    }
   })
 );
 
 scheme.configureHeader((builder) => {
   builder
-
     .registerConfig("xs", {
       position: "absolute",
       initialHeight: "10%", // won't stick to top when scroll down
@@ -127,8 +135,6 @@ scheme.configureHeader((builder) => {
       initialHeight: "10%",
     });
 });
-
-
 
 /*TODO: remove filtering in frontend (folder dontdelete)*/
 
@@ -158,9 +164,9 @@ export default function ListWithDogs() {
         //collapsible: true,
         //collapsedWidth: "0%",
       });
-        builder.hide("unique_id", isMenuCollapsed);
+        //builder.hide("unique_id", !isMenuCollapsed);
   });
-  
+
   //const sidebar = useSidebarTrigger("unique_id", "header");
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
@@ -169,6 +175,7 @@ export default function ListWithDogs() {
     (state: State) => state.dogsRequireRefresh as boolean
   );
   const [initialRefresh, setInitialRefresh] = useState(true);
+  const [width, setWidth] = useState(3);
   const [isUpdateFilters, setIsUpdateFilters] = useState(false);
   const [filters, setFilters] = useState<IFilterSort>({
     page: config.defaultFilters.page,
@@ -212,11 +219,10 @@ export default function ListWithDogs() {
     store.dispatch(clearDogList());
     setIsUpdateFilters(true);
     setFilters(event as IFilterSort);
-    //setMenuCollapsed(true);
+    setMenuCollapsed(true);
+    }
   }
-}
 
-console.log(initialRefresh);
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
@@ -248,8 +254,6 @@ console.log(initialRefresh);
         console.error("Failed to fetch the dogs: ", err);
       } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
-        setInitialRefresh(false);
-        setMenuCollapsed(true);
         setIsUpdateFilters(false);
       }
     }
@@ -365,12 +369,13 @@ console.log(initialRefresh);
       <CssBaseline />
       <Header className={classes.header} id="header">
           <Grid container >
-              <Grid item xs={10} >
-                <Typography align="center" className={classes.title}>
-                LOST DOGS
-                </Typography>
-                  </Grid>
-                  <Grid container item xs={2} alignContent="space-between" direction="row">
+          <Grid container item xs={2} alignContent="space-between" direction="row"/>
+            <Grid item xs={8} >
+              <Typography align="center" className={classes.title}>
+              LOST DOGS
+              </Typography>
+            </Grid>
+            <Grid container item xs={2} alignContent="space-between" direction="row">
                   <Grid item xs={3}>
                   <Button
                     className={classes.registerButton}
@@ -416,18 +421,17 @@ console.log(initialRefresh);
                   </Button>
                   </Grid>
                 </Grid>
-              </Grid>
+          </Grid>
       </Header>
-      
-      <Drawer anchor="left" open={!isMenuCollapsed}>
-        <SidebarContent name="sidebar" >
-           <FilterForm
+      {!isMenuCollapsed && (
+      <Drawer variant="temporary" onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
+        onBackdropClick={()=>{setMenuCollapsed(true)}} open={!isMenuCollapsed} className={classes.drawer}>
+           {<FilterForm
            filters={filters}
            updateFilters={(
             updatedFilters: React.ChangeEvent<{ value: unknown }>
-          ) => updateFilters(updatedFilters)}/>
-        </SidebarContent>
-      </Drawer>
+          ) => updateFilters(updatedFilters)}/>}
+      </Drawer>)}
       <Content>
           <Switch>
             <Route exact path={path}>
@@ -442,6 +446,7 @@ console.log(initialRefresh);
                 }
               >
                 <ImageGrid
+                  width = {width}
                   dogs={dogs}
                   path={path}
                   redirectToDogDetailsOrEdit={(id: number) =>
@@ -449,7 +454,8 @@ console.log(initialRefresh);
                   }
                 />
               </InfiniteScroll>
-              <Footer position="list" />
+              {!displayLoader && !refreshRequired &&
+              (<Footer position="list" />)}
             </Route>
             <Route
               path={`${path}/:id`}

@@ -29,7 +29,7 @@ export default function ImageGrid(props: any) {
       {dogs.map((dog: ILostDogWithPicture) => (
         <GridListTile
           key={dog.id}
-          style={{ minHeight: "300px" }}
+          style={{ minHeight:"300px" }}
           className="tile"
         >
           <img
