@@ -5,6 +5,22 @@ export enum BreedTypes {
   "random",
 }
 
+export const CategoryTypes = {
+  name: "Dog's name",
+  age: "Age",
+  color:"Color",
+  breed:"Breed",
+  location_city:"City",
+  location_district:"District",
+  dateLost:"Date lost",
+  hairLength:"Hair length",
+  size:"Size",
+  earsType: "Type of ears",
+  tailLength:"Tail length",
+  specialMark:"Special mark",
+
+}
+
 export enum ColorTypes {
   "Black",
   "White",

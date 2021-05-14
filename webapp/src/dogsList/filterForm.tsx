@@ -7,6 +7,7 @@ import {
   CardContent,
   Input,
   InputAdornment,
+  ListSubheader,
   MenuItem,
   Paper,
   Select,
@@ -27,6 +28,7 @@ import {
   SpecialMarkTypes,
   BehaviorsTypes,
   BreedTypes,
+  CategoryTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
 import { ILostDog, IPicture } from "../dog/dogInterfaces";
@@ -39,6 +41,7 @@ import { useHistory } from "react-router-dom";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
 import { IFilters } from "../utilityComponents/utilities";
 import { IFilterSort, initFilterProps } from "./filterInterface";
+import { clearDogList } from "../app/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,7 +49,16 @@ const useStyles = makeStyles((theme: Theme) =>
       alignSelf:"center",
       marginBottom: theme.spacing(1.5),
       minWidth: 140,
-      width:"98%", marginLeft:"20%", marginRight:"20%"
+      margin:"5%"
+    },
+    paper:{
+      alignSelf:"center",
+      marginBottom: theme.spacing(1.5),
+      minWidth: 160,
+      width:"100%",
+      margin:"10%",
+      marginLeft:"20%", 
+      marginRight:"20%"
     },
     selectEmpty: {
       marginTop: theme.spacing(1),
@@ -77,17 +89,8 @@ const useStyles = makeStyles((theme: Theme) =>
       maxHeight:40
     },
     title:{
-      alignSelf:"center",
-      align: "center",
-      alignContent:"center",
-      color: "darkpink",
-      fontStyle: "oblique",
-      fontSize: "1.3em",
-      fontFamily: "Gill Sans Extrabold",
-      fontWeight: "bolder",
-      width:"80%", 
-      margin:"10%",
-      minWidth: "140"
+      fontSize: "1.2em", 
+      margin:"5%"
       //marginLeft:"20%",
       //marginRight:"20%",
 
@@ -99,9 +102,14 @@ export default function FilterForm(props:any) {
   //if enable is session storage is null, the form has just been opened
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  const [filterFields, setFilterFields] = useState<IFilterSort>(props.filters);
-  const [lostDogFields, setLostDogFields] = useState<IFilterSort>({...initFilterProps});
-  const inputsHandler = (e: { target: { name: any; value: any } }) => {
+  const [isSort, setIsSort] = useState(false);
+  const [order, setOrder] = useState("");
+  //const [filterFields, setFilterFields] = useState<IFilterSort>(props.filters);
+
+  const [lostDogFields, setLostDogFields] = useState<IFilterSort>(props.filters);
+  console.log(lostDogFields);
+  console.log(order);
+  const inputsHandler = (e: { target: { name?: any; value: any } }) => {
     let newField = { ...lostDogFields, [e.target.name]: e.target.value };
     setLostDogFields(newField);
   };
@@ -114,7 +122,7 @@ export default function FilterForm(props:any) {
   }
   }
 
-  const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
+  /*const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
     if(lostDogFields.filter){
     let newField = { ...lostDogFields, 
       filter:{...lostDogFields.filter,
@@ -122,7 +130,7 @@ export default function FilterForm(props:any) {
     }};  
     setLostDogFields(newField);
   }
-  };
+  };*/
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
@@ -133,6 +141,25 @@ export default function FilterForm(props:any) {
     setLostDogFields(newField);
   };
 
+  const updateOrder = (
+    e: React.ChangeEvent<{ name?: string; value: unknown }>
+  ) => {
+    if(typeof(e.target.value)=="string"){
+    setOrder(e.target.value);}
+  };
+  /*const sortHandler = (
+    e: React.ChangeEvent<{ name?: number; value: unknown }>
+  ) => {
+    //lostDogFields.sort = {name:"", order:""};
+    if (typeof(lostDogFields.sort) != "string"){
+    let newField = { ...lostDogFields, 
+      sort:{...lostDogFields.sort, 
+      [e.target.name as string]: e.target.value,
+    }};
+    setLostDogFields(newField);
+  };
+}*/
+
   function clearStorage() {
     sessionStorage.removeItem("lostDogFields");
     sessionStorage.removeItem("inputField");
@@ -140,40 +167,98 @@ export default function FilterForm(props:any) {
   }
 
   const onSubmitClicked = () => {
+    lostDogFields.page=0;
+    if (lostDogFields.sort != null){
+      lostDogFields.sort = lostDogFields.sort+order;
+    }
+    console.log(lostDogFields);
+    console.log("---");
     props.updateFilters(lostDogFields);
+    store.dispatch(clearDogList());
   };
 
   const onCancelClick = () => {
-    props.updateFilters(initFilterProps);
+    props.updateFilters(props.filters);
   };
-
-  function registerDog(dog: ILostDog, picture: IPicture) {
-    dog = ValidateFetchedDog(dog);
-    store.dispatch(
-      Actions.addDogThunk({
-        dog: dog,
-        picture: picture,
-        cookies: cookies,
-      })
-    );
-  }
   /*const updateFilters = (filters: any) => {
     
   };*/
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} data-testid="MainForm">
-      <Paper className={classes.title}>
-                <Typography className={classes.title}>
+      <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
+        <Grid item className={classes.title}>
+          <ListSubheader>
+              <Typography style={{textAlign:"center"}}>
                 {"Sort The Dogs"}
-                  </Typography>
-      </Paper>
-      <Grid  className={classes.mainForm} item xs={1}>
-      <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="color-label">Color</InputLabel>
+              </Typography>
+          </ListSubheader>
+        </Grid>
+        <FormControl variant="outlined" className={classes.formControl}>
+          <InputLabel variant="outlined" htmlFor="sort-label">Categories</InputLabel>
+          <Select
+            data-testid="sort-select"
+            variant="outlined"
+            native
+            label="Categories"
+            labelId="sort-label"
+            id="sort"
+            name="sort"
+            value={lostDogFields.sort}
+            onChange={inputsHandler}
+            displayEmpty
+          >
+            <option key={"color-key"} aria-label="None" value="" />
+            {Object.entries(CategoryTypes)
+              .map(([key, value]) => (
+                <option key={value} value={String(key).split('_').join('.').concat(",")}>
+                  {value}
+                </option>
+              ))}
+          </Select>
+        </FormControl>
+        <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel htmlFor="direction-label">Direction</InputLabel>
             <Select
               data-testid="color-select"
               native
-              label="Color"
+              //disabled={String(lostDogFields.sort).includes(",")}
+              label="Direction"
+              labelId="direction-label"
+              id="direction"
+              name="sort"
+              value={order}
+              onChange={updateOrder}
+              displayEmpty
+            >
+              <option key={"direction-key"} aria-label="None" value="" />
+              <option key={"desc-key"} value={"DESC"}>{"Descending"}</option>
+              <option key={"asd-key"} value={"ASC"}>{"Ascending"}</option>
+            </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+            <Button
+              data-testid="submit-button"
+              variant="contained"
+              //disabled={lostDogFields.sort}
+              onClick={() => onSubmitClicked()}
+              color="primary"
+            >
+              Sort
+            </Button>
+          </FormControl>
+    </Grid>
+    </MuiPickersUtilsProvider>
+  );
+}
+
+
+/*
+      <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel htmlFor="color-label">Categories</InputLabel>
+            <Select
+              data-testid="color-select"
+              native
+              label="Categories"
               labelId="color-label"
               id="color"
               name="color"
@@ -182,32 +267,49 @@ export default function FilterForm(props:any) {
               displayEmpty
             >
               <option key={"color-key"} aria-label="None" value="" />
-              {Object.values(ColorTypes)
+              {Object.values(CategoryTypes)
                 .filter((k) => isNaN(Number(k)))
-                .map((type: string | ColorTypes) => (
+                .map((type: string | CategoryTypes) => (
                   <option key={type} value={type}>
                     {type}
                   </option>
                 ))}
             </Select>
             </FormControl>
-            
-      <Paper className={classes.formControl} style={{minWidth:"160"}}>
-                <Typography className={classes.title}>
-                {"FindYourDog"}
+      <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel htmlFor="color-label">Direction</InputLabel>
+            <Select
+              data-testid="color-select"
+              native
+              label="Direction"
+              labelId="color-label"
+              id="color"
+              name="color"
+              value={lostDogFields.filter?.color}
+              onChange={selectsHandler}
+              displayEmpty
+            >
+              <option key={"color-key"} aria-label="None" value="" />
+              <option key={"color-key"} aria-label="DESC" value="descending" />
+              <option key={"color-key"} aria-label="ASC" value="ascending" />
+            </Select>
+            </FormControl>
+      <Grid item className={classes.formControl}>
+            <ListSubheader>
+                <Typography style={{textAlign:"center"}}>
+                {"Filter The Dogs"}
                   </Typography>
-      </Paper>
-        <FormControl className={classes.formControl}>
-            <InputLabel shrink id="name-label">
-              Name
-            </InputLabel>
-            <Input
+      </ListSubheader>
+      </Grid>
+        <FormControl variant="outlined" className={classes.formControl}>
+            <TextField
               data-testid="name-input"
               id="name"
+              type="string"
               name="name"
               value={lostDogFields.filter?.name}
               onChange={inputsHandler}
-              required
+              variant="outlined"
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
@@ -220,9 +322,6 @@ export default function FilterForm(props:any) {
               onChange={inputsHandler}
               InputProps={{
                 inputProps: { min: 0, max: 30 },
-                startAdornment: (
-                  <InputAdornment position="start">Years</InputAdornment>
-                ),
               }}
               variant="outlined"
             />
@@ -491,7 +590,5 @@ export default function FilterForm(props:any) {
               Cancel
             </Button>
           </FormControl>
-        </Grid>
-    </MuiPickersUtilsProvider>
-  );
-}
+       
+*/

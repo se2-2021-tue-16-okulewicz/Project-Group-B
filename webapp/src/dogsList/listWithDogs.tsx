@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Grid, MenuItem, Paper, Typography } from "@material-ui/core";
+import { Button, Divider, Drawer, Grid, MenuItem, Paper, Typography } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
@@ -75,9 +75,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       textAlign: "left",
       alignSelf: "center",
-      marginLeft: "0%",
-      marginBottom: "1%",
-      marginTop: "1%",
+      marginTop: "6%",
       borderBottomColor: "black",
       borderBottomWidth: "1",
       fontSize: "1.4em",
@@ -89,12 +87,10 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
     },
     title:{
-      align: "center",
+      align: "center",      
       color: "black",
-      fontStyle: "oblique",
       fontSize: "2em",
-      fontFamily: "Gill Sans Extrabold",
-      fontWeight: "bolder",
+      fontFamily: "Roboto",
     },
     cardContent: {
       justifyContent: "center",
@@ -141,26 +137,26 @@ export default function ListWithDogs() {
   const [displayLoader, setDisplayLoader] = useState(false);
   const [dogId, setDogId] = useState(0);
   const [listFetched, setListFetched] = useState(false);
-  const [isMenuCollapsed, setMenuCollapsed] = useState(false);
+  const [isMenuCollapsed, setMenuCollapsed] = useState(true);
   const [filtered, setFiltered] = useState(false);
 
   scheme.configureEdgeSidebar((builder) => {
     builder
       .create("unique_id", { anchor: "left" })
-      .registerPermanentConfig("xs", {
+      .registerTemporaryConfig("xs", {
         width: "30%", // px, (%, rem, em is compatible)
-        collapsible: true,
-        collapsedWidth: "0%",
+        //collapsible: true,
+        //collapsedWidth: "0%",
       })
-      .registerPermanentConfig("sm", {
+      .registerTemporaryConfig("sm", {
         width: "25%", // px, (%, rem, em is compatible)
-        collapsible: true,
-        collapsedWidth: "0%",
+        //collapsible: true,
+        //collapsedWidth: "0%",
       })
-      .registerPermanentConfig("md", {
+      .registerTemporaryConfig("md", {
         width: "20%", // px, (%, rem, em is compatible)
-        collapsible: true,
-        collapsedWidth: "0%",
+        //collapsible: true,
+        //collapsedWidth: "0%",
       });
         builder.hide("unique_id", isMenuCollapsed);
   });
@@ -169,17 +165,16 @@ export default function ListWithDogs() {
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
-  const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
-  const [displayedDogs, setDisplayedDogs] = useState<ILostDogWithPicture[]>([]);
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
-  const pages = useSelector((state: State) => state.pages as number);
-  const [pageRefresh, setPageRefresh] = useState(true);
-  const [filters, setFilters] = useState<IFilters>({
+  const [initialRefresh, setInitialRefresh] = useState(true);
+  const [isUpdateFilters, setIsUpdateFilters] = useState(false);
+  const [filters, setFilters] = useState<IFilterSort>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    isIsFound: false, //for after the filters will be implemented in the backend
+    filter: { isFound: false}
+    //for after the filters will be implemented in the backend
   });
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -211,27 +206,87 @@ export default function ListWithDogs() {
         },600000)
   }*/
   //clears dog list, when page is refreshed or changed
-  useEffect(() => {
-    if (pageRefresh) {
-      store.dispatch(clearDogList);
-      setPageRefresh(false);
-    }
-  }, [pageRefresh]);
+  const updateFilters = (event: any) => {
+    if (event) {
+    console.log(event as IFilterSort);
+    store.dispatch(clearDogList());
+    setIsUpdateFilters(true);
+    setFilters(event as IFilterSort);
+    //setMenuCollapsed(true);
+  }
+}
 
+console.log(initialRefresh);
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
     history.push(`${path}/${id}`);
   }
 
-  function updateFilters(filters:IFilterSort) {
-    setFilters(filters);
-    setMenuCollapsed(true);
-    //store.dispatch(Actions.startRefreshing);
-    //setDogId(id);
-    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    //history.push(`${path}/${id}`);
-  }
+  useEffect(() => {
+    if (initialRefresh) {
+      store.dispatch(clearDogList);
+      setInitialRefresh(false);
+    }
+  }, [initialRefresh]);
+
+  useEffect(() => {
+    console.log(refreshRequired);
+    if (refreshRequired || isUpdateFilters) {
+      // fetch and append page 0
+      try {
+        store.dispatch(
+          Actions.fetchDogsThunk({
+            filters: {
+              ...filters,
+              page: config.defaultFilters.page,
+            },
+            cookies: cookies,
+          }) //filters
+        );
+      } catch (err) {
+        console.error("Failed to fetch the dogs: ", err);
+      } finally {
+        setFilters({ ...filters, page: config.defaultFilters.page + 1 });
+        setInitialRefresh(false);
+        setMenuCollapsed(true);
+        setIsUpdateFilters(false);
+      }
+    }
+    // eslint-disable-next-line
+  }, [refreshRequired, isUpdateFilters]);
+
+  const fetchMore = () => {
+    try {
+      store.dispatch(
+        Actions.fetchDogsThunk({
+          filters: {
+            ...filters,
+            page: filters.page,
+          },
+          cookies: cookies,
+        }) //filters
+      );
+    } catch (err) {
+      console.error("Failed to fetch the dogs: ", err);
+    } finally {
+      if(filters.page){
+      setFilters({ ...filters, page: filters.page + 1 });}
+      setInitialRefresh(false);
+    }
+  };
+
+
+  /*useEffect(() => {
+    if (pageRefresh) {
+      store.dispatch(clearDogList);
+      setPageRefresh(false);
+    }
+  }, [pageRefresh]);
+
+
+
+
 
   //fetches first page of dog list
   useEffect(() => {
@@ -272,7 +327,9 @@ export default function ListWithDogs() {
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
-        setFilters({ ...filters, page: filters.page + 1 });
+        if (filters.page){
+          setFilters({ ...filters, page: filters.page + 1 });
+        }
         setPageRefresh(false);
       }
     } // eslint-disable-next-line
@@ -285,7 +342,7 @@ export default function ListWithDogs() {
       /*let addDogs = tmp.filter(
         (dog: ILostDogWithPicture) => dog.isFound === false
       );*/
-      let addDogs = dogs;
+  /*    let addDogs = dogs;
       setFilteredDogs(addDogs);
       setDisplayedDogs(addDogs.slice(0, filters.size));
       setListFetched(true);
@@ -301,38 +358,42 @@ export default function ListWithDogs() {
       setDisplayedDogs(addDogs);
       setDisplayLoader(false);
     }, 700);
-  };
+  };*/
 
   return (
     <Root scheme={scheme}>
       <CssBaseline />
       <Header className={classes.header} id="header">
-        <Toolbar className={classes.main}>
-          <Grid container spacing={4}>
-              <Grid xs={9}>
+          <Grid container >
+              <Grid item xs={10} >
                 <Typography align="center" className={classes.title}>
-                Lost Dogs
+                LOST DOGS
                 </Typography>
                   </Grid>
-                  <Grid container spacing={1} xs={3} alignContent="space-between" direction="row">
-                  <Grid xs={3}>
+                  <Grid container item xs={2} alignContent="space-between" direction="row">
+                  <Grid item xs={3}>
                   <Button
+                    className={classes.registerButton}
                     data-testid="registerButton"
                     color="primary"
                     onClick={onRegisterClicked}
                   >
                     <Pets />
                   </Button>
-                  </Grid><Grid xs={3}>
+                  </Grid>
+                  <Grid item xs={3}>
                   <Button
+                    className={classes.registerButton}
                     data-testid="settingsButton"
                     color="primary"
                     onClick={onSettingsClicked}
                   >
                     <Settings />
                   </Button>
-                  </Grid><Grid xs={3}>
+                  </Grid>
+                  <Grid item xs={3}>
                   <Button
+                  className={classes.registerButton}
                     data-testid="filterButton"
                     color="primary"
                     onClick={() => {
@@ -342,8 +403,10 @@ export default function ListWithDogs() {
                   >
                     <Search/>
                   </Button>              
-                  </Grid><Grid xs={3}>   
+                  </Grid>
+                  <Grid item xs={3}>   
                   <Button
+                  className={classes.registerButton}
                     data-testid="logoutsButton"
                     disabled={cookies["userType"] === undefined}
                     color="primary"
@@ -354,34 +417,32 @@ export default function ListWithDogs() {
                   </Grid>
                 </Grid>
               </Grid>
-        </Toolbar>
       </Header>
-      {!isMenuCollapsed && (
-      <DrawerSidebar sidebarId="unique_id">
+      
+      <Drawer anchor="left" open={!isMenuCollapsed}>
         <SidebarContent name="sidebar" >
            <FilterForm
            filters={filters}
-           updateFilters={(filters : any) =>
-            updateFilters(filters)
-          }/>
+           updateFilters={(
+            updatedFilters: React.ChangeEvent<{ value: unknown }>
+          ) => updateFilters(updatedFilters)}/>
         </SidebarContent>
-      </DrawerSidebar>)}
+      </Drawer>
       <Content>
-        {lastPage && listFetched && (
           <Switch>
             <Route exact path={path}>
               <InfiniteScroll
-                dataLength={displayedDogs.length}
+                dataLength={dogs.length}
                 scrollThreshold={0.5}
                 next={fetchMore}
-                hasMore={filteredDogs.length > displayedDogs.length}
+                hasMore={!lastPage}
                 loader={
                   (displayLoader && <LoadingPopup />) ||
                   (!displayLoader && <></>)
                 }
               >
                 <ImageGrid
-                  dogs={displayedDogs}
+                  dogs={dogs}
                   path={path}
                   redirectToDogDetailsOrEdit={(id: number) =>
                     redirectToDogDetailsOrEdit(id)
@@ -395,7 +456,6 @@ export default function ListWithDogs() {
               children={<DogDetails dogId={dogId} />}
             />
           </Switch>
-        )}
       </Content>
     </Root>
   );

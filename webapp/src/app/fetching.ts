@@ -8,6 +8,10 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
+import { IFilterSort, initFilterProps } from "../dogsList/filterInterface";
+import { Console } from "node:console";
+import { FilterCenterFocusSharp, FilterNone } from "@material-ui/icons";
+import { filter } from "lodash";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -67,13 +71,25 @@ export async function fetchDogs(
   filters: { [name: string]: any },
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture[], number>> {
-  const filtersString = Object.keys(filters)
-    .map((filterName) => {
-      const value = String(filters[filterName]).trim();
-      return value ? `${filterName}=${value}` : "";
-    })
-    .filter((x) => x !== "")
-    .join("&");
+  const filtersString =  filters.filter === undefined  ? "" : (Object.keys(filters).map((filterName) => {
+    if(typeof(filters[filterName])==="object"){
+      let sub = filters[filterName];
+      const subFilters = Object.keys(sub).map((subname)=>{
+        filterName = filterName+"."+subname.split('_').join('.');
+        const value = String(sub[subname]).trim();
+        console.log(value);
+        console.log(sub[subname]);
+        return value ? `${filterName}=${value}` : "";
+
+      }).filter((x) => x !== "").join("&");
+      return subFilters ? subFilters : "";
+    }
+    else{
+    const value = String(filters[filterName]).trim();
+    return value ? `${filterName}=${value}` : "";
+    }
+    }).filter((x) => x !== "").join("&"));
+    console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,

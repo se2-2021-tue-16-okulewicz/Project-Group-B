@@ -78,6 +78,7 @@ export const reducer = createReducer(init, {
     newState.dogsRequireRefresh = true;
     newState.dogsLastPage = false;
     newState.editedDog = null;
+    console.log("|"+newState);
     return newState;
   },
   [Actions.startRefreshing.type]: (state: State) => {
@@ -243,7 +244,7 @@ export const reducer = createReducer(init, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    if (state.dogs != null) {
+    if (state.dogs != null && pageNumber != 0) {
       newState.dogs = state.dogs
         .concat(payload.payload.response.data as ILostDogWithPicture[])
         .slice(0, (pageNumber + 1) * pageSize);

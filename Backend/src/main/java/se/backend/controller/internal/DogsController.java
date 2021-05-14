@@ -66,6 +66,7 @@ public class DogsController {
                     value=15
             ) Pageable pageable,
             @And({
+                    @Spec(path="isIsFound", params="filter.isFound", spec= Equal.class),
                     @Spec(path="breed", params="filter.breed", spec= StartingWithIgnoreCase.class),
                     @Spec(path="age", params="filter.ageFrom" , spec= GreaterThanOrEqual.class),
                     @Spec(path="age", params="filter.ageTo", spec= LessThanOrEqual.class),
