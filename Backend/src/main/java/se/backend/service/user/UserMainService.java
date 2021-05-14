@@ -2,18 +2,11 @@ package se.backend.service.user;
 
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import se.backend.dao.AdminAccountRepository;
-import se.backend.dao.DogShelterAccountRepository;
 import se.backend.dao.UserAccountRepository;
 import se.backend.model.account.UserAccount;
 import se.backend.utils.StringUtils;
-import se.backend.wrapper.account.UserType;
 import se.backend.wrapper.user.UserInfo;
-
-import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class UserMainService implements  UserService {
