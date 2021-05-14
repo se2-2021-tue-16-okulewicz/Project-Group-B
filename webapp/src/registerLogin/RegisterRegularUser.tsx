@@ -94,11 +94,11 @@ export default function RegisterRegularUser() {
     event.preventDefault();
   };
 
-  const handleChange = (prop: keyof internalState) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  const handleChange =
+    (prop: keyof internalState) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
 
   const onRegisterClicked = () => {
     //temporary before adding endpoint for fetching user's data
