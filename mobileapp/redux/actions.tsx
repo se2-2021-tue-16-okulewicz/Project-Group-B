@@ -5,7 +5,7 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { RequestResponse } from "./response";
-import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
+import { IDogCharacteristics, ILostDogWithPicture, IPicture } from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
 
 /**
@@ -60,6 +60,27 @@ export const incorrectUserType = createAction("incorrectUserType");
 export const setImage = createAction("setImage", function prepare(uri: string){
   return {
     payload: uri
+  }
+});
+export const setPicture = createAction("setPicture", function prepare(picture: IPicture){
+  return {
+    payload: picture
+  }
+});
+export const setDogCharacteristics = createAction("setDogCharacteristics", function prepare(characterictis: IDogCharacteristics){
+  return {
+    payload:
+      characterictis
+      // name: characterictis.name,
+      // breed: characterictis.breed,
+      // color: characterictis.color,
+      // size: characterictis.size,
+      // hair: characterictis.hairLength,
+      // tail: characterictis.tailLength,
+      // ears: characterictis.earsType,
+      // specialMark: characterictis.specialMark,
+      // behaviours: characterictis.behaviors
+    
   }
 });
 

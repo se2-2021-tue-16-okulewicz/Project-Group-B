@@ -3,8 +3,10 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
 import { ILoginResults } from "../components/loginRegisterInterfaces";
-import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
+import { IDogCharacteristics, ILostDogWithPicture, IPicture } from "../components/dogs/dog/dogInterfaces";
 import config from "../config/config";
+import { initPicture } from "../components/dogs/dog/dogClasses";
+import { SpecialMarkTypes } from "../components/dogs/dog/dogArrays";
 
 export type Error = {
   hasError: boolean;
@@ -21,7 +23,10 @@ export type State = {
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
-  image: string
+  image: string;
+  dogCharacteristics: IDogCharacteristics | any;
+  //currentDog: ILostDogWithPicture | null;
+  //picture: IPicture;
 };
 
 const init: State = {
@@ -37,16 +42,48 @@ const init: State = {
     erorMessage: "",
   },
   loginInformation: null,
-  image: ""
+  image: "",
+  dogCharacteristics: {
+    name: "",
+    age: 0,
+    hairLength: "",
+    color: "",
+    size: "",
+    earsType: "",
+    tailLength: "",
+    specialMark: "",
+    behaviours: [],
+
+  }
+  //currentDog: null,
+  // picture: {
+  //   id: 0,
+  //   fileName: "",
+  //   fileType: "",
+  //   data: new ArrayBuffer(8)
+  // },
 };
+
+/*name: string;
+  breed: BreedTypes | "";
+  age: number;
+  hairLength: HairTypes | "";
+  color: ColorTypes | "";
+  size: SizeTypes | "";
+  earsType: EarsTypes | "";
+  tailLength: TailTypes | "";
+  specialMark: SpecialMarkTypes;
+  behaviors: BehaviorsTypes[];
+}*/
 
 export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
-    console.log("clear login info");
+    console.log("log info cleared");
     return newState;
   },
+
   [Actions.incorrectUserType.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
@@ -61,7 +98,16 @@ export const reducer = createReducer(init, {
   [Actions.setImage.type]: (state: State, payload: PayloadAction<string>) => {
     let newState = _.cloneDeep(state);
     newState.image = payload.payload;
-    console.log(newState.image);
+    //console.log(newState.image);
+    return newState;
+  },
+
+  [Actions.setDogCharacteristics.type]: (state: State, payload: PayloadAction<IDogCharacteristics>) => {
+    let newState = _.cloneDeep(state);
+    newState.dogCharacteristics = payload.payload;
+    //newState.currentDog?.picture = payload.payload;
+    //newState.picture = payload.payload;
+    //console.log(newState.image);
     return newState;
   },
 
