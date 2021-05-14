@@ -8,6 +8,7 @@ import {
   Text,
   SafeAreaView,
   Image,
+  ImageBackground,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
@@ -19,6 +20,7 @@ import config from "../../config/config";
 import { useState } from "react";
 
 export default function DogsList({ navigation }: any) {
+  const image = {uri: "../../assets/images/dog-bg.PNG"}
   const Stack = createStackNavigator();
   const state = store.getState();
   const dogsList = useSelector(
@@ -119,6 +121,7 @@ export default function DogsList({ navigation }: any) {
   );
   return (
     <SafeAreaView style={styles.container}>
+      <ImageBackground source={require('../../assets/images/dog-bg.png')} style={styles.image}>
       {isLoading ? (
         <Text>Loading...</Text>
       ) : (
@@ -132,11 +135,13 @@ export default function DogsList({ navigation }: any) {
           />
         </View>
       )}
+      </ImageBackground>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
@@ -148,10 +153,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   item: {
-    backgroundColor: "#eeeeee",
+    backgroundColor: "#ffffff",
     padding: 10,
     marginVertical: 5,
-    marginHorizontal: 16,
+    marginHorizontal: 10,
+    borderRadius: 5
   },
   title: {
     fontSize: 24,
@@ -168,6 +174,12 @@ const styles = StyleSheet.create({
   tinyLogo: {
     width: 15,
     height: 15,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    width: "100%"
   },
   row: {
     marginTop: 4,
