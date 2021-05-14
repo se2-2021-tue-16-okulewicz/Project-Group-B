@@ -102,16 +102,14 @@ const useStyles = makeStyles((theme: Theme) =>
       alignSelf: "center",
     },
     header: {
-      background: "palealiceblue",
       color: "black",
-      fontStyle: "oblique",
       fontSize: "2em",
-      fontFamily: "Gill Sans Extrabold",
-      fontWeight: "bolder",
+      fontFamily: "Roboto",
       justifyContent: "center",
       alignItems: "center",
       alignSelf: "center",
       display: "flex",
+      
     },
   })
 );
@@ -150,7 +148,10 @@ scheme.configureEdgeSidebar((builder) => {
 });
 
 export default function Settings(props: any) {
-  const [displayLoader, setDisplayLoader] = useState(false);
+  const [displayLoader, setDisplayLoader] = useState(true);
+  const loading = useSelector(
+    (state: State) => state.loading as boolean
+  );
   //const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
@@ -216,12 +217,13 @@ export default function Settings(props: any) {
     } // eslint-disable-next-line
   }, [pageRefresh]);
 
-  console.log(filters);
+ 
 
   // fetch and append page 0
   useEffect(() => {
     console.log(refreshRequired);
     if (refreshRequired && !lastPage) {
+      console.log(filters);
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -232,16 +234,17 @@ export default function Settings(props: any) {
             cookies: cookies,
           }) //filters
         );
-        store.dispatch(
+        /*store.dispatch(
           Actions.fetchContactInfoThunk({
             userId: cookies[config.cookies.userId],
             cookies: cookies,
           })
-        );
+        );*/
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
+        setDisplayLoader(false);
       }
     }
     // eslint-disable-next-line
@@ -405,11 +408,11 @@ export default function Settings(props: any) {
         {isListVisible && (
           <InfiniteScroll
             dataLength={dogs.length}
-            scrollThreshold={0.5}
+            scrollThreshold={0.9}
             next={fetchMore}
             hasMore={!lastPage}
             loader={
-              (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
+              ((displayLoader || loading) && <LoadingPopup />) || (!displayLoader && <></>)
             }
           >
             <ImageGrid

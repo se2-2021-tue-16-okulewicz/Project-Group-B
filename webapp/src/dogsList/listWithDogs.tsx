@@ -121,15 +121,15 @@ const useStyles = makeStyles((theme:Theme) =>
 scheme.configureHeader((builder) => {
   builder
     .registerConfig("xs", {
-      position: "absolute",
+      position: "fixed",
       initialHeight: "10%", // won't stick to top when scroll down
     })
     .registerConfig("sm", {
-      position: "absolute",
+      position: "fixed",
       initialHeight: "10%", // won't stick to top when scroll down
     })
     .registerConfig("md", {
-      position: "absolute",
+      position: "fixed",
       initialHeight: "10%",
     });
 });
@@ -141,6 +141,7 @@ export default function ListWithDogs() {
   const [displayLoader, setDisplayLoader] = useState(false);
   const [dogId, setDogId] = useState(0);
   const [listFetched, setListFetched] = useState(false);
+  const [fetching, setFetching] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(true);
   const [filtered, setFiltered] = useState(false);
 
@@ -187,12 +188,13 @@ export default function ListWithDogs() {
   const classes = useStyles();
   const { path } = useRouteMatch();
 
+
   const onRegisterClicked = () => {
     store.dispatch(clearDogList());
     history.push("/addDog");
   };
   const onSettingsClicked = () => {
-    //store.dispatch(clearDogList());
+    store.dispatch(clearDogList());
     history.push("/settings");
   };
   const onLogOutClicked = () => {
@@ -217,7 +219,7 @@ export default function ListWithDogs() {
     store.dispatch(clearDogList());
     setIsUpdateFilters(true);
     setFilters(event as IFilterSort);
-    setMenuCollapsed(true);
+    //setMenuCollapsed(true);
     }
   }
 
@@ -235,9 +237,11 @@ export default function ListWithDogs() {
   }, [initialRefresh]);
 
   useEffect(() => {
-    if (refreshRequired || isUpdateFilters) {
+    console.log(refreshRequired +""+isUpdateFilters)
+    if (refreshRequired) {
       // fetch and append page 0
       try {
+        console.log(filters);
         store.dispatch(
           Actions.fetchDogsThunk({
             filters: {
@@ -255,26 +259,30 @@ export default function ListWithDogs() {
       }
     }
     // eslint-disable-next-line
-  }, [refreshRequired, isUpdateFilters]);
+  }, [refreshRequired]);
 
   const fetchMore = () => {
-    try {
-      store.dispatch(
-        Actions.fetchDogsThunk({
-          filters: {
-            ...filters,
-            page: filters.page,
-          },
-          cookies: cookies,
-        }) //filters
-      );
-    } catch (err) {
-        console.error("Failed to fetch the dogs: ", err);
-    } finally {
-      if(filters.page){
-        setFilters({ ...filters, page: filters.page + 1 });}
+    if(!fetching){
+      setFetching(true);
+      try {
+        console.log(filters);
+        store.dispatch(
+          Actions.fetchDogsThunk({
+            filters: {
+              ...filters,
+              page: filters.page
+            },
+            cookies: cookies,
+          }) //filters
+        );
+      } catch (err) {
+          console.error("Failed to fetch the dogs: ", err);
+      } finally {
+        if(filters.page != null){
+          setFilters({ ...filters, page: filters.page + 1 });}
         setInitialRefresh(false);
-    }
+        setFetching(false);
+      }}
   };
 
 
@@ -434,9 +442,9 @@ export default function ListWithDogs() {
             <Route exact path={path}>
               <InfiniteScroll
                 dataLength={dogs.length}
-                scrollThreshold={0.5}
+                scrollThreshold={0.9}
                 next={fetchMore}
-                hasMore={!lastPage}
+                hasMore={!lastPage && !fetching}
                 loader={
                   (displayLoader && <LoadingPopup />) ||
                   (!displayLoader && <></>)

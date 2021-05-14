@@ -71,7 +71,7 @@ export async function fetchDogs(
   filters: { [name: string]: any },
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture[], number>> {
-  const filtersString =  filters.filter === undefined  ? "" : (Object.keys(filters).map((filterName) => {
+  const filtersString =  filters === undefined  ? "" : (Object.keys(filters).map((filterName) => {
     if(typeof(filters[filterName])==="object"){
       let sub = filters[filterName];
       const subFilters = Object.keys(sub).map((subname)=>{

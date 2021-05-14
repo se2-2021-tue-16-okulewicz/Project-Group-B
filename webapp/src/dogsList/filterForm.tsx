@@ -115,6 +115,7 @@ export default function FilterForm(props:any) {
   const [cookies, setCookie, removeCookie] = useCookies();
   const [isSort, setIsSort] = useState(false);
   const [order, setOrder] = useState("");
+  const [sort, setSort] = useState("");
   //const [filterFields, setFilterFields] = useState<IFilterSort>(props.filters);
 
   const [lostDogFields, setLostDogFields] = useState<IFilterSort>(props.filters);
@@ -178,10 +179,10 @@ export default function FilterForm(props:any) {
     sessionStorage.clear();
   }
 
-  const onSubmitClicked = () => {
+  const onSortClicked = () => {
     lostDogFields.page=0;
-    if (lostDogFields.sort != null){
-      lostDogFields.sort = lostDogFields.sort+order;
+    if (sort != "" && order != ""){
+      lostDogFields.sort = sort+","+order;
     }
     console.log(lostDogFields);
     console.log("---");
@@ -228,57 +229,21 @@ export default function FilterForm(props:any) {
   return (
     <Grid container direction="column" justify="center" alignItems="center" spacing={2} className={classes.main}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ListSubheader style={{textAlign:"center", display:"flex"}} className={classes.title}>
-                {"Sort The Dogs"}
-          </ListSubheader>
-        <SelectFormControl name="sort" value={lostDogFields.sort} options={CategoryTypes} class={classes.formControl} updateForm={(
-                    updatedInput: React.ChangeEvent<{ name?: string, value: unknown }>) => inputsHandler(updatedInput)}/>
-        <FormControl variant="outlined" className={classes.formControl} margin="dense">
-          <InputLabel variant="outlined" htmlFor="sort-label">Categories</InputLabel>
-          <Select
-            native
-            variant="outlined"
-            label="Categories"
-            labelId="sort-label"
-            name="sort"
-            value={lostDogFields.sort}
-            onChange={inputsHandler}
-            displayEmpty
-          >
-            <option key={"color-key"} aria-label="None" value=""/>
-            {Object.entries(CategoryTypes)
-              .map(([key, value]) => (
-                <option key={value} value={String(key).split('_').join('.')}>
-                  {value}
-                </option>
-              ))}
-          </Select>
-        </FormControl>
-        <FormControl variant="outlined" className={classes.formControl} margin="dense">
-          <InputLabel htmlFor="direction-label">Direction</InputLabel>
-          <Select
-            data-testid="color-select"
-            native
-            //disabled={String(lostDogFields.sort).includes(",")}
-            label="Direction"
-            labelId="direction-label"
-            id="direction"
-            name="sort"
-            value={order}
-            onChange={updateOrder}
-            displayEmpty
-          >
-            <option key={"direction-key"} aria-label="None" value="" />
-            <option key={"desc-key"} value={"DESC"}>{"Descending"}</option>
-            <option key={"asd-key"} value={"ASC"}>{"Ascending"}</option>
-          </Select>
-        </FormControl>
+        <ListSubheader style={{textAlign:"center", display:"flex"}} className={classes.title}>
+              {"Sort The Dogs"}
+        </ListSubheader>
+        <SelectFormControl name="sort" value={sort} options={CategoryTypes} class={classes.formControl} updateForm={(
+                  updatedInput: React.ChangeEvent<{ name?: string, value: string }>) => {if(updatedInput.target.value) 
+                    {setSort(updatedInput.target.value as string)}}}/>
+        <SelectFormControl name="direction" value={order} options={OrderTypes} class={classes.formControl} updateForm={(
+                  updatedInput: React.ChangeEvent<{ name?: string, value: string }>) => {if(updatedInput.target.value) 
+                  {setOrder(updatedInput.target.value as string)}}}/>
         <FormControl className={classes.formControl}>
           <Button
             data-testid="submit-button"
             variant="contained"
-            //disabled={lostDogFields.sort}
-            onClick={() => onSubmitClicked()}
+            disabled={!sort || !order}
+            onClick={() => onSortClicked()}
             color="primary"
           >
             Sort

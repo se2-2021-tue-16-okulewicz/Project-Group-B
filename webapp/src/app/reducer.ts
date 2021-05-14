@@ -244,7 +244,7 @@ export const reducer = createReducer(init, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    if (state.dogs != null && pageNumber != 0) {
+    if (state.dogs != null || pageNumber != 0) {
       newState.dogs = state.dogs
         .concat(payload.payload.response.data as ILostDogWithPicture[])
         .slice(0, (pageNumber + 1) * pageSize);
@@ -258,7 +258,7 @@ export const reducer = createReducer(init, {
       pageSize;
     newState.pages = pageNumber;
     newState.dogsRequireRefresh = false;
-    //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
+    console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
     return newState;
   },
   [Actions.updateContactInfoThunk.fulfilled.toString()]: (
