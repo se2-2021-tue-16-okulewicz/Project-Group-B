@@ -38,8 +38,6 @@ import Footer from "../utilityComponents/Footer";
 import FilterForm from "./filterForm";
 import { IFilterSort, initFilterProps } from "./filterInterface";
 
-const theme = unstable_createMuiStrictModeTheme();
-
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
@@ -194,7 +192,7 @@ export default function ListWithDogs() {
     history.push("/addDog");
   };
   const onSettingsClicked = () => {
-    store.dispatch(clearDogList());
+    //store.dispatch(clearDogList());
     history.push("/settings");
   };
   const onLogOutClicked = () => {
@@ -237,7 +235,6 @@ export default function ListWithDogs() {
   }, [initialRefresh]);
 
   useEffect(() => {
-    console.log(refreshRequired);
     if (refreshRequired || isUpdateFilters) {
       // fetch and append page 0
       try {
@@ -272,11 +269,11 @@ export default function ListWithDogs() {
         }) //filters
       );
     } catch (err) {
-      console.error("Failed to fetch the dogs: ", err);
+        console.error("Failed to fetch the dogs: ", err);
     } finally {
       if(filters.page){
-      setFilters({ ...filters, page: filters.page + 1 });}
-      setInitialRefresh(false);
+        setFilters({ ...filters, page: filters.page + 1 });}
+        setInitialRefresh(false);
     }
   };
 

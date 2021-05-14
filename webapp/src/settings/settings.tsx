@@ -151,14 +151,12 @@ scheme.configureEdgeSidebar((builder) => {
 
 export default function Settings(props: any) {
   const [displayLoader, setDisplayLoader] = useState(false);
-  const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
+  //const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
-  const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
-  const [displayedDogs, setDisplayedDogs] = useState<ILostDogWithPicture[]>([]);
   const contactInfo = useSelector(
     (state: State) => state.contactInfo as IContactInfo
   );
@@ -179,11 +177,13 @@ export default function Settings(props: any) {
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    //ownerId: Number.parseInt(cookies[config.cookies.userId]),
+    filter:{
+      ownerId: Number.parseInt(cookies[config.cookies.userId]),
+    }
   });
   function clearStorage() {
     sessionStorage.removeItem("dogId");
-    sessionStorage.removeItem("listFetched");
+    //sessionStorage.removeItem("listFetched");
     sessionStorage.removeItem("listVisible");
     sessionStorage.clear();
   }
@@ -210,15 +210,18 @@ export default function Settings(props: any) {
 
   //refresh page
   useEffect(() => {
-    if (pageRefresh && !listFetched) {
+    if (pageRefresh) {
       store.dispatch(clearDogList);
       setPageRefresh(false);
     } // eslint-disable-next-line
   }, [pageRefresh]);
 
+  console.log(filters);
+
   // fetch and append page 0
   useEffect(() => {
-    if (refreshRequired && !listFetched) {
+    console.log(refreshRequired);
+    if (refreshRequired && !lastPage) {
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -229,18 +232,23 @@ export default function Settings(props: any) {
             cookies: cookies,
           }) //filters
         );
+        store.dispatch(
+          Actions.fetchContactInfoThunk({
+            userId: cookies[config.cookies.userId],
+            cookies: cookies,
+          })
+        );
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
-        setPageRefresh(false);
       }
     }
     // eslint-disable-next-line
   }, [refreshRequired]);
 
   //fetch more
-  useEffect(() => {
+  /*useEffect(() => {
     if (!refreshRequired && !lastPage && !listFetched) {
       try {
         store.dispatch(
@@ -281,14 +289,25 @@ export default function Settings(props: any) {
       setPageRefresh(false);
     } // eslint-disable-next-line
   }, [refreshRequired, lastPage]);
-
+*/
   const fetchMore = () => {
-    setDisplayLoader(true);
-    let addDogs = filteredDogs.slice(0, displayedDogs.length + filters.size);
-    setTimeout(() => {
-      setDisplayedDogs(addDogs);
-      setDisplayLoader(false);
-    }, 700);
+    try {
+      store.dispatch(
+        Actions.fetchDogsThunk({
+          filters: {
+            ...filters,
+            page: filters.page,
+          },
+          cookies: cookies,
+        }) //filters
+      );
+    } catch (err) {
+        console.error("Failed to fetch the dogs: ", err);
+    } finally {
+      if(filters.page){
+        setFilters({ ...filters, page: filters.page + 1 });
+      }
+    }
   };
 
   function redirectToDogDetailsOrEdit(id: number) {
@@ -383,18 +402,18 @@ export default function Settings(props: any) {
         </SidebarContent>
       </DrawerSidebar>
       <Content>
-        {isListVisible && lastPage && listFetched && (
+        {isListVisible && (
           <InfiniteScroll
-            dataLength={displayedDogs.length}
+            dataLength={dogs.length}
             scrollThreshold={0.5}
             next={fetchMore}
-            hasMore={filteredDogs.length > displayedDogs.length}
+            hasMore={!lastPage}
             loader={
               (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
             }
           >
             <ImageGrid
-              dogs={displayedDogs}
+              dogs={dogs}
               path={path}
               redirectToDogDetailsOrEdit={(id: number) =>
                 redirectToDogDetailsOrEdit(id)
