@@ -9,13 +9,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import se.backend.dao.DogBehaviorRepository;
+import se.backend.dao.LostDogBehaviorRepository;
 import se.backend.dao.LostDogRepository;
 import se.backend.dao.PictureRepository;
 import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.dogs.DogBehavior;
-import se.backend.model.dogs.LostDog;
+import se.backend.model.dogs.Lost.LostDog;
+import se.backend.model.dogs.Lost.LostDogBehavior;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
@@ -30,10 +31,10 @@ public class LostDogMainService implements LostDogService{
 
     private final LostDogRepository lostDogRepository;
     private final PictureRepository pictureRepository;
-    private final DogBehaviorRepository dogBehaviorRepository;
+    private final LostDogBehaviorRepository dogBehaviorRepository;
 
     @Autowired
-    public LostDogMainService(LostDogRepository lostDogRepository, PictureRepository pictureRepository, DogBehaviorRepository dogBehaviorRepository) {
+    public LostDogMainService(LostDogRepository lostDogRepository, PictureRepository pictureRepository, LostDogBehaviorRepository dogBehaviorRepository) {
         this.lostDogRepository = lostDogRepository;
         this.pictureRepository = pictureRepository;
         this.dogBehaviorRepository = dogBehaviorRepository;
@@ -75,7 +76,7 @@ public class LostDogMainService implements LostDogService{
 
         var behaviors = new ArrayList<DogBehavior>();
         for (var behaviorName : newDog.getBehaviors() ) {
-            var behavior = new DogBehavior();
+            var behavior = new LostDogBehavior();
             behavior.setDogId(savedDog.getId());
             behavior.setBehavior(behaviorName);
             behaviors.add(dogBehaviorRepository.save(behavior));
@@ -153,7 +154,7 @@ public class LostDogMainService implements LostDogService{
 
         var behaviors = new ArrayList<DogBehavior>();
         for (var behaviorName : updatedDog.getBehaviors() ) {
-            var behavior = new DogBehavior();
+            var behavior = new LostDogBehavior();
             behavior.setDogId(savedDog.getId());
             behavior.setBehavior(behaviorName);
             behaviors.add(dogBehaviorRepository.save(behavior));
