@@ -75,12 +75,10 @@ export async function fetchDogs(
     if(typeof(filters[filterName])==="object"){
       let sub = filters[filterName];
       const subFilters = Object.keys(sub).map((subname)=>{
-        filterName = filterName+"."+subname.split('_').join('.');
+        const name = filterName+"."+subname.split('_').join('.');
+        console.log(name);
         const value = String(sub[subname]).trim();
-        console.log(value);
-        console.log(sub[subname]);
-        return value ? `${filterName}=${value}` : "";
-
+        return value ? `${name}=${value}` : "";
       }).filter((x) => x !== "").join("&");
       return subFilters ? subFilters : "";
     }

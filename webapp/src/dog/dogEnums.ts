@@ -1,8 +1,7 @@
 export enum BreedTypes {
-  "Labrador",
-  "German Shepherd",
-  "Bulldog",
-  "random",
+  Labrador = "Labrador",
+  GermanShepherd = "German Shepherd",
+  Bulldog = "Bulldog",
 }
 
 export enum CategoryTypes {
@@ -39,31 +38,31 @@ export enum ColorTypes {
 }
 
 export enum HairTypes {
-  "Short",
-  "Medium",
-  "Long",
+  Short = "Short",
+  Medium = "Medium",
+  Long = "Long",
 }
 
 export enum SizeTypes {
-  "Small",
-  "Medium",
-  "Large",
+  Small = "Small",
+  Medium = "Medium",
+  Large = "Large",
 }
 
 export enum HeightTypes {
-  "Low",
-  "Medium",
-  "Tall",
+  Low = "Low",
+  Medium = "Medium",
+  Tall = "Tall",
 }
 
 export enum EarsTypes {
-  "Standing",
-  "Hanging",
+  Standing = "Standing",
+  Hanging = "Hanging",
 }
 
 export enum TailTypes {
-  "Long",
-  "Short",
+  Long = "Long",
+  Short = "Short",
 }
 
 export enum SpecialMarkTypes {
@@ -74,7 +73,7 @@ export enum SpecialMarkTypes {
 }
 
 export enum BehaviorsTypes {
-  "Shy",
-  "Energetic",
-  "Friendly",
+  Shy = "Shy",
+  Energetic = "Energetic",
+  Friendly = "Friendly",
 }

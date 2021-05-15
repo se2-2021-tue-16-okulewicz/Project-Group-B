@@ -83,11 +83,13 @@ const useStyles = makeStyles((theme:Theme) =>
     },
     header: {
       justifyContent: "center",
+      flexShrink: 0,
       alignItems: "center",
       alignSelf: "center",
       display: "flex",
       left:0,
-      right:0
+      right:0,
+      //width:"100vw",
     },
     title:{
       align: "center",      
@@ -123,14 +125,18 @@ scheme.configureHeader((builder) => {
     .registerConfig("xs", {
       position: "fixed",
       initialHeight: "10%", // won't stick to top when scroll down
+      clipped: {unique_id:true}
     })
     .registerConfig("sm", {
       position: "fixed",
       initialHeight: "10%", // won't stick to top when scroll down
+      clipped: {unique_id:true}
     })
     .registerConfig("md", {
       position: "fixed",
       initialHeight: "10%",
+      clipped: {unique_id:true}
+      
     });
 });
 
@@ -179,7 +185,7 @@ export default function ListWithDogs() {
   const [filters, setFilters] = useState<IFilterSort>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    filter: { isFound: false}
+    filter: { isFound: false,}
     //for after the filters will be implemented in the backend
   });
   // eslint-disable-next-line
@@ -429,7 +435,7 @@ export default function ListWithDogs() {
           </Grid>
       </Header>
       {!isMenuCollapsed && (
-      <Drawer variant="temporary" onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
+      <Drawer variant="temporary" BackdropProps={{invisible:true}} onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
         onBackdropClick={()=>{setMenuCollapsed(true)}} open={!isMenuCollapsed} className={classes.drawer}>
            {<FilterForm
            filters={filters}
@@ -451,7 +457,6 @@ export default function ListWithDogs() {
                 }
               >
                 <ImageGrid
-                  width = {width}
                   dogs={dogs}
                   path={path}
                   redirectToDogDetailsOrEdit={(id: number) =>
@@ -460,7 +465,7 @@ export default function ListWithDogs() {
                 />
               </InfiniteScroll>
               {!displayLoader && !refreshRequired &&
-              (<Footer position="list" />)}
+              (<Footer position={(dogs.length>3)?"list":"footer"} />)}              
             </Route>
             <Route
               path={`${path}/:id`}

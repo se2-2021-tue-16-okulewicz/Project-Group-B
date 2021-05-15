@@ -207,8 +207,8 @@ export default function RegisterDogForm() {
               onChange={inputsHandler}
               InputProps={{
                 inputProps: { min: 0, max: 30 },
-                startAdornment: (
-                  <InputAdornment position="start">Years</InputAdornment>
+                endAdornment: (
+                  <InputAdornment position="end">Years</InputAdornment>
                 ),
               }}
               variant="outlined"

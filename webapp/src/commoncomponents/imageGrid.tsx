@@ -25,11 +25,11 @@ export default function ImageGrid(props: any) {
   };
 
   return (
-    <GridList cols={3} spacing={8} style={{margin:"10"}}>
+    <GridList cols={3} spacing={8} style={{margin:"0", width:"100%", display:"flex", flexWrap:"wrap"}}>
       {dogs.map((dog: ILostDogWithPicture) => (
         <GridListTile
           key={dog.id}
-          style={{ minHeight:"300px" }}
+          style={{ height:"300px" }}
           className="tile"
         >
           <img
@@ -59,7 +59,27 @@ export default function ImageGrid(props: any) {
             }
           />
         </GridListTile>
-      ))}   
+      ))}      
+            {dogs.length < 2 && dogs.length>0 && dogs.map((dog: ILostDogWithPicture) => (
+        <GridListTile
+          key={dog.id+1}
+          style={{ height:"300px" }}
+          className="tile"
+        ><img style={{visibility:"hidden"}}
+        src={`data:${dog.picture.fileType};base64,${
+          dog.picture.data as ArrayBuffer
+        }`}
+      /></GridListTile> ))}
+        {dogs.length == 1 && dogs.map((dog: ILostDogWithPicture) => (
+        <GridListTile
+          key={dog.id+2}
+          style={{ height:"300px" }}
+          className="tile"
+        ><img style={{visibility:"hidden"}}
+        src={`data:${dog.picture.fileType};base64,${
+          dog.picture.data as ArrayBuffer
+        }`}
+      /></GridListTile> ))}
     </GridList>
   );
 }

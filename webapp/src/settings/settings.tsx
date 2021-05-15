@@ -102,6 +102,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignSelf: "center",
     },
     header: {
+      backgroundColor:"white",
       color: "black",
       fontSize: "2em",
       fontFamily: "Roboto",
@@ -126,7 +127,8 @@ scheme.configureHeader((builder) => {
     })
     .registerConfig("sm", {
       position: "absolute", // won't stick to top when scroll down
-      initialHeight: "8%",
+      initialHeight:"8%"
+      
     });
 });
 
@@ -134,7 +136,7 @@ scheme.configureEdgeSidebar((builder) => {
   builder
     .create("unique_id", { anchor: "left" })
     .registerPermanentConfig("xs", {
-      width: "25%", // px, (%, rem, em is compatible)
+      width: "30%", // px, (%, rem, em is compatible)
       collapsible: false,
     })
     .registerPermanentConfig("sm", {
@@ -142,7 +144,7 @@ scheme.configureEdgeSidebar((builder) => {
       collapsible: false,
     })
     .registerPermanentConfig("md", {
-      width: "15%", //x, (%, rem, em is compatible)
+      width: "18%", //x, (%, rem, em is compatible)
       collapsible: false,
     });
 });

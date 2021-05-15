@@ -8,8 +8,8 @@
 .list {
   position: absolute;
   width:inherit;
-  right: 0;
-  left: 0;
+  left:0;
+  right:0;
 }
 
 a {
