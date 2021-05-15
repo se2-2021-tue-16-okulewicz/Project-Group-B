@@ -29,8 +29,13 @@ export const InputFormControl = (props: any) => {
 }
 
 export const DateFormControl = (props: any) => {
-    const [selectedValue, setSelectedValue] = useState(props.value ? props.value : new Date());
+    const [selectedValue, setSelectedValue] = useState(props.value ? props.value : null);
+    console.log(selectedValue);
+    if(selectedValue == null && props.value != null){
+        props.updateForm(selectedValue,props.name);
+    }
     function updateForm(date: MaterialUiPickersDate, name: string): void {
+        console.log(selectedValue);
         setSelectedValue(date as Date);
         props.updateForm(date, name);
     }
@@ -47,6 +52,9 @@ export const DateFormControl = (props: any) => {
                 onChange={(date: any) => updateForm(date, props.name)}
                 minDate={props.minDate}
                 maxDate={props.maxDate}
+                clearable={true}
+                onTouchCancel={(date: any) => updateForm(new Date(1900, 1, 1, 0, 0, 0, 0), props.name)}
+                onAbort={(date: any) => updateForm(new Date(1900, 1, 1, 0, 0, 0, 0), props.name)}
             />
         </FormControl>
     );

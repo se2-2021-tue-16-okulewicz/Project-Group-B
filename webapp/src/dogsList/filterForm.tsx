@@ -70,16 +70,22 @@ export default function FilterForm(props:any) {
   const [order, setOrder] = useState("");
   const [sort, setSort] = useState("");
   const [lostDogFields, setLostDogFields] = useState<IFilterSort>(props.filters);
-  console.log(lostDogFields);
-  console.log(order);
+  //console.log(lostDogFields);
+  //console.log(order);
   const inputsHandler = (e: { target: { name?: any; value: any } }) => {
     let newField = { ...lostDogFields, [e.target.name]: e.target.value };
     setLostDogFields(newField);
   };
 
   function calendarHandler(date: MaterialUiPickersDate, name: string): void {
-    console.log(date);
-    if(date){
+    //console.log(date);
+    if (date == new Date(1900, 1, 1, 0, 0, 0, 0) || date==null )
+    {
+      let newField = { ...lostDogFields, filter:{...lostDogFields.filter,  [name]: null }};
+      setLostDogFields(newField);
+
+    }
+    else if(date){
       let newField = { ...lostDogFields, filter:{...lostDogFields.filter,  [name]: date as Date }};
       setLostDogFields(newField);
     }
@@ -87,13 +93,13 @@ export default function FilterForm(props:any) {
 
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: any }>) => {
-    console.log(typeof(e.target.value));
+    //console.log(typeof(e.target.value));
     let newField = { ...lostDogFields, 
       filter:{...lostDogFields.filter, 
       [e.target.name as string]: e.target.value,
     }};
     setLostDogFields(newField);
-    console.log(lostDogFields);
+    //console.log(lostDogFields);
   };
 
   const updateOrder = (
@@ -114,16 +120,16 @@ export default function FilterForm(props:any) {
     if (sort != "" && order != ""){
       lostDogFields.sort = sort+","+order;
     }
-    console.log(lostDogFields);
-    console.log("---");
+    //console.log(lostDogFields);
+    //console.log("---");
     props.updateFilters(lostDogFields);
     store.dispatch(clearDogList());
   };
 
   const onSubmitClicked = () => {
     lostDogFields.page=0;
-    console.log(lostDogFields);
-    console.log("---");
+    //console.log(lostDogFields);
+    //console.log("---");
     props.updateFilters(lostDogFields);
     store.dispatch(clearDogList());
   };

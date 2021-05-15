@@ -78,13 +78,13 @@ export async function fetchDogs(
         const name = filterName+"."+subname.split('_').join('.');
         console.log(name);
         const value = String(sub[subname]).trim();
-        return value ? `${name}=${value}` : "";
+        return value && value != "null" ? `${name}=${value}` : "";
       }).filter((x) => x !== "").join("&");
       return subFilters ? subFilters : "";
     }
     else{
     const value = String(filters[filterName]).trim();
-    return value ? `${filterName}=${value}` : "";
+    return value && value != "null" ? `${filterName}=${value}` : "";
     }
     }).filter((x) => x !== "").join("&"));
     console.log(filtersString);

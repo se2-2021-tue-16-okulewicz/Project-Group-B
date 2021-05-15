@@ -435,7 +435,7 @@ export default function ListWithDogs() {
           </Grid>
       </Header>
       {!isMenuCollapsed && (
-      <Drawer variant="temporary" BackdropProps={{invisible:true}} onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
+      <Drawer variant="persistent" BackdropProps={{invisible:true}} onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
         onBackdropClick={()=>{setMenuCollapsed(true)}} open={!isMenuCollapsed} className={classes.drawer}>
            {<FilterForm
            filters={filters}
