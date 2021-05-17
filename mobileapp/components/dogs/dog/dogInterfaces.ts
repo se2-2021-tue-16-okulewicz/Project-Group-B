@@ -59,7 +59,7 @@ export interface IDogCharacteristics {
   size: SizeTypes | "";
   earsType: EarsTypes | "";
   tailLength: TailTypes | "";
-  specialMark: SpecialMarkTypes| "";
+  specialMark: SpecialMarkTypes | "";
   behaviors: BehaviorsTypes[];
 }
 

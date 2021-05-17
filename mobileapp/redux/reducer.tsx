@@ -3,9 +3,23 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
 import { ILoginResults } from "../components/loginRegisterInterfaces";
-import { IDogCharacteristics, IDogDetails, ILostDogWithPicture, IPicture, Picture } from "../components/dogs/dog/dogInterfaces";
+import {
+  IDogCharacteristics,
+  IDogDetails,
+  ILostDogWithPicture,
+  IPicture,
+  Picture,
+} from "../components/dogs/dog/dogInterfaces";
 import config from "../config/config";
-import { genericCharacteristics, genericDogDetails, genericPicture, initDogDetails, initLostDogCharacteristics, initPic, initPicture } from "../components/dogs/dog/dogClasses";
+import {
+  genericCharacteristics,
+  genericDogDetails,
+  genericPicture,
+  initDogDetails,
+  initLostDogCharacteristics,
+  initPic,
+  initPicture,
+} from "../components/dogs/dog/dogClasses";
 import { SpecialMarkTypes } from "../components/dogs/dog/dogArrays";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
 
@@ -27,7 +41,7 @@ export type State = {
   image: string;
   dogCharacteristics: IDogCharacteristics | any;
   dogDetails: IDogDetails;
-  dogBehaviours: BehaviorsTypes[]
+  dogBehaviours: BehaviorsTypes[];
   //currentDog: ILostDogWithPicture | null;
   picture: Picture;
 };
@@ -49,7 +63,7 @@ const init: State = {
   dogCharacteristics: genericCharacteristics,
   dogDetails: genericDogDetails,
   dogBehaviours: [],
-  picture: initPic
+  picture: initPic,
   // {
   //   name: "",
   //   age: 0,
@@ -101,7 +115,6 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-
   [Actions.setImage.type]: (state: State, payload: PayloadAction<string>) => {
     let newState = _.cloneDeep(state);
     newState.image = payload.payload;
@@ -109,7 +122,10 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.setPicture.type]: (state: State, payload: PayloadAction<Picture>) => {
+  [Actions.setPicture.type]: (
+    state: State,
+    payload: PayloadAction<Picture>
+  ) => {
     let newState = _.cloneDeep(state);
     newState.picture = payload.payload;
     // console.log("object: " + payload.payload.fileName + " " + payload.payload.fileType)
@@ -117,8 +133,10 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-
-  [Actions.setDogCharacteristics.type]: (state: State, payload: PayloadAction<IDogCharacteristics>) => {
+  [Actions.setDogCharacteristics.type]: (
+    state: State,
+    payload: PayloadAction<IDogCharacteristics>
+  ) => {
     let newState = _.cloneDeep(state);
     newState.dogCharacteristics = payload.payload;
     //newState.currentDog?.picture = payload.payload;
@@ -127,7 +145,10 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.setDogDetails.type]: (state: State, payload: PayloadAction<IDogDetails>) => {
+  [Actions.setDogDetails.type]: (
+    state: State,
+    payload: PayloadAction<IDogDetails>
+  ) => {
     let newState = _.cloneDeep(state);
     newState.dogDetails = payload.payload;
     //newState.currentDog?.picture = payload.payload;
@@ -136,7 +157,10 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.setDogBehaviours.type]: (state: State, payload: PayloadAction<BehaviorsTypes[]>) => {
+  [Actions.setDogBehaviours.type]: (
+    state: State,
+    payload: PayloadAction<BehaviorsTypes[]>
+  ) => {
     let newState = _.cloneDeep(state);
     newState.dogBehaviours = payload.payload;
     //newState.currentDog?.picture = payload.payload;
@@ -152,7 +176,7 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.dogsRequireRefresh = true;
-    console.log("fulfilled")
+    console.log("fulfilled");
     return newState;
   },
   [Actions.addDogThunk.pending.toString()]: (
@@ -162,15 +186,15 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     //newState.dogs = [];
     newState.loading = true;
-    console.log("pending")
+    console.log("pending");
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<null>>
   ) => {
-    console.log("rejected")
-   // console.log("rejected: " + payload.payload.response.message);
+    console.log("rejected");
+    // console.log("rejected: " + payload.payload.response.message);
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
     newState.loading = false;
@@ -179,7 +203,7 @@ export const reducer = createReducer(init, {
       errorCode: errorResponse.code,
       erorMessage: errorResponse.response.message,
     };
-    
+
     return newState;
   },
 

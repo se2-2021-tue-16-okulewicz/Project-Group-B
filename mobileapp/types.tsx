@@ -10,9 +10,9 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  Dogs: {screen: DogsScreen},
-  AddDog: {screen: AddDogScreen},
-  Profile: {screen: ProfileScreen}
+  Dogs: { screen: DogsScreen };
+  AddDog: { screen: AddDogScreen };
+  Profile: { screen: ProfileScreen };
 };
 
 export type TabOneParamList = {
@@ -22,5 +22,3 @@ export type TabOneParamList = {
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
-
-

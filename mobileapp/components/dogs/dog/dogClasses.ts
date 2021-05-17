@@ -1,5 +1,20 @@
-import { BehaviorsTypes, BreedTypes, ColorTypes, EarsTypes, HairTypes, SizeTypes, SpecialMarkTypes, TailTypes } from "./dogEnums";
-import { IDogCharacteristics, IDogDetails, ILostDog, IPicture, Picture } from "./dogInterfaces";
+import {
+  BehaviorsTypes,
+  BreedTypes,
+  ColorTypes,
+  EarsTypes,
+  HairTypes,
+  SizeTypes,
+  SpecialMarkTypes,
+  TailTypes,
+} from "./dogEnums";
+import {
+  IDogCharacteristics,
+  IDogDetails,
+  ILostDog,
+  IPicture,
+  Picture,
+} from "./dogInterfaces";
 
 export const initPicture: IPicture = {
   id: 0,
@@ -53,7 +68,7 @@ export const initLostDogCharacteristics: IDogCharacteristics = {
   earsType: "",
   tailLength: "",
   specialMark: "",
-  behaviors: []
+  behaviors: [],
 };
 export const genericCharacteristics: IDogCharacteristics = {
   name: "Amigo",
@@ -65,17 +80,15 @@ export const genericCharacteristics: IDogCharacteristics = {
   earsType: "Hanging",
   tailLength: "Long",
   specialMark: "None",
-  behaviors: ["Energetic", "Friendly"]
+  behaviors: ["Energetic", "Friendly"],
 };
 
 export const initDogDetails: IDogDetails = {
   dateLost: new Date().toISOString(),
-  location:
-  {city: "", district: ""}
-}
+  location: { city: "", district: "" },
+};
 
 export const genericDogDetails: IDogDetails = {
   dateLost: new Date().toISOString(),
-  location:
-  {city: "Warsaw", district: "Mokotow"}
-}
+  location: { city: "Warsaw", district: "Mokotow" },
+};

@@ -7,21 +7,19 @@ import { RootStackParamList } from "../types";
 import BottomTab from "./TabNavigator";
 export default function Navigation() {
   return (
-    <NavigationContainer >
+    <NavigationContainer>
       <RootNavigator />
     </NavigationContainer>
   );
 }
 const Stack = createStackNavigator<RootStackParamList>();
 
-
 function RootNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="LogInRegister" component={LogInRegister} />
 
       <Stack.Screen name="Root" component={BottomTab} />
     </Stack.Navigator>
   );
 }
-

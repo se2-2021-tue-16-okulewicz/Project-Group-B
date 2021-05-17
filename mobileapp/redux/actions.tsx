@@ -5,7 +5,14 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { RequestResponse } from "./response";
-import { IDogCharacteristics, IDogDetails, ILostDog, ILostDogWithPicture, IPicture, Picture } from "../components/dogs/dog/dogInterfaces";
+import {
+  IDogCharacteristics,
+  IDogDetails,
+  ILostDog,
+  ILostDogWithPicture,
+  IPicture,
+  Picture,
+} from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
 
@@ -58,37 +65,45 @@ export const fetchDogsThunk = createAsyncThunk(
 export const setIdle = createAction("setIdle");
 export const clearLoginInformation = createAction("clearLoginInformation");
 export const incorrectUserType = createAction("incorrectUserType");
-export const setImage = createAction("setImage", function prepare(uri: string){
+export const setImage = createAction("setImage", function prepare(uri: string) {
   return {
-    payload: uri
-  }
+    payload: uri,
+  };
 });
-export const setPicture = createAction("setPicture", function prepare(picture: Picture){
-  return {
-    payload: picture
+export const setPicture = createAction(
+  "setPicture",
+  function prepare(picture: Picture) {
+    return {
+      payload: picture,
+    };
   }
-});
-export const setDogCharacteristics = createAction("setDogCharacteristics", function prepare(characterictis: IDogCharacteristics){
-  return {
-    payload:
-      characterictis
+);
+export const setDogCharacteristics = createAction(
+  "setDogCharacteristics",
+  function prepare(characterictis: IDogCharacteristics) {
+    return {
+      payload: characterictis,
+    };
   }
-});
+);
 
-export const setDogDetails = createAction("setDogDetails", function prepare(details: IDogDetails){
-  return {
-    payload:
-      details
+export const setDogDetails = createAction(
+  "setDogDetails",
+  function prepare(details: IDogDetails) {
+    return {
+      payload: details,
+    };
   }
-});
+);
 
-export const setDogBehaviours = createAction("setDogBehaviours", function prepare(details: BehaviorsTypes[]){
-  return {
-    payload:
-      details
+export const setDogBehaviours = createAction(
+  "setDogBehaviours",
+  function prepare(details: BehaviorsTypes[]) {
+    return {
+      payload: details,
+    };
   }
-});
-
+);
 
 /*
 Marking lost dog as foud.
@@ -160,15 +175,16 @@ export const addDogThunk = createAsyncThunk<
     dogAndPictureAndCookies: {
       dog: ILostDog;
       picture: IPicture;
-      cookies: string
+      cookies: string;
     },
     { rejectWithValue }
   ) => {
-    const response: RequestResponse<ILostDogWithPicture> = await Fetching.addDog(
-      dogAndPictureAndCookies.dog,
-      dogAndPictureAndCookies.picture,
-      dogAndPictureAndCookies.cookies
-    );
+    const response: RequestResponse<ILostDogWithPicture> =
+      await Fetching.addDog(
+        dogAndPictureAndCookies.dog,
+        dogAndPictureAndCookies.picture,
+        dogAndPictureAndCookies.cookies
+      );
 
     if (response.response.successful !== true) {
       return rejectWithValue(response as RequestResponse<ILostDogWithPicture>);

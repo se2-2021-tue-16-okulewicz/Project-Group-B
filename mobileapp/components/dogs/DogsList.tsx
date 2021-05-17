@@ -20,9 +20,9 @@ import config from "../../config/config";
 import { useState } from "react";
 
 export default function DogsList({ navigation }: any) {
-  const bg = require('../../assets/images/dog-bg.png');
+  const bg = require("../../assets/images/dog-bg.png");
   const pin = require("../../assets/images/pin.png");
-  const image = {uri: "../../assets/images/dog-bg.PNG"}
+  const image = { uri: "../../assets/images/dog-bg.PNG" };
   const Stack = createStackNavigator();
   const state = store.getState();
   const dogsList = useSelector(
@@ -89,12 +89,12 @@ export default function DogsList({ navigation }: any) {
     );
   }
 
-  React.useEffect(()=> {
-    if(myDogs[0] !== null){
-    // console.log("dogs[0].picture.fileType: " + myDogs[0].picture.fileType);
-    // console.log("dogs[0].picture.data: " + myDogs[0].picture.data);
+  React.useEffect(() => {
+    if (myDogs[0] !== null) {
+      // console.log("dogs[0].picture.fileType: " + myDogs[0].picture.fileType);
+      // console.log("dogs[0].picture.data: " + myDogs[0].picture.data);
     }
-  })
+  });
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={[styles.item]}>
@@ -120,10 +120,7 @@ export default function DogsList({ navigation }: any) {
         </View>
 
         <View style={styles.row}>
-          <Image
-            style={styles.tinyLogo}
-            source={pin}
-          />
+          <Image style={styles.tinyLogo} source={pin} />
           <Text style={styles.subtitle}>{dog.location.city}</Text>
         </View>
       </TouchableOpacity>
@@ -132,27 +129,25 @@ export default function DogsList({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={bg} style={styles.image}>
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <View>
-          <Text>Displaying dogs: {myDogs.length}</Text>
+        {isLoading ? (
+          <Text>Loading...</Text>
+        ) : (
+          <View>
+            <Text>Displaying dogs: {myDogs.length}</Text>
 
-          <FlatList 
-            data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
-            renderItem={({ item }) => renderListItem(item, navigation)}
-            keyExtractor={(item) => item.name}
-          />
-        </View>
-      )}
-      
+            <FlatList
+              data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
+              renderItem={({ item }) => renderListItem(item, navigation)}
+              keyExtractor={(item) => item.name}
+            />
+          </View>
+        )}
       </ImageBackground>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
@@ -168,7 +163,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     marginHorizontal: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   title: {
     fontSize: 24,
@@ -190,7 +185,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
-    width: "100%"
+    width: "100%",
   },
   row: {
     marginTop: 4,
