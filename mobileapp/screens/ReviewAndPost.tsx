@@ -61,7 +61,6 @@ export default function ReviewAndPost() {
         setDate(date);
         let newDetails = { ...details, dateLost: date.toISOString() }
         setDetails(newDetails);
-        console.log("A date has been picked: ", convertDate(date.toISOString()));
         hideDatePicker();
     };
 
@@ -95,6 +94,7 @@ export default function ReviewAndPost() {
                 mode="date"
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
+                maximumDate={new Date()}
             />
             <View style={[styles.row, { height: 100, padding: "1%" }]}>
                 <View style={{ flex: 2, paddingRight: 10, paddingVertical: "10%" }}>
@@ -107,9 +107,7 @@ export default function ReviewAndPost() {
                 </View>
                 <View style={{ flex: 6 }}>
                     <View style={{ marginRight: "5%" }}>
-                        {/* <Text style={{ fontSize: 15, marginLeft: "1%", color: "#006aff" }}>Lost on</Text> */}
                         <View style={[styles.row,]}>
-                            {/* <Button title="Show Date Picker" onPress={showDatePicker} /> */}
                             <View style={{ flex: 1 }}>
                                 <TextField value={convertDate(date.toISOString())} placeholder="Lost on" />
                             </View>
@@ -144,7 +142,6 @@ export default function ReviewAndPost() {
                 </View>
             </View>
             <View style={{ marginBottom: "20%" }}></View>
-            {/* <Image source={{ uri: image }} style={{ width: 200, height: 200 }} /> */}
             <ScrollView style={{ backgroundColor: "#e8e9ed", borderRadius: 5, padding: 10 }}
                 scrollEnabled={scroll}
                 showsVerticalScrollIndicator={false}
