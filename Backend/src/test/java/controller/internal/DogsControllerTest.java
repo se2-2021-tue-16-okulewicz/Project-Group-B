@@ -141,7 +141,7 @@ public class DogsControllerTest {
                 .andExpect(jsonPath("data[1].color", is("blue")))
                 .andExpect(jsonPath("data[2].color", is("brown")))
                 .andExpect(jsonPath("data[3].color", is("pink")));
-}
+    }
 
     @Test
     public void AddTest() throws Exception {

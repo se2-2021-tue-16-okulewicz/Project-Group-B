@@ -3,7 +3,7 @@ package se.backend.wrapper.dogs;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import se.backend.model.dogs.LostDog;
+import se.backend.model.dogs.Lost.LostDog;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -23,8 +23,6 @@ public class Dog {
     private String hairLength;
     private String earsType;
     private String tailLength;
-    @Embedded
-    private Location location;
 
     public Dog(Dog another){
         breed = another.breed;
@@ -37,7 +35,6 @@ public class Dog {
         earsType = another.earsType;
         tailLength =  another.tailLength;
         pictureId = another.pictureId;
-        location = another.location;
     }
 
     public boolean IsValid() {
@@ -48,9 +45,6 @@ public class Dog {
                 StringUtils.IsValidString(name) &&
                 StringUtils.IsValidString(hairLength) &&
                 StringUtils.IsValidString(earsType) &&
-                StringUtils.IsValidString(tailLength) &&
-                location != null &&
-                StringUtils.IsValidString(location.getCity()) &&
-                StringUtils.IsValidString(location.getDistrict());
+                StringUtils.IsValidString(tailLength);
     }
 }

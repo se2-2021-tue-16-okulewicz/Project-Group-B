@@ -10,7 +10,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import se.backend.dao.AdminAccountRepository;
-import se.backend.dao.DogShelterRepository;
+import se.backend.dao.ShelterAccountRepository;
 import se.backend.dao.UserAccountRepository;
 import se.backend.model.account.Account;
 import se.backend.model.account.AdminAccount;
@@ -32,7 +32,7 @@ public class LoginMainService implements LoginService {
     private final Logger logger = LoggerFactory.getLogger(LoginMainService.class);
 
     private final UserAccountRepository userAccountRepository;
-    private final DogShelterRepository dogShelterRepository;
+    private final ShelterAccountRepository dogShelterRepository;
     private final AdminAccountRepository adminAccountRepository;
 
     private static Long GetLongFromString(String s) {
@@ -67,7 +67,7 @@ public class LoginMainService implements LoginService {
 
     @Autowired
     public LoginMainService (UserAccountRepository userAccountRepository,
-                             DogShelterRepository dogShelterRepository,
+                             ShelterAccountRepository dogShelterRepository,
                              AdminAccountRepository adminAccountRepository,
                              @Value("${testToken.regularId:0}") String userTestTokenId,
                              @Value("${testToken.shelterId:0}") String shelterTestTokenId,

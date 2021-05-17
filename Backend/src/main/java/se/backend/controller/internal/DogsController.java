@@ -4,7 +4,6 @@ import lombok.SneakyThrows;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
-import org.mockito.internal.matchers.StartsWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import se.backend.exceptions.types.GenericBadRequestException;
 import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
-import se.backend.model.dogs.LostDog;
+import se.backend.model.dogs.Lost.LostDog;
 import se.backend.service.login.LoginService;
 import se.backend.service.lostdogs.LostDogService;
 import se.backend.utils.Response;
@@ -156,7 +155,7 @@ public class DogsController {
 
         LostDog savedDog = lostDogService.GetDogDetails(dogId);
         if(savedDog != null)
-            return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog, null));
+            return ResponseEntity.ok(new Response<>(String.format("Found dog id: %d", savedDog.getId()), true, savedDog, null));
         else
             return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null, null));
     }

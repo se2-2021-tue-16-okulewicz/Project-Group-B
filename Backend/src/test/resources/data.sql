@@ -11,15 +11,38 @@ insert into picture (id, file_name, file_type, data) values (10003, 'example3', 
 insert into picture (id, file_name, file_type, data) values (10004, 'example4', 'text/plain', RAWTOHEX('example_data4'));
 
 
-insert into dog_behavior (id, dog_id, behavior) values (10001, 10001, 'Barks');
-insert into dog_behavior (id, dog_id, behavior) values (10002, 10001, 'Wags tail');
-insert into dog_behavior (id, dog_id, behavior) values (10003, 10001, 'Eats');
-insert into dog_behavior (id, dog_id, behavior) values (10004, 10002, 'Wants to conquer the world');
-insert into dog_behavior (id, dog_id, behavior) values (10005, 10003, 'Drinks milk');
-insert into dog_behavior (id, dog_id, behavior) values (10006, 10003, 'Sprints very fast');
-insert into dog_behavior (id, dog_id, behavior) values (10007, 10004, 'Barks');
-insert into dog_behavior (id, dog_id, behavior) values (10008, 10004, 'Drinks milk');
-insert into dog_behavior (id, dog_id, behavior) values (10009, 10004, 'Eats');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10001, 10001, 'Barks');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10002, 10001, 'Wags tail');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10003, 10001, 'Eats');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10004, 10002, 'Wants to conquer the world');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10005, 10003, 'Drinks milk');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10006, 10003, 'Sprints very fast');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10007, 10004, 'Barks');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10008, 10004, 'Drinks milk');
+insert into lost_dog_behavior (id, dog_id, behavior) values (10009, 10004, 'Eats');
+
+insert into shelter_dog (id, age, breed, color, ears_type, hair_length, name, size, special_mark, tail_length, shelter_id, picture_id) values (10002, 13, 'random', 'brown', 'long', 'short', 'Borys', 'big', 'none', 'short', 10001, 10006);
+insert into shelter_dog (id, age, breed, color, ears_type, hair_length, name, size, special_mark, tail_length, shelter_id, picture_id) values (10001, 12, 'unknown', 'blue', 'long', 'long', 'Pinky', 'big', 'none', 'long', 10001, 10005);
+
+insert into shelter_dog (id, age, breed, color, ears_type, hair_length, name, size, special_mark, tail_length, shelter_id, picture_id) values (10004, 15, 'unknown', 'pink', 'short', 'long', 'Pimpek', 'small', 'none', 'long', 10002, 10008);
+insert into shelter_dog (id, age, breed, color, ears_type, hair_length, name, size, special_mark, tail_length, shelter_id, picture_id) values (10003, 14, 'bulldog', 'blonde', 'long', 'short', 'Warus', 'small', 'gray ears', 'long', 10002, 10007);
+
+
+insert into picture (id, file_name, file_type, data) values (10005, 'example1', 'text/plain', RAWTOHEX('example_data1'));
+insert into picture (id, file_name, file_type, data) values (10006, 'example2', 'text/plain', RAWTOHEX('example_data2'));
+insert into picture (id, file_name, file_type, data) values (10007, 'example3', 'text/plain', RAWTOHEX('example_data3'));
+insert into picture (id, file_name, file_type, data) values (10008, 'example4', 'text/plain', RAWTOHEX('example_data4'));
+
+
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10001, 10001, 'Barks');
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10002, 10001, 'Wags tail');
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10003, 10001, 'Eats');
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10004, 10002, 'Wants to conquer the world');
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10005, 10003, 'Drinks milk');
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10006, 10003, 'Sprints very fast');
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10007, 10004, 'Barks');
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10008, 10004, 'Drinks milk');
+insert into shelter_dog_behavior (id, dog_id, behavior) values (10009, 10004, 'Eats');
 
 --Password: 'xea-12Musk'
 insert into user_account (id, email, password, name, phone_number) values (10001, 'e.musk@mail.com', '8732009E6F33A857CFA2F12DEA60BBC979D97C15F0BD56C05B2A4171BC75BA3F', 'Elon Musk', '+9123456789');

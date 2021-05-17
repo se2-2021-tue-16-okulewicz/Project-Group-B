@@ -4,14 +4,12 @@ import org.javatuples.Pair;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import se.backend.model.Picture;
-import se.backend.model.dogs.LostDog;
+import se.backend.model.dogs.Lost.LostDog;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 
 import java.util.List;
 
-//TODO: Uncomment and implement the rest of the functions
-//TODO: Update signatures to use proper wrappers
 //TODO: Add comments to the dogs
 public interface LostDogService {
     /**
