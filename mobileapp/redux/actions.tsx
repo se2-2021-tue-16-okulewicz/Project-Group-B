@@ -5,7 +5,7 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { RequestResponse } from "./response";
-import { IDogCharacteristics, IDogDetails, ILostDog, ILostDogWithPicture, IPicture, Picture } from "../components/dogs/dog/dogInterfaces";
+import { IDogCharacteristics, IDogDetails, IImage, ILostDog, ILostDogWithPicture, IPicture, Picture } from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
 
@@ -112,22 +112,22 @@ export const markLostDogAsFoundThunk = createAsyncThunk(
  * Register a regular user
  */
 export const registerRegularUserThunk = createAsyncThunk<
-  RequestResponse<ILoginResults>,
+  RequestResponse<ILoginResults, undefined>,
   IRegisterRegularUserInformation,
-  { rejectValue: RequestResponse<null> }
+  { rejectValue: RequestResponse<null, undefined> }
 >(
   "registeregularUser",
   async (newUserInfo: IRegisterRegularUserInformation, { rejectWithValue }) => {
-    const response: RequestResponse<null> = await Fetching.registerRegularUser(
+    const response: RequestResponse<null, undefined> = await Fetching.registerRegularUser(
       newUserInfo
     );
 
     if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<null>);
+      return rejectWithValue(response as RequestResponse< null, undefined>);
     }
 
     //On success we want to acutally login
-    const responseLogin: RequestResponse<ILoginResults> = await Fetching.login({
+    const responseLogin: RequestResponse<ILoginResults, undefined> = await Fetching.login({
       username: newUserInfo.username,
       password: newUserInfo.password,
     });
@@ -139,41 +139,80 @@ export const registerRegularUserThunk = createAsyncThunk<
           message: responseLogin.response.message,
           successful: responseLogin.response.successful,
           data: null,
+          metadata: null
         },
       });
     }
 
-    return responseLogin as RequestResponse<ILoginResults>;
+    return responseLogin as RequestResponse<ILoginResults, undefined>;
   }
 );
 
-/*
- add a new lost dog
- */
 export const addDogThunk = createAsyncThunk<
-  RequestResponse<ILostDogWithPicture>,
-  { dog: ILostDog; picture: IPicture; cookies: string },
-  { rejectValue: RequestResponse<ILostDogWithPicture> }
+  RequestResponse<ILostDogWithPicture, undefined>,
+  { dog: ILostDog; picture: IImage; Authorization: { [name: string]: any } },
+  { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
 >(
-  "AddDog",
-  async (
+  "AddDog", async (
     dogAndPictureAndCookies: {
-      dog: ILostDog;
-      picture: IPicture;
-      cookies: string
+      dog: ILostDog,
+      picture: IImage,
+      Authorization: { [name: string]: any },
     },
     { rejectWithValue }
   ) => {
-    const response: RequestResponse<ILostDogWithPicture> = await Fetching.addDog(
-      dogAndPictureAndCookies.dog,
-      dogAndPictureAndCookies.picture,
-      dogAndPictureAndCookies.cookies
-    );
+    const response: RequestResponse<ILostDogWithPicture, undefined> =
+      await Fetching.addDog(
+        dogAndPictureAndCookies.dog,
+        dogAndPictureAndCookies.picture,
+        dogAndPictureAndCookies.Authorization
+      
+      );
 
     if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<ILostDogWithPicture>);
+      return rejectWithValue(
+        response as RequestResponse<ILostDogWithPicture, undefined>
+      );
     }
 
-    return response as RequestResponse<ILostDogWithPicture>;
+    return response as RequestResponse<ILostDogWithPicture, undefined>;
   }
 );
+/*
+(
+  "registeregularUser",
+  async (newUserInfo: IRegisterRegularUserInformation, { rejectWithValue }) => {
+    const response: RequestResponse<null> = await Fetching.registerRegularUser(
+      newUserInfo
+    ); */
+/*
+ add a new lost dog
+ */
+// export const addDogThunk = createAsyncThunk<
+//   RequestResponse<ILostDogWithPicture,undefined>,
+//   { dog: ILostDog; picture: IPicture; Authorization: { [name: string]: any } },
+//   { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
+// >(
+//   "addDog", async (
+//     dogAndPictureAndCookies: {
+//       dog: ILostDog;
+//       picture: IPicture;
+//       Authorization: { [name: string]: any }
+//     },
+//     { rejectWithValue }) => {
+//     // const response: RequestResponse<ILostDogWithPicture, undefined> = await Fetching.addDog(
+//     //   dogAndPictureAndCookies.dog,
+//     //   dogAndPictureAndCookies.picture,
+//     //   dogAndPictureAndCookies.Authorization
+//     // );
+
+//     //console.log("successful? "+ response.response.successful);
+
+//     // if (response.response.successful !== true) {
+//     //   console.log("not successful: "+ response.response.message);
+//     //   return rejectWithValue(response as RequestResponse<ILostDogWithPicture, undefined>);
+//     // }
+
+//     return response as RequestResponse<ILostDogWithPicture, undefined>;
+//   }
+// );
