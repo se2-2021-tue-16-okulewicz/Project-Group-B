@@ -41,9 +41,16 @@ export interface IDog {
 }
 
 export interface ILostDog extends IDog {
-  dateLost: Date | null;
+  dateLost: string | null;
   isFound: boolean;
   ownerId: number;
+}
+
+export interface IImage{
+  id: number;
+  fileName: string;
+  fileType: string;
+  uri: string;
 }
 
 export interface ILostDogWithPicture extends ILostDog {
