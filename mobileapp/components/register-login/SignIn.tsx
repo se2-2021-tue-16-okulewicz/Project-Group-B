@@ -112,23 +112,23 @@ const SignIn = ({ navigation }: any) => {
       </View>
       <View>
         <View style={style.margin}>
-        <TextInput
-          placeholder="Username"
-          style={styles.styles.textInput}
-          onChangeText={(e) => setUsername(e)}
-          value={username}
-        ></TextInput>
+          <TextInput
+            placeholder="Username"
+            style={styles.styles.textInput}
+            onChangeText={(e) => setUsername(e)}
+            value={username}
+          ></TextInput>
         </View>
-        
+
         <View style={style.margin}>
-        <TextInput
-          maxLength={32}
-          secureTextEntry={true}
-          placeholder="Password"
-          style={styles.styles.textInput}
-          onChangeText={(e) => setPassword(e)}
-          value={password}
-        ></TextInput>
+          <TextInput
+            maxLength={32}
+            secureTextEntry={true}
+            placeholder="Password"
+            style={styles.styles.textInput}
+            onChangeText={(e) => setPassword(e)}
+            value={password}
+          ></TextInput>
         </View>
         <TouchableOpacity
           disabled={!ready}
@@ -148,8 +148,8 @@ const SignIn = ({ navigation }: any) => {
   );
 };
 const style = StyleSheet.create({
-  margin:{
-    margin: 7
+  margin: {
+    margin: 7,
   },
   tinyLogo: {
     width: 50,

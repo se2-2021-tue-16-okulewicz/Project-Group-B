@@ -87,7 +87,7 @@ export default function EditContactInfo() {
         })
       );
       setPageRefresh(false); // eslint-disable-next-line
-    }
+    } // eslint-disable-next-line
   }, [pageRefresh]);
 
   useEffect(() => {
@@ -103,13 +103,13 @@ export default function EditContactInfo() {
     } // eslint-disable-next-line
   }, [errorMessage]);
 
-  const handleChange = (prop: keyof IContactInfo) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let tmp = { ...values, [prop]: event.target.value };
-    setValues(tmp);
-    setIsError(isInvalidContactInfo(tmp));
-  };
+  const handleChange =
+    (prop: keyof IContactInfo) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      let tmp = { ...values, [prop]: event.target.value };
+      setValues(tmp);
+      setIsError(isInvalidContactInfo(tmp));
+    };
 
   const onSubmitClicked = () => {
     try {

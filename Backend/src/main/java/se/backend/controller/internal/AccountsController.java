@@ -41,7 +41,7 @@ public class AccountsController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<Response<Object>> CreateUserAccount(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<Object, Object>> CreateUserAccount(@RequestHeader HttpHeaders headers,
                                                                    @RequestPart("username") String username,
                                                                    @RequestPart("password") String password,
                                                                    @RequestPart("phone_number") String phoneNumber,
@@ -60,11 +60,11 @@ public class AccountsController {
         if(result.getValue0() == null)
             throw new GenericBadRequestException(result.getValue1());
 
-        return ResponseEntity.ok(new Response<>("Registration successful", true, null));
+        return ResponseEntity.ok(new Response<>("Registration successful", true, null, null));
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<Response<AuthenticationResults>> Authenticate(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<AuthenticationResults, Object>> Authenticate(@RequestHeader HttpHeaders headers,
                                                                         @RequestPart("username") String username,
                                                                         @RequestPart("password") String password) {
         logHeaders(headers);
@@ -75,11 +75,11 @@ public class AccountsController {
             throw new GenericBadRequestException("Login failed.");
         }
 
-        return ResponseEntity.ok(new Response<>(String.format("Token: %s", result.getToken()), true, result));
+        return ResponseEntity.ok(new Response<>(String.format("Token: %s", result.getToken()), true, result, null));
     }
 
     @PostMapping(path = "/logout")
-    public ResponseEntity<Response<Object>> Logout(@RequestHeader HttpHeaders headers) {
+    public ResponseEntity<Response<Object, Object>> Logout(@RequestHeader HttpHeaders headers) {
         logHeaders(headers);
 
         var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
@@ -94,7 +94,7 @@ public class AccountsController {
         if(!loginService.Logout(token))
             throw new GenericBadRequestException("Failed to logout");
 
-        return ResponseEntity.ok(new Response<>("Logout successful", true, null));
+        return ResponseEntity.ok(new Response<>("Logout successful", true, null, null));
     }
 
 }

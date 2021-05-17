@@ -39,6 +39,9 @@ public class LoginServiceTest {
 
         var failedResults = service.Authenticate("not-existing-acc", "not-existing-pwd");
         assertNull(failedResults);
+
+        var failedResultsInactiveShelter = service.Authenticate("greenpeace@mail.com", "ImATest");
+        assertNull(failedResultsInactiveShelter);
     }
 
     @Test

@@ -73,11 +73,11 @@ export default function Login() {
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
 
-  const handleChange = (prop: keyof internalState) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  const handleChange =
+    (prop: keyof internalState) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });

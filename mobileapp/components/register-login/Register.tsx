@@ -52,7 +52,8 @@ const Register = ({ navigation }: any) => {
 
   function isStringValidEmail(email: string): boolean {
     //Should catch like 99%+ of valid emails
-    let emailRegex: RegExp = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+    let emailRegex: RegExp =
+      /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
     return emailRegex.test(email);
   }
 
@@ -93,19 +94,19 @@ const Register = ({ navigation }: any) => {
 
   function handleUsername(e: string) {
     setUserName(e);
-    if (isStringValidUsername(e)) setIsUsernameError(false)
+    if (isStringValidUsername(e)) setIsUsernameError(false);
   }
   function handleEmail(e: string) {
-    setEmail(e); 
-    if (isStringValidEmail(e)) setIsEmailError(false)
+    setEmail(e);
+    if (isStringValidEmail(e)) setIsEmailError(false);
   }
   function handlePhone(e: string) {
-    setPhoneNumber(e); 
-    if (isStringValidPhoneNumeber(e)) setIsPhoneError(false)
+    setPhoneNumber(e);
+    if (isStringValidPhoneNumeber(e)) setIsPhoneError(false);
   }
   function handlePassword(e: string) {
-    setPassword(e); 
-    if (isStringValidPassword(e)) setIsPasswordError(false)
+    setPassword(e);
+    if (isStringValidPassword(e)) setIsPasswordError(false);
   }
 
   async function register() {
@@ -166,23 +167,59 @@ const Register = ({ navigation }: any) => {
       </View>
       <View>
         <View style={style.margin}>
-          <TextInput placeholder="Username" style={styles.styles.textInput} onChangeText={(e) => handleUsername(e)} onBlur={(e) => handleUsernameError()} ></TextInput>
-          <Text style={isUsernameError ? style.error : [{ display: 'none' }]}>Username must be at least 3 characters long</Text>
+          <TextInput
+            placeholder="Username"
+            style={styles.styles.textInput}
+            onChangeText={(e) => handleUsername(e)}
+            onBlur={(e) => handleUsernameError()}
+          ></TextInput>
+          <Text style={isUsernameError ? style.error : [{ display: "none" }]}>
+            Username must be at least 3 characters long
+          </Text>
         </View>
         <View style={style.margin}>
-          <TextInput keyboardType={"email-address"} placeholder="E-mail" style={styles.styles.textInput} onChangeText={(e) => handleEmail(e)} onBlur={(e) => handleEmailError()}></TextInput>
-          <Text style={isEmailError ? style.error : [{ display: 'none' }]}>Email is incorrect</Text>
+          <TextInput
+            keyboardType={"email-address"}
+            placeholder="E-mail"
+            style={styles.styles.textInput}
+            onChangeText={(e) => handleEmail(e)}
+            onBlur={(e) => handleEmailError()}
+          ></TextInput>
+          <Text style={isEmailError ? style.error : [{ display: "none" }]}>
+            Email is incorrect
+          </Text>
         </View>
         <View style={style.margin}>
-          <TextInput placeholder="Phone number" keyboardType="decimal-pad" style={styles.styles.textInput} onChangeText={(e) => handlePhone(e)} onBlur={(e) => handlePhoneError()}></TextInput>
-          <Text style={isPhoneError ? style.error : [{ display: 'none' }]}>Phone number is in a wrong format</Text>
+          <TextInput
+            placeholder="Phone number"
+            keyboardType="decimal-pad"
+            style={styles.styles.textInput}
+            onChangeText={(e) => handlePhone(e)}
+            onBlur={(e) => handlePhoneError()}
+          ></TextInput>
+          <Text style={isPhoneError ? style.error : [{ display: "none" }]}>
+            Phone number is in a wrong format
+          </Text>
         </View>
         <View style={style.margin}>
-          <TextInput maxLength={32} secureTextEntry={true} placeholder="Password" style={styles.styles.textInput} onChangeText={(e) => handlePassword(e)} onBlur={(e) => handlePasswordError()}></TextInput>
-          <Text style={isPasswordError ? style.error : [{ display: 'none' }]}>Password must be at least 6 characters long</Text>
+          <TextInput
+            maxLength={32}
+            secureTextEntry={true}
+            placeholder="Password"
+            style={styles.styles.textInput}
+            onChangeText={(e) => handlePassword(e)}
+            onBlur={(e) => handlePasswordError()}
+          ></TextInput>
+          <Text style={isPasswordError ? style.error : [{ display: "none" }]}>
+            Password must be at least 6 characters long
+          </Text>
         </View>
         <View>
-          <TouchableOpacity disabled={!ready} style={ready ? style.button : style.disabledButton} onPress={() => register()}>
+          <TouchableOpacity
+            disabled={!ready}
+            style={ready ? style.button : style.disabledButton}
+            onPress={() => register()}
+          >
             <Text style={style.buttonText}>Register </Text>
           </TouchableOpacity>
         </View>
@@ -199,12 +236,12 @@ const Register = ({ navigation }: any) => {
 
 const style = StyleSheet.create({
   margin: {
-    margin: 7
+    margin: 7,
   },
   error: {
     marginLeft: 15,
     fontSize: 10,
-    color: 'red'
+    color: "red",
   },
   tinyLogo: {
     width: 50,

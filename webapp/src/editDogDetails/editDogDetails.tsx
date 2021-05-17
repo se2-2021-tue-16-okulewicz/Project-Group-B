@@ -67,9 +67,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "inherit",
     },
     imgFit: {
-      objectFit: "cover",
-      width: "100%",
+      maxHeight: "90vh",
       borderRadius: "10px",
+      width: "auto",
     },
     mainForm: {
       marginLeft: "0.5%",
@@ -120,7 +120,7 @@ const EditDogDetails = (props: any) => {
 
   useEffect(() => {
     if (!refreshRequired && !pageRefresh) {
-      if (editedDog.picture != null) {
+      if (editedDog != null) {
         const blob = base64StringToBlob(
           editedDog.picture.data as string,
           editedDog.picture.fileType
