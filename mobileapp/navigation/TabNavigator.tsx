@@ -12,7 +12,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faDog, faPlus, faUserAlt } from '@fortawesome/free-solid-svg-icons'
-const inactiveColor = '#7cd47b';
+const inactiveColor = '#c5c5c7';
+const activeTintColor= '#e04e3a';
 const Tab = createBottomTabNavigator(); 
 
 function MyBottomTab(){
@@ -20,7 +21,7 @@ function MyBottomTab(){
         <Tab.Navigator
       initialRouteName="Dogs"
       tabBarOptions={{
-        activeTintColor: '#e91e63',
+        activeTintColor: activeTintColor,
       }}
       
     >
@@ -29,9 +30,9 @@ function MyBottomTab(){
         component={DogsScreen}
         options={{
           tabBarLabel: 'Dogs',
-          tabBarIcon: ({focused, tintColor }) => (
+          tabBarIcon: ({focused}) => (
           <View>  
-              <FontAwesomeIcon icon={faDog} size={25} color={focused ? tintColor : inactiveColor}></FontAwesomeIcon>
+              <FontAwesomeIcon icon={faDog} size={25} color={focused ? activeTintColor : inactiveColor}></FontAwesomeIcon>
             </View>),
         }}
       />
@@ -40,9 +41,9 @@ function MyBottomTab(){
         component={AddDogScreen}
         options={{
           tabBarLabel: 'Add dog',
-          tabBarIcon: ({ focused, tintColor }) => (  
+          tabBarIcon: ({ focused }) => (  
             <View>  
-                <FontAwesomeIcon icon={faPlus} size={25} color={focused ? tintColor : inactiveColor}></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faPlus} size={25} color={focused ? activeTintColor : inactiveColor}></FontAwesomeIcon>
             </View>) 
         }}
       />
@@ -51,9 +52,9 @@ function MyBottomTab(){
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({focused, tintColor }) => (  
+          tabBarIcon: ({focused }) => (  
             <View>  
-                <FontAwesomeIcon icon={faUserAlt} size={25} color={focused ? tintColor : inactiveColor}></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faUserAlt} size={25} color={focused ? activeTintColor : inactiveColor}></FontAwesomeIcon>
             </View>),
         }}
       />
