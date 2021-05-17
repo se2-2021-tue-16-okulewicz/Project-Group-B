@@ -46,42 +46,13 @@ const init: State = {
   },
   loginInformation: null,
   image: "",
-  dogCharacteristics: genericCharacteristics,
-  dogDetails: genericDogDetails,
+  dogCharacteristics: initLostDogCharacteristics,
+  dogDetails: initDogDetails,
   dogBehaviours: [],
   picture: initPic
-  // {
-  //   name: "",
-  //   age: 0,
-  //   hairLength: "",
-  //   color: "",
-  //   size: "",
-  //   earsType: "",
-  //   tailLength: "",
-  //   specialMark: "",
-  //   behaviours: [],
-
-  // }
-  //currentDog: null,
-  // picture: {
-  //   id: 0,
-  //   fileName: "",
-  //   fileType: "",
-  //   data: new ArrayBuffer(8)
-  // },
 };
 
-/*name: string;
-  breed: BreedTypes | "";
-  age: number;
-  hairLength: HairTypes | "";
-  color: ColorTypes | "";
-  size: SizeTypes | "";
-  earsType: EarsTypes | "";
-  tailLength: TailTypes | "";
-  specialMark: SpecialMarkTypes;
-  behaviors: BehaviorsTypes[];
-}*/
+
 
 export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
@@ -147,29 +118,26 @@ export const reducer = createReducer(init, {
 
   [Actions.addDogThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture>>
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.dogsRequireRefresh = true;
-    console.log("fulfilled")
     return newState;
   },
   [Actions.addDogThunk.pending.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<null>>
+    payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     //newState.dogs = [];
-    newState.loading = true;
-    console.log("pending")
+    //newState.loading = true;
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<null>>
+    payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
-    console.log("rejected")
    // console.log("rejected: " + payload.payload.response.message);
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
@@ -196,7 +164,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.loginThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILoginResults, undefined>>
+    payload: PayloadAction<RequestResponse<ILoginResults , undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
@@ -209,7 +177,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.loginThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILoginResults, undefined>>
+    payload: PayloadAction<RequestResponse<ILoginResults , undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
@@ -232,7 +200,7 @@ export const reducer = createReducer(init, {
 
   [Actions.fetchDogsThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture[], number>>
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture[] , number>>
   ) => {
     let newState = _.cloneDeep(state);
     const pageNumber = _.get(
@@ -281,7 +249,7 @@ export const reducer = createReducer(init, {
 
   [Actions.markLostDogAsFoundThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<null, undefined>>
+    payload: PayloadAction<RequestResponse<null , undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     const pageNumber = _.get(
@@ -304,7 +272,7 @@ export const reducer = createReducer(init, {
 
   [Actions.markLostDogAsFoundThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<null, undefined>>
+    payload: PayloadAction<RequestResponse<null , undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
@@ -327,7 +295,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.registerRegularUserThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<null>>
+    payload: PayloadAction<RequestResponse<ILoginResults, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.status = "redirectToDogs";
@@ -337,7 +305,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.registerRegularUserThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<null>>
+    payload: PayloadAction<RequestResponse<ILoginResults, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
