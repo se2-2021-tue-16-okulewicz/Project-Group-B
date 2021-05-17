@@ -14,6 +14,14 @@ export interface IPicture {
   fileName: string;
   fileType: string;
   data: ArrayBuffer;
+  //data: string;
+}
+
+export interface Picture {
+  id: number;
+  fileName: string;
+  fileType: string;
+  data: string;
 }
 
 export interface IDog {
@@ -53,4 +61,9 @@ export interface IDogCharacteristics {
   tailLength: TailTypes | "";
   specialMark: SpecialMarkTypes| "";
   behaviors: BehaviorsTypes[];
+}
+
+export interface IDogDetails {
+  dateLost: string;
+  location: { city: string; district: string };
 }
