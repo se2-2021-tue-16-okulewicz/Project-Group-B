@@ -16,9 +16,17 @@ import * as Actions from "../redux/actions";
 const inactiveColor="#919191";
 const activeColor="#006ee6";
 
+function convertDate(inputFormat: string) {
+    function pad(s: any) { return (s < 10) ? '0' + s : s; }
+    var d = new Date(inputFormat)
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
+}
 
 export default function AddDogStack({ navigation }: any) {
     const Stack = createStackNavigator();
+    const Authorization = useSelector(
+        (state: State) => state.loginInformation?.token
+      );
     const image = useSelector((state: State) => state.image);
     const picture = useSelector((state: State) => state.picture);
     const dogCharacteristics = useSelector((state: State) => state.dogCharacteristics);
@@ -40,13 +48,13 @@ export default function AddDogStack({ navigation }: any) {
     },[dogDetails])
    
     function areValidDetails(ch: IDogDetails){
-        return (ch.location != initDogDetails.location);
+        return (ch.location !== initDogDetails.location);
       }
     function areValidCharacteristics(ch: IDogCharacteristics){
-        return (ch.name != initLostDogCharacteristics.name && ch.breed != initLostDogCharacteristics.breed && ch.color != initLostDogCharacteristics.color
-          && ch.size != initLostDogCharacteristics.size && ch.hairLength != initLostDogCharacteristics.hairLength && ch.tailLength != initLostDogCharacteristics.hairLength 
-          && ch.tailLength != initLostDogCharacteristics.tailLength && ch.earsType != initLostDogCharacteristics.earsType && ch.specialMark != initLostDogCharacteristics.specialMark
-          && ch.behaviors != initLostDogCharacteristics.behaviors);
+        return (ch.name !== initLostDogCharacteristics.name && ch.breed !== initLostDogCharacteristics.breed && ch.color !== initLostDogCharacteristics.color
+          && ch.size !== initLostDogCharacteristics.size && ch.hairLength !== initLostDogCharacteristics.hairLength && ch.tailLength !== initLostDogCharacteristics.hairLength 
+          && ch.tailLength !== initLostDogCharacteristics.tailLength && ch.earsType !== initLostDogCharacteristics.earsType && ch.specialMark !== initLostDogCharacteristics.specialMark
+          && ch.behaviors !== initLostDogCharacteristics.behaviors);
       }
       function onExit(){
           store.dispatch(Actions.setImage(""));
@@ -54,42 +62,14 @@ export default function AddDogStack({ navigation }: any) {
           store.dispatch(Actions.setDogDetails(initDogDetails));
       }
 
-      /*
-      dateLost: Date | null;
-  isFound: boolean;
-  ownerId: number;*/
-
-  /*
-  id: number;
-  name: string;
-  breed: BreedTypes | "";
-  age: number;
-  pictureId: number;
-  hairLength: HairTypes | "";
-  color: ColorTypes | "";
-  size: SizeTypes | "";
-  earsType: EarsTypes | "";
-  tailLength: TailTypes | "";
-  specialMark: SpecialMarkTypes | "";
-  behaviors: BehaviorsTypes[];
-  location: { city: string; district: string };*/
-
-  function str2ab(str: string) {
-    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-    var bufView = new Uint16Array(buf);
-    for (var i=0, strLen=str.length; i < strLen; i++) {
-      bufView[i] = str.charCodeAt(i);
-    }
-    return buf;
-  }
 
       function publishDog(){
-          
+
           store.dispatch(Actions.addDogThunk({
             dog: {
                 ownerId: loginInfo?.id,
                 isFound: false,
-                dateLost: new Date(dogDetails.dateLost),
+                dateLost: convertDate(dogDetails.dateLost),
                 name: dogCharacteristics.name,
                 breed: dogCharacteristics.breed,
                 age: dogCharacteristics.age,
@@ -106,9 +86,9 @@ export default function AddDogStack({ navigation }: any) {
                 id: picture.id,
                 fileName: picture.fileName,
                 fileType: picture.fileType,
-                data: str2ab(picture.data)
+                uri: image 
             },
-            cookies: loginInfo?.token,
+            Authorization: Authorization,
           }))
         
         //onExit();
@@ -144,7 +124,7 @@ export default function AddDogStack({ navigation }: any) {
             <Previous onPress={() => navigation.pop()}/>
           ),
           headerRight: () => (
-            <Post enabled={isDetailsInput} onPress={() => {publishDog(); }}/>
+            <Post enabled={isDetailsInput} onPress={() => {publishDog(); navigation.popToTop(); navigation.navigate("Dogs"); onExit() }}/>
         )
       })}
       />
@@ -189,8 +169,6 @@ const Post= (props: any) => {
         <View >
             <TouchableOpacity disabled={!(props.enabled)} onPress={props.onPress}>
             <Text style={props.enabled ? { fontSize: 16, color: activeColor} : { fontSize: 15, color: inactiveColor}}>Post</Text>
-
-                {/* <FontAwesomeIcon icon={faChevronRight} size={25} color={props.enabled ? activeColor : inactiveColor}></FontAwesomeIcon> */}
             </TouchableOpacity>
         </View>
     );
