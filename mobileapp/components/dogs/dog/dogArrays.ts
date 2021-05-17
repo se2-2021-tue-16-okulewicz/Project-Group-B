@@ -58,4 +58,12 @@ export const BehaviorsTypes = [
   {label:"Shy",value:"Shy"},
   {label:"Energetic",value:"Energetic"},
   {label:"Friendly",value:"Friendly"},
+  {label:"Other",value:"Other"},
+]
+
+export const Behaviours = [
+  "Shy",
+  "Energetic",
+  "Friendly",
+  "Other"
 ]
