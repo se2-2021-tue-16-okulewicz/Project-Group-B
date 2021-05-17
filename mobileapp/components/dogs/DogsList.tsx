@@ -108,6 +108,7 @@ export default function DogsList({ navigation }: any) {
                 dog.picture.data as ArrayBuffer
               }`,
             }}
+            //source={{uri: dog.picture.uri}}
           />
           {/* <Text>{dog.picture.id + " " + dog.picture.fileName + " " + dog.picture.fileType + " " + dog.picture.data}</Text> */}
           {!dog.isFound ? (
@@ -141,7 +142,7 @@ export default function DogsList({ navigation }: any) {
           <FlatList 
             data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
             renderItem={({ item }) => renderListItem(item, navigation)}
-            keyExtractor={(item) => item.name}
+            keyExtractor={(item) => item.id.toString()}
           />
         </View>
       )}
