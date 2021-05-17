@@ -39,7 +39,7 @@ export const initLostDogProps: ILostDog = {
   specialMark: "",
   behaviors: [],
   location: { city: "", district: "" },
-  dateLost: new Date(2012, 1, 1, 0, 0, 0, 0),
+  dateLost: "",
   isFound: false,
 };
 
