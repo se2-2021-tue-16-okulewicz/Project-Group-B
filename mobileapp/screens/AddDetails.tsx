@@ -76,10 +76,10 @@ export default function AddDetails() {
       setBehavs(newBehavs);
       //behavs = newBehavs;
     }
-    if(newBehavs.length > 3){
-      newBehavs.splice(0,1);
+    if (newBehavs.length > 3) {
+      newBehavs.splice(0, 1);
     }
-    let newCharacteristics = {...characteristics, behaviors: newBehavs};
+    let newCharacteristics = { ...characteristics, behaviors: newBehavs };
     setCharacteristics(newCharacteristics);
     validateFields(newCharacteristics);
   }

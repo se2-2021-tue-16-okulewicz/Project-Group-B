@@ -53,12 +53,12 @@ export default function ReviewAndPost() {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-    const handleConfirm = (date: Date) => {
-        setDate(date);
-        let newDetails = { ...details, dateLost: date.toISOString() }
-        setDetails(newDetails);
-        hideDatePicker();
-    };
+  const handleConfirm = (date: Date) => {
+    setDate(date);
+    let newDetails = { ...details, dateLost: date.toISOString() };
+    setDetails(newDetails);
+    hideDatePicker();
+  };
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -66,7 +66,6 @@ export default function ReviewAndPost() {
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-
 
   function convertDate(inputFormat: string) {
     function pad(s: any) {

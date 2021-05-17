@@ -136,14 +136,13 @@ export default function DogsList({ navigation }: any) {
           <View>
             <Text>Displaying dogs: {myDogs.length}</Text>
 
-          <FlatList 
-            data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
-            renderItem={({ item }) => renderListItem(item, navigation)}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        </View>
-      )}
-      
+            <FlatList
+              data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
+              renderItem={({ item }) => renderListItem(item, navigation)}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          </View>
+        )}
       </ImageBackground>
     </SafeAreaView>
   );

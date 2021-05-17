@@ -46,7 +46,7 @@ export interface ILostDog extends IDog {
   ownerId: number;
 }
 
-export interface IImage{
+export interface IImage {
   id: number;
   fileName: string;
   fileType: string;

@@ -5,7 +5,15 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { RequestResponse } from "./response";
-import { IDogCharacteristics, IDogDetails, IImage, ILostDog, ILostDogWithPicture, IPicture, Picture } from "../components/dogs/dog/dogInterfaces";
+import {
+  IDogCharacteristics,
+  IDogDetails,
+  IImage,
+  ILostDog,
+  ILostDogWithPicture,
+  IPicture,
+  Picture,
+} from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
 
@@ -126,19 +134,19 @@ export const registerRegularUserThunk = createAsyncThunk<
 >(
   "registeregularUser",
   async (newUserInfo: IRegisterRegularUserInformation, { rejectWithValue }) => {
-    const response: RequestResponse<null, undefined> = await Fetching.registerRegularUser(
-      newUserInfo
-    );
+    const response: RequestResponse<null, undefined> =
+      await Fetching.registerRegularUser(newUserInfo);
 
     if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse< null, undefined>);
+      return rejectWithValue(response as RequestResponse<null, undefined>);
     }
 
     //On success we want to acutally login
-    const responseLogin: RequestResponse<ILoginResults, undefined> = await Fetching.login({
-      username: newUserInfo.username,
-      password: newUserInfo.password,
-    });
+    const responseLogin: RequestResponse<ILoginResults, undefined> =
+      await Fetching.login({
+        username: newUserInfo.username,
+        password: newUserInfo.password,
+      });
 
     if (response.response.successful !== true) {
       return rejectWithValue({
@@ -147,7 +155,7 @@ export const registerRegularUserThunk = createAsyncThunk<
           message: responseLogin.response.message,
           successful: responseLogin.response.successful,
           data: null,
-          metadata: null
+          metadata: null,
         },
       });
     }
@@ -161,11 +169,12 @@ export const addDogThunk = createAsyncThunk<
   { dog: ILostDog; picture: IImage; Authorization: { [name: string]: any } },
   { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
 >(
-  "AddDog", async (
+  "AddDog",
+  async (
     dogAndPictureAndCookies: {
-      dog: ILostDog,
-      picture: IImage,
-      Authorization: { [name: string]: any },
+      dog: ILostDog;
+      picture: IImage;
+      Authorization: { [name: string]: any };
     },
     { rejectWithValue }
   ) => {
@@ -174,7 +183,6 @@ export const addDogThunk = createAsyncThunk<
         dogAndPictureAndCookies.dog,
         dogAndPictureAndCookies.picture,
         dogAndPictureAndCookies.Authorization
-      
       );
 
     if (response.response.successful !== true) {
@@ -186,4 +194,3 @@ export const addDogThunk = createAsyncThunk<
     return response as RequestResponse<ILostDogWithPicture, undefined>;
   }
 );
-

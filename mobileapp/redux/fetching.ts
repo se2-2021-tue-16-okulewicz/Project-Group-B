@@ -6,10 +6,13 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { APIResponse, RequestResponse } from "./response";
-import { IImage, ILostDog, ILostDogWithPicture, IPicture } from "../components/dogs/dog/dogInterfaces";
+import {
+  IImage,
+  ILostDog,
+  ILostDogWithPicture,
+  IPicture,
+} from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
-
-
 
 async function getResponse<T, K>(
   axiosRequest: Promise<AxiosResponse<any>>
@@ -131,7 +134,6 @@ export async function addDog(
   dog: ILostDog,
   picture: IImage,
   Authorization: { [name: string]: any }
-
 ): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
   let formData = new FormData();
 
@@ -149,8 +151,7 @@ export async function addDog(
     formData.append("behavior1", " ");
     formData.append("behavior2", " ");
     formData.append("behavior3", " ");
-  }
-  else {
+  } else {
     formData.append("behavior1", dog.behaviors[0 % behLength]);
     formData.append("behavior2", dog.behaviors[1 % behLength]);
     formData.append("behavior3", dog.behaviors[2 % behLength]);
@@ -158,8 +159,11 @@ export async function addDog(
   formData.append("city", dog.location.city);
   formData.append("district", dog.location.district);
   formData.append("date_lost", dog.dateLost as string);
-  formData.append("picture", { name: picture.fileName, type: picture.fileType, uri: picture.uri });
-
+  formData.append("picture", {
+    name: picture.fileName,
+    type: picture.fileType,
+    uri: picture.uri,
+  });
 
   return getResponse(
     axios.post(
@@ -174,7 +178,4 @@ export async function addDog(
       }
     )
   );
-
 }
-
-
