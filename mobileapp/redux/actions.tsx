@@ -58,37 +58,45 @@ export const fetchDogsThunk = createAsyncThunk(
 export const setIdle = createAction("setIdle");
 export const clearLoginInformation = createAction("clearLoginInformation");
 export const incorrectUserType = createAction("incorrectUserType");
-export const setImage = createAction("setImage", function prepare(uri: string){
+export const setImage = createAction("setImage", function prepare(uri: string) {
   return {
-    payload: uri
-  }
+    payload: uri,
+  };
 });
-export const setPicture = createAction("setPicture", function prepare(picture: Picture){
-  return {
-    payload: picture
+export const setPicture = createAction(
+  "setPicture",
+  function prepare(picture: Picture) {
+    return {
+      payload: picture,
+    };
   }
-});
-export const setDogCharacteristics = createAction("setDogCharacteristics", function prepare(characterictis: IDogCharacteristics){
-  return {
-    payload:
-      characterictis
+);
+export const setDogCharacteristics = createAction(
+  "setDogCharacteristics",
+  function prepare(characterictis: IDogCharacteristics) {
+    return {
+      payload: characterictis,
+    };
   }
-});
+);
 
-export const setDogDetails = createAction("setDogDetails", function prepare(details: IDogDetails){
-  return {
-    payload:
-      details
+export const setDogDetails = createAction(
+  "setDogDetails",
+  function prepare(details: IDogDetails) {
+    return {
+      payload: details,
+    };
   }
-});
+);
 
-export const setDogBehaviours = createAction("setDogBehaviours", function prepare(details: BehaviorsTypes[]){
-  return {
-    payload:
-      details
+export const setDogBehaviours = createAction(
+  "setDogBehaviours",
+  function prepare(details: BehaviorsTypes[]) {
+    return {
+      payload: details,
+    };
   }
-});
-
+);
 
 /*
 Marking lost dog as foud.
@@ -178,41 +186,4 @@ export const addDogThunk = createAsyncThunk<
     return response as RequestResponse<ILostDogWithPicture, undefined>;
   }
 );
-/*
-(
-  "registeregularUser",
-  async (newUserInfo: IRegisterRegularUserInformation, { rejectWithValue }) => {
-    const response: RequestResponse<null> = await Fetching.registerRegularUser(
-      newUserInfo
-    ); */
-/*
- add a new lost dog
- */
-// export const addDogThunk = createAsyncThunk<
-//   RequestResponse<ILostDogWithPicture,undefined>,
-//   { dog: ILostDog; picture: IPicture; Authorization: { [name: string]: any } },
-//   { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
-// >(
-//   "addDog", async (
-//     dogAndPictureAndCookies: {
-//       dog: ILostDog;
-//       picture: IPicture;
-//       Authorization: { [name: string]: any }
-//     },
-//     { rejectWithValue }) => {
-//     // const response: RequestResponse<ILostDogWithPicture, undefined> = await Fetching.addDog(
-//     //   dogAndPictureAndCookies.dog,
-//     //   dogAndPictureAndCookies.picture,
-//     //   dogAndPictureAndCookies.Authorization
-//     // );
 
-//     //console.log("successful? "+ response.response.successful);
-
-//     // if (response.response.successful !== true) {
-//     //   console.log("not successful: "+ response.response.message);
-//     //   return rejectWithValue(response as RequestResponse<ILostDogWithPicture, undefined>);
-//     // }
-
-//     return response as RequestResponse<ILostDogWithPicture, undefined>;
-//   }
-// );

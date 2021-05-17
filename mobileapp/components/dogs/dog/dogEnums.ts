@@ -56,5 +56,5 @@ export enum BehaviorsTypes {
   "Shy",
   "Energetic",
   "Friendly",
-  "Other"
+  "Other",
 }

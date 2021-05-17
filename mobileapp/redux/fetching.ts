@@ -20,7 +20,6 @@ async function getResponse<T, K>(
       code: response.status,
       response: response.data as APIResponse<T, K>,
     };
-
   } catch (error) {
     if (error instanceof TypeError || error.message === "Network Error") {
       return {
