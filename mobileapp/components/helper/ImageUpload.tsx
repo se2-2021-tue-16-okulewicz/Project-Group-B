@@ -4,20 +4,34 @@ import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { store } from '../../redux/store';
 import * as Actions from "../../redux/actions";
-import { IPicture } from '../dogs/dog/dogInterfaces';
-import { initLostDogProps, initPicture } from "../dogs/dog/dogClasses";
-import { base64StringToBlob } from "blob-util";
-import {decode} from "base64-arraybuffer"
+import { IPicture, Picture } from '../dogs/dog/dogInterfaces';
 import { useSelector } from 'react-redux';
 import { State } from '../../redux/reducer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faImage} from '@fortawesome/free-solid-svg-icons';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
 
-export default function ImageUpload()  {
+export default function ImageUpload() {
+  const bg = require('../../assets/images/dog-bg.png');
   const [image, setImage] = useState("");
-  const bg = {uri: '../../assets/dog-bg.png'}
-  //const [picture, setPicture] = useState<IPicture>(initPicture);
-  const picture = useSelector((state: State) => state.image);
+  const picture = useSelector((state: State) => state.picture);
+  const dogImage = useSelector((state: State) => state.image);
+  const [dogPicture, setDogPicture] = useState<Picture>(picture);
+  //var Buffer = require('buffer/').Buffer
+  //const imageToBase64 = require('image-to-base64');
+
+  function ab2str(buf: ArrayBuffer) {
+    return String.fromCharCode.apply(null, new Uint16Array(buf));
+  }
+
+  function str2ab(str: string) {
+    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+    var bufView = new Uint16Array(buf);
+    for (var i=0, strLen=str.length; i < strLen; i++) {
+      bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+  }
+  
 
   useEffect(() => {
     (async () => {
@@ -31,49 +45,67 @@ export default function ImageUpload()  {
   }, []);
 
   useEffect(() => {
-    setImage(picture);
-  },[picture])
+    setImage(dogImage);
+  }, [dogImage])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes:ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      base64: true,
       aspect: [4, 3],
       quality: 1,
+      mediaType: 'photo',
+      saveToPhotos: true,
+      includeBase64: true,
+      base64: true,
+      fileName: true,
+      type: true
     });
 
     if (!result.cancelled) {
       setImage(result.uri);
+      console.log(str2ab("Hello!").byteLength);
+      const data: ArrayBuffer = (str2ab((result.base64) as string)) as ArrayBuffer;
+      setDogPicture({ id: 0, fileName: "upload.jpeg", fileType: "image/jpeg", data: result.base64} as Picture)
       store.dispatch(Actions.setImage(result.uri));
+      console.log(data.byteLength);
+      store.dispatch(Actions.setPicture({ id: 0, fileName: "upload.jpeg", fileType: "image/jpeg", data: result.base64} as Picture));
     };
+
+
   }
 
 
   return (
     <View style={{ flex: 1 }}>
-      <ImageBackground source={require('../../assets/images/dog-bg.png')} style={[styles.image, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
-        <View style={{backgroundColor: "#ffffff", width: 355, height: 355, borderRadius:15, alignItems: 'center', justifyContent: 'center' }}>
-      <TouchableOpacity  onPress={() => pickImage()} >
-      
-        {/* <Text>Pick an image from camera roll</Text> */}
-        {image ? <Image source={{uri: image}} style={{ width: 340, height: 340, borderRadius: 10 }} /> : <FontAwesomeIcon icon={faImage} size={25} ></FontAwesomeIcon>}
-      </TouchableOpacity >
-      </View>
-      {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
-   
-    </ImageBackground>
+      <ImageBackground source={bg} style={[styles.image, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
+        <View style={{ backgroundColor: "#ffffff", width: 355, height: 355, borderRadius: 15, alignItems: 'center', justifyContent: 'center' }}>
+          <TouchableOpacity onPress={() => pickImage()} >
+            {image ? <Image
+              style={{ width: 340, height: 340, borderRadius: 10 }}
+              source={{
+                uri: `data:${dogPicture.fileType};base64,${
+                  dogPicture.data
+                }`,
+              }}
+            /> : <FontAwesomeIcon icon={faImage} size={25} ></FontAwesomeIcon>}
+
+            {/* {image ? <Image source={{uri: image}} style={{ width: 340, height: 340, borderRadius: 10 }} /> : <FontAwesomeIcon icon={faImage} size={25} ></FontAwesomeIcon>} */}
+          </TouchableOpacity >
+        </View>
+
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  
+
   image: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center"
   },
-  
+
 });
 
