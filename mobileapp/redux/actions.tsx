@@ -5,8 +5,9 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { RequestResponse } from "./response";
-import { IDogCharacteristics, ILostDogWithPicture, IPicture } from "../components/dogs/dog/dogInterfaces";
+import { IDogCharacteristics, IDogDetails, ILostDog, ILostDogWithPicture, IPicture, Picture } from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
+import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
 
 /**
  * Thunk for logging into an account
@@ -62,7 +63,7 @@ export const setImage = createAction("setImage", function prepare(uri: string){
     payload: uri
   }
 });
-export const setPicture = createAction("setPicture", function prepare(picture: IPicture){
+export const setPicture = createAction("setPicture", function prepare(picture: Picture){
   return {
     payload: picture
   }
@@ -71,16 +72,20 @@ export const setDogCharacteristics = createAction("setDogCharacteristics", funct
   return {
     payload:
       characterictis
-      // name: characterictis.name,
-      // breed: characterictis.breed,
-      // color: characterictis.color,
-      // size: characterictis.size,
-      // hair: characterictis.hairLength,
-      // tail: characterictis.tailLength,
-      // ears: characterictis.earsType,
-      // specialMark: characterictis.specialMark,
-      // behaviours: characterictis.behaviors
-    
+  }
+});
+
+export const setDogDetails = createAction("setDogDetails", function prepare(details: IDogDetails){
+  return {
+    payload:
+      details
+  }
+});
+
+export const setDogBehaviours = createAction("setDogBehaviours", function prepare(details: BehaviorsTypes[]){
+  return {
+    payload:
+      details
   }
 });
 
@@ -142,5 +147,36 @@ export const registerRegularUserThunk = createAsyncThunk<
     }
 
     return responseLogin as RequestResponse<ILoginResults>;
+  }
+);
+
+/*
+ add a new lost dog
+ */
+export const addDogThunk = createAsyncThunk<
+  RequestResponse<ILostDogWithPicture>,
+  { dog: ILostDog; picture: IPicture; cookies: string },
+  { rejectValue: RequestResponse<ILostDogWithPicture> }
+>(
+  "AddDog",
+  async (
+    dogAndPictureAndCookies: {
+      dog: ILostDog;
+      picture: IPicture;
+      cookies: string
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<ILostDogWithPicture> = await Fetching.addDog(
+      dogAndPictureAndCookies.dog,
+      dogAndPictureAndCookies.picture,
+      dogAndPictureAndCookies.cookies
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<ILostDogWithPicture>);
+    }
+
+    return response as RequestResponse<ILostDogWithPicture>;
   }
 );
