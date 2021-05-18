@@ -29,7 +29,7 @@ export default function ImageGrid(props: any) {
       {dogs.map((dog: ILostDogWithPicture) => (
         <GridListTile
           key={dog.id}
-          style={{ height:"300px"}}
+          style={{ height:"300px", width:"33%"}}
           className="tile"
         >
           <img
@@ -66,7 +66,7 @@ export default function ImageGrid(props: any) {
           key={dog.id+1}
           style={{ height:"300px" }}
           className="tile"
-        ><img style={{visibility:"hidden"}}
+        ><img style={{visibility:"hidden", height:"300px"}}
         src={`data:${dog.picture.fileType};base64,${
           dog.picture.data as ArrayBuffer
         }`}
@@ -76,7 +76,7 @@ export default function ImageGrid(props: any) {
           key={dog.id+2}
           style={{ height:"300px" }}
           className="tile"
-        ><img style={{visibility:"hidden"}}
+        ><img style={{visibility:"hidden", height:"300px"}}
         src={`data:${dog.picture.fileType};base64,${
           dog.picture.data as ArrayBuffer
         }`}

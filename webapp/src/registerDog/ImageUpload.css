@@ -5,11 +5,9 @@
 
 .image {
   border-radius: 10px;
-  object-fit: cover;
-  max-width: "90vh";
-  max-height: "30vw";
+  height: 300px;
+  width:inherit;
   align-self: center;
-    width: "auto"
 }
 
 .imageContainer {
@@ -17,6 +15,7 @@
   align-self: center;
   width: inherit;
   display: flex;
+
 }
 
 .imageInputLabel {

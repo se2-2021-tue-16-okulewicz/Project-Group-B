@@ -86,6 +86,7 @@ export async function fetchDogs(
     return value && value != "null" ? `${filterName}=${value}` : "";
     }
     }).filter((x) => x !== "").join("&"));
+    console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,

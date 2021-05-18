@@ -67,10 +67,10 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "inherit",
     },
     imgFit: {
-      maxHeight: "90vh",
       maxWidth:"30vw",
+      maxHeight:"70vh",
       borderRadius: "10px",
-      width: "auto",
+      height: "300px"
     },
     mainForm: {
       marginLeft: "0.5%",
@@ -99,6 +99,8 @@ const EditDogDetails = (props: any) => {
   var isInputNotNull = temp !== null;
   const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(initLostDogWithPictureProps);
   const [picture, setPicture] = useState<IPicture>();
+
+  console.log(temp);
 
   useEffect(() => {
     if(pageRefresh){
@@ -143,12 +145,13 @@ const EditDogDetails = (props: any) => {
   }, [pageRefresh]);
   
   useEffect(() => {
-    if (!pageRefresh && editedDog) {
+    if (!pageRefresh && editedDog ) {
+      if (!temp || (temp && temp.id != dogId)){
       sessionStorage.setItem(
         "editDogFields",
         JSON.stringify(editedDog as ILostDogWithPicture)
       );
-      setEditDogFields(editedDog as ILostDogWithPicture);
+      setEditDogFields(editedDog as ILostDogWithPicture);}
     }
       if(!picture && editedDog && editedDog.picture){
         const blob = base64StringToBlob(

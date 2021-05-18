@@ -4,16 +4,11 @@ import Grid from "@material-ui/core/Grid";
 import {
   Button,
   InputAdornment,
-  Select,
-  ListSubheader,
   TextField,
   Link,
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import InputLabel from "@material-ui/core/InputLabel";
-import DateFnsUtils from "@date-io/date-fns";
 import {
   BreedTypes,
   CategoryTypes,
@@ -56,6 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: "160px",
     },
     main: {
+      marginTop:"4%",
       minWidth: "200px",
       width: "16vw",
       margin: "1vw",
@@ -90,7 +86,8 @@ export default function FilterForm(props: any) {
 
     }
     else if (date) {
-      let newField = { ...lostDogFields, filter: { ...lostDogFields.filter, [name]: date as Date } };
+      const month = (((date?.getDate().toString().length==1)?"0":"") + (date ? date.toLocaleDateString():"")).split(".").reverse().join("-");
+      let newField = { ...lostDogFields, filter: { ...lostDogFields.filter, [name]: month } };
       setLostDogFields(newField);
     }
   }
