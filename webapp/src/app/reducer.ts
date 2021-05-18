@@ -3,16 +3,18 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
 import config from "../config/config";
-import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
+import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 
 export type Error = {
   hasError: boolean;
   errorCode: number;
   erorMessage: string;
 };
+
+/*TODO: change any in the State*/
 
 export type State = {
   dogs: ILostDogWithPicture[] | any; //if these are not any, the clear actions throw an error (only for dogs with pictures)
@@ -241,7 +243,7 @@ export const reducer = createReducer(init, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    if (state.dogs != null) {
+    if (state.dogs != null || pageNumber != 0) {
       newState.dogs = state.dogs
         .concat(payload.payload.response.data as ILostDogWithPicture[])
         .slice(0, (pageNumber + 1) * pageSize);

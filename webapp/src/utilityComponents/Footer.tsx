@@ -9,7 +9,7 @@ import { store } from "../app/store";
 import { logoutThunk } from "../app/actions";
 import config from "../config/config";
 
-const Footer = () => {
+const Footer = (props: any) => {
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
@@ -23,7 +23,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="footer">
+    <footer className={props.position ? props.position : "footer"}>
       <div className="footer-container">
         <button
           className="LogoutButton"

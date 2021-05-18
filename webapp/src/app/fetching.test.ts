@@ -17,11 +17,12 @@ import {
 import config from "../config/config";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
+import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import {
   initLoginProps,
   initRegisterRegularUserProps,
 } from "../registerLogin/registerLogintest";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
 
 jest.mock("axios");
 
@@ -60,8 +61,27 @@ test("updating the dog with a wrong token results in an error", async () => {
   const data: RequestResponse<ILostDogWithPicture, undefined> =
     await Fetching.updateDog(
       initLostDogProps, //dog
-      initPicture,
-      config.cookies
+      config.cookies,
+      initPicture
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("updating the contact info with a wrong token results in an error", async () => {
+  const data: RequestResponse<IContactInfo, undefined> =
+    await Fetching.updateContactInfo(
+      0, //dog id
+      { name: "aaa", email: "a@a.a", phoneNumber: "123456789" } as IContactInfo,
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("getting the contact info with a wrong token results in an error", async () => {
+  const data: RequestResponse<IContactInfo, undefined> =
+    await Fetching.fetchUserInfo(
+      0, //dog id
+      {} //empty token
     );
   expect(data).toEqual(errorObject);
 });

@@ -24,14 +24,19 @@ export default function ImageGrid(props: any) {
   };
 
   return (
-    <GridList cols={3} spacing={8}>
+    <GridList
+      cols={3}
+      spacing={2}
+      style={{ margin: "0", width: "100%", display: "flex" }}
+    >
       {dogs.map((dog: ILostDogWithPicture) => (
         <GridListTile
           key={dog.id}
-          style={{ minHeight: "300px" }}
+          style={{ height: "300px", width: "33%" }}
           className="tile"
         >
           <img
+            style={{ height: "300px" }}
             src={`data:${dog.picture.fileType};base64,${
               dog.picture.data as ArrayBuffer
             }`}
@@ -59,6 +64,37 @@ export default function ImageGrid(props: any) {
           />
         </GridListTile>
       ))}
+      {dogs.length <= 2 &&
+        dogs.length > 0 &&
+        dogs.map((dog: ILostDogWithPicture) => (
+          <GridListTile
+            key={dog.id + 1}
+            style={{ height: "300px" }}
+            className="tile"
+          >
+            <img
+              style={{ visibility: "hidden", height: "300px" }}
+              src={`data:${dog.picture.fileType};base64,${
+                dog.picture.data as ArrayBuffer
+              }`}
+            />
+          </GridListTile>
+        ))}
+      {dogs.length == 1 &&
+        dogs.map((dog: ILostDogWithPicture) => (
+          <GridListTile
+            key={dog.id + 2}
+            style={{ height: "300px" }}
+            className="tile"
+          >
+            <img
+              style={{ visibility: "hidden", height: "300px" }}
+              src={`data:${dog.picture.fileType};base64,${
+                dog.picture.data as ArrayBuffer
+              }`}
+            />
+          </GridListTile>
+        ))}
     </GridList>
   );
 }

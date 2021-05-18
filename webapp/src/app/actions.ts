@@ -2,13 +2,15 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
-import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
+import { IFilters, IFiltersAndCookies } from "../utilityComponents/utilities";
 import {
   ILoginInformation,
   ILoginResults,
   IRegisterRegularUserInformation,
-} from "../registerLogin/loginRegisterInterfaces";
-import { IFilters, IFiltersAndCookies } from "../utilityComponents/utilities";
+} from "../registerLogin/LoginRegisterInterface";
+
+/*TODO: fix any*/
 
 export const markDogAsFoundThunk = createAsyncThunk<
   RequestResponse<null, undefined>,
@@ -133,23 +135,24 @@ export const addDogThunk = createAsyncThunk<
 
 export const updateDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture, undefined>,
-  { dog: ILostDog; picture: IPicture; cookies: { [name: string]: any } },
+  { dog: ILostDog; cookies: { [name: string]: any }; picture?: IPicture },
   { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
 >(
   "UpdateDog",
   async (
     dogAndPictureAndCookies: {
       dog: ILostDog;
-      picture: IPicture;
       cookies: { [name: string]: any };
+
+      picture?: IPicture;
     },
     { rejectWithValue }
   ) => {
     const response: RequestResponse<ILostDogWithPicture, undefined> =
       await Fetching.updateDog(
         dogAndPictureAndCookies.dog,
-        dogAndPictureAndCookies.picture,
-        dogAndPictureAndCookies.cookies
+        dogAndPictureAndCookies.cookies,
+        dogAndPictureAndCookies.picture
       );
 
     if (response.response.successful !== true) {

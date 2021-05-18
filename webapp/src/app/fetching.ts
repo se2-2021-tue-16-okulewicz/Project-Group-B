@@ -2,12 +2,16 @@ import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
 import axios, { AxiosResponse } from "axios";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import {
   ILoginInformation,
   ILoginResults,
   IRegisterRegularUserInformation,
-} from "../registerLogin/loginRegisterInterfaces";
-import { IContactInfo } from "../contactInfo/contactInfoInterfaces";
+} from "../registerLogin/LoginRegisterInterface";
+import { IFilterSort, initFilterProps } from "../dogsList/filterInterface";
+import { Console } from "node:console";
+import { FilterCenterFocusSharp, FilterNone } from "@material-ui/icons";
+import { filter } from "lodash";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -67,13 +71,29 @@ export async function fetchDogs(
   filters: { [name: string]: any },
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture[], number>> {
-  const filtersString = Object.keys(filters)
-    .map((filterName) => {
-      const value = String(filters[filterName]).trim();
-      return value ? `${filterName}=${value}` : "";
-    })
-    .filter((x) => x !== "")
-    .join("&");
+  const filtersString =
+    filters === undefined
+      ? ""
+      : Object.keys(filters)
+          .map((filterName) => {
+            if (typeof filters[filterName] === "object") {
+              let sub = filters[filterName];
+              const subFilters = Object.keys(sub)
+                .map((subname) => {
+                  const name = filterName + "." + subname.split("_").join(".");
+                  const value = String(sub[subname]).trim();
+                  return value && value != "null" ? `${name}=${value}` : "";
+                })
+                .filter((x) => x !== "")
+                .join("&");
+              return subFilters ? subFilters : "";
+            } else {
+              const value = String(filters[filterName]).trim();
+              return value && value != "null" ? `${filterName}=${value}` : "";
+            }
+          })
+          .filter((x) => x !== "")
+          .join("&");
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
@@ -141,10 +161,11 @@ export async function addDog(
   );
 }
 
+/*TODO: dog update does not need a picture anymore*/
 export async function updateDog(
   dog: ILostDog,
-  picture: IPicture,
-  cookies: { [name: string]: any }
+  cookies: { [name: string]: any },
+  picture?: IPicture
 ): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
   let formData = new FormData();
 
@@ -159,11 +180,13 @@ export async function updateDog(
     }),
     ""
   );
-  formData.append(
-    "picture",
-    new Blob([picture.data], { type: picture.fileType }),
-    picture.fileName
-  );
+  if (picture) {
+    formData.append(
+      "picture",
+      new Blob([picture.data], { type: picture.fileType }),
+      picture.fileName
+    );
+  }
   return getResponse(
     axios.put(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dog.id}`,

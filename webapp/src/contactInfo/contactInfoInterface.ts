@@ -4,11 +4,12 @@ export interface IContactInfo {
   phoneNumber: string;
 }
 
-export interface ErrorInfos {
+export interface ErrorInformation {
   [name: string]: boolean;
   total: boolean;
 }
-export const initErrorInfo: ErrorInfos = {
+
+export const initErrorInfo: ErrorInformation = {
   name: false,
   email: false,
   phone: false,
