@@ -85,8 +85,7 @@ const EditDogDetails = (props: any) => {
     ? props.dogId
     : JSON.parse(sessionStorage.getItem("dogId") as string);
   const history = useHistory();
-  const classes = useStyles();
-  const [dogSession, setDogSession] = useState(false); // eslint-disable-next-line
+  const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture

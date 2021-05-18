@@ -46,10 +46,10 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "inherit",
     },
     imgFit: {
-      objectFit: "cover",
-      width: "100%",
-      height: "100%",
+      maxHeight: "90vh",
+      maxWidth:"30vw",
       borderRadius: "10px",
+      width: "auto",
     },
     mainForm: {marginLeft: "0.5%",
     marginRight: "0.5%",
