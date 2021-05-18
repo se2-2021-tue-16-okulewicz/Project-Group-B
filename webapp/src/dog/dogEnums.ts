@@ -8,7 +8,7 @@ export enum CategoryTypes {
   name = "Dog's name",
   age = "Age",
   color = "Color",
-  breed ="Breed",
+  breed = "Breed",
   location_city = "City",
   location_district = "District",
   dateLost = "Date lost",
@@ -21,7 +21,7 @@ export enum CategoryTypes {
 
 export enum OrderTypes {
   ASC = "Ascending",
-  DESC = "Descending"
+  DESC = "Descending",
 }
 
 export enum ColorTypes {

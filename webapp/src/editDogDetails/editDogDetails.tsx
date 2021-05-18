@@ -28,7 +28,11 @@ import {
   BehaviorsTypes,
   BreedTypes,
 } from "../dog/dogEnums";
-import { initLostDogProps, initLostDogWithPictureProps, initPicture } from "../dog/dogClasses";
+import {
+  initLostDogProps,
+  initLostDogWithPictureProps,
+  initPicture,
+} from "../dog/dogClasses";
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
@@ -95,30 +99,33 @@ const EditDogDetails = (props: any) => {
   const refreshRequired = useSelector(
     (state: State) => state.settingsRequireRefresh as boolean
   );
-  const [temp, setTemp] = useState<ILostDogWithPicture>(JSON.parse(sessionStorage.getItem("editDogFields") as string));
+  const [temp, setTemp] = useState<ILostDogWithPicture>(
+    JSON.parse(sessionStorage.getItem("editDogFields") as string)
+  );
   var isInputNotNull = temp !== null;
-  const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(initLostDogWithPictureProps);
+  const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(
+    initLostDogWithPictureProps
+  );
   const [picture, setPicture] = useState<IPicture>();
 
   console.log(temp);
 
   useEffect(() => {
-    if(pageRefresh){
-      if(temp && temp.id != dogId){
-          sessionStorage.removeItem("editDogFields");
-          setTemp(initLostDogWithPictureProps);
-          isInputNotNull = false;
+    if (pageRefresh) {
+      if (temp && temp.id != dogId) {
+        sessionStorage.removeItem("editDogFields");
+        setTemp(initLostDogWithPictureProps);
+        isInputNotNull = false;
       }
-      if(isInputNotNull){
+      if (isInputNotNull) {
         setEditDogFields(
           JSON.parse(sessionStorage.getItem("editDogFields") as string)
         );
-      }
-      else if(editedDog && editedDog.id == dogId){
+      } else if (editedDog && editedDog.id == dogId) {
         setEditDogFields(editedDog);
         sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
       }
-      if(!editedDog || (editedDog && editedDog.id != dogId)){
+      if (!editedDog || (editedDog && editedDog.id != dogId)) {
         store.dispatch(
           Actions.fetchOneDogThunk({
             id: dogId as number,
@@ -126,7 +133,7 @@ const EditDogDetails = (props: any) => {
           })
         );
       }
-      if(!picture && editedDog && editedDog.picture){
+      if (!picture && editedDog && editedDog.picture) {
         const blob = base64StringToBlob(
           editedDog.picture.data as string,
           editedDog.picture.fileType
@@ -143,7 +150,7 @@ const EditDogDetails = (props: any) => {
       setPageRefresh(false);
     }
   }, [pageRefresh]);
-  
+
   useEffect(() => {
     if (!pageRefresh && editedDog ) {
       if (!temp || (temp && temp.id != dogId)){
@@ -153,20 +160,20 @@ const EditDogDetails = (props: any) => {
       );
       setEditDogFields(editedDog as ILostDogWithPicture);}
     }
-      if(!picture && editedDog && editedDog.picture){
-        const blob = base64StringToBlob(
-          editedDog.picture.data as string,
-          editedDog.picture.fileType
-        );
-        (blob as File).arrayBuffer().then((fileBuffer) => {
-          setPicture({
-            id: 0,
-            fileName: editedDog.picture.fileName, //event.name,
-            fileType: editedDog.picture.fileType,
-            data: fileBuffer,
-          } as IPicture);
-        });
-      }
+    if (!picture && editedDog && editedDog.picture) {
+      const blob = base64StringToBlob(
+        editedDog.picture.data as string,
+        editedDog.picture.fileType
+      );
+      (blob as File).arrayBuffer().then((fileBuffer) => {
+        setPicture({
+          id: 0,
+          fileName: editedDog.picture.fileName, //event.name,
+          fileType: editedDog.picture.fileType,
+          data: fileBuffer,
+        } as IPicture);
+      });
+    }
   }, [editedDog]);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
@@ -258,7 +265,7 @@ const EditDogDetails = (props: any) => {
         Actions.updateDogThunk({
           dog: dog,
           cookies: cookies,
-          picture: picture
+          picture: picture,
         }) //filters
       );
     }
