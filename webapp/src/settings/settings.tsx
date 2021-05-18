@@ -113,7 +113,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       alignSelf: "center",
       display: "flex",
-      height:"15vh"
+      height: "15vh",
     },
     title: {
       color: "black",
