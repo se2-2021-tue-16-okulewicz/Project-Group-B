@@ -109,14 +109,22 @@ export default function Login() {
       setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
-      history.push("/listDogs");
+      if(cookies[config.cookies.userType]=="Shelter"){
+        history.push("/shelter")
+      }
+      else{
+      history.push("/listDogs");}
     } // eslint-disable-next-line
   }, [loginInfo]);
 
   //THIS makes the web app skip the log in
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
-      history.push("/listDogs");
+      if(cookies[config.cookies.userType]=="Shelter"){
+        history.push("/shelter")
+      }
+      else{
+      history.push("/listDogs");}
     } // eslint-disable-next-line
   }, []);
 

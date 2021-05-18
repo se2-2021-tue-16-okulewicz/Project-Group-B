@@ -29,6 +29,7 @@ import Settings from "./settings/settings";
 import EditDogDetails from "./editDogDetails/editDogDetails";
 import EditContactInfo from "./contactInfo/editContactInformation";
 import DogDetails from "./dogDetails/dogDetails";
+import ShelterListWithDogs from "./dogsShelterList/shelterListWithDogs";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -118,6 +119,12 @@ function Layout() {
         <Route path="/info/edit">
           <EditContactInfo />
           <Footer />
+        </Route>
+        <Route path="/shelter">
+            <ShelterListWithDogs   
+            redirectToDogDetailsOrEdit={(id: number) =>
+              redirectToDogDetails(id)
+            }/>
         </Route>
         <Route path="/listDogs">
           <ListWithDogs

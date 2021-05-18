@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
+import { ILostDog, ILostDogWithPicture, IPicture, IShelterDog } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
@@ -213,6 +213,35 @@ export const fetchDogsThunk = createAsyncThunk<
   }
 
   return response as RequestResponse<ILostDogWithPicture[], number>;
+});
+
+export const fetchShelterDogsThunk = createAsyncThunk<
+RequestResponse<IShelterDog[], Number>,
+{ shelterId: number; cookies: { [name: string]: any } },
+{ rejectValue: RequestResponse<IShelterDog[], Number> }
+>(
+"fetchShelterDogs",
+async (
+  userAndCookies: {
+    shelterId: number;
+    cookies: { [name: string]: any };
+  },
+  { rejectWithValue }
+) => {
+  const response: RequestResponse<IShelterDog[], Number> =
+    await Fetching.fetchShelterDogs(
+      userAndCookies.shelterId,
+      userAndCookies.cookies
+    );
+
+
+  if (response.response.successful !== true) {
+    return rejectWithValue(
+      response as RequestResponse<IShelterDog[], number>
+    );
+  }
+
+  return response as RequestResponse<IShelterDog[], number>;
 });
 
 export const fetchOneDogThunk = createAsyncThunk<

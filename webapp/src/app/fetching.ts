@@ -1,4 +1,4 @@
-import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
+import { ILostDog, IPicture, ILostDogWithPicture, IShelterDog } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
 import axios, { AxiosResponse } from "axios";
@@ -65,6 +65,22 @@ async function getResponse<T, K>(
       response: response_1.data as APIResponse<T, K>,
     };
   }
+}
+
+export async function fetchShelterDogs(
+  shelterId: number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<IShelterDog[], Number>> {
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs`,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+        },
+      }
+    )
+  );
 }
 
 export async function fetchDogs(
