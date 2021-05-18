@@ -108,7 +108,7 @@ const EditDogDetails = (props: any) => {
   );
   const [picture, setPicture] = useState<IPicture>();
 
-  console.log(temp);
+  //console.log(temp);
 
   useEffect(() => {
     if (pageRefresh) {
