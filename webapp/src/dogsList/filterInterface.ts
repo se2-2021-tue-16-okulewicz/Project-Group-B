@@ -10,7 +10,6 @@ import {
 } from "../dog/dogEnums";
 import { IFilters } from "../utilityComponents/utilities";
 
-
 /*export interface IFilterSort {
   page?: number;
   size?: number;
@@ -33,25 +32,24 @@ import { IFilters } from "../utilityComponents/utilities";
   isFound?: boolean;}
 }*/
 
-
 export interface IFilterSort {
   page?: number;
   size?: number;
   sort?: string;
-  filter? : filterTypes;
+  filter?: filterTypes;
 }
 
 export interface IFilterSorts {
   page?: number;
   size?: number;
   sort?: string;
-  filter? : {
-    ["ownerId"]:number,
-
-  }
+  filter?: {
+    ["ownerId"]: number;
+  };
 }
 
-type filterTypes = {ownerId?: number;
+type filterTypes = {
+  ownerId?: number;
   name?: string;
   breed?: BreedTypes | "";
   ageFrom?: number;
@@ -61,19 +59,21 @@ type filterTypes = {ownerId?: number;
   dateLostAfter?: Date | null;
   dateLostBefore?: Date | null;
   location_city?: string;
-  location_district?:string;//{ city?: string; district?: string };
-  isFound?:boolean;}
+  location_district?: string; //{ city?: string; district?: string };
+  isFound?: boolean;
+};
 
 export const initFilterProps: IFilterSort = {
-  sort:"dateLost, DESC",
-  filter:{
-  name: "",
-  breed: "",
-  color: "",
-  size: "",
-  location_city:"",
-  location_district:"",
-  dateLostAfter: null,
-  dateLostBefore: null,
-  isFound: false,}
+  sort: "dateLost, DESC",
+  filter: {
+    name: "",
+    breed: "",
+    color: "",
+    size: "",
+    location_city: "",
+    location_district: "",
+    dateLostAfter: null,
+    dateLostBefore: null,
+    isFound: false,
+  },
 };

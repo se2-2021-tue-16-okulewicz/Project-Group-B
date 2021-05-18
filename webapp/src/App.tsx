@@ -120,9 +120,11 @@ function Layout() {
           <Footer />
         </Route>
         <Route path="/listDogs">
-          <ListWithDogs redirectToDogDetailsOrEdit={(id: number) =>
+          <ListWithDogs
+            redirectToDogDetailsOrEdit={(id: number) =>
               redirectToDogDetails(id)
-            }/>
+            }
+          />
         </Route>
         <Route path="/settings">
           <Settings

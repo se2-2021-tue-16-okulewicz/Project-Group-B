@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 export default function ImageGrid(props: any) {
   const dogs = props.dogs as ILostDogWithPicture[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  console.log(dogs?dogs.length:"");
+  console.log(dogs ? dogs.length : "");
   const redirectToDogDetailsOrEdit = (id: number) => {
     store.dispatch(
       fetchOneDogThunk({
@@ -25,15 +25,15 @@ export default function ImageGrid(props: any) {
   };
 
   return (
-    <GridList cols={3} spacing={2} style={{margin:"0", width:"100%", display:"flex",}}>
+    <GridList
+      cols={3}
+      spacing={2}
+      style={{ margin: "0", width: "100%", display: "flex" }}
+    >
       {dogs.map((dog: ILostDogWithPicture) => (
-        <GridListTile
-          key={dog.id}
-          style={{ height:"300px"}}
-          className="tile"
-        >
+        <GridListTile key={dog.id} style={{ height: "300px" }} className="tile">
           <img
-          style={{ height:"300px"}}
+            style={{ height: "300px" }}
             src={`data:${dog.picture.fileType};base64,${
               dog.picture.data as ArrayBuffer
             }`}
@@ -60,27 +60,38 @@ export default function ImageGrid(props: any) {
             }
           />
         </GridListTile>
-      ))}      
-            {dogs.length <= 2 && dogs.length>0 && dogs.map((dog: ILostDogWithPicture) => (
-        <GridListTile
-          key={dog.id+1}
-          style={{ height:"300px" }}
-          className="tile"
-        ><img style={{visibility:"hidden"}}
-        src={`data:${dog.picture.fileType};base64,${
-          dog.picture.data as ArrayBuffer
-        }`}
-      /></GridListTile> ))}
-        {dogs.length == 1 && dogs.map((dog: ILostDogWithPicture) => (
-        <GridListTile
-          key={dog.id+2}
-          style={{ height:"300px" }}
-          className="tile"
-        ><img style={{visibility:"hidden"}}
-        src={`data:${dog.picture.fileType};base64,${
-          dog.picture.data as ArrayBuffer
-        }`}
-      /></GridListTile> ))}
+      ))}
+      {dogs.length <= 2 &&
+        dogs.length > 0 &&
+        dogs.map((dog: ILostDogWithPicture) => (
+          <GridListTile
+            key={dog.id + 1}
+            style={{ height: "300px" }}
+            className="tile"
+          >
+            <img
+              style={{ visibility: "hidden" }}
+              src={`data:${dog.picture.fileType};base64,${
+                dog.picture.data as ArrayBuffer
+              }`}
+            />
+          </GridListTile>
+        ))}
+      {dogs.length == 1 &&
+        dogs.map((dog: ILostDogWithPicture) => (
+          <GridListTile
+            key={dog.id + 2}
+            style={{ height: "300px" }}
+            className="tile"
+          >
+            <img
+              style={{ visibility: "hidden" }}
+              src={`data:${dog.picture.fileType};base64,${
+                dog.picture.data as ArrayBuffer
+              }`}
+            />
+          </GridListTile>
+        ))}
     </GridList>
   );
 }

@@ -1,6 +1,11 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { BottomNavigation, BottomNavigationAction, Drawer, Grid } from "@material-ui/core";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Drawer,
+  Grid,
+} from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
@@ -83,14 +88,14 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       left: 0,
       right: 0,
-      height:"15vh"
+      height: "15vh",
       //width:"100vw",
     },
     title: {
       color: "black",
       fontSize: "1.75em",
       fontFamily: "Comfortaa",
-      fontWeight: "normal"
+      fontWeight: "normal",
     },
     cardContent: {
       justifyContent: "center",
@@ -100,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: "aliceblue",
     },
     action: {
-      color: "black"
+      color: "black",
     },
     main: {
       justifyContent: "center",
@@ -114,7 +119,7 @@ const useStyles = makeStyles((theme: Theme) =>
     drawer: {
       width: 250,
       flexShrink: 0,
-    }
+    },
   })
 );
 
@@ -123,18 +128,17 @@ scheme.configureHeader((builder) => {
     .registerConfig("xs", {
       position: "fixed",
       initialHeight: "10%", // won't stick to top when scroll down
-      clipped: true
+      clipped: true,
     })
     .registerConfig("sm", {
       position: "fixed",
       initialHeight: "10%", // won't stick to top when scroll down
-      clipped: true
+      clipped: true,
     })
     .registerConfig("md", {
       position: "fixed",
       initialHeight: "10%",
-      clipped: true
-
+      clipped: true,
     });
 });
 
@@ -158,14 +162,13 @@ export default function ListWithDogs(props: any) {
   const [filters, setFilters] = useState<IFilterSort>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    filter: { isFound: false, }
+    filter: { isFound: false },
   });
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
   const classes = useStyles();
   const { path } = useRouteMatch();
-
 
   const onRegisterClicked = () => {
     store.dispatch(clearDogList());
@@ -198,7 +201,7 @@ export default function ListWithDogs(props: any) {
       setIsUpdateFilters(true);
       //setMenuCollapsed(true);
     }
-  }
+  };
 
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
@@ -247,7 +250,7 @@ export default function ListWithDogs(props: any) {
           Actions.fetchDogsThunk({
             filters: {
               ...filters,
-              page: filters.page
+              page: filters.page,
             },
             cookies: cookies,
           }) //filters
@@ -268,24 +271,35 @@ export default function ListWithDogs(props: any) {
     <Root scheme={scheme}>
       <CssBaseline />
       <Header className={classes.header} id="header">
-        <Grid container direction="row" alignContent="space-between" >
+        <Grid container direction="row" alignContent="space-between">
           <Grid item xs={3}>
             <BottomNavigation showLabels />
           </Grid>
           <Grid item xs={6}>
             <BottomNavigation showLabels>
-              <BottomNavigationAction disabled={true} label="LOST DOGS" classes={{ label: classes.title }} />
+              <BottomNavigationAction
+                disabled={true}
+                label="LOST DOGS"
+                classes={{ label: classes.title }}
+              />
             </BottomNavigation>
           </Grid>
           <Grid item xs={3}>
             <BottomNavigation showLabels style={{ height: "100%" }}>
-              <BottomNavigationAction showLabel={true} onClick={onRegisterClicked} label="Register" classes={{ label: classes.action, root: classes.action }} icon={<Pets />} />
+              <BottomNavigationAction
+                showLabel={true}
+                onClick={onRegisterClicked}
+                label="Register"
+                classes={{ label: classes.action, root: classes.action }}
+                icon={<Pets />}
+              />
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
                 onClick={onSettingsClicked}
                 label="Settings"
-                icon={<Settings />} />
+                icon={<Settings />}
+              />
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
@@ -294,32 +308,39 @@ export default function ListWithDogs(props: any) {
                   setMenuCollapsed(!isMenuCollapsed);
                   //sidebar.setOpen("unique_id", true);
                 }}
-                icon={<Search />} />
+                icon={<Search />}
+              />
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
                 disabled={cookies["userType"] === undefined}
                 label="Logout"
                 onClick={onLogOutClicked}
-                icon={<ExitToApp />} />
+                icon={<ExitToApp />}
+              />
             </BottomNavigation>
           </Grid>
-
         </Grid>
-
       </Header>
-      {
-        !isMenuCollapsed && (
-          <Drawer variant="persistent" BackdropProps={{ invisible: true }} /*onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
-        onBackdropClick={()=>{setMenuCollapsed(true)}}*/ open={!isMenuCollapsed} className={classes.drawer}>
-            <Toolbar />
-            {<FilterForm
+      {!isMenuCollapsed && (
+        <Drawer
+          variant="persistent"
+          BackdropProps={{ invisible: true }}
+          /*onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
+        onBackdropClick={()=>{setMenuCollapsed(true)}}*/ open={!isMenuCollapsed}
+          className={classes.drawer}
+        >
+          <Toolbar />
+          {
+            <FilterForm
               filters={filters}
               updateFilters={(
                 updatedFilters: React.ChangeEvent<{ value: unknown }>
-              ) => updateFilters(updatedFilters)} />}
-          </Drawer>)
-      }
+              ) => updateFilters(updatedFilters)}
+            />
+          }
+        </Drawer>
+      )}
       <Content>
         <InfiniteScroll
           dataLength={dogs.length}
@@ -327,8 +348,7 @@ export default function ListWithDogs(props: any) {
           next={fetchMore}
           hasMore={!lastPage && !fetching}
           loader={
-            (displayLoader && <LoadingPopup />) ||
-            (!displayLoader && <></>)
+            (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
           }
         >
           <Toolbar />
@@ -340,9 +360,10 @@ export default function ListWithDogs(props: any) {
             }
           />
         </InfiniteScroll>
-        {!displayLoader && !refreshRequired &&
-          (<Footer position={(dogs.length > 3) ? "list" : "footer"} />)}
+        {!displayLoader && !refreshRequired && (
+          <Footer position={dogs.length > 3 ? "list" : "footer"} />
+        )}
       </Content>
-    </Root >
+    </Root>
   );
 }

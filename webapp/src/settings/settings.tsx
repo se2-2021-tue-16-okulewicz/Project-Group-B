@@ -1,6 +1,12 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { BottomNavigation, BottomNavigationAction, Divider, Grid, MenuItem } from "@material-ui/core";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Divider,
+  Grid,
+  MenuItem,
+} from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useRouteMatch, useHistory } from "react-router-dom";
@@ -102,7 +108,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignSelf: "center",
     },
     header: {
-      backgroundColor:"white",
+      backgroundColor: "white",
       justifyContent: "center",
       alignItems: "center",
       alignSelf: "center",
@@ -112,7 +118,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "black",
       fontSize: "1.75em",
       fontFamily: "Comfortaa",
-      fontWeight:"normal"
+      fontWeight: "normal",
     },
   })
 );
@@ -129,8 +135,7 @@ scheme.configureHeader((builder) => {
     })
     .registerConfig("sm", {
       position: "absolute", // won't stick to top when scroll down
-      initialHeight:"8%"
-      
+      initialHeight: "8%",
     });
 });
 
@@ -153,9 +158,7 @@ scheme.configureEdgeSidebar((builder) => {
 
 export default function Settings(props: any) {
   const [displayLoader, setDisplayLoader] = useState(true);
-  const loading = useSelector(
-    (state: State) => state.loading as boolean
-  );
+  const loading = useSelector((state: State) => state.loading as boolean);
   //const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
@@ -182,9 +185,9 @@ export default function Settings(props: any) {
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    filter:{
+    filter: {
       ownerId: Number.parseInt(cookies[config.cookies.userId]),
-    }
+    },
   });
   function clearStorage() {
     sessionStorage.removeItem("dogId");
@@ -222,8 +225,6 @@ export default function Settings(props: any) {
     } // eslint-disable-next-line
   }, [pageRefresh]);
 
- 
-
   // fetch and append page 0
   useEffect(() => {
     if (refreshRequired && !lastPage) {
@@ -252,7 +253,7 @@ export default function Settings(props: any) {
     }
     // eslint-disable-next-line
   }, [refreshRequired]);
-  
+
   const fetchMore = () => {
     try {
       store.dispatch(
@@ -265,9 +266,9 @@ export default function Settings(props: any) {
         }) //filters
       );
     } catch (err) {
-        console.error("Failed to fetch the dogs: ", err);
+      console.error("Failed to fetch the dogs: ", err);
     } finally {
-      if(filters.page){
+      if (filters.page) {
         setFilters({ ...filters, page: filters.page + 1 });
       }
     }
@@ -284,7 +285,11 @@ export default function Settings(props: any) {
       <CssBaseline />
       <Header className={classes.header}>
         <BottomNavigation showLabels>
-          <BottomNavigationAction disabled={true} label="SETTINGS" classes={{label:classes.title}}/>
+          <BottomNavigationAction
+            disabled={true}
+            label="SETTINGS"
+            classes={{ label: classes.title }}
+          />
         </BottomNavigation>
       </Header>
       <DrawerSidebar sidebarId="unique_id">
@@ -373,7 +378,8 @@ export default function Settings(props: any) {
             next={fetchMore}
             hasMore={!lastPage}
             loader={
-              ((displayLoader || loading) && <LoadingPopup />) || (!displayLoader && <></>)
+              ((displayLoader || loading) && <LoadingPopup />) ||
+              (!displayLoader && <></>)
             }
           >
             <ImageGrid

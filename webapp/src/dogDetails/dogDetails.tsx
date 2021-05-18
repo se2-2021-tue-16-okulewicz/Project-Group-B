@@ -47,13 +47,14 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     imgFit: {
       maxHeight: "90vh",
-      maxWidth:"30vw",
+      maxWidth: "30vw",
       borderRadius: "10px",
       width: "auto",
     },
-    mainForm: {marginLeft: "0.5%",
-    marginRight: "0.5%",
-    //marginTop: "0.009%",
+    mainForm: {
+      marginLeft: "0.5%",
+      marginRight: "0.5%",
+      //marginTop: "0.009%",
     },
   })
 );
