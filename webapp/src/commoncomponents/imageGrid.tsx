@@ -13,6 +13,7 @@ import { useCookies } from "react-cookie";
 export default function ImageGrid(props: any) {
   const dogs = props.dogs as ILostDogWithPicture[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
+  console.log(dogs?dogs.length:"");
   const redirectToDogDetailsOrEdit = (id: number) => {
     store.dispatch(
       fetchOneDogThunk({

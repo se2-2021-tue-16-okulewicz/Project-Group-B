@@ -144,7 +144,6 @@ export default function FilterForm(props: any) {
 
   return (
     <Grid container direction="column" justify="center" alignItems="center" spacing={2} className={classes.main}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <SelectFormControl name="sort" value={sort} options={CategoryTypes} class={classes.formControl} updateForm={(
           updatedInput: React.ChangeEvent<{ name?: string, value: string }>) => setSort(updatedInput.target.value as string)} />
         <SelectFormControl name="direction" value={order} options={OrderTypes} class={classes.formControl} updateForm={(
@@ -236,7 +235,6 @@ export default function FilterForm(props: any) {
             Filter
           </Button>
         </FormControl>
-      </MuiPickersUtilsProvider>
     </Grid>
   );
 }

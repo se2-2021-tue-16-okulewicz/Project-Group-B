@@ -83,6 +83,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       left: 0,
       right: 0,
+      height:"15vh"
       //width:"100vw",
     },
     title: {
@@ -192,6 +193,7 @@ export default function ListWithDogs(props: any) {
   //clears dog list, when page is refreshed or changed
   const updateFilters = (event: any) => {
     if (event) {
+      setFilters(event);
       store.dispatch(clearDogList());
       setIsUpdateFilters(true);
       //setMenuCollapsed(true);

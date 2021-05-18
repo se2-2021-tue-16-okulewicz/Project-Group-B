@@ -1,7 +1,8 @@
 import { FormControl, TextField, InputLabel, Select } from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import React, { useState } from "react";
+import DateFnsUtils from "@date-io/date-fns";
 
 //only string, issue with debouncing
 export const InputFormControl = (props: any) => {
@@ -38,6 +39,7 @@ export const DateFormControl = (props: any) => {
         props.updateForm(date, name);
     }
     return (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <FormControl variant="outlined" className={props.class} margin="dense">
             <DatePicker
                 variant="dialog"
@@ -55,6 +57,7 @@ export const DateFormControl = (props: any) => {
                 onAbort={(date: any) => updateForm(new Date(1900, 1, 1, 0, 0, 0, 0), props.name)}
             />
         </FormControl>
+        </MuiPickersUtilsProvider>
     );
 }
 //(date: any) => calendarHandler(date, "dateLostBefore")
