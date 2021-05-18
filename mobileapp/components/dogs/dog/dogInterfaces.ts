@@ -14,14 +14,6 @@ export interface IPicture {
   fileName: string;
   fileType: string;
   data: ArrayBuffer;
-  //data: string;
-}
-
-export interface Picture {
-  id: number;
-  fileName: string;
-  fileType: string;
-  data: string;
 }
 
 export interface IDog {
@@ -41,36 +33,11 @@ export interface IDog {
 }
 
 export interface ILostDog extends IDog {
-  dateLost: string | null;
+  dateLost: Date | null;
   isFound: boolean;
   ownerId: number;
 }
 
-export interface IImage {
-  id: number;
-  fileName: string;
-  fileType: string;
-  uri: string;
-}
-
 export interface ILostDogWithPicture extends ILostDog {
   picture: IPicture;
-}
-
-export interface IDogCharacteristics {
-  name: string;
-  breed: BreedTypes | "";
-  age: number;
-  hairLength: HairTypes | "";
-  color: ColorTypes | "";
-  size: SizeTypes | "";
-  earsType: EarsTypes | "";
-  tailLength: TailTypes | "";
-  specialMark: SpecialMarkTypes | "";
-  behaviors: BehaviorsTypes[];
-}
-
-export interface IDogDetails {
-  dateLost: string;
-  location: { city: string; district: string };
 }

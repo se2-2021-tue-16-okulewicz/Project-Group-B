@@ -3,25 +3,8 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
 import { ILoginResults } from "../components/loginRegisterInterfaces";
-import {
-  IDogCharacteristics,
-  IDogDetails,
-  ILostDogWithPicture,
-  IPicture,
-  Picture,
-} from "../components/dogs/dog/dogInterfaces";
+import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
 import config from "../config/config";
-import {
-  genericCharacteristics,
-  genericDogDetails,
-  genericPicture,
-  initDogDetails,
-  initLostDogCharacteristics,
-  initPic,
-  initPicture,
-} from "../components/dogs/dog/dogClasses";
-import { SpecialMarkTypes } from "../components/dogs/dog/dogArrays";
-import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
 
 export type Error = {
   hasError: boolean;
@@ -38,12 +21,6 @@ export type State = {
   loading: boolean;
   error: Error;
   loginInformation: ILoginResults | null;
-  image: string;
-  dogCharacteristics: IDogCharacteristics | any;
-  dogDetails: IDogDetails;
-  dogBehaviours: BehaviorsTypes[];
-  //currentDog: ILostDogWithPicture | null;
-  picture: Picture;
 };
 
 const init: State = {
@@ -59,21 +36,15 @@ const init: State = {
     erorMessage: "",
   },
   loginInformation: null,
-  image: "",
-  dogCharacteristics: initLostDogCharacteristics,
-  dogDetails: initDogDetails,
-  dogBehaviours: [],
-  picture: initPic,
 };
 
 export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
-    console.log("log info cleared");
+    console.log("clear login info");
     return newState;
   },
-
   [Actions.incorrectUserType.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
@@ -81,95 +52,6 @@ export const reducer = createReducer(init, {
     newState.error.errorCode = 1;
     newState.error.erorMessage =
       "Mobile application is not available for admins or shelter managers";
-    return newState;
-  },
-
-  [Actions.setImage.type]: (state: State, payload: PayloadAction<string>) => {
-    let newState = _.cloneDeep(state);
-    newState.image = payload.payload;
-    //console.log(newState.image);
-    return newState;
-  },
-
-  [Actions.setPicture.type]: (
-    state: State,
-    payload: PayloadAction<Picture>
-  ) => {
-    let newState = _.cloneDeep(state);
-    newState.picture = payload.payload;
-    // console.log("object: " + payload.payload.fileName + " " + payload.payload.fileType)
-    //console.log(newState.image);
-    return newState;
-  },
-
-  [Actions.setDogCharacteristics.type]: (
-    state: State,
-    payload: PayloadAction<IDogCharacteristics>
-  ) => {
-    let newState = _.cloneDeep(state);
-    newState.dogCharacteristics = payload.payload;
-    //newState.currentDog?.picture = payload.payload;
-    //newState.picture = payload.payload;
-    //console.log(newState.image);
-    return newState;
-  },
-
-  [Actions.setDogDetails.type]: (
-    state: State,
-    payload: PayloadAction<IDogDetails>
-  ) => {
-    let newState = _.cloneDeep(state);
-    newState.dogDetails = payload.payload;
-    //newState.currentDog?.picture = payload.payload;
-    //newState.picture = payload.payload;
-    //console.log(newState.image);
-    return newState;
-  },
-
-  [Actions.setDogBehaviours.type]: (
-    state: State,
-    payload: PayloadAction<BehaviorsTypes[]>
-  ) => {
-    let newState = _.cloneDeep(state);
-    newState.dogBehaviours = payload.payload;
-    //newState.currentDog?.picture = payload.payload;
-    //newState.picture = payload.payload;
-    //console.log(newState.image);
-    return newState;
-  },
-
-  [Actions.addDogThunk.fulfilled.toString()]: (
-    state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
-  ) => {
-    let newState = _.cloneDeep(state);
-    newState.loading = false;
-    newState.dogsRequireRefresh = true;
-    return newState;
-  },
-  [Actions.addDogThunk.pending.toString()]: (
-    state: State,
-    payload: PayloadAction<RequestResponse<null, undefined>>
-  ) => {
-    let newState = _.cloneDeep(state);
-    //newState.dogs = [];
-    //newState.loading = true;
-    return newState;
-  },
-  [Actions.addDogThunk.rejected.toString()]: (
-    state: State,
-    payload: PayloadAction<RequestResponse<null, undefined>>
-  ) => {
-    // console.log("rejected: " + payload.payload.response.message);
-    let newState = _.cloneDeep(state);
-    let errorResponse = payload.payload;
-    newState.loading = false;
-    newState.error = {
-      hasError: true,
-      errorCode: errorResponse.code,
-      erorMessage: errorResponse.response.message,
-    };
-
     return newState;
   },
 
@@ -317,7 +199,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.registerRegularUserThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILoginResults, undefined>>
+    payload: PayloadAction<RequestResponse<null>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.status = "redirectToDogs";
@@ -327,7 +209,7 @@ export const reducer = createReducer(init, {
   },
   [Actions.registerRegularUserThunk.rejected.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILoginResults, undefined>>
+    payload: PayloadAction<RequestResponse<null>>
   ) => {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;

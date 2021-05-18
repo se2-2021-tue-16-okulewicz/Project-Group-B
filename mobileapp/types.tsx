@@ -1,18 +1,13 @@
-import AddDogScreen from "./screens/AddDogScreen";
-import DogsScreen from "./screens/DogsScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-
 export type RootStackParamList = {
-  Root: any;
+  Root: undefined;
   NotFound: undefined;
   LogInRegister: any;
   DogsList: any;
 };
 
 export type BottomTabParamList = {
-  Dogs: { screen: DogsScreen };
-  AddDog: { screen: AddDogScreen };
-  Profile: { screen: ProfileScreen };
+  TabOne: undefined;
+  TabTwo: undefined;
 };
 
 export type TabOneParamList = {

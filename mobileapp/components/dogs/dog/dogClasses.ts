@@ -1,42 +1,10 @@
-import {
-  BehaviorsTypes,
-  BreedTypes,
-  ColorTypes,
-  EarsTypes,
-  HairTypes,
-  SizeTypes,
-  SpecialMarkTypes,
-  TailTypes,
-} from "./dogEnums";
-import {
-  IDogCharacteristics,
-  IDogDetails,
-  ILostDog,
-  IPicture,
-  Picture,
-} from "./dogInterfaces";
+import { ILostDog, IPicture } from "./dogInterfaces";
 
 export const initPicture: IPicture = {
   id: 0,
   fileName: "",
   fileType: "",
   data: new ArrayBuffer(8),
-  //data: ""
-};
-
-export const genericPicture: IPicture = {
-  id: 0,
-  fileName: "upload.jpg",
-  fileType: "image/jpg",
-  data: new ArrayBuffer(8),
-  //data: ""
-};
-
-export const initPic: Picture = {
-  id: 0,
-  fileName: "",
-  fileType: "",
-  data: "",
 };
 
 export const initLostDogProps: ILostDog = {
@@ -51,44 +19,9 @@ export const initLostDogProps: ILostDog = {
   size: "",
   earsType: "",
   tailLength: "",
-  specialMark: "",
+  specialMarks: "",
   behaviors: [],
   location: { city: "", district: "" },
-  dateLost: "",
+  dateLost: new Date(2012, 1, 1, 0, 0, 0, 0),
   isFound: false,
-};
-
-export const initLostDogCharacteristics: IDogCharacteristics = {
-  name: "",
-  breed: "",
-  age: 0,
-  hairLength: "",
-  color: "",
-  size: "",
-  earsType: "",
-  tailLength: "",
-  specialMark: "",
-  behaviors: [],
-};
-export const genericCharacteristics: IDogCharacteristics = {
-  name: "Amigo",
-  breed: "Labrador",
-  age: 0,
-  hairLength: "Medium",
-  color: "Cream",
-  size: "Medium",
-  earsType: "Hanging",
-  tailLength: "Long",
-  specialMark: "None",
-  behaviors: ["Energetic", "Friendly"],
-};
-
-export const initDogDetails: IDogDetails = {
-  dateLost: new Date().toISOString(),
-  location: { city: "", district: "" },
-};
-
-export const genericDogDetails: IDogDetails = {
-  dateLost: new Date().toISOString(),
-  location: { city: "Warsaw", district: "Mokotow" },
 };

@@ -5,16 +5,16 @@ export enum BreedTypes {
 }
 
 export enum ColorTypes {
-  Black = "Black",
-  White = "White",
-  Brown = "Brown",
-  Ginger = "Ginger",
-  Gold = "Gold",
-  Blue = "Blue",
-  Gray = "Gray",
-  Cream = "Cream",
-  Yellow = "Yellow",
-  Other = "Other",
+  "Black",
+  "White",
+  "Brown",
+  "Ginger",
+  "Gold",
+  "Blue",
+  "Gray",
+  "Cream",
+  "Yellow",
+  "Other",
 }
 
 export enum HairTypes {
@@ -56,5 +56,4 @@ export enum BehaviorsTypes {
   "Shy",
   "Energetic",
   "Friendly",
-  "Other",
 }
