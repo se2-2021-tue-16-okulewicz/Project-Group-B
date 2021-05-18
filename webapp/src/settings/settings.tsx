@@ -1,6 +1,6 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Divider, Grid, MenuItem } from "@material-ui/core";
+import { BottomNavigation, BottomNavigationAction, Divider, Grid, MenuItem } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useRouteMatch, useHistory } from "react-router-dom";
@@ -103,14 +103,16 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     header: {
       backgroundColor:"white",
-      color: "black",
-      fontSize: "2em",
-      fontFamily: "Roboto",
       justifyContent: "center",
       alignItems: "center",
       alignSelf: "center",
       display: "flex",
-      
+    },
+    title: {
+      color: "black",
+      fontSize: "1.75em",
+      fontFamily: "Comfortaa",
+      fontWeight:"normal"
     },
   })
 );
@@ -187,6 +189,7 @@ export default function Settings(props: any) {
   function clearStorage() {
     sessionStorage.removeItem("dogId");
     //sessionStorage.removeItem("listFetched");
+    sessionStorage.removeItem("editDogFields");
     sessionStorage.removeItem("listVisible");
     sessionStorage.clear();
   }
@@ -223,9 +226,7 @@ export default function Settings(props: any) {
 
   // fetch and append page 0
   useEffect(() => {
-    console.log(refreshRequired);
     if (refreshRequired && !lastPage) {
-      console.log(filters);
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -251,50 +252,7 @@ export default function Settings(props: any) {
     }
     // eslint-disable-next-line
   }, [refreshRequired]);
-
-  //fetch more
-  /*useEffect(() => {
-    if (!refreshRequired && !lastPage && !listFetched) {
-      try {
-        store.dispatch(
-          Actions.fetchDogsThunk({
-            filters: {
-              ...filters,
-              page: filters.page,
-            },
-            cookies: cookies,
-          }) //filters
-        );
-        store.dispatch(
-          Actions.fetchContactInfoThunk({
-            userId: cookies[config.cookies.userId],
-            cookies: cookies,
-          })
-        );
-      } catch (err) {
-        console.error("Failed to fetch the dogs: ", err);
-      } finally {
-        setFilters({ ...filters, page: filters.page + 1 });
-        setPageRefresh(false);
-      }
-    } // eslint-disable-next-line
-  }, [refreshRequired, lastPage, pages]);
-
-  //filter
-  useEffect(() => {
-    if (!refreshRequired && lastPage && !listFetched) {
-      let tmp = dogs;
-      let addDogs = tmp.filter(
-        (dog: ILostDogWithPicture) =>
-          dog.ownerId === Number.parseInt(cookies[config.cookies.userId])
-      );
-      setFilteredDogs(addDogs);
-      setDisplayedDogs(addDogs.slice(0, filters.size));
-      setListFetched(true);
-      setPageRefresh(false);
-    } // eslint-disable-next-line
-  }, [refreshRequired, lastPage]);
-*/
+  
   const fetchMore = () => {
     try {
       store.dispatch(
@@ -316,6 +274,8 @@ export default function Settings(props: any) {
   };
 
   function redirectToDogDetailsOrEdit(id: number) {
+    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    sessionStorage.removeItem("editDogFields");
     props.redirectToDogDetailsOrEdit(id);
   }
 
@@ -323,10 +283,9 @@ export default function Settings(props: any) {
     <Root scheme={scheme}>
       <CssBaseline />
       <Header className={classes.header}>
-        <Toolbar>
-          <SidebarTrigger sidebarId="unique_id" />
-          Settings
-        </Toolbar>
+        <BottomNavigation showLabels>
+          <BottomNavigationAction disabled={true} label="SETTINGS" classes={{label:classes.title}}/>
+        </BottomNavigation>
       </Header>
       <DrawerSidebar sidebarId="unique_id">
         <CollapseBtn />

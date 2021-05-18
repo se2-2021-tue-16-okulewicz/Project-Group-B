@@ -30,12 +30,10 @@ export const InputFormControl = (props: any) => {
 
 export const DateFormControl = (props: any) => {
     const [selectedValue, setSelectedValue] = useState(props.value ? props.value : null);
-    console.log(selectedValue);
     if(selectedValue == null && props.value != null){
         props.updateForm(selectedValue,props.name);
     }
     function updateForm(date: MaterialUiPickersDate, name: string): void {
-        console.log(selectedValue);
         setSelectedValue(date as Date);
         props.updateForm(date, name);
     }

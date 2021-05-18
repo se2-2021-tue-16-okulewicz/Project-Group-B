@@ -28,7 +28,7 @@ import {
   BehaviorsTypes,
   BreedTypes,
 } from "../dog/dogEnums";
-import { initLostDogWithPictureProps, initPicture } from "../dog/dogClasses";
+import { initLostDogProps, initLostDogWithPictureProps, initPicture } from "../dog/dogClasses";
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
@@ -68,6 +68,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     imgFit: {
       maxHeight: "90vh",
+      maxWidth:"30vw",
       borderRadius: "10px",
       width: "auto",
     },
@@ -95,54 +96,36 @@ const EditDogDetails = (props: any) => {
   const refreshRequired = useSelector(
     (state: State) => state.settingsRequireRefresh as boolean
   );
-  const isInputNotNull = sessionStorage.getItem("editDogFields") !== null;
-  const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(
-    editedDog ? editedDog : initLostDogWithPictureProps
-  );
+  const [temp, setTemp] = useState<ILostDogWithPicture>(JSON.parse(sessionStorage.getItem("editDogFields") as string));
+  var isInputNotNull = temp !== null;
+  const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(initLostDogWithPictureProps);
   const [picture, setPicture] = useState<IPicture>();
 
   useEffect(() => {
-    if (pageRefresh) {
-      if (isInputNotNull) {
+    if(pageRefresh){
+      if(temp && temp.id != dogId){
+          sessionStorage.removeItem("editDogFields");
+          setTemp(initLostDogWithPictureProps);
+          isInputNotNull = false;
+      }
+      if(isInputNotNull){
         setEditDogFields(
           JSON.parse(sessionStorage.getItem("editDogFields") as string)
         );
-        setPageRefresh(false);
       }
-      else {
-        try {
-          store.dispatch(
-            Actions.fetchOneDogThunk({
-              id: dogId as number,
-              cookies: cookies,
-            })
-          );
-        } catch (err) {
-          console.error("Failed to fetch the dog: ", err);
-        } finally {
-          setPageRefresh(false);
-        }
+      else if(editedDog && editedDog.id == dogId){
+        setEditDogFields(editedDog);
+        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
       }
-    } // eslint-disable-next-line
-  }, [pageRefresh, dogSession]);
-
-  useEffect(() => {
-    if (!pageRefresh && !isInputNotNull) {
-
-      sessionStorage.setItem(
-        "editDogFields",
-        JSON.stringify(editedDog as ILostDogWithPicture)
-      );
-      setEditDogFields(editedDog as ILostDogWithPicture);
-    }
-  }, [pageRefresh, isInputNotNull]);
-
-
-
-
-  /*useEffect(() => {
-    if (!refreshRequired && !pageRefresh) {
-      if (editedDog != null) {
+      if(!editedDog || (editedDog && editedDog.id != dogId)){
+        store.dispatch(
+          Actions.fetchOneDogThunk({
+            id: dogId as number,
+            cookies: cookies,
+          })
+        );
+      }
+      if(!picture && editedDog && editedDog.picture){
         const blob = base64StringToBlob(
           editedDog.picture.data as string,
           editedDog.picture.fileType
@@ -156,24 +139,34 @@ const EditDogDetails = (props: any) => {
           } as IPicture);
         });
       }
-      if (isInputNotNull) {
-        setEditDogFields(
-          JSON.parse(sessionStorage.getItem("editDogFields") as string)
+      setPageRefresh(false);
+    }
+  }, [pageRefresh]);
+  
+  useEffect(() => {
+    if (!pageRefresh && editedDog) {
+      sessionStorage.setItem(
+        "editDogFields",
+        JSON.stringify(editedDog as ILostDogWithPicture)
+      );
+      setEditDogFields(editedDog as ILostDogWithPicture);
+    }
+      if(!picture && editedDog && editedDog.picture){
+        const blob = base64StringToBlob(
+          editedDog.picture.data as string,
+          editedDog.picture.fileType
         );
-      } 
-      else if (!isInputNotNull && editedDog)
-      {
-        sessionStorage.setItem(
-          "editDogFields",
-          JSON.stringify(editedDog as ILostDogWithPicture)
-        );
-        setEditDogFields(editedDog as ILostDogWithPicture);
+        (blob as File).arrayBuffer().then((fileBuffer) => {
+          setPicture({
+            id: 0,
+            fileName: editedDog.picture.fileName, //event.name,
+            fileType: editedDog.picture.fileType,
+            data: fileBuffer,
+          } as IPicture);
+        });
       }
-      store.dispatch(Actions.finishRefreshing);
-      setDogSession(false);
-    } // eslint-disable-next-line
-  }, [refreshRequired, pageRefresh]);
-*/
+  }, [editedDog]);
+
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     let newField = { ...editDogFields, [e.target.name]: e.target.value };
     setEditDogFields(newField);
@@ -263,6 +256,7 @@ const EditDogDetails = (props: any) => {
         Actions.updateDogThunk({
           dog: dog,
           cookies: cookies,
+          picture: picture
         }) //filters
       );
     }
@@ -292,7 +286,7 @@ const EditDogDetails = (props: any) => {
   return (
     <Grid container>
       {pageRefresh && <LoadingPopup />}
-      {!pageRefresh && !dogSession && editDogFields != null && (
+      {!pageRefresh && (
         <Grid
           className={classes.mainForm}
           container
@@ -519,7 +513,7 @@ const EditDogDetails = (props: any) => {
                 <DatePicker
                   data-testid="date-select"
                   disableToolbar
-                  variant="inline"
+                  variant="dialog"
                   format="yyyy-MM-dd"
                   margin="normal"
                   id="date-picker-inline"

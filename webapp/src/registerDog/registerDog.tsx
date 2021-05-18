@@ -378,7 +378,7 @@ export default function RegisterDogForm() {
             <DatePicker
               data-testid="date-select"
               disableToolbar
-              variant="inline"
+              variant="dialog"
               format="yyyy-MM-dd"
               margin="normal"
               id="date-picker-inline"

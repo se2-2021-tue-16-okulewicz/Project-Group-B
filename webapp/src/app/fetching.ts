@@ -76,7 +76,6 @@ export async function fetchDogs(
       let sub = filters[filterName];
       const subFilters = Object.keys(sub).map((subname)=>{
         const name = filterName+"."+subname.split('_').join('.');
-        console.log(name);
         const value = String(sub[subname]).trim();
         return value && value != "null" ? `${name}=${value}` : "";
       }).filter((x) => x !== "").join("&");
@@ -87,7 +86,6 @@ export async function fetchDogs(
     return value && value != "null" ? `${filterName}=${value}` : "";
     }
     }).filter((x) => x !== "").join("&"));
-    console.log(filtersString);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,

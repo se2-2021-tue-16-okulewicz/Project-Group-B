@@ -78,7 +78,6 @@ export const reducer = createReducer(init, {
     newState.dogsRequireRefresh = true;
     newState.dogsLastPage = false;
     newState.editedDog = null;
-    console.log("|"+newState);
     return newState;
   },
   [Actions.startRefreshing.type]: (state: State) => {
@@ -258,7 +257,7 @@ export const reducer = createReducer(init, {
       pageSize;
     newState.pages = pageNumber;
     newState.dogsRequireRefresh = false;
-    console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
+    //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
     return newState;
   },
   [Actions.updateContactInfoThunk.fulfilled.toString()]: (
