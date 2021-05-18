@@ -50,7 +50,9 @@ public class SheltersMainService implements SheltersService{
 
     @Override
     public Pair<List<ShelterInformation>, Integer> GetShelters(Specification<Shelter> filters, Pageable page) {
-        filters = filters.and(isActive());
+        if(filters == null)
+            filters = Specification.where(isActive());
+        filters = filters.and(isActive()); //It can eventually double the filter, but it does not matter (a and a is the same as a)
 
         var shelterPage = shelterRepository.findAll(filters, page);
 
