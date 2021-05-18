@@ -74,7 +74,7 @@ const SignIn = ({ navigation }: any) => {
 
   React.useEffect(() => {
     if (status == "redirectToDogs") {
-      navigation.push("DogsList");
+      navigation.push("Root");
     }
   }, [status]);
 

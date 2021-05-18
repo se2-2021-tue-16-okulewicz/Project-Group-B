@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
 import se.backend.model.Picture;
-import se.backend.model.dogs.LostDog;
+import se.backend.model.dogs.Lost.LostDog;
 import se.backend.service.lostdogs.LostDogService;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 
@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 public class LostDogServiceTest {
 
-   @Autowired
-   private LostDogService service;
+    @Autowired
+    private LostDogService service;
 
-   private static Specification<LostDog> isFromLublin() {
+    private static Specification<LostDog> isFromLublin() {
        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("location").get("city"), "Lublin");
    }
 

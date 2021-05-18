@@ -248,8 +248,9 @@ export const reducer = createReducer(init, {
         .concat(payload.payload.response.data as ILostDogWithPicture[])
         .slice(0, (pageNumber + 1) * pageSize);
     } else {
-      newState.dogs = (payload.payload.response
-        .data as ILostDogWithPicture[]).slice(0, (pageNumber + 1) * pageSize);
+      newState.dogs = (
+        payload.payload.response.data as ILostDogWithPicture[]
+      ).slice(0, (pageNumber + 1) * pageSize);
     }
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage =
@@ -340,8 +341,9 @@ export const reducer = createReducer(init, {
     newState.editedDog = ValidateFetchedDog(
       payload.payload.response.data as ILostDogWithPicture
     );
-    newState.editedDog.picture.data = (payload.payload.response
-      .data as ILostDogWithPicture).picture.data as string;
+    newState.editedDog.picture.data = (
+      payload.payload.response.data as ILostDogWithPicture
+    ).picture.data as string;
     newState.dogsRequireRefresh = false;
     newState.settingsRequireRefresh = false;
     return newState;
