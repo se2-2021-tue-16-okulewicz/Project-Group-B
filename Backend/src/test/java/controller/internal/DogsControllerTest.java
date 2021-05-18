@@ -227,7 +227,6 @@ public class DogsControllerTest {
 
         //Deleting dog
         mockMvc.perform(
-        mockMvc.perform(
                 MockMvcRequestBuilders.delete("/lostdogs/10001")
                         .header(LoginService.authorizationHeader, "regularUserTestToken")
         ).andExpect(status().isOk())
