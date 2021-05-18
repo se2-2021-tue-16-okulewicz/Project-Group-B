@@ -6,7 +6,12 @@ import {
   ILoginResults,
 } from "../components/loginRegisterInterfaces";
 import { APIResponse, RequestResponse } from "./response";
-import { ILostDogWithPicture } from "../components/dogs/dog/dogInterfaces";
+import {
+  IImage,
+  ILostDog,
+  ILostDogWithPicture,
+  IPicture,
+} from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
 
 async function getResponse<T, K>(
@@ -105,7 +110,7 @@ export async function markLostDogAsFound(
 
 export async function registerRegularUser(
   newUserInfo: IRegisterRegularUserInformation
-): Promise<RequestResponse<null>> {
+): Promise<RequestResponse<null, undefined>> {
   let formData = new FormData();
   formData.append("username", newUserInfo.username);
   formData.append("password", newUserInfo.password);
@@ -119,6 +124,56 @@ export async function registerRegularUser(
       {
         headers: {
           Accept: "application/json",
+        },
+      }
+    )
+  );
+}
+
+export async function addDog(
+  dog: ILostDog,
+  picture: IImage,
+  Authorization: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
+  let formData = new FormData();
+
+  let behLength = dog.behaviors.length;
+  formData.append("name", dog.name);
+  formData.append("breed", dog.breed);
+  formData.append("age", dog.age);
+  formData.append("hair_length", dog.hairLength);
+  formData.append("color", dog.color);
+  formData.append("size", dog.size);
+  formData.append("ears_type", dog.earsType);
+  formData.append("tail_length", dog.tailLength);
+  formData.append("special_mark", dog.specialMark);
+  if (behLength === 0) {
+    formData.append("behavior1", " ");
+    formData.append("behavior2", " ");
+    formData.append("behavior3", " ");
+  } else {
+    formData.append("behavior1", dog.behaviors[0 % behLength]);
+    formData.append("behavior2", dog.behaviors[1 % behLength]);
+    formData.append("behavior3", dog.behaviors[2 % behLength]);
+  }
+  formData.append("city", dog.location.city);
+  formData.append("district", dog.location.district);
+  formData.append("date_lost", dog.dateLost as string);
+  formData.append("picture", {
+    name: picture.fileName,
+    type: picture.fileType,
+    uri: picture.uri,
+  });
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/mobile`,
+      formData,
+      {
+        headers: {
+          Authorization: Authorization,
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
         },
       }
     )
