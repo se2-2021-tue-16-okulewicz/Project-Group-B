@@ -58,31 +58,31 @@ test("fetching one dog with a wrong token results in an error", async () => {
 });
 
 test("updating the dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<
-    ILostDogWithPicture,
-    undefined
-  > = await Fetching.updateDog(
-    initLostDogProps, //dog
-    config.cookies,
-    initPicture
-  );
+  const data: RequestResponse<ILostDogWithPicture, undefined> =
+    await Fetching.updateDog(
+      initLostDogProps, //dog
+      config.cookies,
+      initPicture
+    );
   expect(data).toEqual(errorObject);
 });
 
 test("updating the contact info with a wrong token results in an error", async () => {
-  const data: RequestResponse<IContactInfo, undefined> = await Fetching.updateContactInfo(
-    0, //dog id
-    { name: "aaa", email: "a@a.a", phoneNumber: "123456789" } as IContactInfo,
-    {} //empty token
-  );
+  const data: RequestResponse<IContactInfo, undefined> =
+    await Fetching.updateContactInfo(
+      0, //dog id
+      { name: "aaa", email: "a@a.a", phoneNumber: "123456789" } as IContactInfo,
+      {} //empty token
+    );
   expect(data).toEqual(errorObject);
 });
 
 test("getting the contact info with a wrong token results in an error", async () => {
-  const data: RequestResponse<IContactInfo, undefined> = await Fetching.fetchUserInfo(
-    0, //dog id
-    {} //empty token
-  );
+  const data: RequestResponse<IContactInfo, undefined> =
+    await Fetching.fetchUserInfo(
+      0, //dog id
+      {} //empty token
+    );
   expect(data).toEqual(errorObject);
 });
 

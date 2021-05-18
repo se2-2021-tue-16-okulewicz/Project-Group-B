@@ -95,7 +95,6 @@ const DogDetails = (props: any) => {
   };
 
   return (
-
     <Grid
       className={classes.mainForm}
       container
@@ -114,7 +113,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
               Name
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="name-input"
               id="name"
@@ -129,15 +128,17 @@ const DogDetails = (props: any) => {
               <CardContent className={classes.cardContent}>
                 <img
                   className={classes.imgFit}
-                  src={`data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer
-                    }`}
+                  src={`data:${dog.picture.fileType};base64,${
+                    dog.picture.data as ArrayBuffer
+                  }`}
                   alt={dog.picture.fileName}
                 />
               </CardContent>
             </Card>
           </FormControl>
         </Grid>
-      )} {!pageRefresh && dog && (
+      )}{" "}
+      {!pageRefresh && dog && (
         <Grid
           className="grid"
           container
@@ -149,7 +150,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="age-label">
               Age
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="age-input"
               type="number"
@@ -167,7 +168,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="color-label">
               Color
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="color-select"
               id="color"
@@ -180,7 +181,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="hair-label">
               Hair
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="hair-select"
               id="hair"
@@ -193,7 +194,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="size-label">
               Size
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="size-select"
               id="size"
@@ -206,7 +207,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="ears-label">
               Ears
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="ears-select"
               id="ears"
@@ -219,7 +220,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="tail-label">
               Tail
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="tail-select"
               id="tail"
@@ -232,7 +233,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="mark-label">
               Special Mark
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="mark-select"
               value={dog.specialMark}
@@ -243,7 +244,7 @@ const DogDetails = (props: any) => {
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="breed-label">
               Breed
-              </InputLabel>
+            </InputLabel>
             <TextField
               data-testid="breed-select"
               id="breed"
@@ -253,99 +254,97 @@ const DogDetails = (props: any) => {
             />
           </FormControl>
         </Grid>
-      )} {!pageRefresh && dog && (<Grid
-        className="grid"
-        container
-        item
-        xs={4}
-        direction="column"
-        alignContent="stretch"
-      >
-        <FormControl className={classes.formControl}>
-          <InputLabel shrink id="calendar-label">
-            Dog was lost on
-              </InputLabel>
-          <TextField
-            data-testid="date-select"
-            margin="normal"
-            id="date-picker-inline"
-            value={dog.dateLost as Date}
-            name="dateLost"
-            disabled={true}
-          />
-        </FormControl>
-        <FormControl className={classes.formControl}>
-          <InputLabel shrink id="city-label">
-            City
-              </InputLabel>
-          <TextField
-            data-testid="city-input"
-            name="city"
-            value={dog.location.city}
-            disabled={true}
-            margin="normal"
-          />
-        </FormControl>
-        <FormControl className={classes.formControl}>
-          <InputLabel shrink id="district-label">
-            District
-              </InputLabel>
-          <TextField
-            data-testid="district-input"
-            name="district"
-            value={dog.location.district}
-            disabled={true}
-            margin="normal"
-          />
-        </FormControl>
-        <FormControl className={classes.formControl}>
-          <InputLabel shrink htmlFor="behavior-label">
-            Behaviors
-              </InputLabel>
-          <Select
-            multiple
-            labelId="behavior-label"
-            label="Behavior"
-            name="behaviors"
-            value={dog.behaviors}
-            disabled={true}
-            input={<Input />}
-            displayEmpty
-            renderValue={(selected: any) => (
-              <div className={classes.chips}>
-                {(selected as string[]).map((value) => (
-                  <Chip
-                    key={value}
-                    label={value}
-                    className={classes.chip}
-                  />
+      )}{" "}
+      {!pageRefresh && dog && (
+        <Grid
+          className="grid"
+          container
+          item
+          xs={4}
+          direction="column"
+          alignContent="stretch"
+        >
+          <FormControl className={classes.formControl}>
+            <InputLabel shrink id="calendar-label">
+              Dog was lost on
+            </InputLabel>
+            <TextField
+              data-testid="date-select"
+              margin="normal"
+              id="date-picker-inline"
+              value={dog.dateLost as Date}
+              name="dateLost"
+              disabled={true}
+            />
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <InputLabel shrink id="city-label">
+              City
+            </InputLabel>
+            <TextField
+              data-testid="city-input"
+              name="city"
+              value={dog.location.city}
+              disabled={true}
+              margin="normal"
+            />
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <InputLabel shrink id="district-label">
+              District
+            </InputLabel>
+            <TextField
+              data-testid="district-input"
+              name="district"
+              value={dog.location.district}
+              disabled={true}
+              margin="normal"
+            />
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <InputLabel shrink htmlFor="behavior-label">
+              Behaviors
+            </InputLabel>
+            <Select
+              multiple
+              labelId="behavior-label"
+              label="Behavior"
+              name="behaviors"
+              value={dog.behaviors}
+              disabled={true}
+              input={<Input />}
+              displayEmpty
+              renderValue={(selected: any) => (
+                <div className={classes.chips}>
+                  {(selected as string[]).map((value) => (
+                    <Chip key={value} label={value} className={classes.chip} />
+                  ))}
+                </div>
+              )}
+            >
+              <MenuItem aria-label="None" value="" />
+              {Object.values(BehaviorsTypes)
+                .filter((k) => isNaN(Number(k)))
+                .map((type: string | BehaviorsTypes) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
                 ))}
-              </div>
-            )}
-          >
-            <MenuItem aria-label="None" value="" />
-            {Object.values(BehaviorsTypes)
-              .filter((k) => isNaN(Number(k)))
-              .map((type: string | BehaviorsTypes) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-          </Select>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-          <Button
-            data-testid="cancel-button"
-            variant="contained"
-            onClick={onCancelClick}
-            color="primary"
-          >
-            Lost Dogs
-              </Button>
-        </FormControl>
-      </Grid>
-      )}</Grid>
-
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <Button
+              data-testid="cancel-button"
+              variant="contained"
+              onClick={onCancelClick}
+              color="primary"
+            >
+              Lost Dogs
+            </Button>
+          </FormControl>
+        </Grid>
+      )}
+    </Grid>
   );
 };
 

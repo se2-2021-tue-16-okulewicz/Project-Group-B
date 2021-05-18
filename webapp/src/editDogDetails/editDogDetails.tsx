@@ -311,8 +311,9 @@ const EditDogDetails = (props: any) => {
                   {editedDog && !isNewPicture && (
                     <img
                       className={classes.imgFit}
-                      src={`data:${editedDog.picture.fileType};base64,${editedDog.picture.data as ArrayBuffer
-                        }`}
+                      src={`data:${editedDog.picture.fileType};base64,${
+                        editedDog.picture.data as ArrayBuffer
+                      }`}
                       alt={editedDog.picture.fileName}
                     />
                   )}

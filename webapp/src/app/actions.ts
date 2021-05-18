@@ -148,14 +148,12 @@ export const updateDogThunk = createAsyncThunk<
     },
     { rejectWithValue }
   ) => {
-    const response: RequestResponse<
-      ILostDogWithPicture,
-      undefined
-    > = await Fetching.updateDog(
-      dogAndPictureAndCookies.dog,
-      dogAndPictureAndCookies.cookies,
-      dogAndPictureAndCookies.picture
-    );
+    const response: RequestResponse<ILostDogWithPicture, undefined> =
+      await Fetching.updateDog(
+        dogAndPictureAndCookies.dog,
+        dogAndPictureAndCookies.cookies,
+        dogAndPictureAndCookies.picture
+      );
 
     if (response.response.successful !== true) {
       return rejectWithValue(
