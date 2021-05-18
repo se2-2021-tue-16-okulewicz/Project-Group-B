@@ -1,12 +1,7 @@
 import "date-fns";
 import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
-import {
-  Button,
-  InputAdornment,
-  TextField,
-  Link,
-} from "@material-ui/core";
+import { Button, InputAdornment, TextField, Link } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -54,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: "160px",
     },
     main: {
-      marginTop:"4%",
+      marginTop: "4%",
       minWidth: "200px",
       width: "16vw",
       margin: "1vw",
@@ -93,11 +88,18 @@ export default function FilterForm(props: any) {
         filter: { ...lostDogFields.filter, [name]: null },
       };
       setLostDogFields(newField);
-
-    }
-    else if (date) {
-      const month = (((date?.getDate().toString().length==1)?"0":"") + (date ? date.toLocaleDateString():"")).split(".").reverse().join("-");
-      let newField = { ...lostDogFields, filter: { ...lostDogFields.filter, [name]: month } };
+    } else if (date) {
+      const month = (
+        (date?.getDate().toString().length == 1 ? "0" : "") +
+        (date ? date.toLocaleDateString() : "")
+      )
+        .split(".")
+        .reverse()
+        .join("-");
+      let newField = {
+        ...lostDogFields,
+        filter: { ...lostDogFields.filter, [name]: month },
+      };
       setLostDogFields(newField);
     }
   }

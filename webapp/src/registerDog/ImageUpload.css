@@ -6,7 +6,7 @@
 .image {
   border-radius: 10px;
   height: 300px;
-  width:inherit;
+  width: inherit;
   align-self: center;
 }
 
@@ -15,7 +15,6 @@
   align-self: center;
   width: inherit;
   display: flex;
-
 }
 
 .imageInputLabel {
