@@ -8,7 +8,6 @@ import {
   Text,
   SafeAreaView,
   Image,
-  ImageBackground,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
@@ -20,9 +19,6 @@ import config from "../../config/config";
 import { useState } from "react";
 
 export default function DogsList({ navigation }: any) {
-  const bg = require("../../assets/images/dog-bg.png");
-  const pin = require("../../assets/images/pin.png");
-  const image = { uri: "../../assets/images/dog-bg.PNG" };
   const Stack = createStackNavigator();
   const state = store.getState();
   const dogsList = useSelector(
@@ -89,13 +85,6 @@ export default function DogsList({ navigation }: any) {
     );
   }
 
-  React.useEffect(() => {
-    if (myDogs[0] !== null) {
-      // console.log("dogs[0].picture.fileType: " + myDogs[0].picture.fileType);
-      // console.log("dogs[0].picture.data: " + myDogs[0].picture.data);
-    }
-  });
-
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={[styles.item]}>
       <TouchableOpacity>
@@ -108,9 +97,7 @@ export default function DogsList({ navigation }: any) {
                 dog.picture.data as ArrayBuffer
               }`,
             }}
-            //source={{uri: dog.picture.uri}}
           />
-          {/* <Text>{dog.picture.id + " " + dog.picture.fileName + " " + dog.picture.fileType + " " + dog.picture.data}</Text> */}
           {!dog.isFound ? (
             <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
               <Text style={styles.lost}>Mark as found</Text>
@@ -121,7 +108,10 @@ export default function DogsList({ navigation }: any) {
         </View>
 
         <View style={styles.row}>
-          <Image style={styles.tinyLogo} source={pin} />
+          <Image
+            style={styles.tinyLogo}
+            source={require("../../assets/images/pin.png")}
+          />
           <Text style={styles.subtitle}>{dog.location.city}</Text>
         </View>
       </TouchableOpacity>
@@ -129,21 +119,19 @@ export default function DogsList({ navigation }: any) {
   );
   return (
     <SafeAreaView style={styles.container}>
-      <ImageBackground source={bg} style={styles.image}>
-        {isLoading ? (
-          <Text>Loading...</Text>
-        ) : (
-          <View>
-            <Text>Displaying dogs: {myDogs.length}</Text>
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <View>
+          <Text>Displaying dogs: {myDogs.length}</Text>
 
-            <FlatList
-              data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
-              renderItem={({ item }) => renderListItem(item, navigation)}
-              keyExtractor={(item) => item.id.toString()}
-            />
-          </View>
-        )}
-      </ImageBackground>
+          <FlatList
+            data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
+            renderItem={({ item }) => renderListItem(item, navigation)}
+            keyExtractor={(item) => item.name}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -160,11 +148,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   item: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#eeeeee",
     padding: 10,
     marginVertical: 5,
-    marginHorizontal: 10,
-    borderRadius: 5,
+    marginHorizontal: 16,
   },
   title: {
     fontSize: 24,
@@ -181,12 +168,6 @@ const styles = StyleSheet.create({
   tinyLogo: {
     width: 15,
     height: 15,
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    width: "100%",
   },
   row: {
     marginTop: 4,
