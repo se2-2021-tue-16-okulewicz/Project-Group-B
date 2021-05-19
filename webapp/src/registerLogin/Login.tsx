@@ -109,22 +109,22 @@ export default function Login() {
       setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
-      if(cookies[config.cookies.userType]=="Shelter"){
-        history.push("/shelter")
+      if (cookies[config.cookies.userType] == "Shelter") {
+        history.push("/shelter");
+      } else {
+        history.push("/listDogs");
       }
-      else{
-      history.push("/listDogs");}
     } // eslint-disable-next-line
   }, [loginInfo]);
 
   //THIS makes the web app skip the log in
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
-      if(cookies[config.cookies.userType]=="Shelter"){
-        history.push("/shelter")
+      if (cookies[config.cookies.userType] == "Shelter") {
+        history.push("/shelter");
+      } else {
+        history.push("/listDogs");
       }
-      else{
-      history.push("/listDogs");}
     } // eslint-disable-next-line
   }, []);
 

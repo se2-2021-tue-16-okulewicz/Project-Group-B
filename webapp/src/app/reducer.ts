@@ -319,8 +319,8 @@ export const reducer = createReducer(init, {
     newState.dogs = payload.payload.response.data as IShelterDog[];
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = true;
-     // (payload.payload.response.data as ILostDogWithPicture[]).length <
-      //pageSize;
+    // (payload.payload.response.data as ILostDogWithPicture[]).length <
+    //pageSize;
     //newState.pages = pageNumber;
     newState.dogsRequireRefresh = false;
     //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
@@ -375,7 +375,6 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  
   [Actions.fetchOneDogThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<undefined, undefined>>

@@ -1,4 +1,9 @@
-import { ILostDog, IPicture, ILostDogWithPicture, IShelterDog } from "../dog/dogInterfaces";
+import {
+  ILostDog,
+  IPicture,
+  ILostDogWithPicture,
+  IShelterDog,
+} from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
 import axios, { AxiosResponse } from "axios";

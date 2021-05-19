@@ -210,8 +210,8 @@ export default function ShelterListWithDogs(props: any) {
       try {
         store.dispatch(
           Actions.fetchShelterDogsThunk({
-            shelterId:cookies[config.cookies.userId], 
-            cookies: cookies
+            shelterId: cookies[config.cookies.userId],
+            cookies: cookies,
           }) //filters
         );
       } catch (err) {
@@ -292,7 +292,7 @@ export default function ShelterListWithDogs(props: any) {
                 onClick={onLogOutClicked}
                 icon={<ExitToApp />}
               />
-                <BottomNavigationAction
+              <BottomNavigationAction
                 disabled={true}
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
