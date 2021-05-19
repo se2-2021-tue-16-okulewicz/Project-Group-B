@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
 import se.backend.model.Picture;
+import se.backend.model.account.Shelter;
 import se.backend.model.dogs.Lost.LostDog;
 import se.backend.model.dogs.Shelter.ShelterDog;
 import se.backend.service.lostdogs.LostDogService;
@@ -27,12 +28,11 @@ public class SheltersServiceTest {
     @Autowired
     private SheltersService service;
 
-    private static Specification<LostDog> isFromLublin() {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("location").get("city"), "Lublin");
-    }
-
-    private static Specification<LostDog> isFromWarsaw() {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("location").get("city"), "Warsaw");
+    @Test
+    public void GetShelters() {
+        //Getting all shelters (only active ones!)
+        var shelters = service.GetShelters(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(1, shelters.getValue0().size());
     }
 
     @Test

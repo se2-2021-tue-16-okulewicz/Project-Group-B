@@ -2,6 +2,7 @@ package controller.internal;
 
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,6 +29,43 @@ public class SheltersControllerTest {
     private MockMvc mockMvc;
 
     private static final byte[] validImageData = new byte[]{(byte)137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 2, 0, 0, 0, 2, 8, 2, 0, 0, 0, (byte)253, (byte)212, (byte)154, 115, 0, 0, 0, 1, 115, 82, 71, 66, 0, (byte)174, (byte)206, 28, (byte)233, 0, 0, 0, 4, 103, 65, 77, 65, 0, 0, (byte)177, (byte)143, 11, (byte)252, 97, 5, 0, 0, 0, 9, 112, 72, 89, 115, 0, 0, 14, (byte)195, 0, 0, 14, (byte)195, 1, (byte)199, 111, (byte)168, 100, 0, 0, 0, 22, 73, 68, 65, 84, 24, 87, 99, (byte)248, (byte)255, (byte)137, (byte)225, 127, (byte)189, 58, (byte)195, (byte)254, (byte)157, (byte)174, (byte)245, (byte)245, (byte)245, 0, 52, 35, 6, (byte)209, 36, (byte)215, 38, (byte)234, 0, 0, 0, 0, 73, 69, 78, 68, (byte)174, 66, 96, (byte)130};
+
+    @Test
+    public void GetShelters() throws Exception {
+        //Get all shelters (note - only active ones!)
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/shelters")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data", hasSize(1)))
+                .andExpect(jsonPath("data[0].name", is("Hope")));
+
+        //Unauthorized
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/shelters")
+                        .header(LoginService.authorizationHeader, "tokenIsInvalid")
+        ).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Get all shelters (note - only active ones!) starting with 'h'
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/shelters?name=h")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data", hasSize(1)))
+                .andExpect(jsonPath("data[0].name", is("Hope")));
+
+        //Get all shelters (note - only active ones!) starting with 'g'
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/shelters?name=g")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data", hasSize(0)));
+    }
 
     @Test
     public void GetShelterDogsTest() throws Exception {

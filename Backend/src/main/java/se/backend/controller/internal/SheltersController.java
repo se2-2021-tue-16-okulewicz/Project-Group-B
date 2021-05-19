@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import se.backend.exceptions.types.GenericBadRequestException;
 import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
+import se.backend.model.account.Shelter;
 import se.backend.model.dogs.Lost.LostDog;
 import se.backend.model.dogs.Shelter.ShelterDog;
 import se.backend.service.login.LoginService;
@@ -32,6 +33,7 @@ import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviors;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviorsAndWithPicture;
+import se.backend.wrapper.shelters.ShelterInformation;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -64,6 +66,34 @@ public class SheltersController {
         this.sheltersService = sheltersService;
         this.loginService = loginService;
     }
+
+    //<editor-fold desc=/shelters">
+    @GetMapping(path = "")
+    public ResponseEntity<Response<Collection<ShelterInformation>, Integer>> GetShelters(
+            @RequestHeader HttpHeaders headers,
+            @PageableDefault(
+                    sort = "name",
+                    direction = Sort.Direction.ASC,
+                    value = 15
+            ) Pageable pageable,
+            @Spec(
+                    path="name",
+                    params="name",
+                    spec= StartingWithIgnoreCase.class
+            ) Specification<Shelter> shelterSpecification) {
+
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0()) {
+            throw new UnauthorizedException();
+        }
+
+        var result = sheltersService.GetShelters(shelterSpecification, pageable);
+
+        return ResponseEntity.ok(new Response<>(String.format("%d shelter(s) found", result.getValue0().size()), true, result.getValue0(), result.getValue1()));
+    }
+    //</editor-fold>
 
     //<editor-fold desc="/shelters/{shelterId}/dogs">
     @GetMapping(path = "{shelterId}/dogs")
