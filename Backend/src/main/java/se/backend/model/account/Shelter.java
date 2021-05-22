@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import se.backend.model.account.Address;
+import se.backend.wrapper.shelters.ShelterInformation;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,4 +27,8 @@ public class Shelter extends Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    public ShelterInformation ToShelterInformation() {
+        return new ShelterInformation(id, name, address, phoneNumber, getAssociatedEmail());
+    }
 }
