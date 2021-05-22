@@ -27,6 +27,8 @@ import config from "./config/config";
 import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
 import Settings from "./settings/settings";
 import EditDogDetails from "./editDogDetails/editDogDetails";
+import EditContactInfo from "./contactInfo/editContactInformation";
+import DogDetails from "./dogDetails/dogDetails";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,9 +70,17 @@ function Layout() {
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    store.dispatch(finishRefreshing);
+    //store.dispatch(finishRefreshing);
     history.push(`/edit/${id}`);
   }
+
+  function redirectToDogDetails(id: number) {
+    setDogId(id);
+    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    //store.dispatch(finishRefreshing);
+    history.push(`/dog/${id}`);
+  }
+
   const errorOnClose = () => {
     //We can reach this point after logout from footer and it crashes the app
     if (error.errorCode === 401) {
@@ -80,8 +90,8 @@ function Layout() {
         removeCookie(config.cookies.userType, { path: "/" });
         removeCookie(config.cookies.userId, { path: "/" });
         store.dispatch(logoutThunk(cookies));
-        history.push("/");
       }
+      history.push("/");
     }
     store.dispatch(clearError());
   };
@@ -105,8 +115,16 @@ function Layout() {
           <RegisterRegularUser />
           <Footer />
         </Route>
+        <Route path="/info/edit">
+          <EditContactInfo />
+          <Footer />
+        </Route>
         <Route path="/listDogs">
-          <ListWithDogs />
+          <ListWithDogs
+            redirectToDogDetailsOrEdit={(id: number) =>
+              redirectToDogDetails(id)
+            }
+          />
         </Route>
         <Route path="/settings">
           <Settings
@@ -121,6 +139,10 @@ function Layout() {
         </Route>
         <Route path={`/edit/:id`}>
           <EditDogDetails dogId={dogId} />
+          <Footer />
+        </Route>
+        <Route path={`/dog/:id`}>
+          <DogDetails dogId={dogId} />
           <Footer />
         </Route>
         <Redirect to="/" />

@@ -15,27 +15,27 @@ public class ExceptionHelper {
     private final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
     @ExceptionHandler(value = { GenericBadRequestException.class })
-    public ResponseEntity<Response<Object>> handleGenericBadRequestException(GenericBadRequestException ex) {
+    public ResponseEntity<Response<Object, Object>> handleGenericBadRequestException(GenericBadRequestException ex) {
         logger.error("GenericBadRequestException: {}", ex.getMessage());
-        return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null, null), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = { UnauthorizedException.class })
-    public ResponseEntity<Response<Object>> handleUnauthorizedException(UnauthorizedException ex) {
+    public ResponseEntity<Response<Object, Object>> handleUnauthorizedException(UnauthorizedException ex) {
         logger.error("GenericBadRequestException: {}", ex.getMessage());
-        return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new Response<>(ex.getMessage(), false, null, null), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = { MissingServletRequestPartException.class })
-    public ResponseEntity<Response<Object>> handleMissingServletRequestPartException(MissingServletRequestPartException ex) {
+    public ResponseEntity<Response<Object, Object>> handleMissingServletRequestPartException(MissingServletRequestPartException ex) {
         logger.error("MissingServletRequestPartException: {}", ex.getMessage());
-        return new ResponseEntity<>(new Response<>("Missing part of a request", false, null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Response<>("Missing part of a request", false, null, null), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = { HttpMessageNotReadableException.class })
-    public ResponseEntity<Response<Object>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    public ResponseEntity<Response<Object, Object>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         logger.error("HttpMessageNotReadableException: {}", ex.getMessage());
-        return new ResponseEntity<>(new Response<>("Could not read provided data", false, null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Response<>("Could not read provided data", false, null, null), HttpStatus.BAD_REQUEST);
     }
 
 }

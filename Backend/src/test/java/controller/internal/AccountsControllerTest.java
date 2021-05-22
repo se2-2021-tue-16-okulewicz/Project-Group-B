@@ -67,6 +67,18 @@ public class AccountsControllerTest {
                 .andExpect(jsonPath("data.userType", is(UserType.Shelter.toString())))
                 .andExpect(jsonPath("data.id", is(10001)));
 
+        //Inactive shelter login
+        MockMultipartFile loginSecondShelter = new MockMultipartFile("username", "", "text/plain", "greenpeace@mail.com".getBytes());
+        MockMultipartFile passwordSecondShelter = new MockMultipartFile("password", "", "text/plain", "ImATest".getBytes());
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/login")
+                        .file(loginSecondShelter)
+                        .file(passwordSecondShelter)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
         //Invalid login and password
         MockMultipartFile loginInvalid = new MockMultipartFile("username", "", "text/plain", "not-existing-acc".getBytes());
         MockMultipartFile passwordInvalid = new MockMultipartFile("password", "", "text/plain", "not-existing-pwd".getBytes());

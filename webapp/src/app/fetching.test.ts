@@ -17,11 +17,12 @@ import {
 import config from "../config/config";
 import { RequestResponse } from "./response";
 import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
+import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import {
   initLoginProps,
   initRegisterRegularUserProps,
 } from "../registerLogin/registerLogintest";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
 
 jest.mock("axios");
 
@@ -31,67 +32,86 @@ const errorObject = {
     data: null,
     message: "Connection error",
     successful: false,
+    metadata: null,
   },
 };
 
 test("add the dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture> = await Fetching.addDog(
-    initLostDogProps,
-    initPicture,
-    config.cookies
-  );
+  const data: RequestResponse<ILostDogWithPicture, undefined> =
+    await Fetching.addDog(initLostDogProps, initPicture, config.cookies);
   expect(data).toEqual(errorObject);
 });
 
 test("fetch the dogs with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture[]> = await Fetching.fetchDogs(
-    {},
-    config.cookies
-  );
+  const data: RequestResponse<ILostDogWithPicture[], number> =
+    await Fetching.fetchDogs({}, config.cookies);
   expect(data).toEqual(errorObject);
 });
 
 test("fetching one dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture> = await Fetching.fetchOneDog(
-    0, //id
-    config.cookies
-  );
+  const data: RequestResponse<ILostDogWithPicture, undefined> =
+    await Fetching.fetchOneDog(
+      0, //id
+      config.cookies
+    );
   expect(data).toEqual(errorObject);
 });
 
 test("updating the dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture> = await Fetching.updateDog(
-    initLostDogProps, //dog
-    initPicture,
-    config.cookies
-  );
+  const data: RequestResponse<ILostDogWithPicture, undefined> =
+    await Fetching.updateDog(
+      initLostDogProps, //dog
+      config.cookies,
+      initPicture
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("updating the contact info with a wrong token results in an error", async () => {
+  const data: RequestResponse<IContactInfo, undefined> =
+    await Fetching.updateContactInfo(
+      0, //dog id
+      { name: "aaa", email: "a@a.a", phoneNumber: "123456789" } as IContactInfo,
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("getting the contact info with a wrong token results in an error", async () => {
+  const data: RequestResponse<IContactInfo, undefined> =
+    await Fetching.fetchUserInfo(
+      0, //dog id
+      {} //empty token
+    );
   expect(data).toEqual(errorObject);
 });
 
 test("marking the dog as found with a wrong token results in an error", async () => {
-  const data: RequestResponse<null> = await Fetching.markLostDogAsFound(
-    0, //dog id
-    {} //empty token
-  );
+  const data: RequestResponse<null, undefined> =
+    await Fetching.markLostDogAsFound(
+      0, //dog id
+      {} //empty token
+    );
   expect(data).toEqual(errorObject);
 });
 
 test("register with wrong data", async () => {
-  const data: RequestResponse<null> = await Fetching.registerRegularUser(
-    initRegisterRegularUserProps
-  );
+  const data: RequestResponse<null, undefined> =
+    await Fetching.registerRegularUser(initRegisterRegularUserProps);
   expect(data).toEqual(errorObject);
 });
 
 test("login with wrong data", async () => {
-  const data: RequestResponse<ILoginResults> = await Fetching.login(
+  const data: RequestResponse<ILoginResults, undefined> = await Fetching.login(
     initLoginProps
   );
   expect(data).toEqual(errorObject);
 });
 
 test("logout without being logged in", async () => {
-  const data: RequestResponse<null> = await Fetching.logout(config.cookies);
+  const data: RequestResponse<null, undefined> = await Fetching.logout(
+    config.cookies
+  );
   expect(data).toEqual(errorObject);
 });
 

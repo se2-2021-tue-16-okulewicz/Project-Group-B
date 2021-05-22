@@ -28,7 +28,11 @@ import {
   BehaviorsTypes,
   BreedTypes,
 } from "../dog/dogEnums";
-import { initLostDogWithPictureProps, initPicture } from "../dog/dogClasses";
+import {
+  initLostDogProps,
+  initLostDogWithPictureProps,
+  initPicture,
+} from "../dog/dogClasses";
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
@@ -67,9 +71,10 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "inherit",
     },
     imgFit: {
-      objectFit: "cover",
-      width: "100%",
-      height: "100%",
+      maxWidth: "30vw",
+      maxHeight: "70vh",
+      borderRadius: "10px",
+      height: "300px",
     },
     mainForm: {
       marginLeft: "0.5%",
@@ -84,8 +89,7 @@ const EditDogDetails = (props: any) => {
     ? props.dogId
     : JSON.parse(sessionStorage.getItem("dogId") as string);
   const history = useHistory();
-  const classes = useStyles();
-  const [dogSession, setDogSession] = useState(false); // eslint-disable-next-line
+  const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const editedDog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
@@ -95,32 +99,41 @@ const EditDogDetails = (props: any) => {
   const refreshRequired = useSelector(
     (state: State) => state.settingsRequireRefresh as boolean
   );
-  const isInputNotNull = sessionStorage.getItem("editDogFields") !== null;
+  const [temp, setTemp] = useState<ILostDogWithPicture>(
+    JSON.parse(sessionStorage.getItem("editDogFields") as string)
+  );
+  var isInputNotNull = temp !== null;
   const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(
     initLostDogWithPictureProps
   );
-  const [picture, setPicture] = useState<IPicture>(initPicture);
+  const [picture, setPicture] = useState<IPicture>();
+
+  //console.log(temp);
 
   useEffect(() => {
     if (pageRefresh) {
-      try {
+      if (temp && temp.id != dogId) {
+        sessionStorage.removeItem("editDogFields");
+        setTemp(initLostDogWithPictureProps);
+        isInputNotNull = false;
+      }
+      if (isInputNotNull) {
+        setEditDogFields(
+          JSON.parse(sessionStorage.getItem("editDogFields") as string)
+        );
+      } else if (editedDog && editedDog.id == dogId) {
+        setEditDogFields(editedDog);
+        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
+      }
+      if (!editedDog || (editedDog && editedDog.id != dogId)) {
         store.dispatch(
           Actions.fetchOneDogThunk({
             id: dogId as number,
             cookies: cookies,
           })
         );
-      } catch (err) {
-        console.error("Failed to fetch the dog: ", err);
-      } finally {
-        setPageRefresh(false);
       }
-    } // eslint-disable-next-line
-  }, [pageRefresh, dogSession]);
-
-  useEffect(() => {
-    if (!refreshRequired && !pageRefresh) {
-      if (editedDog.picture) {
+      if (!picture && editedDog && editedDog.picture) {
         const blob = base64StringToBlob(
           editedDog.picture.data as string,
           editedDog.picture.fileType
@@ -134,21 +147,35 @@ const EditDogDetails = (props: any) => {
           } as IPicture);
         });
       }
-      if (isInputNotNull) {
-        setEditDogFields(
-          JSON.parse(sessionStorage.getItem("editDogFields") as string)
-        );
-      } else {
+      setPageRefresh(false);
+    }
+  }, [pageRefresh]);
+
+  useEffect(() => {
+    if (!pageRefresh && editedDog) {
+      if (!temp || (temp && temp.id != dogId)) {
         sessionStorage.setItem(
           "editDogFields",
           JSON.stringify(editedDog as ILostDogWithPicture)
         );
         setEditDogFields(editedDog as ILostDogWithPicture);
       }
-      setDogSession(false);
-      store.dispatch(Actions.finishRefreshing);
-    } // eslint-disable-next-line
-  }, [refreshRequired, pageRefresh]);
+    }
+    if (!picture && editedDog && editedDog.picture) {
+      const blob = base64StringToBlob(
+        editedDog.picture.data as string,
+        editedDog.picture.fileType
+      );
+      (blob as File).arrayBuffer().then((fileBuffer) => {
+        setPicture({
+          id: 0,
+          fileName: editedDog.picture.fileName, //event.name,
+          fileType: editedDog.picture.fileType,
+          data: fileBuffer,
+        } as IPicture);
+      });
+    }
+  }, [editedDog]);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     let newField = { ...editDogFields, [e.target.name]: e.target.value };
@@ -226,13 +253,23 @@ const EditDogDetails = (props: any) => {
   };
 
   function updateDog(dog: ILostDog, picture: IPicture) {
-    store.dispatch(
-      Actions.updateDogThunk({
-        dog: dog,
-        picture: picture,
-        cookies: cookies,
-      }) //filters
-    );
+    if (picture) {
+      store.dispatch(
+        Actions.updateDogThunk({
+          dog: dog,
+          cookies: cookies,
+          picture: picture,
+        }) //filters
+      );
+    } else {
+      store.dispatch(
+        Actions.updateDogThunk({
+          dog: dog,
+          cookies: cookies,
+          picture: picture,
+        }) //filters
+      );
+    }
   }
 
   function markDogAsFound(dogId: Number) {
@@ -259,7 +296,7 @@ const EditDogDetails = (props: any) => {
   return (
     <Grid container>
       {pageRefresh && <LoadingPopup />}
-      {!pageRefresh && !dogSession && (
+      {!pageRefresh && (
         <Grid
           className={classes.mainForm}
           container
@@ -292,7 +329,6 @@ const EditDogDetails = (props: any) => {
                     />
                   )}
                   <ImageUpload
-                    className={classes.imgFit}
                     data-testid="img-upload"
                     handlePicturesChange={(
                       file: React.ChangeEvent<{ value: unknown }>
@@ -488,7 +524,7 @@ const EditDogDetails = (props: any) => {
                 <DatePicker
                   data-testid="date-select"
                   disableToolbar
-                  variant="inline"
+                  variant="dialog"
                   format="yyyy-MM-dd"
                   margin="normal"
                   id="date-picker-inline"

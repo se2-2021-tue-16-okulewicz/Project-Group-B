@@ -73,11 +73,11 @@ export default function Login() {
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
 
-  const handleChange = (prop: keyof internalState) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  const handleChange =
+    (prop: keyof internalState) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -200,7 +200,7 @@ export default function Login() {
           Create an account
         </Link>
       </div>
-      <div className="LowerText">Want to regster new shelter?</div>
+      <div className="LowerText">Want to register new shelter?</div>
       <div>
         <Link
           className={classes.root}

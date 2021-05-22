@@ -6,6 +6,7 @@ import { State } from "../../redux/reducer";
 import { ILostDogWithPicture } from "../dogs/dog/dogInterfaces";
 import { store } from "../../redux/store";
 import * as Actions from "../../redux/actions";
+import Register from "./Register";
 
 export default function LogInRegister({ navigation }: any) {
   const Stack = createStackNavigator();
@@ -29,6 +30,11 @@ export default function LogInRegister({ navigation }: any) {
       <Stack.Screen
         name="Sign in"
         component={SignIn}
+        initialParams={navigation}
+      ></Stack.Screen>
+      <Stack.Screen
+        name="Register"
+        component={Register}
         initialParams={navigation}
       ></Stack.Screen>
     </Stack.Navigator>

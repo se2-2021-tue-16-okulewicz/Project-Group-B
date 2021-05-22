@@ -1,6 +1,12 @@
 import "date-fns";
 import React, { useEffect, useState } from "react";
-import { Card, Divider, Grid, MenuItem } from "@material-ui/core";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Divider,
+  Grid,
+  MenuItem,
+} from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
 import { useRouteMatch, useHistory } from "react-router-dom";
@@ -32,14 +38,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
-
+import ContactInfo from "../contactInfo/contactInformation";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
 const SidebarContent = getSidebarContent(styled);
-
 const scheme = Layout();
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -102,16 +108,18 @@ const useStyles = makeStyles((theme: Theme) =>
       alignSelf: "center",
     },
     header: {
-      background: "palealiceblue",
-      color: "black",
-      fontStyle: "oblique",
-      fontSize: "2em",
-      fontFamily: "Gill Sans Extrabold",
-      fontWeight: "bolder",
+      backgroundColor: "white",
       justifyContent: "center",
       alignItems: "center",
       alignSelf: "center",
       display: "flex",
+      height: "15vh",
+    },
+    title: {
+      color: "black",
+      fontSize: "1.75em",
+      fontFamily: "Comfortaa",
+      fontWeight: "normal",
     },
   })
 );
@@ -136,7 +144,7 @@ scheme.configureEdgeSidebar((builder) => {
   builder
     .create("unique_id", { anchor: "left" })
     .registerPermanentConfig("xs", {
-      width: "25%", // px, (%, rem, em is compatible)
+      width: "30%", // px, (%, rem, em is compatible)
       collapsible: false,
     })
     .registerPermanentConfig("sm", {
@@ -144,22 +152,23 @@ scheme.configureEdgeSidebar((builder) => {
       collapsible: false,
     })
     .registerPermanentConfig("md", {
-      width: "15%", //x, (%, rem, em is compatible)
+      width: "18%", //x, (%, rem, em is compatible)
       collapsible: false,
     });
 });
 
 export default function Settings(props: any) {
-  const [displayLoader, setDisplayLoader] = useState(false);
-  const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
+  const [displayLoader, setDisplayLoader] = useState(true);
+  const loading = useSelector((state: State) => state.loading as boolean);
+  //const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const dogs = useSelector(
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
-  const [filteredDogs, setFilteredDogs] = useState<ILostDogWithPicture[]>([]);
-  const [displayedDogs, setDisplayedDogs] = useState<ILostDogWithPicture[]>([]);
-  //const contactInfo = {cookies[username]}
+  const contactInfo = useSelector(
+    (state: State) => state.contactInfo as IContactInfo
+  );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
@@ -168,21 +177,32 @@ export default function Settings(props: any) {
   const classes = useStyles();
   const history = useHistory();
   const { path } = useRouteMatch();
-  const [isListVisible, setListVisible] = useState(true);
+  const isInputNotNull = sessionStorage.getItem("listVisible") !== null;
+  const [isListVisible, setListVisible] = useState<boolean>(
+    isInputNotNull
+      ? JSON.parse(sessionStorage.getItem("listVisible") as string)
+      : true
+  );
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    //ownerId: Number.parseInt(cookies[config.cookies.userId]),
+    filter: {
+      ownerId: Number.parseInt(cookies[config.cookies.userId]),
+    },
   });
   function clearStorage() {
     sessionStorage.removeItem("dogId");
-    sessionStorage.removeItem("listFetched");
+    //sessionStorage.removeItem("listFetched");
+    sessionStorage.removeItem("editDogFields");
+    sessionStorage.removeItem("listVisible");
     sessionStorage.clear();
   }
   const onDogsListClicked = () => {
+    sessionStorage.setItem("listVisible", JSON.stringify(true));
     setListVisible(true);
   };
   const onInfoClicked = () => {
+    sessionStorage.setItem("listVisible", JSON.stringify(false));
     setListVisible(false); /*getContactInfo();*/
   };
   const onShelterClicked = () => {
@@ -200,7 +220,7 @@ export default function Settings(props: any) {
 
   //refresh page
   useEffect(() => {
-    if (pageRefresh && !listFetched) {
+    if (pageRefresh) {
       store.dispatch(clearDogList);
       setPageRefresh(false);
     } // eslint-disable-next-line
@@ -208,7 +228,7 @@ export default function Settings(props: any) {
 
   // fetch and append page 0
   useEffect(() => {
-    if (refreshRequired && !listFetched) {
+    if (refreshRequired && !lastPage) {
       try {
         store.dispatch(
           Actions.fetchDogsThunk({
@@ -219,63 +239,45 @@ export default function Settings(props: any) {
             cookies: cookies,
           }) //filters
         );
+        /*store.dispatch(
+          Actions.fetchContactInfoThunk({
+            userId: cookies[config.cookies.userId],
+            cookies: cookies,
+          })
+        );*/
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
-        setPageRefresh(false);
+        setDisplayLoader(false);
       }
     }
     // eslint-disable-next-line
   }, [refreshRequired]);
 
-  //fetch more
-  useEffect(() => {
-    if (!refreshRequired && !lastPage && !listFetched) {
-      try {
-        store.dispatch(
-          Actions.fetchDogsThunk({
-            filters: {
-              ...filters,
-              page: filters.page,
-            },
-            cookies: cookies,
-          }) //filters
-        );
-      } catch (err) {
-        console.error("Failed to fetch the dogs: ", err);
-      } finally {
-        setFilters({ ...filters, page: filters.page + 1 });
-        setPageRefresh(false);
-      }
-    } // eslint-disable-next-line
-  }, [refreshRequired, lastPage, pages]);
-
-  //filter
-  useEffect(() => {
-    if (!refreshRequired && lastPage && !listFetched) {
-      let tmp = dogs;
-      let addDogs = tmp.filter(
-        (dog: ILostDogWithPicture) =>
-          dog.ownerId === Number.parseInt(cookies[config.cookies.userId])
-      );
-      setFilteredDogs(addDogs);
-      setDisplayedDogs(addDogs.slice(0, filters.size));
-      setListFetched(true);
-      setPageRefresh(false);
-    } // eslint-disable-next-line
-  }, [refreshRequired, lastPage]);
-
   const fetchMore = () => {
-    setDisplayLoader(true);
-    let addDogs = filteredDogs.slice(0, displayedDogs.length + filters.size);
-    setTimeout(() => {
-      setDisplayedDogs(addDogs);
-      setDisplayLoader(false);
-    }, 700);
+    try {
+      store.dispatch(
+        Actions.fetchDogsThunk({
+          filters: {
+            ...filters,
+            page: filters.page,
+          },
+          cookies: cookies,
+        }) //filters
+      );
+    } catch (err) {
+      console.error("Failed to fetch the dogs: ", err);
+    } finally {
+      if (filters.page) {
+        setFilters({ ...filters, page: filters.page + 1 });
+      }
+    }
   };
 
   function redirectToDogDetailsOrEdit(id: number) {
+    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    sessionStorage.removeItem("editDogFields");
     props.redirectToDogDetailsOrEdit(id);
   }
 
@@ -283,10 +285,13 @@ export default function Settings(props: any) {
     <Root scheme={scheme}>
       <CssBaseline />
       <Header className={classes.header}>
-        <Toolbar>
-          <SidebarTrigger sidebarId="unique_id" />
-          Settings
-        </Toolbar>
+        <BottomNavigation showLabels>
+          <BottomNavigationAction
+            disabled={true}
+            label="SETTINGS"
+            classes={{ label: classes.title }}
+          />
+        </BottomNavigation>
       </Header>
       <DrawerSidebar sidebarId="unique_id">
         <CollapseBtn />
@@ -367,18 +372,19 @@ export default function Settings(props: any) {
         </SidebarContent>
       </DrawerSidebar>
       <Content>
-        {isListVisible && lastPage && listFetched && (
+        {isListVisible && (
           <InfiniteScroll
-            dataLength={displayedDogs.length}
-            scrollThreshold={0.5}
+            dataLength={dogs.length}
+            scrollThreshold={0.9}
             next={fetchMore}
-            hasMore={filteredDogs.length > displayedDogs.length}
+            hasMore={!lastPage}
             loader={
-              (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
+              ((displayLoader || loading) && <LoadingPopup />) ||
+              (!displayLoader && <></>)
             }
           >
             <ImageGrid
-              dogs={displayedDogs}
+              dogs={dogs}
               path={path}
               redirectToDogDetailsOrEdit={(id: number) =>
                 redirectToDogDetailsOrEdit(id)
@@ -386,7 +392,7 @@ export default function Settings(props: any) {
             />
           </InfiniteScroll>
         )}
-        {!isListVisible && <Card></Card>}
+        {!isListVisible && <ContactInfo contactInfo={contactInfo} />}
       </Content>
     </Root>
   );

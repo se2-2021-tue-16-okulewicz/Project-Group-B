@@ -1,5 +1,4 @@
 import React from "react";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
@@ -11,27 +10,7 @@ import { store } from "../app/store";
 import { fetchOneDogThunk } from "../app/actions";
 import { useCookies } from "react-cookie";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "space-around",
-      overflow: "hidden",
-      backgroundColor: theme.palette.background.paper,
-    },
-    gridList: {
-      width: 500,
-      height: 450,
-    },
-    icon: {
-      color: "rgba(255, 255, 255, 0.54)",
-    },
-  })
-);
-
 export default function ImageGrid(props: any) {
-  const classes = useStyles();
   const dogs = props.dogs as ILostDogWithPicture[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const redirectToDogDetailsOrEdit = (id: number) => {
@@ -45,14 +24,19 @@ export default function ImageGrid(props: any) {
   };
 
   return (
-    <GridList cols={3} spacing={3}>
+    <GridList
+      cols={3}
+      spacing={2}
+      style={{ margin: "0", width: "100%", display: "flex" }}
+    >
       {dogs.map((dog: ILostDogWithPicture) => (
         <GridListTile
           key={dog.id}
-          style={{ minHeight: "300px" }}
+          style={{ height: "300px", width: "33%" }}
           className="tile"
         >
           <img
+            style={{ height: "300px" }}
             src={`data:${dog.picture.fileType};base64,${
               dog.picture.data as ArrayBuffer
             }`}
@@ -69,7 +53,7 @@ export default function ImageGrid(props: any) {
             actionIcon={
               <IconButton
                 aria-label={`info about ${dog.name}`}
-                className={classes.icon}
+                style={{ color: "rgba(255, 255, 255, 0.54)" }}
                 onClick={() => {
                   redirectToDogDetailsOrEdit(dog.id as number);
                 }}
@@ -80,6 +64,37 @@ export default function ImageGrid(props: any) {
           />
         </GridListTile>
       ))}
+      {dogs.length <= 2 &&
+        dogs.length > 0 &&
+        dogs.map((dog: ILostDogWithPicture) => (
+          <GridListTile
+            key={dog.id + 1}
+            style={{ height: "300px" }}
+            className="tile"
+          >
+            <img
+              style={{ visibility: "hidden", height: "300px" }}
+              src={`data:${dog.picture.fileType};base64,${
+                dog.picture.data as ArrayBuffer
+              }`}
+            />
+          </GridListTile>
+        ))}
+      {dogs.length == 1 &&
+        dogs.map((dog: ILostDogWithPicture) => (
+          <GridListTile
+            key={dog.id + 2}
+            style={{ height: "300px" }}
+            className="tile"
+          >
+            <img
+              style={{ visibility: "hidden", height: "300px" }}
+              src={`data:${dog.picture.fileType};base64,${
+                dog.picture.data as ArrayBuffer
+              }`}
+            />
+          </GridListTile>
+        ))}
     </GridList>
   );
 }

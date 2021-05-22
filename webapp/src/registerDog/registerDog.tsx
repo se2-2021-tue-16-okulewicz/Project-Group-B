@@ -35,7 +35,7 @@ import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import { ValidateFetchedDog } from "../utilityComponents/utilities";
+import { ValidateFetchedDog } from "../utilityComponents/validation";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -207,8 +207,8 @@ export default function RegisterDogForm() {
               onChange={inputsHandler}
               InputProps={{
                 inputProps: { min: 0, max: 30 },
-                startAdornment: (
-                  <InputAdornment position="start">Years</InputAdornment>
+                endAdornment: (
+                  <InputAdornment position="end">Years</InputAdornment>
                 ),
               }}
               variant="outlined"
@@ -378,7 +378,7 @@ export default function RegisterDogForm() {
             <DatePicker
               data-testid="date-select"
               disableToolbar
-              variant="inline"
+              variant="dialog"
               format="yyyy-MM-dd"
               margin="normal"
               id="date-picker-inline"
