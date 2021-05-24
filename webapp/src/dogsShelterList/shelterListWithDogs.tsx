@@ -295,7 +295,6 @@ export default function ShelterListWithDogs(props: any) {
                 onClick={onLogOutClicked}
                 icon={<ExitToApp />}
               />
-
             </BottomNavigation>
           </Grid>
         </Grid>

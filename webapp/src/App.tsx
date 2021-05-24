@@ -121,10 +121,11 @@ function Layout() {
           <Footer />
         </Route>
         <Route path="/shelter">
-            <ShelterListWithDogs   
+          <ShelterListWithDogs
             redirectToDogDetailsOrEdit={(id: number) =>
               redirectToDogDetails(id)
-            }/>
+            }
+          />
         </Route>
         <Route path="/listDogs">
           <ListWithDogs

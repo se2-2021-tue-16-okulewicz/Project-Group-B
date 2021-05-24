@@ -369,7 +369,6 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  
   [Actions.fetchOneDogThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<undefined, undefined>>
