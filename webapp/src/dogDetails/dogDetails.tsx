@@ -48,8 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
     imgFit: {
       maxHeight: "95vh",
       maxWidth: "30vw",
-      minWidth:"300px",
-      display:"flex",
+      minWidth: "300px",
+      display: "flex",
       borderRadius: "10px",
       width: "auto",
     },
@@ -109,7 +109,8 @@ const DogDetails = (props: any) => {
           className="grid"
           container
           item
-          sm={12} md={5}
+          sm={12}
+          md={5}
           direction="column"
           alignContent="stretch"
         >
@@ -146,7 +147,8 @@ const DogDetails = (props: any) => {
           className="grid"
           container
           item
-          sm={12} md={3}
+          sm={12}
+          md={3}
           direction="column"
           alignContent="stretch"
         >
@@ -263,7 +265,8 @@ const DogDetails = (props: any) => {
           className="grid"
           container
           item
-          sm={12} md={4}
+          sm={12}
+          md={4}
           direction="column"
           alignContent="stretch"
         >

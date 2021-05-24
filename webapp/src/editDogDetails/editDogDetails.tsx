@@ -73,8 +73,8 @@ const useStyles = makeStyles((theme: Theme) =>
     imgFit: {
       maxWidth: "30vw",
       maxHeight: "55vh",
-      minWidth:"300px",
-      display:"flex",
+      minWidth: "300px",
+      display: "flex",
       borderRadius: "10px",
       width: "auto",
     },
@@ -305,7 +305,15 @@ const EditDogDetails = (props: any) => {
           alignContent="space-between"
           spacing={7}
         >
-          <Grid container item xs={12} md={5} direction="column" alignContent="stretch" style={{marginBottom:20}}>
+          <Grid
+            container
+            item
+            xs={12}
+            md={5}
+            direction="column"
+            alignContent="stretch"
+            style={{ marginBottom: 20 }}
+          >
             <FormControl className={classes.formControl}>
               <InputLabel shrink id="name-label">
                 Name
@@ -340,7 +348,15 @@ const EditDogDetails = (props: any) => {
               </Card>
             </FormControl>
           </Grid>
-          <Grid container item xs={12} md={3} direction="column" alignContent="stretch" style={{marginBottom:2}}>
+          <Grid
+            container
+            item
+            xs={12}
+            md={3}
+            direction="column"
+            alignContent="stretch"
+            style={{ marginBottom: 2 }}
+          >
             <FormControl variant="outlined" className={classes.formControl}>
               <TextField
                 label="Age"
@@ -514,7 +530,15 @@ const EditDogDetails = (props: any) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid container item xs={12} md={4} direction="column" alignContent="stretch" style={{marginBottom:10}}>
+          <Grid
+            container
+            item
+            xs={12}
+            md={4}
+            direction="column"
+            alignContent="stretch"
+            style={{ marginBottom: 10 }}
+          >
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel shrink id="calendar-label">
                 Dog was lost on

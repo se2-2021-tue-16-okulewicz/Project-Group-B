@@ -210,8 +210,8 @@ export default function ShelterListWithDogs(props: any) {
               ...filters,
               page: filters.page,
             },
-            shelterId:cookies[config.cookies.userId], 
-            cookies: cookies
+            shelterId: cookies[config.cookies.userId],
+            cookies: cookies,
           }) //filters
         );
       } catch (err) {
@@ -236,7 +236,7 @@ export default function ShelterListWithDogs(props: any) {
               ...filters,
               page: filters.page,
             },
-            shelterId:cookies[config.cookies.userId], 
+            shelterId: cookies[config.cookies.userId],
             cookies: cookies,
           }) //filters
         );
@@ -310,9 +310,7 @@ export default function ShelterListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ShelterGrid
-            dogs={shelterDogs}
-          />
+          <ShelterGrid dogs={shelterDogs} />
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
           <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />

@@ -221,25 +221,25 @@ export const fetchDogsThunk = createAsyncThunk<
 });
 
 export const fetchShelterDogsThunk = createAsyncThunk<
-RequestResponse<IShelterDog[], Number>,
-{ filters: IFilters; shelterId: number; cookies: { [name: string]: any } },
-{ rejectValue: RequestResponse<IShelterDog[], Number> }
+  RequestResponse<IShelterDog[], Number>,
+  { filters: IFilters; shelterId: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelterDog[], Number> }
 >(
-"fetchShelterDogs",
-async (
-  userAndCookies: {
-    filters: IFilters;
-    shelterId: number;
-    cookies: { [name: string]: any };
-  },
-  { rejectWithValue }
-) => {
-  const response: RequestResponse<IShelterDog[], Number> =
-    await Fetching.fetchShelterDogs(
-      userAndCookies.filters,
-      userAndCookies.shelterId,
-      userAndCookies.cookies
-    );
+  "fetchShelterDogs",
+  async (
+    userAndCookies: {
+      filters: IFilters;
+      shelterId: number;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IShelterDog[], Number> =
+      await Fetching.fetchShelterDogs(
+        userAndCookies.filters,
+        userAndCookies.shelterId,
+        userAndCookies.cookies
+      );
 
     if (response.response.successful !== true) {
       return rejectWithValue(

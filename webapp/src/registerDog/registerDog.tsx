@@ -169,7 +169,15 @@ export default function RegisterDogForm() {
         alignContent="space-between"
         spacing={7}
       >
-        <Grid container item sm={12} md={5} direction="column" alignContent="stretch" style={{marginBottom:20}}>
+        <Grid
+          container
+          item
+          sm={12}
+          md={5}
+          direction="column"
+          alignContent="stretch"
+          style={{ marginBottom: 20 }}
+        >
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="name-label">
               Name
@@ -196,7 +204,15 @@ export default function RegisterDogForm() {
             </Card>
           </FormControl>
         </Grid>
-        <Grid container item sm={12} md={3} direction="column" alignContent="stretch" style={{marginBottom:2}}>
+        <Grid
+          container
+          item
+          sm={12}
+          md={3}
+          direction="column"
+          alignContent="stretch"
+          style={{ marginBottom: 2 }}
+        >
           <FormControl variant="outlined" className={classes.formControl}>
             <TextField
               label="Age"
@@ -370,7 +386,15 @@ export default function RegisterDogForm() {
             </Select>
           </FormControl>
         </Grid>
-        <Grid container item sm={12} md={4} direction="column" alignContent="stretch" style={{marginBottom:10}}>
+        <Grid
+          container
+          item
+          sm={12}
+          md={4}
+          direction="column"
+          alignContent="stretch"
+          style={{ marginBottom: 10 }}
+        >
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel shrink id="calendar-label">
               Dog was lost on

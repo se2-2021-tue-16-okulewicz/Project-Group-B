@@ -291,7 +291,7 @@ export async function login(
   credentials: ILoginInformation
 ): Promise<RequestResponse<ILoginResults, undefined>> {
   let formData = new FormData();
-  credentials.email=credentials.username
+  credentials.email = credentials.username;
   formData.append(
     "email",
     new Blob([credentials.email], {

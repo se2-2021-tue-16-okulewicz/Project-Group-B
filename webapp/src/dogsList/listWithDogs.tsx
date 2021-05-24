@@ -304,9 +304,12 @@ export default function ListWithDogs(props: any) {
                 label="Filter"
                 onClick={() => {
                   setMenuCollapsed(!isMenuCollapsed);
-                  if (!isMenuCollapsed && isUpdateFilters){
-                  setFilters({...filters, page: config.defaultFilters.page});
-                  store.dispatch(clearDogList());
+                  if (!isMenuCollapsed && isUpdateFilters) {
+                    setFilters({
+                      ...filters,
+                      page: config.defaultFilters.page,
+                    });
+                    store.dispatch(clearDogList());
                     setIsUpdateFilters(false);
                   }
                   //sidebar.setOpen("unique_id", true);

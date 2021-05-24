@@ -314,7 +314,8 @@ export const reducer = createReducer(init, {
         payload.payload.response.data as IShelterDog[]
       ).slice(0, (pageNumber + 1) * pageSize);
     }
-    newState.dogsLastPage = (payload.payload.response.data as IShelterDog[]).length < pageSize;
+    newState.dogsLastPage =
+      (payload.payload.response.data as IShelterDog[]).length < pageSize;
     newState.pages = pageNumber;
     newState.dogsRequireRefresh = false;
     //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);

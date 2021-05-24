@@ -1,7 +1,7 @@
 export interface ILoginInformation {
   username: string;
   password: string;
-  email?:string;
+  email?: string;
 }
 
 export interface ILoginResults {
