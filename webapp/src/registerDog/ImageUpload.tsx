@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import "./ImageUpload.css";
 import { Input, InputLabel } from "@material-ui/core";
+const types = ["image/jpg", "image/jpeg", "image/png"];
 
 const ImageUpload = (props: any) => {
   const [file, setFile] = useState(null);
   const [newImage, setNewImage] = useState(false);
 
   const handleChange = (event: any) => {
-    let newFile = event.target.files[0];
-    setFile(newFile);
-    setNewImage(true);
-    let f = event.target.files[0];
-    props.handlePicturesChange(f);
+    console.log(event.target.files[0].type);
+    if (types.includes(event.target.files[0].type)) {
+      let newFile = event.target.files[0];
+      setFile(newFile);
+      setNewImage(true);
+      let f = event.target.files[0];
+      props.handlePicturesChange(f);
+    }
   };
 
   return (
@@ -28,7 +32,8 @@ const ImageUpload = (props: any) => {
           id="pic-label"
           style={{ fontSize: "20px" }}
         >
-          <Input
+          <input
+            accept=".jpg, .jpeg, .png"
             className="imageInput"
             type="file"
             style={{ display: "none" }}

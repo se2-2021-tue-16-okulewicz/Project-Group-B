@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
-  Drawer,
   Grid,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -11,7 +10,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import { IShelterDog } from "../dog/dogInterfaces";
 import * as Actions from "../../src/app/actions";
 import { useCookies } from "react-cookie";
 import Layout, {
@@ -27,21 +26,19 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../config/config";
-import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ExitToApp, Pets, Search, Settings } from "@material-ui/icons";
+import { ExitToApp, Pets, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import Footer from "../utilityComponents/Footer";
-import FilterForm from "./filterForm";
-import { IFilterSort } from "./filterInterface";
+import { IFilterSort } from "../dogsList/filterInterface";
+import ShelterGrid from "../commoncomponents/shelterGrid";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
-const SidebarContent = getSidebarContent(styled);
 
 const scheme = Layout();
 const useStyles = makeStyles((theme: Theme) =>
@@ -75,8 +72,6 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
       alignSelf: "center",
       marginTop: "6%",
-      //borderBottomColor: "black",
-      //borderBottomWidth: "1",
       fontSize: "1.2em",
     },
     header: {
@@ -89,7 +84,6 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       right: 0,
       height: "15vh",
-      //width:"100vw",
     },
     title: {
       color: "black",
@@ -113,7 +107,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       marginTop: "2vh",
-      //flexGrow: 1,
       alignSelf: "center",
     },
     drawer: {
@@ -144,25 +137,24 @@ scheme.configureHeader((builder) => {
 
 /*TODO: remove filtering in frontend (folder dontdelete)*/
 
-export default function ListWithDogs(props: any) {
+export default function ShelterListWithDogs(props: any) {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
   const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
-  const [isMenuCollapsed, setMenuCollapsed] = useState(true);
 
-  const dogs = useSelector(
-    (state: State) => state.dogs as ILostDogWithPicture[]
+  const shelterDogs = useSelector(
+    (state: State) => state.shelterdogs as IShelterDog[]
   );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
+  console.log(refreshRequired);
   const [initialRefresh, setInitialRefresh] = useState(true);
   const [isUpdateFilters, setIsUpdateFilters] = useState(false);
   const [filters, setFilters] = useState<IFilterSort>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    filter: { isFound: false },
   });
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -171,12 +163,12 @@ export default function ListWithDogs(props: any) {
   const { path } = useRouteMatch();
 
   const onRegisterClicked = () => {
-    store.dispatch(clearDogList());
-    history.push("/addDog");
+    //store.dispatch(clearDogList());
+    //history.push("/addDog");
   };
   const onSettingsClicked = () => {
-    store.dispatch(clearDogList());
-    history.push("/settings");
+    //store.dispatch(clearDogList());
+    //history.push("/settings");
   };
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });
@@ -190,18 +182,9 @@ export default function ListWithDogs(props: any) {
   /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
         setTimeout(() => {
           setPageRefresh(true);
-
         },600000)
   }*/
   //clears dog list, when page is refreshed or changed
-  const updateFilters = (event: any) => {
-    if (event) {
-      setFilters(event);
-      store.dispatch(clearDogList());
-      setIsUpdateFilters(true);
-      //setMenuCollapsed(true);
-    }
-  };
 
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
@@ -217,17 +200,17 @@ export default function ListWithDogs(props: any) {
     }
   }, [initialRefresh]);
 
-  console.log(refreshRequired);
   useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0
       try {
         store.dispatch(
-          Actions.fetchDogsThunk({
+          Actions.fetchShelterDogsThunk({
             filters: {
               ...filters,
-              page: config.defaultFilters.page,
+              page: filters.page,
             },
+            shelterId: cookies[config.cookies.userId],
             cookies: cookies,
           }) //filters
         );
@@ -235,6 +218,9 @@ export default function ListWithDogs(props: any) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
+        if (isUpdateFilters) {
+          setIsUpdateFilters(false);
+        }
       }
     }
     // eslint-disable-next-line
@@ -245,11 +231,12 @@ export default function ListWithDogs(props: any) {
       setFetching(true);
       try {
         store.dispatch(
-          Actions.fetchDogsThunk({
+          Actions.fetchShelterDogsThunk({
             filters: {
               ...filters,
               page: filters.page,
             },
+            shelterId: cookies[config.cookies.userId],
             cookies: cookies,
           }) //filters
         );
@@ -270,10 +257,10 @@ export default function ListWithDogs(props: any) {
       <CssBaseline />
       <Header className={classes.header} id="header">
         <Grid container direction="row" alignContent="space-between">
-          <Grid item md={3}>
+          <Grid item xs={3}>
             <BottomNavigation showLabels />
           </Grid>
-          <Grid item xs={5} sm={7} md={6}>
+          <Grid item xs={6}>
             <BottomNavigation showLabels>
               <BottomNavigationAction
                 disabled={true}
@@ -282,10 +269,11 @@ export default function ListWithDogs(props: any) {
               />
             </BottomNavigation>
           </Grid>
-          <Grid item xs={7} sm={5} md={3}>
+          <Grid item xs={3}>
             <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
                 showLabel={true}
+                disabled={true}
                 onClick={onRegisterClicked}
                 label="Register"
                 classes={{ label: classes.action, root: classes.action }}
@@ -294,27 +282,10 @@ export default function ListWithDogs(props: any) {
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
+                disabled={true}
                 onClick={onSettingsClicked}
                 label="Settings"
                 icon={<Settings />}
-              />
-              <BottomNavigationAction
-                showLabel={true}
-                classes={{ label: classes.action, root: classes.action }}
-                label="Filter"
-                onClick={() => {
-                  setMenuCollapsed(!isMenuCollapsed);
-                  if (!isMenuCollapsed && isUpdateFilters) {
-                    setFilters({
-                      ...filters,
-                      page: config.defaultFilters.page,
-                    });
-                    store.dispatch(clearDogList());
-                    setIsUpdateFilters(false);
-                  }
-                  //sidebar.setOpen("unique_id", true);
-                }}
-                icon={<Search />}
               />
               <BottomNavigationAction
                 showLabel={true}
@@ -328,29 +299,9 @@ export default function ListWithDogs(props: any) {
           </Grid>
         </Grid>
       </Header>
-      {!isMenuCollapsed && (
-        <Drawer
-          variant="persistent"
-          BackdropProps={{ invisible: true }}
-          /*onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
-        onBackdropClick={()=>{setMenuCollapsed(true)}}*/ open={!isMenuCollapsed}
-          className={classes.drawer}
-        >
-          <Toolbar />
-          <BottomNavigation />
-          {
-            <FilterForm
-              filters={filters}
-              updateFilters={(
-                updatedFilters: React.ChangeEvent<{ value: unknown }>
-              ) => updateFilters(updatedFilters)}
-            />
-          }
-        </Drawer>
-      )}
       <Content>
         <InfiniteScroll
-          dataLength={dogs.length}
+          dataLength={shelterDogs.length}
           scrollThreshold={0.9}
           next={fetchMore}
           hasMore={!lastPage && !fetching}
@@ -359,16 +310,10 @@ export default function ListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ImageGrid
-            dogs={dogs}
-            path={path}
-            redirectToDogDetailsOrEdit={(id: number) =>
-              redirectToDogDetailsOrEdit(id)
-            }
-          />
+          <ShelterGrid dogs={shelterDogs} />
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
-          <Footer position={dogs.length > 3 ? "list" : "footer"} />
+          <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />
         )}
       </Content>
     </Root>

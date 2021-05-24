@@ -72,9 +72,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     imgFit: {
       maxWidth: "30vw",
-      maxHeight: "70vh",
+      maxHeight: "55vh",
+      minWidth: "300px",
+      display: "flex",
       borderRadius: "10px",
-      height: "300px",
+      width: "auto",
     },
     mainForm: {
       marginLeft: "0.5%",
@@ -219,11 +221,11 @@ const EditDogDetails = (props: any) => {
   const onMarkDogClicked = () => {
     try {
       markDogAsFound(dogId);
-      store.dispatch(Actions.clearDogList);
+      store.dispatch(Actions.clearDogList());
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     } finally {
-      store.dispatch(Actions.startRefreshing);
+      store.dispatch(Actions.startRefreshing());
       clearStorage();
       history.push("/settings");
       history.go(0);
@@ -233,7 +235,7 @@ const EditDogDetails = (props: any) => {
   const onSubmitEditClicked = () => {
     try {
       updateDog(editDogFields, picture as IPicture);
-      store.dispatch(Actions.clearDogList);
+      store.dispatch(Actions.clearDogList());
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     } finally {
@@ -245,7 +247,7 @@ const EditDogDetails = (props: any) => {
   };
 
   const onCancelClick = () => {
-    store.dispatch(Actions.clearDogList);
+    store.dispatch(Actions.clearDogList());
     clearStorage();
     history.push("/settings");
     window.location.reload();
@@ -303,7 +305,15 @@ const EditDogDetails = (props: any) => {
           alignContent="space-between"
           spacing={7}
         >
-          <Grid container item xs={5} direction="column" alignContent="stretch">
+          <Grid
+            container
+            item
+            xs={12}
+            md={5}
+            direction="column"
+            alignContent="stretch"
+            style={{ marginBottom: 20 }}
+          >
             <FormControl className={classes.formControl}>
               <InputLabel shrink id="name-label">
                 Name
@@ -338,7 +348,15 @@ const EditDogDetails = (props: any) => {
               </Card>
             </FormControl>
           </Grid>
-          <Grid container item xs={3} direction="column" alignContent="stretch">
+          <Grid
+            container
+            item
+            xs={12}
+            md={3}
+            direction="column"
+            alignContent="stretch"
+            style={{ marginBottom: 2 }}
+          >
             <FormControl variant="outlined" className={classes.formControl}>
               <TextField
                 label="Age"
@@ -512,7 +530,15 @@ const EditDogDetails = (props: any) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid container item xs={4} direction="column" alignContent="stretch">
+          <Grid
+            container
+            item
+            xs={12}
+            md={4}
+            direction="column"
+            alignContent="stretch"
+            style={{ marginBottom: 10 }}
+          >
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel shrink id="calendar-label">
                 Dog was lost on

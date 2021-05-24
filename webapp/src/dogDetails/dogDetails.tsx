@@ -46,8 +46,10 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "inherit",
     },
     imgFit: {
-      maxHeight: "90vh",
+      maxHeight: "95vh",
       maxWidth: "30vw",
+      minWidth: "300px",
+      display: "flex",
       borderRadius: "10px",
       width: "auto",
     },
@@ -107,7 +109,8 @@ const DogDetails = (props: any) => {
           className="grid"
           container
           item
-          xs={5}
+          sm={12}
+          md={5}
           direction="column"
           alignContent="stretch"
         >
@@ -144,7 +147,8 @@ const DogDetails = (props: any) => {
           className="grid"
           container
           item
-          xs={3}
+          sm={12}
+          md={3}
           direction="column"
           alignContent="stretch"
         >
@@ -261,7 +265,8 @@ const DogDetails = (props: any) => {
           className="grid"
           container
           item
-          xs={4}
+          sm={12}
+          md={4}
           direction="column"
           alignContent="stretch"
         >
