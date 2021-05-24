@@ -235,9 +235,6 @@ export default function ListWithDogs(props: any) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
-        if (isUpdateFilters) {
-          setIsUpdateFilters(false);
-        }
       }
     }
     // eslint-disable-next-line
@@ -307,8 +304,11 @@ export default function ListWithDogs(props: any) {
                 label="Filter"
                 onClick={() => {
                   setMenuCollapsed(!isMenuCollapsed);
+                  if (!isMenuCollapsed && isUpdateFilters){
                   setFilters({...filters, page: config.defaultFilters.page});
                   store.dispatch(clearDogList());
+                    setIsUpdateFilters(false);
+                  }
                   //sidebar.setOpen("unique_id", true);
                 }}
                 icon={<Search />}
@@ -334,6 +334,7 @@ export default function ListWithDogs(props: any) {
           className={classes.drawer}
         >
           <Toolbar />
+          <BottomNavigation />
           {
             <FilterForm
               filters={filters}

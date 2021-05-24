@@ -110,7 +110,10 @@ export default function Login() {
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
       if(loginInfo?.userType=="Shelter"){
-        history.push("/shelter")
+        history.push("/shelter");
+      }
+      else {
+        history.push("/listDogs");
       }
     } // eslint-disable-next-line
   }, [loginInfo]);
