@@ -115,14 +115,14 @@ export default function RegisterShelterDogForm() {
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }
-    history.push("/listDogs");
+    history.push("/shelterlistDogs");
     history.go(0);
   };
 
   const onCancelClick = () => {
     clearStorage();
     store.dispatch(Actions.clearDogList());
-    history.push("/listDogs");
+    history.push("/shelterlistDogs");
   };
 
   function registerDog(dog: IShelterDog, picture: IPicture) {
