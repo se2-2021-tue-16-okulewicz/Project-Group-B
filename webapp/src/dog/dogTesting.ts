@@ -1,5 +1,9 @@
 import { initLostDogWithPictureProps, initPicture } from "./dogClasses";
-import { ILostDogWithPicture, IShelterDog, IShelterDogWithPicture } from "./dogInterfaces";
+import {
+  ILostDogWithPicture,
+  IShelterDog,
+  IShelterDogWithPicture,
+} from "./dogInterfaces";
 
 const otherDog: ILostDogWithPicture = {
   id: 1,

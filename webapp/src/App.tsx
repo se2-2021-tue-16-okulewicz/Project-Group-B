@@ -32,7 +32,6 @@ import DogDetails from "./dogDetails/dogDetails";
 import ShelterListWithDogs from "./dogsShelterList/shelterListWithDogs";
 import RegisterShelterDogForm from "./registerShelterDog/registerShelterDog";
 
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     mainContainer: {
