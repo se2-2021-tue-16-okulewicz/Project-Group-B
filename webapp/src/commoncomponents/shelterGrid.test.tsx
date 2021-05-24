@@ -41,7 +41,7 @@ it("Rendered list of dog cards", () => {
       <Provider store={store}>
         <Router>
           <Route path="/">
-            <ShelterGrid dogs={sheltertestDog} id={-1} cookies={{}} path={""} />
+            <ShelterGrid dogs={[sheltertestDog, sheltertestDog]} id={-1} cookies={{}} path={""} />
           </Route>
         </Router>
       </Provider>,
@@ -54,5 +54,5 @@ it("Rendered list of dog cards", () => {
     container?.getElementsByClassName("tile").length
   ).toBeGreaterThanOrEqual(testDogList.length);
   //check if dog named alex was rendered
-  expect(container?.getElementsByClassName("Alex").length).toEqual(1);
+  expect(container?.getElementsByClassName("Alex").length).toEqual(2);
 });

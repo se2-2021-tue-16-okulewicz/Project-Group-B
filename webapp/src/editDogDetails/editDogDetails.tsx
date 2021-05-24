@@ -221,11 +221,11 @@ const EditDogDetails = (props: any) => {
   const onMarkDogClicked = () => {
     try {
       markDogAsFound(dogId);
-      store.dispatch(Actions.clearDogList);
+      store.dispatch(Actions.clearDogList());
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     } finally {
-      store.dispatch(Actions.startRefreshing);
+      store.dispatch(Actions.startRefreshing());
       clearStorage();
       history.push("/settings");
       history.go(0);
@@ -235,7 +235,7 @@ const EditDogDetails = (props: any) => {
   const onSubmitEditClicked = () => {
     try {
       updateDog(editDogFields, picture as IPicture);
-      store.dispatch(Actions.clearDogList);
+      store.dispatch(Actions.clearDogList());
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     } finally {
@@ -247,7 +247,7 @@ const EditDogDetails = (props: any) => {
   };
 
   const onCancelClick = () => {
-    store.dispatch(Actions.clearDogList);
+    store.dispatch(Actions.clearDogList());
     clearStorage();
     history.push("/settings");
     window.location.reload();

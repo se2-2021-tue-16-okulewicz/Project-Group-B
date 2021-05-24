@@ -10,7 +10,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
-import { ILostDogWithPicture, IShelterDog } from "../dog/dogInterfaces";
+import { IShelterDog } from "../dog/dogInterfaces";
 import * as Actions from "../../src/app/actions";
 import { useCookies } from "react-cookie";
 import Layout, {
@@ -26,9 +26,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../config/config";
-import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ExitToApp, Pets, Search, Settings } from "@material-ui/icons";
+import { ExitToApp, Pets, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import Footer from "../utilityComponents/Footer";
@@ -40,7 +39,6 @@ const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
-const SidebarContent = getSidebarContent(styled);
 
 const scheme = Layout();
 const useStyles = makeStyles((theme: Theme) =>
@@ -74,8 +72,6 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
       alignSelf: "center",
       marginTop: "6%",
-      //borderBottomColor: "black",
-      //borderBottomWidth: "1",
       fontSize: "1.2em",
     },
     header: {
@@ -88,7 +84,6 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       right: 0,
       height: "15vh",
-      //width:"100vw",
     },
     title: {
       color: "black",
@@ -112,7 +107,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       marginTop: "2vh",
-      //flexGrow: 1,
       alignSelf: "center",
     },
     drawer: {
@@ -155,6 +149,7 @@ export default function ShelterListWithDogs(props: any) {
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
+  console.log(refreshRequired);
   const [initialRefresh, setInitialRefresh] = useState(true);
   const [isUpdateFilters, setIsUpdateFilters] = useState(false);
   const [filters, setFilters] = useState<IFilterSort>({
@@ -200,7 +195,7 @@ export default function ShelterListWithDogs(props: any) {
 
   useEffect(() => {
     if (initialRefresh) {
-      store.dispatch(clearDogList);
+      store.dispatch(clearDogList());
       setInitialRefresh(false);
     }
   }, [initialRefresh]);

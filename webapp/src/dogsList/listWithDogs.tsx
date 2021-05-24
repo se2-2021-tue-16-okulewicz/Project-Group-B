@@ -212,11 +212,12 @@ export default function ListWithDogs(props: any) {
 
   useEffect(() => {
     if (initialRefresh) {
-      store.dispatch(clearDogList);
+      store.dispatch(clearDogList());
       setInitialRefresh(false);
     }
   }, [initialRefresh]);
 
+  console.log(refreshRequired);
   useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0

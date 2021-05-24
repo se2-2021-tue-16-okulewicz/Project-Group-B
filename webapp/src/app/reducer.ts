@@ -77,6 +77,7 @@ export const reducer = createReducer(init, {
   [Actions.clearDogList.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.dogs = [];
+    newState.shelterdogs = [];
     newState.dogsRequireRefresh = true;
     newState.dogsLastPage = false;
     newState.editedDog = null;
@@ -457,6 +458,8 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.loginInformation = null;
+    //newState.dogs = [];
+    //newState.shelterdogs = [];
     return newState;
   },
   [Actions.logoutThunk.rejected.toString()]: (

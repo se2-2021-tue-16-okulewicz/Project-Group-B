@@ -123,7 +123,7 @@ export default function RegisterDogForm() {
   const onSubmitClicked = () => {
     try {
       registerDog(lostDogFields, picture);
-      store.dispatch(Actions.clearDogList);
+      store.dispatch(Actions.clearDogList());
       clearStorage();
     } catch (err) {
       console.error("Failed to save the dog: ", err);
@@ -134,7 +134,7 @@ export default function RegisterDogForm() {
 
   const onCancelClick = () => {
     clearStorage();
-    store.dispatch(Actions.clearDogList);
+    store.dispatch(Actions.clearDogList());
     history.push("/listDogs");
   };
 

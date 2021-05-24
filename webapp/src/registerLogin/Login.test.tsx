@@ -63,6 +63,7 @@ describe("reducer", () => {
     expect(state).toEqual({
       contactInfo: null,
       dogs: [],
+      shelterdogs: [],
       dogsLastPage: false,
       dogsRequireRefresh: true,
       editedDog: null,

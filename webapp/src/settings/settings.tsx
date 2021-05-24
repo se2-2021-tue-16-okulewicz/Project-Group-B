@@ -221,7 +221,7 @@ export default function Settings(props: any) {
   //refresh page
   useEffect(() => {
     if (pageRefresh) {
-      store.dispatch(clearDogList);
+      store.dispatch(clearDogList());
       setPageRefresh(false);
     } // eslint-disable-next-line
   }, [pageRefresh]);
