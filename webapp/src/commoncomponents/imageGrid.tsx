@@ -29,7 +29,7 @@ export default function ImageGrid(props: any) {
       spacing={2}
       style={{ margin: "0", width: "100%", display: "flex" }}
     >
-      {dogs.map((dog: ILostDogWithPicture) => (
+      {dogs.map((dog: ILostDogWithPicture) => dog.picture && (
         <GridListTile
           key={dog.id}
           style={{ height: "300px"}}
@@ -65,7 +65,7 @@ export default function ImageGrid(props: any) {
       ))}
       {dogs.length <= 2 &&
         dogs.length > 0 &&
-        dogs.map((dog: ILostDogWithPicture) => (
+        dogs.map((dog: ILostDogWithPicture) => dog.picture && (
           <GridListTile
             key={dog.id + 1}
             style={{ height: "300px" }}
@@ -80,7 +80,7 @@ export default function ImageGrid(props: any) {
           </GridListTile>
         ))}
       {dogs.length == 1 &&
-        dogs.map((dog: ILostDogWithPicture) => (
+        dogs.map((dog: ILostDogWithPicture) => dog.picture && (
           <GridListTile
             key={dog.id + 2}
             style={{ height: "300px" }}

@@ -168,12 +168,12 @@ export default function ShelterListWithDogs(props: any) {
   const { path } = useRouteMatch();
 
   const onRegisterClicked = () => {
-    store.dispatch(clearDogList());
-    history.push("/addDog");
+    //store.dispatch(clearDogList());
+    //history.push("/addDog");
   };
   const onSettingsClicked = () => {
-    store.dispatch(clearDogList());
-    history.push("/settings");
+    //store.dispatch(clearDogList());
+    //history.push("/settings");
   };
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });
@@ -278,6 +278,7 @@ export default function ShelterListWithDogs(props: any) {
             <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
                 showLabel={true}
+                disabled={true}
                 onClick={onRegisterClicked}
                 label="Register"
                 classes={{ label: classes.action, root: classes.action }}
@@ -286,6 +287,7 @@ export default function ShelterListWithDogs(props: any) {
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
+                disabled={true}
                 onClick={onSettingsClicked}
                 label="Settings"
                 icon={<Settings />}

@@ -272,10 +272,10 @@ export default function ListWithDogs(props: any) {
       <CssBaseline />
       <Header className={classes.header} id="header">
         <Grid container direction="row" alignContent="space-between">
-          <Grid item xs={3}>
+          <Grid item md={3}>
             <BottomNavigation showLabels />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={5} sm={7} md={6}>
             <BottomNavigation showLabels>
               <BottomNavigationAction
                 disabled={true}
@@ -284,7 +284,7 @@ export default function ListWithDogs(props: any) {
               />
             </BottomNavigation>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={7} sm={5} md={3}>
             <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
                 showLabel={true}
