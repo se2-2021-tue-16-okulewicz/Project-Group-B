@@ -16,7 +16,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
 import DateFnsUtils from "@date-io/date-fns";
-import ImageUpload from "./ImageUpload";
+import ImageUpload from "../RegisterDog/ImageUpload";
 import {
   ColorTypes,
   HairTypes,
@@ -28,7 +28,7 @@ import {
   BreedTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture } from "../dog/dogInterfaces";
+import { ILostDog, IPicture, IShelterDog } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
@@ -68,13 +68,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function RegisterDogForm() {
+export default function RegisterShelterDogForm() {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  const [lostDogFields, setLostDogFields] = useState<ILostDog>(
+  const [lostDogFields, setLostDogFields] = useState<IShelterDog>(
     isInputNotNull
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
@@ -89,20 +89,6 @@ export default function RegisterDogForm() {
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
 
-  function calendarHandler(date: MaterialUiPickersDate): void {
-    let newField = { ...lostDogFields, dateLost: date as Date };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
-  }
-
-  const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
-    let newField = {
-      ...lostDogFields,
-      location: { ...lostDogFields.location, [e.target.name]: e.target.value },
-    };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
-  };
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
@@ -138,15 +124,15 @@ export default function RegisterDogForm() {
     history.push("/listDogs");
   };
 
-  function registerDog(dog: ILostDog, picture: IPicture) {
-    dog = ValidateFetchedDog(dog);
-    store.dispatch(
-      Actions.addDogThunk({
-        dog: dog,
-        picture: picture,
-        cookies: cookies,
-      })
-    );
+  function registerDog(dog: IShelterDog, picture: IPicture) {
+    // dog = ValidateFetchedDog(dog);
+    // store.dispatch(
+    //   Actions.addDogThunk({
+    //     dog: dog,
+    //     picture: picture,
+    //     cookies: cookies,
+    //   })
+    // );
   }
 
   const handlePicturesChange = (event: any) => {
@@ -395,45 +381,6 @@ export default function RegisterDogForm() {
           alignContent="stretch"
           style={{ marginBottom: 10 }}
         >
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="calendar-label">
-              Dog was lost on
-            </InputLabel>
-            <DatePicker
-              data-testid="date-select"
-              disableToolbar
-              variant="dialog"
-              format="yyyy-MM-dd"
-              margin="normal"
-              id="date-picker-inline"
-              value={lostDogFields.dateLost}
-              maxDate={new Date()}
-              name="dateLost"
-              onChange={(date: any) => calendarHandler(date)}
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="city-label">
-              City
-            </InputLabel>
-            <Input
-              data-testid="city-input"
-              name="city"
-              value={lostDogFields.location.city}
-              onChange={inputArrayHandler}
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="district-label">
-              District
-            </InputLabel>
-            <Input
-              data-testid="district-input"
-              name="district"
-              value={lostDogFields.location.district}
-              onChange={inputArrayHandler}
-            />
-          </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel shrink htmlFor="behavior-label">
               Behavior
