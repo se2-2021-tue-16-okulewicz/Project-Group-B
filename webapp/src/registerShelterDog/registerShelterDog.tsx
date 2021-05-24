@@ -16,7 +16,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
 import DateFnsUtils from "@date-io/date-fns";
-import ImageUpload from "../RegisterDog/ImageUpload";
 import {
   ColorTypes,
   HairTypes,
@@ -36,6 +35,8 @@ import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
+import ImageUpload from "../registerDog/ImageUpload";
+import config from "../config/config";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -126,13 +127,14 @@ export default function RegisterShelterDogForm() {
 
   function registerDog(dog: IShelterDog, picture: IPicture) {
     // dog = ValidateFetchedDog(dog);
-    // store.dispatch(
-    //   Actions.addDogThunk({
-    //     dog: dog,
-    //     picture: picture,
-    //     cookies: cookies,
-    //   })
-    // );
+    store.dispatch(
+      Actions.addShelterDogThunk({
+        shelterId: cookies[config.cookies.userId],
+        dog: dog,
+        picture: picture,
+        cookies: cookies,
+      })
+    );
   }
 
   const handlePicturesChange = (event: any) => {

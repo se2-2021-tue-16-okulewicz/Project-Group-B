@@ -1,5 +1,5 @@
 import { initLostDogWithPictureProps, initPicture } from "./dogClasses";
-import { ILostDogWithPicture, IShelterDog } from "./dogInterfaces";
+import { ILostDogWithPicture, IShelterDog, IShelterDogWithPicture } from "./dogInterfaces";
 
 const otherDog: ILostDogWithPicture = {
   id: 1,
@@ -21,7 +21,7 @@ const otherDog: ILostDogWithPicture = {
   picture: initPicture,
 };
 
-export const sheltertestDog: IShelterDog = {
+export const sheltertestDog: IShelterDogWithPicture = {
   id: 1,
   shelterId: 0,
   pictureId: 0,

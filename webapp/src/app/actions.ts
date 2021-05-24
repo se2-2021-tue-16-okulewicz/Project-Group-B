@@ -4,6 +4,7 @@ import {
   ILostDogWithPicture,
   IPicture,
   IShelterDog,
+  IShelterDogWithPicture,
 } from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
@@ -135,6 +136,39 @@ export const addDogThunk = createAsyncThunk<
     }
 
     return response as RequestResponse<ILostDogWithPicture, undefined>;
+  }
+);
+
+export const addShelterDogThunk = createAsyncThunk<
+  RequestResponse<IShelterDogWithPicture, undefined>,
+  { shelterId: number; dog: IShelterDog; picture: IPicture; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
+>(
+  "AddShelterDog",
+  async (
+    dogAndPictureAndCookies: {
+      shelterId: number;
+      dog: IShelterDog;
+      picture: IPicture;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IShelterDogWithPicture, undefined> =
+      await Fetching.addShelterDog(
+        dogAndPictureAndCookies.shelterId,
+        dogAndPictureAndCookies.dog,
+        dogAndPictureAndCookies.picture,
+        dogAndPictureAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<IShelterDogWithPicture, undefined>
+      );
+    }
+
+    return response as RequestResponse<IShelterDogWithPicture, undefined>;
   }
 );
 

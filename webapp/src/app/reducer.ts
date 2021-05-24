@@ -2,7 +2,7 @@ import * as Actions from "./actions";
 import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
-import { ILostDogWithPicture, IShelterDog } from "../dog/dogInterfaces";
+import { ILostDogWithPicture, IShelterDog, IShelterDogWithPicture } from "../dog/dogInterfaces";
 import config from "../config/config";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
@@ -177,6 +177,38 @@ export const reducer = createReducer(init, {
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+  [Actions.addShelterDogThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IShelterDogWithPicture, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.dogsRequireRefresh = true;
+    return newState;
+  },
+  [Actions.addShelterDogThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.shelterdogs = [];
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.addShelterDogThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {

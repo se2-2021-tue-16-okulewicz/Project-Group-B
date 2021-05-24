@@ -10,6 +10,7 @@ import { isNull } from "lodash";
 import { store } from "../app/store";
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
+import RegisterShelterDogForm from "./registerShelterDog";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -32,8 +33,8 @@ it("Rendered register form button", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/addDog">
-            <RegisterDogForm />
+          <Route path="/addShelterDog">
+            <RegisterShelterDogForm />
           </Route>
         </Router>
       </Provider>,
