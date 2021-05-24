@@ -18,6 +18,7 @@ export type Error = {
 
 export type State = {
   dogs: ILostDogWithPicture[] | any; //if these are not any, the clear actions throw an error (only for dogs with pictures)
+  shelterdogs: IShelterDog[] | any;
   editedDog: ILostDogWithPicture | any; //
   dogsLastPage: boolean | null;
   dogsRequireRefresh: boolean;
@@ -32,6 +33,7 @@ export type State = {
 
 export const init: State = {
   dogs: [],
+  shelterdogs: [],
   editedDog: null,
   dogsLastPage: false,
   dogsRequireRefresh: true,
@@ -288,40 +290,31 @@ export const reducer = createReducer(init, {
 
   [Actions.fetchShelterDogsThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture[], number>>
+    payload: PayloadAction<RequestResponse<IShelterDog[], number>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    // if page filter not specified - set to default
-    /*const pageNumber = _.get(
+    const pageNumber = _.get(
       payload,
       ["meta", "arg", "filters", "page"],
       config.defaultFilters.page
     );
-    // if size filter not specified - set pageSize to default
     const pageSize = _.get(
       payload,
       ["meta", "arg", "filters", "size"],
       config.defaultFilters.size
     );
-    // dogs obtained from server are appended to current dogs
-    // the .slice protects dogs list enormous growth - when fetch
-    // is called multiple times (by an error)
-    if (state.dogs != null || pageNumber != 0) {
-      newState.dogs = state.dogs
-        .concat(payload.payload.response.data as ILostDogWithPicture[])
+    if (state.shelterdogs != null || pageNumber != 0) {
+      newState.shelterdogs = state.shelterdogs
+        .concat(payload.payload.response.data as IShelterDog[])
         .slice(0, (pageNumber + 1) * pageSize);
     } else {
-      newState.dogs = (
-        payload.payload.response.data as ILostDogWithPicture[]
+      newState.shelterdogs = (
+        payload.payload.response.data as IShelterDog[]
       ).slice(0, (pageNumber + 1) * pageSize);
-    }*/
-    newState.dogs = payload.payload.response.data as IShelterDog[];
-    // if response is shorter than default size - it means end is reached.
-    newState.dogsLastPage = true;
-     // (payload.payload.response.data as ILostDogWithPicture[]).length <
-      //pageSize;
-    //newState.pages = pageNumber;
+    }
+    newState.dogsLastPage = (payload.payload.response.data as IShelterDog[]).length < pageSize;
+    newState.pages = pageNumber;
     newState.dogsRequireRefresh = false;
     //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
     return newState;

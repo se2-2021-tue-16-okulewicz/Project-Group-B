@@ -28,20 +28,20 @@ export interface IDog {
   tailLength: TailTypes | "";
   specialMark: SpecialMarkTypes | "";
   behaviors: BehaviorsTypes[];
-  location: { city: string; district: string };
 }
 
 export interface ILostDog extends IDog {
   dateLost: Date | null;
   isFound: boolean;
   ownerId: number;
+  location: { city: string; district: string };
 }
 
 export interface ILostDogWithPicture extends ILostDog {
   picture: IPicture;
 }
 
-export interface IShelterDog extends ILostDog {
+export interface IShelterDog extends IDog {
   picture: IPicture;
   shelterId: number;
 }

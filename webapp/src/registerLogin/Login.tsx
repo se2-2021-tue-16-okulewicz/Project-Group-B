@@ -109,7 +109,8 @@ export default function Login() {
       setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
-      if(cookies[config.cookies.userType]=="Shelter"){
+      console.log(loginInfo?.userType);
+      if(loginInfo?.userType=="Shelter"){
         history.push("/shelter")
       }
       else{
@@ -120,6 +121,7 @@ export default function Login() {
   //THIS makes the web app skip the log in
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
+      console.log(cookies[config.cookies.userType]);
       if(cookies[config.cookies.userType]=="Shelter"){
         history.push("/shelter")
       }

@@ -68,9 +68,11 @@ async function getResponse<T, K>(
 }
 
 export async function fetchShelterDogs(
+  filters: IFilterSort,
   shelterId: number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<IShelterDog[], Number>> {
+  console.log(shelterId);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs`,
@@ -284,6 +286,14 @@ export async function login(
   credentials: ILoginInformation
 ): Promise<RequestResponse<ILoginResults, undefined>> {
   let formData = new FormData();
+  credentials.email=credentials.username
+  formData.append(
+    "email",
+    new Blob([credentials.email], {
+      type: "text/plain",
+    }),
+    ""
+  );
   formData.append(
     "username",
     new Blob([credentials.username], {

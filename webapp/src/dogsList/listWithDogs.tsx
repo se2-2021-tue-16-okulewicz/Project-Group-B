@@ -306,6 +306,8 @@ export default function ListWithDogs(props: any) {
                 label="Filter"
                 onClick={() => {
                   setMenuCollapsed(!isMenuCollapsed);
+                  setFilters({...filters, page: config.defaultFilters.page});
+                  store.dispatch(clearDogList());
                   //sidebar.setOpen("unique_id", true);
                 }}
                 icon={<Search />}

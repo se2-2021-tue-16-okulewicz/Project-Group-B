@@ -73,7 +73,7 @@ export enum SpecialMarkTypes {
 }
 
 export enum BehaviorsTypes {
-  Shy = "Shy",
-  Energetic = "Energetic",
-  Friendly = "Friendly",
+  "Shy",
+  "Energetic",
+  "Friendly",
 }

@@ -217,12 +217,13 @@ export const fetchDogsThunk = createAsyncThunk<
 
 export const fetchShelterDogsThunk = createAsyncThunk<
 RequestResponse<IShelterDog[], Number>,
-{ shelterId: number; cookies: { [name: string]: any } },
+{ filters: IFilters; shelterId: number; cookies: { [name: string]: any } },
 { rejectValue: RequestResponse<IShelterDog[], Number> }
 >(
 "fetchShelterDogs",
 async (
   userAndCookies: {
+    filters: IFilters;
     shelterId: number;
     cookies: { [name: string]: any };
   },
@@ -230,6 +231,7 @@ async (
 ) => {
   const response: RequestResponse<IShelterDog[], Number> =
     await Fetching.fetchShelterDogs(
+      userAndCookies.filters,
       userAndCookies.shelterId,
       userAndCookies.cookies
     );

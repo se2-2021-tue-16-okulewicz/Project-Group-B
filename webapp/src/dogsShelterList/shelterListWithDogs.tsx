@@ -10,7 +10,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../app/store";
 import { State } from "../app/reducer";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import { ILostDogWithPicture, IShelterDog } from "../dog/dogInterfaces";
 import * as Actions from "../../src/app/actions";
 import { useCookies } from "react-cookie";
 import Layout, {
@@ -33,6 +33,7 @@ import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import Footer from "../utilityComponents/Footer";
 import { IFilterSort } from "../dogsList/filterInterface";
+import ShelterGrid from "../commoncomponents/shelterGrid";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -148,8 +149,8 @@ export default function ShelterListWithDogs(props: any) {
   const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
 
-  const dogs = useSelector(
-    (state: State) => state.dogs as ILostDogWithPicture[]
+  const shelterDogs = useSelector(
+    (state: State) => state.shelterdogs as IShelterDog[]
   );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
@@ -210,6 +211,10 @@ export default function ShelterListWithDogs(props: any) {
       try {
         store.dispatch(
           Actions.fetchShelterDogsThunk({
+            filters: {
+              ...filters,
+              page: filters.page,
+            },
             shelterId:cookies[config.cookies.userId], 
             cookies: cookies
           }) //filters
@@ -231,11 +236,12 @@ export default function ShelterListWithDogs(props: any) {
       setFetching(true);
       try {
         store.dispatch(
-          Actions.fetchDogsThunk({
+          Actions.fetchShelterDogsThunk({
             filters: {
               ...filters,
               page: filters.page,
             },
+            shelterId:cookies[config.cookies.userId], 
             cookies: cookies,
           }) //filters
         );
@@ -292,19 +298,14 @@ export default function ShelterListWithDogs(props: any) {
                 onClick={onLogOutClicked}
                 icon={<ExitToApp />}
               />
-                <BottomNavigationAction
-                disabled={true}
-                showLabel={true}
-                classes={{ label: classes.action, root: classes.action }}
-                label="Filter"
-              />
+
             </BottomNavigation>
           </Grid>
         </Grid>
       </Header>
       <Content>
         <InfiniteScroll
-          dataLength={dogs.length}
+          dataLength={shelterDogs.length}
           scrollThreshold={0.9}
           next={fetchMore}
           hasMore={!lastPage && !fetching}
@@ -313,16 +314,12 @@ export default function ShelterListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ImageGrid
-            dogs={dogs}
-            path={path}
-            redirectToDogDetailsOrEdit={(id: number) =>
-              redirectToDogDetailsOrEdit(id)
-            }
+          <ShelterGrid
+            dogs={shelterDogs}
           />
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
-          <Footer position={dogs.length > 3 ? "list" : "footer"} />
+          <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />
         )}
       </Content>
     </Root>
