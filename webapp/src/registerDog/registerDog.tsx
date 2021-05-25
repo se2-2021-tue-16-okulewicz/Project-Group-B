@@ -8,6 +8,7 @@ import {
   Input,
   InputAdornment,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from "@material-ui/core";
@@ -396,15 +397,13 @@ export default function RegisterDogForm() {
           style={{ marginBottom: 10 }}
         >
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="calendar-label">
-              Dog was lost on
-            </InputLabel>
             <DatePicker
+              label="Dog was lost on"
               data-testid="date-select"
               disableToolbar
               variant="dialog"
+              inputVariant="outlined"
               format="yyyy-MM-dd"
-              margin="normal"
               id="date-picker-inline"
               value={lostDogFields.dateLost}
               maxDate={new Date()}
@@ -413,29 +412,25 @@ export default function RegisterDogForm() {
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="city-label">
-              City
-            </InputLabel>
-            <Input
-              data-testid="city-input"
+            <TextField
+              label="City"
               name="city"
               value={lostDogFields.location.city}
               onChange={inputArrayHandler}
+              variant="outlined"
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="district-label">
-              District
-            </InputLabel>
-            <Input
-              data-testid="district-input"
+            <TextField
+              label="District"
               name="district"
               value={lostDogFields.location.district}
               onChange={inputArrayHandler}
+              variant="outlined"
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink htmlFor="behavior-label">
+            <InputLabel  htmlFor="behavior-label">
               Behavior
             </InputLabel>
             <Select
@@ -445,7 +440,7 @@ export default function RegisterDogForm() {
               name="behaviors"
               value={lostDogFields.behaviors}
               onChange={selectsHandler}
-              input={<Input />}
+              input={<OutlinedInput label="Behavior" />}
               displayEmpty
               renderValue={(selected: any) => (
                 <div className={classes.chips}>

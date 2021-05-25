@@ -8,6 +8,7 @@ import {
   Input,
   InputAdornment,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from "@material-ui/core";
@@ -384,7 +385,7 @@ export default function RegisterShelterDogForm() {
             </Select>
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink htmlFor="behavior-label">
+            <InputLabel htmlFor="behavior-label">
               Behavior
             </InputLabel>
             <Select
@@ -394,7 +395,7 @@ export default function RegisterShelterDogForm() {
               name="behaviors"
               value={lostDogFields.behaviors}
               onChange={selectsHandler}
-              input={<Input />}
+              input={<OutlinedInput label="Behavior" />}
               displayEmpty
               renderValue={(selected: any) => (
                 <div className={classes.chips}>
