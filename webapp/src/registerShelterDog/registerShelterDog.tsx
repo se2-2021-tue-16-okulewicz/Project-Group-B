@@ -307,7 +307,6 @@ export default function RegisterShelterDogForm() {
                 ))}
             </Select>
           </FormControl>
-
         </Grid>
         <Grid
           container
@@ -318,7 +317,7 @@ export default function RegisterShelterDogForm() {
           alignContent="stretch"
           style={{ marginBottom: 10 }}
         >
-            <FormControl variant="outlined" className={classes.formControl}>
+          <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel htmlFor="tail-label">Tail</InputLabel>
             <Select
               data-testid="tail-select"
