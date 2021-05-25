@@ -318,7 +318,7 @@ export default function RegisterShelterDogForm() {
           alignContent="stretch"
           style={{ marginBottom: 10 }}
         >
-                    <FormControl variant="outlined" className={classes.formControl}>
+            <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel htmlFor="tail-label">Tail</InputLabel>
             <Select
               data-testid="tail-select"
@@ -384,7 +384,6 @@ export default function RegisterShelterDogForm() {
                 ))}
             </Select>
           </FormControl>
-
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel shrink htmlFor="behavior-label">
               Behavior
