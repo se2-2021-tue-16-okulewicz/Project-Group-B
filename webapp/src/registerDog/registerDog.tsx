@@ -430,9 +430,7 @@ export default function RegisterDogForm() {
             />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel  htmlFor="behavior-label">
-              Behavior
-            </InputLabel>
+            <InputLabel htmlFor="behavior-label">Behavior</InputLabel>
             <Select
               multiple
               labelId="behavior-label"

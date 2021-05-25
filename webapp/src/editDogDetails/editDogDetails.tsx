@@ -561,23 +561,23 @@ const EditDogDetails = (props: any) => {
               </MuiPickersUtilsProvider>
             </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
-            <TextField
-              label="City"
-              name="city"
-              value={editDogFields.location.city}
-              onChange={inputArrayHandler}
-              variant="outlined"
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <TextField
-              label="District"
-              name="district"
-              value={editDogFields.location.district}
-              onChange={inputArrayHandler}
-              variant="outlined"
-            />
-          </FormControl>
+              <TextField
+                label="City"
+                name="city"
+                value={editDogFields.location.city}
+                onChange={inputArrayHandler}
+                variant="outlined"
+              />
+            </FormControl>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <TextField
+                label="District"
+                name="district"
+                value={editDogFields.location.district}
+                onChange={inputArrayHandler}
+                variant="outlined"
+              />
+            </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel shrink htmlFor="behavior-label">
                 Behavior
