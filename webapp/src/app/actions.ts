@@ -141,7 +141,12 @@ export const addDogThunk = createAsyncThunk<
 
 export const addShelterDogThunk = createAsyncThunk<
   RequestResponse<IShelterDogWithPicture, undefined>,
-  { shelterId: number; dog: IShelterDog; picture: IPicture; cookies: { [name: string]: any } },
+  {
+    shelterId: number;
+    dog: IShelterDog;
+    picture: IPicture;
+    cookies: { [name: string]: any };
+  },
   { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
 >(
   "AddShelterDog",
