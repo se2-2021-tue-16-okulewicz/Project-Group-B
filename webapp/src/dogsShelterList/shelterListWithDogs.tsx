@@ -163,8 +163,8 @@ export default function ShelterListWithDogs(props: any) {
   const { path } = useRouteMatch();
 
   const onRegisterClicked = () => {
-    //store.dispatch(clearDogList());
-    //history.push("/addDog");
+    store.dispatch(clearDogList());
+    history.push("/addShelterDog");
   };
   const onSettingsClicked = () => {
     //store.dispatch(clearDogList());
@@ -272,8 +272,8 @@ export default function ShelterListWithDogs(props: any) {
           <Grid item xs={3}>
             <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
+                disabled={false}
                 showLabel={true}
-                disabled={true}
                 onClick={onRegisterClicked}
                 label="Register"
                 classes={{ label: classes.action, root: classes.action }}

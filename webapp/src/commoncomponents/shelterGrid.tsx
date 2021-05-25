@@ -3,12 +3,12 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
-import { IShelterDog } from "../dog/dogInterfaces";
+import { IShelterDog, IShelterDogWithPicture } from "../dog/dogInterfaces";
 import { Delete } from "@material-ui/icons";
 import { useCookies } from "react-cookie";
 
 export default function ShelterGrid(props: any) {
-  const dogs = props.dogs as IShelterDog[]; // eslint-disable-next-line
+  const dogs = props.dogs as IShelterDogWithPicture[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   return (
     <GridList
@@ -17,7 +17,7 @@ export default function ShelterGrid(props: any) {
       style={{ margin: "0", width: "100%", display: "flex" }}
     >
       {dogs.map(
-        (dog: IShelterDog) =>
+        (dog: IShelterDogWithPicture) =>
           dog.picture && (
             <GridListTile
               key={dog.id}
@@ -49,7 +49,7 @@ export default function ShelterGrid(props: any) {
       {dogs.length <= 2 &&
         dogs.length > 0 &&
         dogs.map(
-          (dog: IShelterDog) =>
+          (dog: IShelterDogWithPicture) =>
             dog.picture && (
               <GridListTile
                 key={dog.id + 1}
@@ -67,7 +67,7 @@ export default function ShelterGrid(props: any) {
         )}
       {dogs.length == 1 &&
         dogs.map(
-          (dog: IShelterDog) =>
+          (dog: IShelterDogWithPicture) =>
             dog.picture && (
               <GridListTile
                 key={dog.id + 2}

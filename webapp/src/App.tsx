@@ -30,6 +30,7 @@ import EditDogDetails from "./editDogDetails/editDogDetails";
 import EditContactInfo from "./contactInfo/editContactInformation";
 import DogDetails from "./dogDetails/dogDetails";
 import ShelterListWithDogs from "./dogsShelterList/shelterListWithDogs";
+import RegisterShelterDogForm from "./registerShelterDog/registerShelterDog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -143,6 +144,10 @@ function Layout() {
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />
+          <Footer />
+        </Route>
+        <Route path="/addShelterDog">
+          <RegisterShelterDogForm />
           <Footer />
         </Route>
         <Route path={`/edit/:id`}>

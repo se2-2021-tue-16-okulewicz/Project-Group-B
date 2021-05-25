@@ -3,6 +3,7 @@ import {
   IPicture,
   ILostDogWithPicture,
   IShelterDog,
+  IShelterDogWithPicture,
 } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
@@ -172,6 +173,46 @@ export async function addDog(
   return getResponse(
     axios.post(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs`,
+      formData,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
+export async function addShelterDog(
+  shelterId: number,
+  dog: IShelterDog,
+  picture: IPicture,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<IShelterDogWithPicture, undefined>> {
+  let formData = new FormData();
+
+  const privateProperties = ["id", "pictureId", "shelterId"];
+  const excludePrivateProperties = (key: string, value: any) =>
+    privateProperties.includes(key) ? undefined : value;
+
+  formData.append(
+    "dog",
+    new Blob([JSON.stringify(dog, excludePrivateProperties)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  formData.append(
+    "picture",
+    new Blob([picture.data], { type: picture.fileType }),
+    picture.fileName
+  );
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs`,
       formData,
       {
         headers: {

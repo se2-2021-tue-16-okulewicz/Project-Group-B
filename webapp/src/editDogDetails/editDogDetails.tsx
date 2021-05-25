@@ -8,6 +8,7 @@ import {
   Input,
   InputAdornment,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from "@material-ui/core";
@@ -540,19 +541,17 @@ const EditDogDetails = (props: any) => {
             style={{ marginBottom: 10 }}
           >
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel shrink id="calendar-label">
-                Dog was lost on
-              </InputLabel>
               <MuiPickersUtilsProvider
                 utils={DateFnsUtils}
                 data-testid="MainForm"
               >
                 <DatePicker
+                  label="Dog was lost on"
                   data-testid="date-select"
+                  inputVariant="outlined"
                   disableToolbar
                   variant="dialog"
                   format="yyyy-MM-dd"
-                  margin="normal"
                   id="date-picker-inline"
                   value={editDogFields.dateLost}
                   maxDate={new Date()}
@@ -562,25 +561,21 @@ const EditDogDetails = (props: any) => {
               </MuiPickersUtilsProvider>
             </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel shrink id="city-label">
-                City
-              </InputLabel>
-              <Input
-                data-testid="city-input"
+              <TextField
+                label="City"
                 name="city"
                 value={editDogFields.location.city}
                 onChange={inputArrayHandler}
+                variant="outlined"
               />
             </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel shrink id="district-label">
-                District
-              </InputLabel>
-              <Input
-                data-testid="district-input"
+              <TextField
+                label="District"
                 name="district"
                 value={editDogFields.location.district}
                 onChange={inputArrayHandler}
+                variant="outlined"
               />
             </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
@@ -594,7 +589,7 @@ const EditDogDetails = (props: any) => {
                 name="behaviors"
                 value={editDogFields.behaviors}
                 onChange={selectsHandler}
-                input={<Input />}
+                input={<OutlinedInput label="Behavior" />}
                 displayEmpty
                 renderValue={(selected: any) => (
                   <div className={classes.chips}>

@@ -17,6 +17,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
+import ShelterListWithDogs from "./shelterListWithDogs";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -39,8 +40,8 @@ it("Rendered list of dogs", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/listDogs">
-            <ListWithDogs />
+          <Route path="/shelterlistDogs">
+            <ShelterListWithDogs />
           </Route>
         </Router>
       </Provider>,

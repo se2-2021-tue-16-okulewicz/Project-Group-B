@@ -42,6 +42,9 @@ export interface ILostDogWithPicture extends ILostDog {
 }
 
 export interface IShelterDog extends IDog {
-  picture: IPicture;
   shelterId: number;
+}
+
+export interface IShelterDogWithPicture extends IShelterDog {
+  picture: IPicture;
 }
