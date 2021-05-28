@@ -147,9 +147,7 @@ export default function ListWithShelters(props: any) {
   const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
 
-  const shelters = useSelector(
-    (state: State) => state.shelters as IShelter[]
-  );
+  const shelters = useSelector((state: State) => state.shelters as IShelter[]);
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
@@ -280,12 +278,12 @@ export default function ListWithShelters(props: any) {
           <Grid item xs={3}>
             <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
-                  showLabel={true}
-                  classes={{ label: classes.action, root: classes.action }}
-                  onClick={onLostDogsClicked}
-                  label="Lost Dogs"
-                  icon={<Pets/>}
-                />
+                showLabel={true}
+                classes={{ label: classes.action, root: classes.action }}
+                onClick={onLostDogsClicked}
+                label="Lost Dogs"
+                icon={<Pets />}
+              />
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
