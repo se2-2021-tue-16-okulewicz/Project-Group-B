@@ -5,6 +5,7 @@ import {
   BottomNavigationAction,
   Divider,
   Grid,
+  Icon,
   MenuItem,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -36,7 +37,7 @@ import LoadingPopup from "../utilityComponents/LoadingPopup";
 import { ExitToApp, HouseRounded } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faCopyright } from "@fortawesome/free-solid-svg-icons";
+import { faCopyright, faDog, faHandHolding, faHandPeace } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
 import ContactInfo from "../contactInfo/contactInformation";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
@@ -325,7 +326,7 @@ export default function Settings(props: any) {
               color="primary"
               onClick={onShelterClicked}
             >
-              <HouseRounded />
+              <FontAwesomeIcon icon={faDog}/>
               <Grid item xs={1} />
               Lost Dogs
             </MenuItem>

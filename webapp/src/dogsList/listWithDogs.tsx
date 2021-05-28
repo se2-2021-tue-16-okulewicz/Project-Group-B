@@ -181,7 +181,7 @@ export default function ListWithDogs(props: any) {
   };
   const onSheltersClicked = () => {
     store.dispatch(clearDogList());
-    history.push("/shelterList");
+    history.push("/sheltersList");
   };
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });
