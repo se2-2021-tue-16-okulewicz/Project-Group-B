@@ -33,6 +33,10 @@ import LoadingPopup from "../utilityComponents/LoadingPopup";
 import Footer from "../utilityComponents/Footer";
 import { IFilterSort } from "../dogsList/filterInterface";
 import ShelterGrid from "../commoncomponents/shelterDogGrid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDog } from "@fortawesome/free-solid-svg-icons";
+import { IShelter } from "../shelter/shelterInterfaces";
+import SheltersGrid from "../commoncomponents/sheltersGrid";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -143,8 +147,8 @@ export default function ListWithShelters(props: any) {
   const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
 
-  const shelterDogs = useSelector(
-    (state: State) => state.shelterdogs as IShelterDog[]
+  const shelters = useSelector(
+    (state: State) => state.shelters as IShelter[]
   );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
@@ -170,6 +174,12 @@ export default function ListWithShelters(props: any) {
     //store.dispatch(clearDogList());
     //history.push("/settings");
   };
+
+  const onLostDogsClicked = () => {
+    store.dispatch(clearDogList());
+    history.push("/dogs");
+  };
+
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
@@ -264,7 +274,7 @@ export default function ListWithShelters(props: any) {
             <BottomNavigation showLabels>
               <BottomNavigationAction
                 disabled={true}
-                label="LOST DOGS"
+                label="SHELTERS"
                 classes={{ label: classes.title }}
               />
             </BottomNavigation>
@@ -272,13 +282,12 @@ export default function ListWithShelters(props: any) {
           <Grid item xs={3}>
             <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
-                disabled={false}
-                showLabel={true}
-                onClick={onRegisterClicked}
-                label="Register"
-                classes={{ label: classes.action, root: classes.action }}
-                icon={<Pets />}
-              />
+                  showLabel={true}
+                  classes={{ label: classes.action, root: classes.action }}
+                  onClick={onLostDogsClicked}
+                  label="Lost Dogs"
+                  icon={<FontAwesomeIcon icon={faDog}/>}
+                />
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
@@ -301,7 +310,7 @@ export default function ListWithShelters(props: any) {
       </Header>
       <Content>
         <InfiniteScroll
-          dataLength={shelterDogs.length}
+          dataLength={shelters.length}
           scrollThreshold={0.9}
           next={fetchMore}
           hasMore={!lastPage && !fetching}
@@ -310,10 +319,10 @@ export default function ListWithShelters(props: any) {
           }
         >
           <Toolbar />
-          <ShelterGrid dogs={shelterDogs} />
+          <SheltersGrid shelters={shelters} />
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
-          <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />
+          <Footer position={shelters.length > 3 ? "list" : "footer"} />
         )}
       </Content>
     </Root>

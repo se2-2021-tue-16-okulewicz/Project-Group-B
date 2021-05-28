@@ -15,6 +15,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
+import { IShelter } from "../shelter/shelterInterfaces";
 
 /*TODO: fix any*/
 
@@ -287,6 +288,26 @@ export const fetchShelterDogsThunk = createAsyncThunk<
     }
 
     return response as RequestResponse<IShelterDog[], number>;
+  }
+);
+
+export const fetchShelters = createAsyncThunk<
+  RequestResponse<IShelter[], Number>,
+  { [name: string]: any },
+  { rejectValue: RequestResponse<IShelter[], Number> }
+>("fetchShelters", async (cookies: { [name: string]: any }, { rejectWithValue }) => {
+    const response: RequestResponse<IShelter[], Number> =
+      await Fetching.fetchShelters(
+        cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<IShelter[], number>
+      );
+    }
+
+    return response as RequestResponse<IShelter[], number>;
   }
 );
 

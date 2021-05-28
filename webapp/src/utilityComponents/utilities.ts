@@ -5,6 +5,7 @@ export interface IFiltersAndCookies {
   };
 }
 
+
 export interface IFilters {
   [name: string]: any;
 }

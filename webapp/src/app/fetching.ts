@@ -18,6 +18,7 @@ import { IFilterSort, initFilterProps } from "../dogsList/filterInterface";
 import { Console } from "node:console";
 import { FilterCenterFocusSharp, FilterNone } from "@material-ui/icons";
 import { filter } from "lodash";
+import { IShelter } from "../shelter/shelterInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -78,10 +79,24 @@ export async function fetchShelterDogs(
   shelterId: number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<IShelterDog[], Number>> {
-  console.log(shelterId);
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs`,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
+export async function fetchShelters(
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<IShelter[], Number>> {
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/shelters`,
       {
         headers: {
           Authorization: getToken(cookies),
