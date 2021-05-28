@@ -77,7 +77,7 @@ describe("reducer", () => {
       pages: 0,
       redirect: null,
       settingsRequireRefresh: true,
-      shelters: []
+      shelters: [],
     });
   });
 });

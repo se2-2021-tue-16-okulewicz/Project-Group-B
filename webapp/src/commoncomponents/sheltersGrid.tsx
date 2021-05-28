@@ -6,7 +6,12 @@ import IconButton from "@material-ui/core/IconButton";
 import { Delete } from "@material-ui/icons";
 import { useCookies } from "react-cookie";
 import { IShelter } from "../shelter/shelterInterfaces";
-import { Card, CardActionArea, CardContent, Typography } from "@material-ui/core";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  Typography,
+} from "@material-ui/core";
 
 export default function SheltersGrid(props: any) {
   const shelters = props.shelters as IShelter[]; // eslint-disable-next-line
@@ -20,25 +25,27 @@ export default function SheltersGrid(props: any) {
       {shelters.map(
         (shelter: IShelter) =>
           shelter.id && (
-            <Card
-              key={shelter.id}
-              style={{ height: "300px" }}
-              className="tile"
-            >
-              <CardContent className={shelter.name} >
+            <Card key={shelter.id} style={{ height: "300px" }} className="tile">
+              <CardContent className={shelter.name}>
                 <Typography variant="h5" component="h2">
                   {shelter.name}
                 </Typography>
                 <Typography variant="h5" component="h2">
-                  <span>{shelter.address.city+", "+shelter.address.street+" " +shelter.address.buildingNumber}</span>
+                  <span>
+                    {shelter.address.city +
+                      ", " +
+                      shelter.address.street +
+                      " " +
+                      shelter.address.buildingNumber}
+                  </span>
                 </Typography>
               </CardContent>
-                <IconButton
-                    aria-label={`info about ${shelter.name}`}
-                    style={{ color: "rgba(255, 255, 255, 0.54)" }}
-                  >
-                    <Delete />
-                  </IconButton>
+              <IconButton
+                aria-label={`info about ${shelter.name}`}
+                style={{ color: "rgba(255, 255, 255, 0.54)" }}
+              >
+                <Delete />
+              </IconButton>
             </Card>
           )
       )}

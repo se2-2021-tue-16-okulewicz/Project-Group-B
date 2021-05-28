@@ -50,9 +50,10 @@ export default function ShelterDogGrid(props: any) {
         dogs.length > 0 &&
         dogs.map(
           (dog: IShelterDogWithPicture) =>
-            dog.picture && dog == dogs[0] && (
+            dog.picture &&
+            dog == dogs[0] && (
               <GridListTile
-                key={dog.name+"dog.id1"}
+                key={dog.name + "dog.id1"}
                 style={{ height: "300px" }}
                 className="tile"
               >
@@ -68,9 +69,10 @@ export default function ShelterDogGrid(props: any) {
       {dogs.length == 1 &&
         dogs.map(
           (dog: IShelterDogWithPicture) =>
-           dog.picture && dog == dogs[0] && (
+            dog.picture &&
+            dog == dogs[0] && (
               <GridListTile
-                key={dog.name+"dog.id2"}
+                key={dog.name + "dog.id2"}
                 style={{ height: "300px" }}
                 className="tile"
               >

@@ -331,7 +331,7 @@ export default function Settings(props: any) {
               color="primary"
               onClick={onShelterClicked}
             >
-              <Pets/>
+              <Pets />
               <Grid item xs={1} />
               Lost Dogs
             </MenuItem>
