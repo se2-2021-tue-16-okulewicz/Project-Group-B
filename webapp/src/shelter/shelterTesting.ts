@@ -28,8 +28,8 @@ export const exampleShelter: IShelter = {
   id: 1,
   address: exampleAddress,
   name: "The Best Shelter",
-  email: "a@a.a", 
-  phoneNumber: "123456789"
+  email: "a@a.a",
+  phoneNumber: "123456789",
 };
 
 export const testDogList = [initShelter, exampleShelter];

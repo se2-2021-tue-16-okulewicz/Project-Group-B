@@ -147,9 +147,7 @@ export default function ListWithShelters(props: any) {
   const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
 
-  const shelters = useSelector(
-    (state: State) => state.shelters as IShelter[]
-  );
+  const shelters = useSelector((state: State) => state.shelters as IShelter[]);
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );

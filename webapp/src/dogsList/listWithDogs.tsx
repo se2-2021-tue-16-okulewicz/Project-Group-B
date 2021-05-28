@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     action: {
       color: "black",
-      tabSize:"1"
+      tabSize: "1",
     },
     main: {
       justifyContent: "center",

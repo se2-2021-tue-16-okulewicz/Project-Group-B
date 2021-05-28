@@ -37,7 +37,12 @@ import LoadingPopup from "../utilityComponents/LoadingPopup";
 import { ExitToApp, HouseRounded, Pets } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faCopyright, faDog, faHandHolding, faHandPeace } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCopyright,
+  faDog,
+  faHandHolding,
+  faHandPeace,
+} from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../utilityComponents/utilities";
 import ContactInfo from "../contactInfo/contactInformation";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";

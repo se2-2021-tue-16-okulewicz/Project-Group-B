@@ -84,8 +84,8 @@ export async function fetchShelterDogs(
       ? ""
       : Object.keys(filters)
           .map((filterName) => {
-              const value = String(filters[filterName]).trim();
-              return value && value != "null" ? `${filterName}=${value}` : "";
+            const value = String(filters[filterName]).trim();
+            return value && value != "null" ? `${filterName}=${value}` : "";
           })
           .filter((x) => x !== "")
           .join("&");
@@ -110,8 +110,8 @@ export async function fetchShelters(
       ? ""
       : Object.keys(filters)
           .map((filterName) => {
-              const value = String(filters[filterName]).trim();
-              return value && value != "null" ? `${filterName}=${value}` : "";
+            const value = String(filters[filterName]).trim();
+            return value && value != "null" ? `${filterName}=${value}` : "";
           })
           .filter((x) => x !== "")
           .join("&");

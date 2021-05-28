@@ -407,9 +407,10 @@ export const reducer = createReducer(init, {
         .concat(payload.payload.response.data as IShelter[])
         .slice(0, (pageNumber + 1) * pageSize);
     } else {
-      newState.shelters = (
-        payload.payload.response.data as IShelter[]
-      ).slice(0, (pageNumber + 1) * pageSize);
+      newState.shelters = (payload.payload.response.data as IShelter[]).slice(
+        0,
+        (pageNumber + 1) * pageSize
+      );
     }
     newState.dogsLastPage =
       (payload.payload.response.data as IShelter[]).length < pageSize;
