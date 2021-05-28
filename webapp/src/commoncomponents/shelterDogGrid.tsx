@@ -7,7 +7,7 @@ import { IShelterDog, IShelterDogWithPicture } from "../dog/dogInterfaces";
 import { Delete } from "@material-ui/icons";
 import { useCookies } from "react-cookie";
 
-export default function ShelterGrid(props: any) {
+export default function ShelterDogGrid(props: any) {
   const dogs = props.dogs as IShelterDogWithPicture[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   return (

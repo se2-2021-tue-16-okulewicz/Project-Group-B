@@ -7,7 +7,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act, createRenderer } from "react-dom/test-utils";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
-import ShelterGrid from "./shelterGrid";
+import ShelterDogGrid from "./shelterDogGrid";
 import { sheltertestDog, testDogList } from "../dog/dogTesting";
 import { Provider } from "react-redux";
 import {
@@ -41,7 +41,7 @@ it("Rendered list of dog cards", () => {
       <Provider store={store}>
         <Router>
           <Route path="/">
-            <ShelterGrid
+            <ShelterDogGrid
               dogs={[sheltertestDog, sheltertestDog]}
               id={-1}
               cookies={{}}
