@@ -31,6 +31,7 @@ import EditContactInfo from "./contactInfo/editContactInformation";
 import DogDetails from "./dogDetails/dogDetails";
 import ShelterListWithDogs from "./dogsShelterList/shelterListWithDogs";
 import RegisterShelterDogForm from "./registerShelterDog/registerShelterDog";
+import ListWithShelters from "./sheltersList/listWithShelters";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,6 +59,7 @@ function Layout() {
   const loading = useSelector((state: State) => state.loading);
   const redirect = useSelector((state: State) => state.redirect);
   const [dogId, setDogId] = useState(0);
+  const [shelterId, setShelterId] = useState(0);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -72,15 +74,19 @@ function Layout() {
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    //store.dispatch(finishRefreshing);
     history.push(`/edit/${id}`);
   }
 
   function redirectToDogDetails(id: number) {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    //store.dispatch(finishRefreshing);
     history.push(`/dog/${id}`);
+  }
+
+  function redirectToShelterDetails(id: number) {
+    //setShelterId(id);
+    //sessionStorage.setItem("shelterId", JSON.stringify(id as number));
+    history.push(`/shelter/${id}`);
   }
 
   const errorOnClose = () => {
@@ -128,10 +134,17 @@ function Layout() {
             }
           />
         </Route>
-        <Route path="/listDogs">
+        <Route path="/dogs">
           <ListWithDogs
             redirectToDogDetailsOrEdit={(id: number) =>
               redirectToDogDetails(id)
+            }
+          />
+        </Route>
+        <Route path="/sheltersList">
+          <ListWithShelters
+            redirectToShelterDetails={(id: number) =>
+              redirectToShelterDetails(id)
             }
           />
         </Route>
@@ -165,3 +178,5 @@ function Layout() {
 }
 
 export default App;
+
+

@@ -29,7 +29,7 @@ import { useSelector } from "react-redux";
 import config from "../config/config";
 import ImageGrid from "../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ExitToApp, Pets, Search, Settings } from "@material-ui/icons";
+import { ExitToApp, House, Pets, Search, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import Footer from "../utilityComponents/Footer";
@@ -106,6 +106,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     action: {
       color: "black",
+      tabSize:"1"
     },
     main: {
       justifyContent: "center",
@@ -177,6 +178,10 @@ export default function ListWithDogs(props: any) {
   const onSettingsClicked = () => {
     store.dispatch(clearDogList());
     history.push("/settings");
+  };
+  const onSheltersClicked = () => {
+    store.dispatch(clearDogList());
+    history.push("/shelterList");
   };
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });
@@ -273,7 +278,7 @@ export default function ListWithDogs(props: any) {
           <Grid item md={3}>
             <BottomNavigation showLabels />
           </Grid>
-          <Grid item xs={5} sm={7} md={6}>
+          <Grid item xs={6} sm={7} md={6}>
             <BottomNavigation showLabels>
               <BottomNavigationAction
                 disabled={true}
@@ -282,7 +287,7 @@ export default function ListWithDogs(props: any) {
               />
             </BottomNavigation>
           </Grid>
-          <Grid item xs={7} sm={5} md={3}>
+          <Grid item xs={6} sm={5} md={3}>
             <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
                 showLabel={true}
@@ -290,6 +295,13 @@ export default function ListWithDogs(props: any) {
                 label="Register"
                 classes={{ label: classes.action, root: classes.action }}
                 icon={<Pets />}
+              />
+              <BottomNavigationAction
+                showLabel={true}
+                classes={{ label: classes.action, root: classes.action }}
+                onClick={onSheltersClicked}
+                label="Shelters"
+                icon={<House />}
               />
               <BottomNavigationAction
                 showLabel={true}

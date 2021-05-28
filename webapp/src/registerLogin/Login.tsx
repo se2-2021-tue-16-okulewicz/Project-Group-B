@@ -112,7 +112,7 @@ export default function Login() {
       if (loginInfo?.userType == "Shelter") {
         history.push("/shelter");
       } else {
-        history.push("/listDogs");
+        history.push("/dogs");
       }
     } // eslint-disable-next-line
   }, [loginInfo]);
@@ -123,7 +123,7 @@ export default function Login() {
       if (cookies[config.cookies.userType] == "Shelter") {
         history.push("/shelter");
       } else {
-        history.push("/listDogs");
+        history.push("/dogs");
       }
     } // eslint-disable-next-line
   }, []);

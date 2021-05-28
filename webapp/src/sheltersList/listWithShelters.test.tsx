@@ -5,7 +5,6 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act, createRenderer } from "react-dom/test-utils";
-import ListWithDogs from "./shelterListWithDogs";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
 import { store } from "../app/store";
@@ -17,7 +16,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import ShelterListWithDogs from "./shelterListWithDogs";
+import ListWithShelters from "./listWithShelters";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -41,7 +40,7 @@ it("Rendered list of dogs", () => {
       <Provider store={store}>
         <Router>
           <Route path="/shelterlistDogs">
-            <ShelterListWithDogs />
+            <ListWithShelters />
           </Route>
         </Router>
       </Provider>,

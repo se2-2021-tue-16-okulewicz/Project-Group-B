@@ -118,7 +118,7 @@ export default function RegisterRegularUser() {
 
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
-      history.push("/listDogs");
+      history.push("/dogs");
     } // eslint-disable-next-line
   }, []);
 

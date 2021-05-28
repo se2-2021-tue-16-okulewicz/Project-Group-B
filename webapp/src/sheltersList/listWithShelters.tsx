@@ -32,7 +32,7 @@ import { clearDogList, logoutThunk } from "../app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import Footer from "../utilityComponents/Footer";
 import { IFilterSort } from "../dogsList/filterInterface";
-import ShelterGrid from "../commoncomponents/shelterGrid";
+import ShelterGrid from "../commoncomponents/shelterDogGrid";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -137,7 +137,7 @@ scheme.configureHeader((builder) => {
 
 /*TODO: remove filtering in frontend (folder dontdelete)*/
 
-export default function ShelterListWithDogs(props: any) {
+export default function ListWithShelters(props: any) {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
   const [dogId, setDogId] = useState(0);

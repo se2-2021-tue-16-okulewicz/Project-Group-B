@@ -42,7 +42,7 @@ it("Rendered list of dogs", async () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/listDogs">
+          <Route path="/dogs">
             <FilterForm {...props} />
           </Route>
         </Router>

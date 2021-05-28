@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -28,14 +28,12 @@ import {
   BreedTypes,
 } from "../dog/dogEnums";
 import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture, IShelterDog } from "../dog/dogInterfaces";
+import { IPicture, IShelterDog } from "../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../app/actions";
 import { store } from "../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import { ValidateFetchedDog } from "../utilityComponents/validation";
 import ImageUpload from "../registerDog/ImageUpload";
 import config from "../config/config";
 

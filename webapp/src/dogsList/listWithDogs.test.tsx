@@ -39,7 +39,7 @@ it("Rendered list of dogs", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/listDogs">
+          <Route path="/dogs">
             <ListWithDogs />
           </Route>
         </Router>

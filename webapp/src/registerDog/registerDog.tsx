@@ -129,14 +129,14 @@ export default function RegisterDogForm() {
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }
-    history.push("/listDogs");
+    history.push("/dogs");
     history.go(0);
   };
 
   const onCancelClick = () => {
     clearStorage();
     store.dispatch(Actions.clearDogList());
-    history.push("/listDogs");
+    history.push("/dogs");
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {

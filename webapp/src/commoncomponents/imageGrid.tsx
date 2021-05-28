@@ -59,7 +59,7 @@ export default function ImageGrid(props: any) {
                       redirectToDogDetailsOrEdit(dog.id as number);
                     }}
                   >
-                    {props.path === "/listDogs" ? <InfoIcon /> : <Edit />}
+                    {props.path === "/dogs" ? <InfoIcon /> : <Edit />}
                   </IconButton>
                 }
               />

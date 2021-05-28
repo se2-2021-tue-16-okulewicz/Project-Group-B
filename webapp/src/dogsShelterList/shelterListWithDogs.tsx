@@ -32,7 +32,7 @@ import { clearDogList, logoutThunk } from "../../src/app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
 import Footer from "../utilityComponents/Footer";
 import { IFilterSort } from "../dogsList/filterInterface";
-import ShelterGrid from "../commoncomponents/shelterGrid";
+import ShelterGrid from "../commoncomponents/shelterDogGrid"
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);

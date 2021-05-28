@@ -207,7 +207,7 @@ export default function Settings(props: any) {
   };
   const onShelterClicked = () => {
     store.dispatch(clearDogList());
-    history.push("/listDogs");
+    history.push("/dogs");
   };
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });

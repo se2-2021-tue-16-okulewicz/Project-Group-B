@@ -94,7 +94,7 @@ const DogDetails = (props: any) => {
   const onCancelClick = () => {
     sessionStorage.removeItem("dogId");
     sessionStorage.clear();
-    history.push("/listDogs");
+    history.push("/dogs");
   };
 
   return (
