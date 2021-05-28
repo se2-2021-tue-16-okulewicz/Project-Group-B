@@ -284,7 +284,7 @@ export default function ListWithShelters(props: any) {
                   classes={{ label: classes.action, root: classes.action }}
                   onClick={onLostDogsClicked}
                   label="Lost Dogs"
-                  icon={<FontAwesomeIcon icon={faDog}/>}
+                  icon={<Pets/>}
                 />
               <BottomNavigationAction
                 showLabel={true}

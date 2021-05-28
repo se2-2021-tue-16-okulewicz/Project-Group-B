@@ -1,11 +1,24 @@
-import { IShelter } from "./shelterInterfaces";
+import { IAddress, IShelter } from "./shelterInterfaces";
+
+export const initAddress: IAddress = {
+  city: "",
+  street: "",
+  postCode: "05-077",
+  buildingNumber: 0,
+  additionalAddressLine: ""
+ };
+
+export const exampleAddress: IAddress = {
+ city: "Warsaw",
+ street: "Polna",
+ postCode: "05-077",
+ buildingNumber: 12,
+ additionalAddressLine: "line"
+};
 
 export const initShelter: IShelter = {
   id: 0,
-  country: "",
-  house_number: 0,
-  street: "",
-  town: "",
+  address:initAddress,
   name: "",
   email: "",
   phoneNumber: "",
@@ -13,10 +26,7 @@ export const initShelter: IShelter = {
 
 export const exampleShelter: IShelter = {
   id: 1,
-  country: "Poland",
-  house_number: 1,
-  street: "Polna",
-  town: "Warsaw",
+  address: exampleAddress,
   name: "The Best Shelter",
   email: "a@a.a", 
   phoneNumber: "123456789"
