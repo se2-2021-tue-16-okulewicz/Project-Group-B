@@ -34,7 +34,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import SendIcon from "@material-ui/icons/Send";
 import { clearDogList, logoutThunk } from "../app/actions";
 import LoadingPopup from "../utilityComponents/LoadingPopup";
-import { ExitToApp, HouseRounded } from "@material-ui/icons";
+import { ExitToApp, HouseRounded, Pets } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright, faDog, faHandHolding, faHandPeace } from "@fortawesome/free-solid-svg-icons";
@@ -326,7 +326,7 @@ export default function Settings(props: any) {
               color="primary"
               onClick={onShelterClicked}
             >
-              <FontAwesomeIcon icon={faDog}/>
+              <Pets/>
               <Grid item xs={1} />
               Lost Dogs
             </MenuItem>

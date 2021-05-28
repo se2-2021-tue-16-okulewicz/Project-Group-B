@@ -8,7 +8,7 @@ import { act, createRenderer } from "react-dom/test-utils";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
 import ShelterDogGrid from "./shelterDogGrid";
-import { sheltertestDog, testDogList } from "../dog/dogTesting";
+import { otherDog, sheltertestDog, testDogList } from "../dog/dogTesting";
 import { Provider } from "react-redux";
 import {
   Redirect,
@@ -42,7 +42,7 @@ it("Rendered list of dog cards", () => {
         <Router>
           <Route path="/">
             <ShelterDogGrid
-              dogs={[sheltertestDog, sheltertestDog]}
+              dogs={testDogList}
               id={-1}
               cookies={{}}
               path={""}
@@ -59,5 +59,6 @@ it("Rendered list of dog cards", () => {
     container?.getElementsByClassName("tile").length
   ).toBeGreaterThanOrEqual(testDogList.length);
   //check if dog named alex was rendered
-  expect(container?.getElementsByClassName("Alex").length).toEqual(2);
+  expect(container?.getElementsByClassName("Alex").length).toEqual(1);
+  expect(container?.getElementsByClassName("Alexa").length).toEqual(1);
 });

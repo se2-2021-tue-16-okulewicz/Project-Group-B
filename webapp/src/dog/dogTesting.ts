@@ -5,8 +5,8 @@ import {
   IShelterDogWithPicture,
 } from "./dogInterfaces";
 
-const otherDog: ILostDogWithPicture = {
-  id: 1,
+export const otherDog: ILostDogWithPicture = {
+  id: 2,
   ownerId: 0,
   pictureId: 0,
   name: "Alex",
@@ -29,7 +29,7 @@ export const sheltertestDog: IShelterDogWithPicture = {
   id: 1,
   shelterId: 0,
   pictureId: 0,
-  name: "Alex",
+  name: "Alexa",
   breed: "",
   age: 0,
   hairLength: "",
@@ -42,4 +42,4 @@ export const sheltertestDog: IShelterDogWithPicture = {
   picture: initPicture,
 };
 
-export const testDogList = [initLostDogWithPictureProps, otherDog];
+export const testDogList = [sheltertestDog, otherDog];
