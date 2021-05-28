@@ -118,7 +118,8 @@ test("logout without being logged in", async () => {
 
 test("fetch shelters with the wrong token", async () => {
   const data: RequestResponse<IShelter[], Number> = await Fetching.fetchShelters(
-    config.cookies
+    {},
+    {}
   );
   expect(data).toEqual(errorObject);
 });

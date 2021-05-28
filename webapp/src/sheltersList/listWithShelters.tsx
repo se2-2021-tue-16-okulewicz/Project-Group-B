@@ -196,10 +196,10 @@ export default function ListWithShelters(props: any) {
   }*/
   //clears dog list, when page is refreshed or changed
 
-  function redirectToDogDetailsOrEdit(id: number) {
-    setDogId(id);
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    props.redirectToDogDetailsOrEdit(id);
+  function redirectToShelterDetails(id: number) {
+    //setDogId(id);
+    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    props.redirectToShelterDetails(id);
     //history.push(`${path}/${id}`);
   }
 
@@ -215,17 +215,16 @@ export default function ListWithShelters(props: any) {
       // fetch and append page 0
       try {
         store.dispatch(
-          Actions.fetchShelterDogsThunk({
+          Actions.fetchShelters({
             filters: {
               ...filters,
               page: filters.page,
             },
-            shelterId: cookies[config.cookies.userId],
             cookies: cookies,
           }) //filters
         );
       } catch (err) {
-        console.error("Failed to fetch the dogs: ", err);
+        console.error("Failed to fetch the shelters: ", err);
       } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
         if (isUpdateFilters) {
@@ -241,17 +240,16 @@ export default function ListWithShelters(props: any) {
       setFetching(true);
       try {
         store.dispatch(
-          Actions.fetchShelterDogsThunk({
+          Actions.fetchShelters({
             filters: {
               ...filters,
               page: filters.page,
             },
-            shelterId: cookies[config.cookies.userId],
             cookies: cookies,
           }) //filters
         );
       } catch (err) {
-        console.error("Failed to fetch the dogs: ", err);
+        console.error("Failed to fetch the shelters: ", err);
       } finally {
         if (filters.page != null) {
           setFilters({ ...filters, page: filters.page + 1 });

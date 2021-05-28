@@ -293,12 +293,21 @@ export const fetchShelterDogsThunk = createAsyncThunk<
 
 export const fetchShelters = createAsyncThunk<
   RequestResponse<IShelter[], Number>,
-  { [name: string]: any },
+  { filters: IFilters;  cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<IShelter[], Number> }
->("fetchShelters", async (cookies: { [name: string]: any }, { rejectWithValue }) => {
+>(
+  "fetchShelterDogs",
+  async (
+    filtersAndCookies: {
+      filters: IFilters;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
     const response: RequestResponse<IShelter[], Number> =
       await Fetching.fetchShelters(
-        cookies
+        filtersAndCookies.filters,
+        filtersAndCookies.cookies
       );
 
     if (response.response.successful !== true) {

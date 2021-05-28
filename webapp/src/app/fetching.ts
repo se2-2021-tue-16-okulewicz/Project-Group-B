@@ -75,13 +75,23 @@ async function getResponse<T, K>(
 }
 
 export async function fetchShelterDogs(
-  filters: IFilterSort,
+  filters: { [name: string]: any },
   shelterId: number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<IShelterDog[], Number>> {
+  const filtersString =
+    filters === undefined
+      ? ""
+      : Object.keys(filters)
+          .map((filterName) => {
+              const value = String(filters[filterName]).trim();
+              return value && value != "null" ? `${filterName}=${value}` : "";
+          })
+          .filter((x) => x !== "")
+          .join("&");
   return getResponse(
     axios.get(
-      `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs`,
+      `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs?${filtersString}`,
       {
         headers: {
           Authorization: getToken(cookies),
@@ -92,11 +102,22 @@ export async function fetchShelterDogs(
 }
 
 export async function fetchShelters(
+  filters: { [name: string]: any },
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<IShelter[], Number>> {
+  const filtersString =
+    filters === undefined
+      ? ""
+      : Object.keys(filters)
+          .map((filterName) => {
+              const value = String(filters[filterName]).trim();
+              return value && value != "null" ? `${filterName}=${value}` : "";
+          })
+          .filter((x) => x !== "")
+          .join("&");
   return getResponse(
     axios.get(
-      `http://${config.backend.ip}:${config.backend.port}/shelters`,
+      `http://${config.backend.ip}:${config.backend.port}/shelters?${filtersString}`,
       {
         headers: {
           Authorization: getToken(cookies),
