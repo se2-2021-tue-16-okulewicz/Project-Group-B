@@ -8,10 +8,10 @@ import {
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
-import { store } from "../app/store";
-import { State } from "../app/reducer";
-import { IShelterDog } from "../dog/dogInterfaces";
-import * as Actions from "../../src/app/actions";
+import { store } from "../../app/store";
+import { State } from "../../app/reducer";
+import { IShelterDog } from "../../dog/dogInterfaces";
+import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
 import Layout, {
   getContent,
@@ -25,14 +25,15 @@ import Layout, {
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
-import config from "../config/config";
+import config from "../../config/config";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ExitToApp, Pets, Settings } from "@material-ui/icons";
-import { clearDogList, logoutThunk } from "../../src/app/actions";
-import LoadingPopup from "../utilityComponents/LoadingPopup";
-import Footer from "../utilityComponents/Footer";
-import { IFilterSort } from "../dogsList/filterInterface";
-import ShelterGrid from "../commoncomponents/shelterDogGrid"
+import { clearDogList, logoutThunk } from "../../app/actions";
+import LoadingPopup from "../../utilityComponents/LoadingPopup";
+import Footer from "../../utilityComponents/Footer";
+import { IFilterSort } from "../../dog/dogsList/filterInterface";
+import ShelterGrid from "../../commoncomponents/shelterDogGrid";
+import ShelterDogGrid from "../../commoncomponents/shelterDogGrid";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -138,6 +139,8 @@ scheme.configureHeader((builder) => {
 /*TODO: remove filtering in frontend (folder dontdelete)*/
 
 export default function ShelterListWithDogs(props: any) {
+  const { path } = useRouteMatch();
+  console.log(path.split("/")[2]);
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
   const [dogId, setDogId] = useState(0);
@@ -160,7 +163,6 @@ export default function ShelterListWithDogs(props: any) {
   const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
   const classes = useStyles();
-  const { path } = useRouteMatch();
 
   const onRegisterClicked = () => {
     store.dispatch(clearDogList());
@@ -310,7 +312,7 @@ export default function ShelterListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ShelterGrid dogs={shelterDogs} />
+          <ShelterDogGrid dogs={shelterDogs}/>
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
           <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />

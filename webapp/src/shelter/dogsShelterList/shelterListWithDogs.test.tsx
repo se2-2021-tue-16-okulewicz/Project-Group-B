@@ -5,10 +5,10 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act, createRenderer } from "react-dom/test-utils";
-import ListWithDogs from "./listWithDogs";
+import ListWithDogs from "./shelterListWithDogs";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import {
   Redirect,
@@ -17,6 +17,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
+import ShelterListWithDogs from "./shelterListWithDogs";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -39,8 +40,8 @@ it("Rendered list of dogs", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/dogs">
-            <ListWithDogs />
+          <Route path="/shelterdogs">
+            <ShelterListWithDogs />
           </Route>
         </Router>
       </Provider>,

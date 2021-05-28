@@ -117,22 +117,20 @@ test("logout without being logged in", async () => {
 });
 
 test("fetch shelters with the wrong token", async () => {
-  const data: RequestResponse<IShelter[], Number> = await Fetching.fetchShelters(
-    {},
-    {}
-  );
+  const data: RequestResponse<IShelter[], Number> =
+    await Fetching.fetchShelters({}, {});
   expect(data).toEqual(errorObject);
 });
 
 test("fetch shelter dogs with the wrong token", async () => {
-  const data: RequestResponse<IShelterDog[], Number> = await Fetching.fetchShelterDogs(
-    {}, //empty filters
-    0, //shelter id
-    {} //empty token
-  );
+  const data: RequestResponse<IShelterDog[], Number> =
+    await Fetching.fetchShelterDogs(
+      {}, //empty filters
+      0, //shelter id
+      {} //empty token
+    );
   expect(data).toEqual(errorObject);
 });
-
 
 /*test("fetch the dogs with a test token", async () => {
    const data: RequestResponse<ILostDogWithPicture[]> = await Fetching.fetchDogs(

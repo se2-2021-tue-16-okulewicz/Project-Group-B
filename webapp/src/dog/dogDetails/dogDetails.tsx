@@ -14,15 +14,15 @@ import {
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
-import { BehaviorsTypes } from "../dog/dogEnums";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import { BehaviorsTypes } from "../dogEnums";
+import { ILostDogWithPicture } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
-import * as Actions from "../app/actions";
-import { store } from "../app/store";
+import * as Actions from "../../app/actions";
+import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { State } from "../app/reducer";
+import { State } from "../../app/reducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

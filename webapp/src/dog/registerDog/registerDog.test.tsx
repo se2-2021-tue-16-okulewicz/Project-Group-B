@@ -7,7 +7,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import RegisterDogForm from "./registerDog";
 import { isNull } from "lodash";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 

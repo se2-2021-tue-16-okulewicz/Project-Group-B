@@ -6,13 +6,13 @@ import React, { useState } from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act, renderIntoDocument, Simulate } from "react-dom/test-utils";
 import { isNull } from "lodash";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import FilterForm from "./filterForm";
 import { IFilterSort, initFilterProps } from "./filterInterface";
-import { InputFormControl } from "../commoncomponents/formHandlers";
-import config from "../config/config";
+import { InputFormControl } from "../../commoncomponents/formHandlers";
+import config from "../../config/config";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {

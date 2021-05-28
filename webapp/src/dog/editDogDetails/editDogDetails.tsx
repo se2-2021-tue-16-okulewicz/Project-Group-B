@@ -28,22 +28,22 @@ import {
   SpecialMarkTypes,
   BehaviorsTypes,
   BreedTypes,
-} from "../dog/dogEnums";
+} from "../dogEnums";
 import {
   initLostDogProps,
   initLostDogWithPictureProps,
   initPicture,
-} from "../dog/dogClasses";
-import { ILostDog, IPicture, ILostDogWithPicture } from "../dog/dogInterfaces";
+} from "../dogClasses";
+import { ILostDog, IPicture, ILostDogWithPicture } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import * as Actions from "../app/actions";
-import { store } from "../app/store";
+import * as Actions from "../../app/actions";
+import { store } from "../../app/store";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { State } from "../app/reducer";
+import { State } from "../../app/reducer";
 import { base64StringToBlob } from "blob-util";
-import LoadingPopup from "../utilityComponents/LoadingPopup";
+import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 
 //edit dog almost finished, just need to update what happends when there is no new picture

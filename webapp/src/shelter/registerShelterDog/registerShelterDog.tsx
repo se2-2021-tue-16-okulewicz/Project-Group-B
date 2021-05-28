@@ -14,10 +14,9 @@ import {
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
 import DateFnsUtils from "@date-io/date-fns";
-import ImageUpload from "./ImageUpload";
 import {
   ColorTypes,
   HairTypes,
@@ -27,16 +26,16 @@ import {
   SpecialMarkTypes,
   BehaviorsTypes,
   BreedTypes,
-} from "../dog/dogEnums";
-import { initLostDogProps, initPicture } from "../dog/dogClasses";
-import { ILostDog, IPicture } from "../dog/dogInterfaces";
+} from "../../dog/dogEnums";
+import { initLostDogProps, initPicture } from "../../dog/dogClasses";
+import { IPicture, IShelterDog } from "../../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import * as Actions from "../app/actions";
-import { store } from "../app/store";
+import * as Actions from "../../app/actions";
+import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import { ValidateFetchedDog } from "../utilityComponents/validation";
+import ImageUpload from "../../dog/registerDog/ImageUpload";
+import config from "../../config/config";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,13 +68,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function RegisterDogForm() {
+export default function RegisterShelterDogForm() {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
-  const [lostDogFields, setLostDogFields] = useState<ILostDog>(
+  const [lostDogFields, setLostDogFields] = useState<IShelterDog>(
     isInputNotNull
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
@@ -90,20 +89,6 @@ export default function RegisterDogForm() {
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
 
-  function calendarHandler(date: MaterialUiPickersDate): void {
-    let newField = { ...lostDogFields, dateLost: date as Date };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
-  }
-
-  const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
-    let newField = {
-      ...lostDogFields,
-      location: { ...lostDogFields.location, [e.target.name]: e.target.value },
-    };
-    setLostDogFields(newField);
-    sessionStorage.setItem("inputField", JSON.stringify(newField));
-  };
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
@@ -129,20 +114,21 @@ export default function RegisterDogForm() {
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }
-    history.push("/dogs");
+    history.push("/shelterdogs");
     history.go(0);
   };
 
   const onCancelClick = () => {
     clearStorage();
     store.dispatch(Actions.clearDogList());
-    history.push("/dogs");
+    history.push("/shelterdogs");
   };
 
-  function registerDog(dog: ILostDog, picture: IPicture) {
-    dog = ValidateFetchedDog(dog);
+  function registerDog(dog: IShelterDog, picture: IPicture) {
+    // dog = ValidateFetchedDog(dog);
     store.dispatch(
-      Actions.addDogThunk({
+      Actions.addShelterDogThunk({
+        shelterId: cookies[config.cookies.userId],
         dog: dog,
         picture: picture,
         cookies: cookies,
@@ -320,6 +306,16 @@ export default function RegisterDogForm() {
                 ))}
             </Select>
           </FormControl>
+        </Grid>
+        <Grid
+          container
+          item
+          sm={12}
+          md={4}
+          direction="column"
+          alignContent="stretch"
+          style={{ marginBottom: 10 }}
+        >
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel htmlFor="tail-label">Tail</InputLabel>
             <Select
@@ -385,49 +381,6 @@ export default function RegisterDogForm() {
                   </option>
                 ))}
             </Select>
-          </FormControl>
-        </Grid>
-        <Grid
-          container
-          item
-          sm={12}
-          md={4}
-          direction="column"
-          alignContent="stretch"
-          style={{ marginBottom: 10 }}
-        >
-          <FormControl variant="outlined" className={classes.formControl}>
-            <DatePicker
-              label="Dog was lost on"
-              data-testid="date-select"
-              disableToolbar
-              variant="dialog"
-              inputVariant="outlined"
-              format="yyyy-MM-dd"
-              id="date-picker-inline"
-              value={lostDogFields.dateLost}
-              maxDate={new Date()}
-              name="dateLost"
-              onChange={(date: any) => calendarHandler(date)}
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <TextField
-              label="City"
-              name="city"
-              value={lostDogFields.location.city}
-              onChange={inputArrayHandler}
-              variant="outlined"
-            />
-          </FormControl>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <TextField
-              label="District"
-              name="district"
-              value={lostDogFields.location.district}
-              onChange={inputArrayHandler}
-              variant="outlined"
-            />
           </FormControl>
           <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel htmlFor="behavior-label">Behavior</InputLabel>

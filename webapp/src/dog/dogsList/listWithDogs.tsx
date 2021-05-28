@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
+  Drawer,
   Grid,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
-import { store } from "../app/store";
-import { State } from "../app/reducer";
-import { IShelterDog } from "../dog/dogInterfaces";
-import * as Actions from "../app/actions";
+import { store } from "../../app/store";
+import { State } from "../../app/reducer";
+import { ILostDogWithPicture } from "../dogInterfaces";
+import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
 import Layout, {
   getContent,
@@ -25,24 +26,22 @@ import Layout, {
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
-import config from "../config/config";
+import config from "../../config/config";
+import ImageGrid from "../../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ExitToApp, Pets, Settings } from "@material-ui/icons";
-import { clearDogList, logoutThunk } from "../app/actions";
-import LoadingPopup from "../utilityComponents/LoadingPopup";
-import Footer from "../utilityComponents/Footer";
-import { IFilterSort } from "../dogsList/filterInterface";
-import ShelterGrid from "../commoncomponents/shelterDogGrid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDog } from "@fortawesome/free-solid-svg-icons";
-import { IShelter } from "../shelter/shelterInterfaces";
-import SheltersGrid from "../commoncomponents/sheltersGrid";
+import { ExitToApp, House, Pets, Search, Settings } from "@material-ui/icons";
+import { clearDogList, logoutThunk } from "../../app/actions";
+import LoadingPopup from "../../utilityComponents/LoadingPopup";
+import Footer from "../../utilityComponents/Footer";
+import FilterForm from "./filterForm";
+import { IFilterSort } from "./filterInterface";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
+const SidebarContent = getSidebarContent(styled);
 
 const scheme = Layout();
 const useStyles = makeStyles((theme: Theme) =>
@@ -76,6 +75,8 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
       alignSelf: "center",
       marginTop: "6%",
+      //borderBottomColor: "black",
+      //borderBottomWidth: "1",
       fontSize: "1.2em",
     },
     header: {
@@ -88,6 +89,7 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       right: 0,
       height: "15vh",
+      //width:"100vw",
     },
     title: {
       color: "black",
@@ -104,6 +106,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     action: {
       color: "black",
+      tabSize: "1",
     },
     main: {
       justifyContent: "center",
@@ -111,6 +114,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       marginTop: "2vh",
+      //flexGrow: 1,
       alignSelf: "center",
     },
     drawer: {
@@ -141,24 +145,25 @@ scheme.configureHeader((builder) => {
 
 /*TODO: remove filtering in frontend (folder dontdelete)*/
 
-export default function ListWithShelters(props: any) {
+export default function ListWithDogs(props: any) {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
   const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
+  const [isMenuCollapsed, setMenuCollapsed] = useState(true);
 
-  const shelters = useSelector(
-    (state: State) => state.shelters as IShelter[]
+  const dogs = useSelector(
+    (state: State) => state.dogs as ILostDogWithPicture[]
   );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
-  console.log(refreshRequired);
   const [initialRefresh, setInitialRefresh] = useState(true);
   const [isUpdateFilters, setIsUpdateFilters] = useState(false);
   const [filters, setFilters] = useState<IFilterSort>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
+    filter: { isFound: false },
   });
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -168,18 +173,16 @@ export default function ListWithShelters(props: any) {
 
   const onRegisterClicked = () => {
     store.dispatch(clearDogList());
-    history.push("/addShelterDog");
+    history.push("/addDog");
   };
   const onSettingsClicked = () => {
-    //store.dispatch(clearDogList());
-    //history.push("/settings");
-  };
-
-  const onLostDogsClicked = () => {
     store.dispatch(clearDogList());
-    history.push("/dogs");
+    history.push("/settings");
   };
-
+  const onSheltersClicked = () => {
+    store.dispatch(clearDogList());
+    history.push("/shelters");
+  };
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });
     removeCookie(config.cookies.userType, { path: "/" });
@@ -192,14 +195,23 @@ export default function ListWithShelters(props: any) {
   /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
         setTimeout(() => {
           setPageRefresh(true);
+
         },600000)
   }*/
   //clears dog list, when page is refreshed or changed
+  const updateFilters = (event: any) => {
+    if (event) {
+      setFilters(event);
+      store.dispatch(clearDogList());
+      setIsUpdateFilters(true);
+      //setMenuCollapsed(true);
+    }
+  };
 
-  function redirectToShelterDetails(id: number) {
-    //setDogId(id);
-    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    props.redirectToShelterDetails(id);
+  function redirectToDogDetailsOrEdit(id: number) {
+    setDogId(id);
+    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    props.redirectToDogDetailsOrEdit(id);
     //history.push(`${path}/${id}`);
   }
 
@@ -210,26 +222,24 @@ export default function ListWithShelters(props: any) {
     }
   }, [initialRefresh]);
 
+  console.log(refreshRequired);
   useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0
       try {
         store.dispatch(
-          Actions.fetchShelters({
+          Actions.fetchDogsThunk({
             filters: {
               ...filters,
-              page: filters.page,
+              page: config.defaultFilters.page,
             },
             cookies: cookies,
           }) //filters
         );
       } catch (err) {
-        console.error("Failed to fetch the shelters: ", err);
+        console.error("Failed to fetch the dogs: ", err);
       } finally {
         setFilters({ ...filters, page: config.defaultFilters.page + 1 });
-        if (isUpdateFilters) {
-          setIsUpdateFilters(false);
-        }
       }
     }
     // eslint-disable-next-line
@@ -240,7 +250,7 @@ export default function ListWithShelters(props: any) {
       setFetching(true);
       try {
         store.dispatch(
-          Actions.fetchShelters({
+          Actions.fetchDogsThunk({
             filters: {
               ...filters,
               page: filters.page,
@@ -249,7 +259,7 @@ export default function ListWithShelters(props: any) {
           }) //filters
         );
       } catch (err) {
-        console.error("Failed to fetch the shelters: ", err);
+        console.error("Failed to fetch the dogs: ", err);
       } finally {
         if (filters.page != null) {
           setFilters({ ...filters, page: filters.page + 1 });
@@ -265,34 +275,58 @@ export default function ListWithShelters(props: any) {
       <CssBaseline />
       <Header className={classes.header} id="header">
         <Grid container direction="row" alignContent="space-between">
-          <Grid item xs={3}>
+          <Grid item md={3}>
             <BottomNavigation showLabels />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} sm={7} md={6}>
             <BottomNavigation showLabels>
               <BottomNavigationAction
                 disabled={true}
-                label="SHELTERS"
+                label="LOST DOGS"
                 classes={{ label: classes.title }}
               />
             </BottomNavigation>
           </Grid>
-          <Grid item xs={3}>
-            <BottomNavigation showLabels style={{ height: "100%" }}>
+          <Grid item xs={6} sm={5} md={3} >
+            <BottomNavigation showLabels style={{ height: "100%", width:"300px" }}>
               <BottomNavigationAction
-                  showLabel={true}
-                  classes={{ label: classes.action, root: classes.action }}
-                  onClick={onLostDogsClicked}
-                  label="Lost Dogs"
-                  icon={<Pets/>}
-                />
+                showLabel={true}
+                onClick={onRegisterClicked}
+                label="Register"
+                classes={{ label: classes.action, root: classes.action }}
+                icon={<Pets />}
+              />
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
-                disabled={true}
+                onClick={onSheltersClicked}
+                label="Shelters"
+                icon={<House />}
+              />
+              <BottomNavigationAction
+                showLabel={true}
+                classes={{ label: classes.action, root: classes.action }}
                 onClick={onSettingsClicked}
                 label="Settings"
                 icon={<Settings />}
+              />
+              <BottomNavigationAction
+                showLabel={true}
+                classes={{ label: classes.action, root: classes.action }}
+                label="Filter"
+                onClick={() => {
+                  setMenuCollapsed(!isMenuCollapsed);
+                  if (!isMenuCollapsed && isUpdateFilters) {
+                    setFilters({
+                      ...filters,
+                      page: config.defaultFilters.page,
+                    });
+                    store.dispatch(clearDogList());
+                    setIsUpdateFilters(false);
+                  }
+                  //sidebar.setOpen("unique_id", true);
+                }}
+                icon={<Search />}
               />
               <BottomNavigationAction
                 showLabel={true}
@@ -302,13 +336,36 @@ export default function ListWithShelters(props: any) {
                 onClick={onLogOutClicked}
                 icon={<ExitToApp />}
               />
+              <BottomNavigationAction
+                disabled={true}
+              />
             </BottomNavigation>
           </Grid>
         </Grid>
       </Header>
+      {!isMenuCollapsed && (
+        <Drawer
+          variant="persistent"
+          BackdropProps={{ invisible: true }}
+          /*onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
+        onBackdropClick={()=>{setMenuCollapsed(true)}}*/ open={!isMenuCollapsed}
+          className={classes.drawer}
+        >
+          <Toolbar />
+          <BottomNavigation />
+          {
+            <FilterForm
+              filters={filters}
+              updateFilters={(
+                updatedFilters: React.ChangeEvent<{ value: unknown }>
+              ) => updateFilters(updatedFilters)}
+            />
+          }
+        </Drawer>
+      )}
       <Content>
         <InfiniteScroll
-          dataLength={shelters.length}
+          dataLength={dogs.length}
           scrollThreshold={0.9}
           next={fetchMore}
           hasMore={!lastPage && !fetching}
@@ -317,10 +374,16 @@ export default function ListWithShelters(props: any) {
           }
         >
           <Toolbar />
-          <SheltersGrid shelters={shelters} />
+          <ImageGrid
+            dogs={dogs}
+            path={path}
+            redirectToDogDetailsOrEdit={(id: number) =>
+              redirectToDogDetailsOrEdit(id)
+            }
+          />
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
-          <Footer position={shelters.length > 3 ? "list" : "footer"} />
+          <Footer position={dogs.length > 3 ? "list" : "footer"} />
         )}
       </Content>
     </Root>

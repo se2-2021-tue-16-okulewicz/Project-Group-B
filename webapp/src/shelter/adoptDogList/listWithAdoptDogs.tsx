@@ -10,12 +10,11 @@ import {
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
-import { useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { store } from "../app/store";
-import { State } from "../app/reducer";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import * as Actions from "../app/actions";
+import { store } from "../../app/store";
+import { State } from "../../app/reducer";
+import * as Actions from "../../app/actions";
 import Layout, {
   getContent,
   getDrawerSidebar,
@@ -28,19 +27,28 @@ import Layout, {
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
-import config from "../config/config";
-import ImageGrid from "../commoncomponents/imageGrid";
+import config from "../../config/config";
+import ImageGrid from "../../commoncomponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SendIcon from "@material-ui/icons/Send";
-import { clearDogList, logoutThunk } from "../app/actions";
-import LoadingPopup from "../utilityComponents/LoadingPopup";
+import { clearDogList, logoutThunk } from "../../app/actions";
+import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import { ExitToApp, HouseRounded, Pets } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faCopyright, faDog, faHandHolding, faHandPeace } from "@fortawesome/free-solid-svg-icons";
-import { IFilters } from "../utilityComponents/utilities";
-import ContactInfo from "../contactInfo/contactInformation";
-import { IContactInfo } from "../contactInfo/contactInfoInterface";
+import {
+  faCopyright,
+  faDog,
+  faHandHolding,
+  faHandPeace,
+} from "@fortawesome/free-solid-svg-icons";
+import { IFilters } from "../../utilityComponents/utilities";
+import ContactInfo from "../../contactInfo/contactInformation";
+import { IContactInfo } from "../../contactInfo/contactInfoInterface";
+import { IShelterDogWithPicture } from "../../dog/dogInterfaces";
+import ShelterListWithDogs from "../dogsShelterList/shelterListWithDogs";
+import SheltersGrid from "../../commoncomponents/sheltersGrid";
+import ShelterDogGrid from "../../commoncomponents/shelterDogGrid";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
@@ -158,14 +166,18 @@ scheme.configureEdgeSidebar((builder) => {
     });
 });
 
-export default function Settings(props: any) {
+export default function ListWithAdoptDogs(props: any) {
+  const history = useHistory();
+  const location = useLocation();
+  const {path} = useRouteMatch();
+  const shelterId = location.pathname.split("/shelter/")[1];
   const [displayLoader, setDisplayLoader] = useState(true);
   const loading = useSelector((state: State) => state.loading as boolean);
   //const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
-  const dogs = useSelector(
-    (state: State) => state.dogs as ILostDogWithPicture[]
+  const shelterDogs = useSelector(
+    (state: State) => state.dogs as IShelterDogWithPicture[]
   );
   const contactInfo = useSelector(
     (state: State) => state.contactInfo as IContactInfo
@@ -176,20 +188,10 @@ export default function Settings(props: any) {
   const [pageRefresh, setPageRefresh] = useState(true);
   const pages = useSelector((state: State) => state.pages as number);
   const classes = useStyles();
-  const history = useHistory();
-  const { path } = useRouteMatch();
-  const isInputNotNull = sessionStorage.getItem("listVisible") !== null;
-  const [isListVisible, setListVisible] = useState<boolean>(
-    isInputNotNull
-      ? JSON.parse(sessionStorage.getItem("listVisible") as string)
-      : true
-  );
+
   const [filters, setFilters] = useState<IFilters>({
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
-    filter: {
-      ownerId: Number.parseInt(cookies[config.cookies.userId]),
-    },
   });
   function clearStorage() {
     sessionStorage.removeItem("dogId");
@@ -199,14 +201,11 @@ export default function Settings(props: any) {
     sessionStorage.clear();
   }
   const onDogsListClicked = () => {
-    sessionStorage.setItem("listVisible", JSON.stringify(true));
-    setListVisible(true);
+
   };
   const onInfoClicked = () => {
-    sessionStorage.setItem("listVisible", JSON.stringify(false));
-    setListVisible(false); /*getContactInfo();*/
   };
-  const onShelterClicked = () => {
+  const onLostDogsCLicked = () => {
     store.dispatch(clearDogList());
     history.push("/dogs");
   };
@@ -298,33 +297,13 @@ export default function Settings(props: any) {
         <CollapseBtn />
         <SidebarContent name="sidebar">
           <Grid container className={classes.main} spacing={1}>
-            <MenuItem
-              className={classes.menuItem}
-              data-testid="registerButton"
-              color="primary"
-              onClick={onInfoClicked}
-            >
-              {!isListVisible && <SendIcon />}
-              {!isListVisible && <Grid item xs={1} />}
-              Contact Info
-            </MenuItem>
-            <MenuItem
-              className={classes.menuItem}
-              data-testid="dogsButton"
-              color="primary"
-              onClick={onDogsListClicked}
-            >
-              {isListVisible && <SendIcon />}
-              {isListVisible && <Grid item xs={1} />}
-              My Dogs
-            </MenuItem>
             <Grid item xs={12} />
             <Grid item xs={12} />
             <MenuItem
               className={classes.menuItem}
               data-testid="shelterButton"
               color="primary"
-              onClick={onShelterClicked}
+              onClick={onLostDogsCLicked}
             >
               <Pets/>
               <Grid item xs={1} />
@@ -373,9 +352,8 @@ export default function Settings(props: any) {
         </SidebarContent>
       </DrawerSidebar>
       <Content>
-        {isListVisible && (
           <InfiniteScroll
-            dataLength={dogs.length}
+            dataLength={shelterDogs.length}
             scrollThreshold={0.9}
             next={fetchMore}
             hasMore={!lastPage}
@@ -384,16 +362,14 @@ export default function Settings(props: any) {
               (!displayLoader && <></>)
             }
           >
-            <ImageGrid
-              dogs={dogs}
+            <ShelterDogGrid
+              dogs={shelterDogs}
               path={path}
-              redirectToDogDetailsOrEdit={(id: number) =>
+              /*redirectToDogDetailsOrEdit={(id: number) =>
                 redirectToDogDetailsOrEdit(id)
-              }
+              }*/
             />
           </InfiniteScroll>
-        )}
-        {!isListVisible && <ContactInfo contactInfo={contactInfo} />}
       </Content>
     </Root>
   );

@@ -110,7 +110,7 @@ export default function Login() {
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
       if (loginInfo?.userType == "Shelter") {
-        history.push("/shelter");
+        history.push("/shelterdogs");
       } else {
         history.push("/dogs");
       }
@@ -121,7 +121,7 @@ export default function Login() {
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
       if (cookies[config.cookies.userType] == "Shelter") {
-        history.push("/shelter");
+        history.push("/shelterdogs");
       } else {
         history.push("/dogs");
       }

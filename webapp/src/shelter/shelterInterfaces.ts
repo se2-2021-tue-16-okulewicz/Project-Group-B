@@ -1,4 +1,3 @@
-
 export interface IShelter {
   id: number;
   address: IAddress;

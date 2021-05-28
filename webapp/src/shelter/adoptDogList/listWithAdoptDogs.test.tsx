@@ -4,19 +4,13 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act, createRenderer } from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
+import Settings from "./listWithAdoptDogs";
 import { isNull } from "lodash";
-import { Button } from "@material-ui/core";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from "react-router-dom";
-import ListWithShelters from "./listWithShelters";
+import { Route, BrowserRouter as Router } from "react-router-dom";
+import ListWithAdoptDogs from "./listWithAdoptDogs";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -39,15 +33,13 @@ it("Rendered list of dogs", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/shelterlistDogs">
-            <ListWithShelters />
+          <Route path="/shelter/4">
+            <ListWithAdoptDogs />
           </Route>
         </Router>
       </Provider>,
       container
     );
   });
-  expect(
-    container?.getElementsByClassName("loader").length
-  ).toBeGreaterThanOrEqual(0);
+  expect(container?.getElementsByClassName("loader").length).toEqual(0);
 });

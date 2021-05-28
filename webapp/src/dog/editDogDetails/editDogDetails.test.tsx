@@ -8,7 +8,7 @@ import { act, createRenderer } from "react-dom/test-utils";
 import EditDogDetails from "./editDogDetails";
 import { isNull } from "lodash";
 import { Button } from "@material-ui/core";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import {
   Redirect,

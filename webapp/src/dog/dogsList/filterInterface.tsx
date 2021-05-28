@@ -7,8 +7,8 @@ import {
   SizeTypes,
   SpecialMarkTypes,
   TailTypes,
-} from "../dog/dogEnums";
-import { IFilters } from "../utilityComponents/utilities";
+} from "../dogEnums";
+import { IFilters } from "../../utilityComponents/utilities";
 
 /*export interface IFilterSort {
     page?: number;

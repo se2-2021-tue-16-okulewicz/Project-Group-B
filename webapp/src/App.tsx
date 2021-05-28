@@ -16,22 +16,23 @@ import {
 } from "./app/actions";
 import { State } from "./app/reducer";
 import { store } from "./app/store";
-import RegisterDogForm from "./registerDog/registerDog";
+import RegisterDogForm from "./dog/registerDog/registerDog";
 import Login from "./registerLogin/Login";
 import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
-import ListWithDogs from "./dogsList/listWithDogs";
+import ListWithDogs from "./dog/dogsList/listWithDogs";
 import config from "./config/config";
 import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
-import Settings from "./settings/settings";
-import EditDogDetails from "./editDogDetails/editDogDetails";
+import Settings from "./dog/settings/settings";
+import EditDogDetails from "./dog/editDogDetails/editDogDetails";
 import EditContactInfo from "./contactInfo/editContactInformation";
-import DogDetails from "./dogDetails/dogDetails";
-import ShelterListWithDogs from "./dogsShelterList/shelterListWithDogs";
-import RegisterShelterDogForm from "./registerShelterDog/registerShelterDog";
-import ListWithShelters from "./sheltersList/listWithShelters";
+import DogDetails from "./dog/dogDetails/dogDetails";
+import ShelterListWithDogs from "./shelter/dogsShelterList/shelterListWithDogs";
+import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
+import ListWithShelters from "./shelter/sheltersList/listWithShelters";
+import ListWithAdoptDogs from "./shelter/adoptDogList/listWithAdoptDogs";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -127,7 +128,7 @@ function Layout() {
           <EditContactInfo />
           <Footer />
         </Route>
-        <Route path="/shelter">
+        <Route path="/shelterdogs">
           <ShelterListWithDogs
             redirectToDogDetailsOrEdit={(id: number) =>
               redirectToDogDetails(id)
@@ -141,7 +142,7 @@ function Layout() {
             }
           />
         </Route>
-        <Route path="/sheltersList">
+        <Route path="/shelters">
           <ListWithShelters
             redirectToShelterDetails={(id: number) =>
               redirectToShelterDetails(id)
@@ -153,6 +154,10 @@ function Layout() {
             redirectToDogDetailsOrEdit={(id: number) =>
               redirectToDogDetailsOrEdit(id)
             }
+          />
+        </Route>
+        <Route path={`/shelter/:id`}>
+          <ListWithAdoptDogs
           />
         </Route>
         <Route path="/addDog">
@@ -178,5 +183,3 @@ function Layout() {
 }
 
 export default App;
-
-

@@ -10,16 +10,16 @@ import {
   ColorTypes,
   OrderTypes,
   SizeTypes,
-} from "../dog/dogEnums";
+} from "../dogEnums";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { IFilterSort } from "./filterInterface";
-import { clearDogList } from "../app/actions";
+import { clearDogList } from "../../app/actions";
 import {
   SelectFormControl,
   DateFormControl,
-} from "../commoncomponents/formHandlers";
+} from "../../commoncomponents/formHandlers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

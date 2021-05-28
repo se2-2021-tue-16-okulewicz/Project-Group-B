@@ -14,7 +14,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
-import { IFilterSort, initFilterProps } from "../dogsList/filterInterface";
+import { IFilterSort, initFilterProps } from "../dog/dogsList/filterInterface";
 import { Console } from "node:console";
 import { FilterCenterFocusSharp, FilterNone } from "@material-ui/icons";
 import { filter } from "lodash";
@@ -84,8 +84,8 @@ export async function fetchShelterDogs(
       ? ""
       : Object.keys(filters)
           .map((filterName) => {
-              const value = String(filters[filterName]).trim();
-              return value && value != "null" ? `${filterName}=${value}` : "";
+            const value = String(filters[filterName]).trim();
+            return value && value != "null" ? `${filterName}=${value}` : "";
           })
           .filter((x) => x !== "")
           .join("&");
@@ -110,8 +110,8 @@ export async function fetchShelters(
       ? ""
       : Object.keys(filters)
           .map((filterName) => {
-              const value = String(filters[filterName]).trim();
-              return value && value != "null" ? `${filterName}=${value}` : "";
+            const value = String(filters[filterName]).trim();
+            return value && value != "null" ? `${filterName}=${value}` : "";
           })
           .filter((x) => x !== "")
           .join("&");

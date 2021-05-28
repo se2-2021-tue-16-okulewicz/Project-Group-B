@@ -5,12 +5,11 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import RegisterDogForm from "./registerShelterDog";
+import Settings from "./settings";
 import { isNull } from "lodash";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
-import RegisterShelterDogForm from "./registerShelterDog";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -28,34 +27,18 @@ afterEach(() => {
   }
 });
 
-it("Rendered register form button", () => {
+it("Rendered list of dogs", () => {
   act(() => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/addShelterDog">
-            <RegisterShelterDogForm />
+          <Route path="/settings">
+            <Settings />
           </Route>
         </Router>
       </Provider>,
       container
     );
   });
-  expect(
-    container?.getElementsByClassName("mainForm").length
-  ).toBeGreaterThanOrEqual(0);
-  expect(container?.childElementCount).toBeGreaterThanOrEqual(0);
-  expect(
-    container?.getElementsByClassName("cardContent").length
-  ).toBeGreaterThanOrEqual(0);
-  expect(
-    container?.getElementsByClassName("formControl").length
-  ).toBeGreaterThanOrEqual(0);
-});
-
-it("test only register button", () => {
-  act(() => {
-    render(<RegisterShelterDogForm />, container);
-  });
-  const myRegisterClicked = jest.fn();
+  expect(container?.getElementsByClassName("loader").length).toEqual(0);
 });
