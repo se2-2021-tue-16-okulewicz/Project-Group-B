@@ -42,7 +42,7 @@ export default function DogsList({ navigation }: any) {
   const id = useSelector((state: State) => state.loginInformation?.id);
   const [myDogs, setMyDogs] = useState<ILostDogWithPicture[]>([]);
 
-  //Fetching cars at the beginning
+  //Fetching dogs at the beginning
   React.useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0
@@ -100,24 +100,27 @@ export default function DogsList({ navigation }: any) {
     <View style={[styles.item]}>
       <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
-        <View style={[{ flexDirection: "row" }]}>
+        <View style={[{ flexDirection: "row", flex: 1 }]}>
           <Image
-            style={styles.picture}
+            style={[styles.picture, {flex: 1}]}
             source={{
-              uri: `data:${dog.picture.fileType};base64,${
-                dog.picture.data as ArrayBuffer
-              }`,
+              uri: `data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer
+                }`,
             }}
-            //source={{uri: dog.picture.uri}}
+          //source={{uri: dog.picture.uri}}
           />
+          <View style={{ justifyContent: "flex-end", alignContent: "flex-end", flex: 2 }}>
           {/* <Text>{dog.picture.id + " " + dog.picture.fileName + " " + dog.picture.fileType + " " + dog.picture.data}</Text> */}
           {!dog.isFound ? (
-            <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
-              <Text style={styles.lost}>Mark as found</Text>
-            </TouchableOpacity>
+            
+              <TouchableOpacity style={{ backgroundColor: "yellow"}} onPress={() => markDogAsFound(dog.id)}>
+                <Text style={styles.lost}>Mark as found</Text>
+              </TouchableOpacity>
+            
           ) : (
             <Text style={styles.found}>Found</Text>
           )}
+          </View>
         </View>
 
         <View style={styles.row}>
@@ -210,6 +213,7 @@ const styles = StyleSheet.create({
     color: "green",
   },
   lost: {
+    backgroundColor: "yellow",
     marginLeft: "37%",
   },
 });
