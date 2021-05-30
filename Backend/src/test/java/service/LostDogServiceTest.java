@@ -8,8 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
+import se.backend.model.Location;
 import se.backend.model.Picture;
 import se.backend.model.dogs.Lost.LostDog;
+import se.backend.model.dogs.Lost.LostDogComment;
 import se.backend.service.lostdogs.LostDogService;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 
@@ -153,7 +155,7 @@ public class LostDogServiceTest {
     }
 
     @Test
-    public void GetDogDetailsTest()
+    public void GetDogDetailsWithCommentsTest()
     {
         // Checking initial size
         var allDogs = service.GetLostDogs(Specification.where(null), PageRequest.of(0, 15));
@@ -165,6 +167,8 @@ public class LostDogServiceTest {
         // Checks
         assertEquals("Pinky", result1.getName());
         assertEquals(10001, result1.getPictureId());
+        assertEquals(1, result1.getComments().size());
+        assertEquals("Bill Gates", result1.getComments().get(0).getAuthor().getName());
         assertNull(result2);
 
         //Getting all dogs again
@@ -212,5 +216,53 @@ public class LostDogServiceTest {
         //Try to mark non-existing dog as found
         var markResult3 = service.MarkLostDogAsFound(20001, 0);
         assertFalse(markResult3);
+    }
+
+    @Test
+    public void AddCommentTest() {
+        //Check comments in dog
+        var result1 = service.GetDogDetails(10003);
+        assertEquals(2, result1.getComments().size());
+
+        //Add comment
+        var newComment = new LostDogComment(10002, new Location("Lublin", "LSM"), 0, 10001, 10003, "New comment");
+        var resultComment = service.AddCommentToDog(10003, newComment, null, 10001);
+
+        //Check comments again
+        result1 = service.GetDogDetails(10003);
+        assertEquals(3, result1.getComments().size());
+        assertEquals("New comment",resultComment.getText());
+        assertEquals("Elon Musk", resultComment.getAuthor().getName());
+    }
+
+    @Test
+    public void UpdateCommentTest() {
+        //Check comments in dog
+        var result1 = service.GetDogDetails(10003);
+        assertEquals(2, result1.getComments().size());
+        assertEquals("Is that your dog?", result1.getComments().get(0).getText());
+
+        //Edit comment
+        var newComment = new LostDogComment(10002, new Location("Lublin", "LSM"), 0, 10001, 10003, "Edited content");
+        service.EditDogComment(10002, newComment , null, 10001);
+
+        //Check comments again
+        result1 = service.GetDogDetails(10003);
+        assertEquals(2, result1.getComments().size());
+        assertEquals("Edited content", result1.getComments().get(0).getText());
+    }
+
+    @Test
+    public void DeleteCommentTest() {
+        //Check comments in dog
+        var result1 = service.GetDogDetails(10003);
+        assertEquals(2, result1.getComments().size());
+
+        //Remove comment
+        service.DeleteDogComment(10002, 10001, false);
+
+        //Check comments again
+        result1 = service.GetDogDetails(10003);
+        assertEquals(1, result1.getComments().size());
     }
 }
