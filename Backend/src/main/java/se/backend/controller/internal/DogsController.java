@@ -227,7 +227,7 @@ public class DogsController {
     public ResponseEntity<Response<LostDog, Object>> UpdateDog(@RequestHeader HttpHeaders headers,
                                                        @PathVariable("dogId") long dogId,
                                                        @RequestPart("dog") LostDogWithBehaviors updatedDog,
-                                                       @RequestPart("picture") MultipartFile picture) {
+                                                       @RequestPart(value = "picture", required = false) MultipartFile picture) {
         logHeaders(headers);
 
         var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular));
@@ -244,13 +244,16 @@ public class DogsController {
             throw new GenericBadRequestException(String.format("Failed to update dog - No dog with id: %d was found" , dogId));
 
         try {
-            var newPicture = new Picture();
-            newPicture.setFileName(picture.getOriginalFilename());
-            newPicture.setFileType(picture.getContentType());
-            newPicture.setData(picture.getBytes());
+            Picture newPicture = null;
+            if(picture != null) {
+                newPicture = new Picture();
+                newPicture.setFileName(picture.getOriginalFilename());
+                newPicture.setFileType(picture.getContentType());
+                newPicture.setData(picture.getBytes());
 
-            if(!newPicture.isValid()) {
-                throw new GenericBadRequestException("Picture is not valid");
+                if(!newPicture.isValid()) {
+                    throw new GenericBadRequestException("Picture is not valid");
+                }
             }
 
             var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture, authorization.getValue1());

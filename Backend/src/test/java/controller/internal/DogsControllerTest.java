@@ -286,8 +286,24 @@ public class DogsControllerTest {
         MockMultipartHttpServletRequestBuilder existingDogBuilder;
         MockMultipartHttpServletRequestBuilder nonexistingDogBuilder;
 
+        //Update without picture
+        existingDogBuilder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
+        existingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
 
-        //Proper change
+        mockMvc.perform(existingDogBuilder
+                .file(fullDog)
+                .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("John")))
+                .andExpect(jsonPath("data.age", is(9)))
+                .andExpect(jsonPath("data.ownerId", is(10001)))
+                .andExpect(jsonPath("data.picture.fileName", is("example1")));
+
+        //Proper change (with picture)
         existingDogBuilder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
         existingDogBuilder.with(request -> {
             request.setMethod("PUT");
@@ -351,21 +367,6 @@ public class DogsControllerTest {
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Picture is not valid")))
-                .andExpect(jsonPath("data").value(IsNull.nullValue()));
-
-        //Without picture
-        existingDogBuilder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
-        existingDogBuilder.with(request -> {
-            request.setMethod("PUT");
-            return request;
-        });
-
-        mockMvc.perform(existingDogBuilder
-                        .file(fullDog)
-                        .header(LoginService.authorizationHeader, "regularUserTestToken")
-        ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("successful", is(false)))
-                .andExpect(jsonPath("message", is("Missing part of a request")))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
 
         //Broken json
