@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Image,
   ImageBackground,
+  Button,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
@@ -101,6 +102,7 @@ export default function DogsList({ navigation }: any) {
       <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
         <View style={[{ flexDirection: "row" }]}>
+          <View style={{flex: 5}}>
           <Image
             style={styles.picture}
             source={{
@@ -110,14 +112,19 @@ export default function DogsList({ navigation }: any) {
             }}
             //source={{uri: dog.picture.uri}}
           />
+          </View>
           {/* <Text>{dog.picture.id + " " + dog.picture.fileName + " " + dog.picture.fileType + " " + dog.picture.data}</Text> */}
+          <View style={{flex:2}}>
           {!dog.isFound ? (
-            <TouchableOpacity onPress={() => markDogAsFound(dog.id)}>
-              <Text style={styles.lost}>Mark as found</Text>
+            <TouchableOpacity style={{backgroundColor:"#006ee6", borderRadius:10, padding: 4, shadowOffset:{  width: 1,  height: 2,  },
+            shadowColor: 'black',
+            shadowOpacity: 0.5,}} onPress={() => markDogAsFound(dog.id)}>
+              <Text style={styles.lost}>Claim found</Text>
             </TouchableOpacity>
           ) : (
             <Text style={styles.found}>Found</Text>
           )}
+          </View>
         </View>
 
         <View style={styles.row}>
@@ -152,6 +159,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
+    alignItems:"flex-start"
   },
   searchBar: {
     backgroundColor: "#ffffff",
@@ -210,6 +218,8 @@ const styles = StyleSheet.create({
     color: "green",
   },
   lost: {
-    marginLeft: "37%",
+    marginLeft: "33%",
+    color:"white",
+    fontSize:12
   },
 });
