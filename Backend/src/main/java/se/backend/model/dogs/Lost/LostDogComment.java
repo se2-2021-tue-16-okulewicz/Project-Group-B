@@ -1,6 +1,7 @@
 package se.backend.model.dogs.Lost;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import se.backend.model.Location;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "lost_dog_comment")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
