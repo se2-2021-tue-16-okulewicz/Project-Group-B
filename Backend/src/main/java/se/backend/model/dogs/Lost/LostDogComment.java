@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import se.backend.model.Location;
+import se.backend.utils.StringUtils;
 
 import javax.persistence.*;
 
@@ -35,5 +36,9 @@ public class LostDogComment {
         authorId = another.authorId;
         dogId = another.dogId;
         text = another.text;
+    }
+
+    public boolean isValid() {
+        return StringUtils.IsValidString(text) && StringUtils.IsValidString(location.getDistrict()) && StringUtils.IsValidString(location.getDistrict());
     }
 }
