@@ -101,12 +101,10 @@ public class SheltersControllerTest {
     }
 
     @Test
-    public void AddTest() throws Exception {
+    public void AddDogsToShelterTest() throws Exception {
 
         MockMultipartFile fullDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
         MockMultipartFile dogWithMissingElements = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"color\":\"pink\",\"earsType\":\"\",\"hairLength\":\"long\",\"name\":\"\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
-        MockMultipartFile badlyFormattedDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"Pinky\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
-
 
         MockMultipartFile validPicture = new MockMultipartFile("picture", "image_name.png", "image/png", validImageData);
         MockMultipartFile invalidPicture = new MockMultipartFile("picture", "image_name.png", "image/png", "I am not a real picture!!!".getBytes());
@@ -195,5 +193,136 @@ public class SheltersControllerTest {
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("This dog is not a part of the shelter")));
+    }
+
+    @Test
+    public void RegisterShelterTest() throws Exception {
+        MockMultipartFile loginValid = new MockMultipartFile("name", "", "text/plain", "Name".getBytes());
+        MockMultipartFile loginShort = new MockMultipartFile("name", "", "text/plain", "Na".getBytes());
+        MockMultipartFile loginLong = new MockMultipartFile("name", "", "text/plain", "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa".getBytes());
+        MockMultipartFile loginRepeat = new MockMultipartFile("name", "", "text/plain", "Elon Musk".getBytes());
+
+        MockMultipartFile emailValid = new MockMultipartFile("email", "", "text/plain", "mail@mail.com".getBytes());
+        MockMultipartFile emailInvalid = new MockMultipartFile("email", "", "text/plain", "@.".getBytes());
+        MockMultipartFile emailRepeat = new MockMultipartFile("email", "", "text/plain", "e.musk@mail.com".getBytes());
+
+        MockMultipartFile phoneValid = new MockMultipartFile("phoneNumber", "", "text/plain", "+48788640000".getBytes());
+        MockMultipartFile phoneInvalid = new MockMultipartFile("phoneNumber", "", "text/plain", "Not a phone number".getBytes());
+
+        MockMultipartFile addressValid = new MockMultipartFile("address", "", "application/json", "{\"city\": \"Lublin\", \"street\":\"ulica\", \"postCode\":\"20-222\", \"buildingNumber\":\"12/12\"}".getBytes());
+        MockMultipartFile addressInvalid = new MockMultipartFile("address", "", "application/json", "{\"city\": \"Lublin\", \"postCode\":\"20-222\", \"buildingNumber\":\"12/12\"}".getBytes());
+
+        //Missing request part
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginValid)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Missing part of a request")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Name to short
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginShort)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .file(addressValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Shelter name is too short")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Name to long
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginLong)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .file(addressValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Shelter name is too long")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Name already used
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginRepeat)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .file(addressValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Name is already used")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Mail invalid
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginValid)
+                        .file(emailInvalid)
+                        .file(phoneValid)
+                        .file(addressValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Email is invalid")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Mail already used
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginValid)
+                        .file(emailRepeat)
+                        .file(phoneValid)
+                        .file(addressValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Email is already used")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Phone invalid
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginValid)
+                        .file(emailValid)
+                        .file(phoneInvalid)
+                        .file(addressValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Phone number is invalid")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Incomplete address
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginValid)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .file(addressInvalid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message", is("Incomplete data")))
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Valid register
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/shelters")
+                        .file(loginValid)
+                        .file(emailValid)
+                        .file(phoneValid)
+                        .file(addressValid)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isOk());
     }
 }
