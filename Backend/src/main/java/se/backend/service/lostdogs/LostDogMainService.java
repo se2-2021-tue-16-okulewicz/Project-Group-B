@@ -9,16 +9,19 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import se.backend.dao.LostDogBehaviorRepository;
-import se.backend.dao.LostDogRepository;
-import se.backend.dao.PictureRepository;
+import se.backend.dao.*;
+import se.backend.exceptions.types.GenericBadRequestException;
 import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.dogs.DogBehavior;
 import se.backend.model.dogs.Lost.LostDog;
 import se.backend.model.dogs.Lost.LostDogBehavior;
+import se.backend.model.dogs.Lost.LostDogComment;
+import se.backend.wrapper.comments.CommentAuthor;
+import se.backend.wrapper.comments.CommentWithAuthorAndPicture;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
+import se.backend.wrapper.dogs.LostDogWithBehaviorsPictureAndComments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +35,16 @@ public class LostDogMainService implements LostDogService{
     private final LostDogRepository lostDogRepository;
     private final PictureRepository pictureRepository;
     private final LostDogBehaviorRepository dogBehaviorRepository;
+    private final LostDogCommentRepository lostDogCommentRepository;
+    private final UserAccountRepository userAccountRepository;
 
     @Autowired
-    public LostDogMainService(LostDogRepository lostDogRepository, PictureRepository pictureRepository, LostDogBehaviorRepository dogBehaviorRepository) {
+    public LostDogMainService(LostDogRepository lostDogRepository, PictureRepository pictureRepository, LostDogBehaviorRepository dogBehaviorRepository, LostDogCommentRepository lostDogCommentRepository, UserAccountRepository userAccountRepository) {
         this.lostDogRepository = lostDogRepository;
         this.pictureRepository = pictureRepository;
         this.dogBehaviorRepository = dogBehaviorRepository;
+        this.lostDogCommentRepository = lostDogCommentRepository;
+        this.userAccountRepository = userAccountRepository;
     }
 
     @Override
@@ -110,6 +117,11 @@ public class LostDogMainService implements LostDogService{
             dogBehaviorRepository.deleteById(behavior.getId());
         }
 
+        var comments = lostDogCommentRepository.findAllByDogId(dog.getId());
+        for(var comment : comments) {
+            DeleteDogComment(comment.getId(), 0, true);
+        }
+
         pictureRepository.deleteById(dog.getPictureId());
         lostDogRepository.delete(dog);
         return true;
@@ -139,16 +151,20 @@ public class LostDogMainService implements LostDogService{
                 dogBehaviorRepository.deleteById(oldBehavior.getId());
         }
 
-        if(pictureRepository.existsById(oldDog.get().getPictureId()))
-            pictureRepository.deleteById(oldDog.get().getPictureId());
-
         LostDog dogToBeSaved = updatedDog.LostDogWithoutBehaviors();
+
+        var savedPicture = pictureRepository.findById(oldDog.get().getPictureId()).orElse(null);
         dogToBeSaved.setIsFound(oldDog.get().isIsFound());
         dogToBeSaved.setId(dogId);
         dogToBeSaved.setOwnerId(ownerId);
+        dogToBeSaved.setPictureId(oldDog.get().getPictureId());
 
-        var savedPicture = pictureRepository.save(picture);
-        dogToBeSaved.setPictureId(savedPicture.getId());
+        if(picture != null) {
+            if(pictureRepository.existsById(oldDog.get().getPictureId()))
+                pictureRepository.deleteById(oldDog.get().getPictureId());
+            savedPicture = pictureRepository.save(picture);
+            dogToBeSaved.setPictureId(savedPicture.getId());
+        }
 
         var savedDog = lostDogRepository.save(dogToBeSaved);
 
@@ -170,7 +186,7 @@ public class LostDogMainService implements LostDogService{
     }
 
     @Override
-    public LostDogWithBehaviorsAndWithPicture GetDogDetails(long dogId)
+    public LostDogWithBehaviorsPictureAndComments GetDogDetails(long dogId)
     {
         if(IsInvalidDogId(dogId))
             return null;
@@ -190,10 +206,20 @@ public class LostDogMainService implements LostDogService{
         LostDogWithBehaviors savedDogWithBehaviors = new LostDogWithBehaviors(dog.get());
         savedDogWithBehaviors.setBehaviors(behaviorStrings);
 
-        var returnedDog = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
+        var dogBehaviorsPicture = new LostDogWithBehaviorsAndWithPicture(savedDogWithBehaviors);
 
-        returnedDog.setPicture(picture.orElse(new Picture(-1, "", "", new byte[0])));
+        dogBehaviorsPicture.setPicture(picture.orElse(null));
 
+        var returnedDog = new LostDogWithBehaviorsPictureAndComments(dogBehaviorsPicture);
+
+        List<CommentWithAuthorAndPicture> comments = new ArrayList<>();
+
+        var commentsFromDB = lostDogCommentRepository.findAllByDogId(returnedDog.getId());
+        for(var comment : commentsFromDB) {
+            comments.add(GetCommentWithAuthorAndPicture(comment));
+        }
+
+        returnedDog.setComments(comments);
         return returnedDog;
     }
 
@@ -211,4 +237,127 @@ public class LostDogMainService implements LostDogService{
         return true;
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CommentWithAuthorAndPicture AddCommentToDog(long lostDogId, LostDogComment comment, Picture picture, long authorId) {
+
+        comment.setAuthorId(authorId);
+        comment.setDogId(lostDogId);
+        comment.setId(0);
+
+        long pictureId = 0;
+        Picture savedPicture = null;
+
+        if(picture != null) {
+            savedPicture = pictureRepository.save(picture);
+            pictureId = savedPicture.getId();
+        }
+
+        comment.setPictureId(pictureId);
+
+        var savedComment = lostDogCommentRepository.save(comment);
+
+        var returnComment = new CommentWithAuthorAndPicture(savedComment);
+        returnComment.setPicture(savedPicture);
+
+        var author = userAccountRepository.findById(authorId);
+
+        if(author.isEmpty())
+            throw new GenericBadRequestException("User adding comment not found");
+
+        var authorInfo = CommentAuthor.fromAccount(author.get());
+        returnComment.setAuthor(authorInfo);
+
+        return returnComment;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CommentWithAuthorAndPicture EditDogComment(long commentId, LostDogComment updatedVersion, Picture picture, long authorId) {
+        var oldComment = lostDogCommentRepository.findById(commentId);
+        if(oldComment.isEmpty()) {
+            throw new GenericBadRequestException("Comment to update does not exist");
+        }
+
+        if(oldComment.get().getAuthorId() != authorId)
+            throw new UnauthorizedException();
+
+        updatedVersion.setDogId(oldComment.get().getDogId());
+        updatedVersion.setAuthorId(oldComment.get().getAuthorId());
+        updatedVersion.setId(commentId);
+
+        if(picture != null) {
+            var savedPicture = pictureRepository.save(picture);
+            var pictureId = savedPicture.getId();
+            if(oldComment.get().getPictureId() != 0) {
+                pictureRepository.deleteById(oldComment.get().getPictureId());
+            }
+            updatedVersion.setPictureId(pictureId);
+        } else {
+            updatedVersion.setPictureId(oldComment.get().getPictureId());
+        }
+
+        var savedComment = lostDogCommentRepository.save(updatedVersion);
+
+        var returnComment = new CommentWithAuthorAndPicture(savedComment);
+
+        if(savedComment.getPictureId() == 0) {
+            returnComment.setPicture(null);
+        } else {
+            var commentPicture = pictureRepository.findById(savedComment.getPictureId());
+            if(commentPicture.isEmpty())
+                throw new GenericBadRequestException("Comment picture not found");
+            returnComment.setPicture(commentPicture.get());
+        }
+
+        var author = userAccountRepository.findById(savedComment.getAuthorId());
+
+        if(author.isEmpty())
+            throw new GenericBadRequestException("User adding comment not found");
+
+        var authorInfo = CommentAuthor.fromAccount(author.get());
+        returnComment.setAuthor(authorInfo);
+
+        return returnComment;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean DeleteDogComment(long commentId, long authorId, boolean dogRemoved) {
+        var oldComment = lostDogCommentRepository.findById(commentId);
+        if(oldComment.isEmpty())
+            throw new GenericBadRequestException("Comment to delete does not exist");
+
+        if(oldComment.get().getAuthorId() != authorId && !dogRemoved)
+            throw new UnauthorizedException();
+
+        var pictureId = oldComment.get().getPictureId();
+        if(pictureId != 0)
+            pictureRepository.deleteById(pictureId);
+
+        lostDogCommentRepository.deleteById(commentId);
+
+        return true;
+    }
+
+    private CommentWithAuthorAndPicture GetCommentWithAuthorAndPicture(LostDogComment comment) {
+        var returnComment = new CommentWithAuthorAndPicture(comment);
+
+        if(returnComment.getPictureId() == 0) {
+            returnComment.setPicture(null);
+        } else {
+            var commentPicture = pictureRepository.findById(returnComment.getPictureId());
+            returnComment.setPicture(commentPicture.orElse(null));
+        }
+
+        var author = userAccountRepository.findById(returnComment.getAuthorId());
+
+        if(author.isEmpty())
+            throw new GenericBadRequestException("User adding comment not found");
+
+        var authorInfo = CommentAuthor.fromAccount(author.get());
+        returnComment.setAuthor(authorInfo);
+
+        return returnComment;
+    }
 }

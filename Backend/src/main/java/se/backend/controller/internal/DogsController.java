@@ -25,6 +25,7 @@ import se.backend.utils.Response;
 import se.backend.wrapper.account.UserType;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
+import se.backend.wrapper.dogs.LostDogWithBehaviorsPictureAndComments;
 
 import java.io.IOException;
 import java.util.*;
@@ -205,7 +206,7 @@ public class DogsController {
     }
 
     @GetMapping(path = "/{dogId}")
-    public ResponseEntity<Response<LostDog, Object>> GetLostDogDetails(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<LostDogWithBehaviorsPictureAndComments, Object>> GetLostDogDetails(@RequestHeader HttpHeaders headers,
                                                                @PathVariable("dogId") long dogId) {
         logHeaders(headers);
 
@@ -214,7 +215,7 @@ public class DogsController {
             throw new UnauthorizedException();
         }
 
-        LostDog savedDog = lostDogService.GetDogDetails(dogId);
+        LostDogWithBehaviorsPictureAndComments savedDog = lostDogService.GetDogDetails(dogId);
         if(savedDog != null)
             return ResponseEntity.ok(new Response<>(String.format("Found dog id: %d", savedDog.getId()), true, savedDog, null));
         else
