@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Image,
   ImageBackground,
+  ActivityIndicator,
   Button,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -137,17 +138,26 @@ export default function DogsList({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={bg} style={styles.image}>
+      <FlatList
+              data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
+              renderItem={({ item }) => renderListItem(item, navigation)}
+              keyExtractor={(item) => item.id.toString()}
+              onEndReached={fetchMore}
+            />
         {isLoading ? (
-          <Text>Loading...</Text>
+          <View >
+          <ActivityIndicator size="large" color="white" />
+          </View>
         ) : (
           <View>
-            <Text>Displaying dogs: {myDogs.length}</Text>
+            {/* <Text>Displaying dogs: {myDogs.length}</Text>
 
             <FlatList
               data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
               renderItem={({ item }) => renderListItem(item, navigation)}
               keyExtractor={(item) => item.id.toString()}
-            />
+              onEndReached={fetchMore}
+            /> */}
           </View>
         )}
       </ImageBackground>
