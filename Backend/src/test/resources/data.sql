@@ -21,6 +21,13 @@ insert into lost_dog_behavior (id, dog_id, behavior) values (10007, 10004, 'Bark
 insert into lost_dog_behavior (id, dog_id, behavior) values (10008, 10004, 'Drinks milk');
 insert into lost_dog_behavior (id, dog_id, behavior) values (10009, 10004, 'Eats');
 
+insert into lost_dog_comment (id, dog_id, author_id, picture_id, text, city, district) values (10001, 10001, 10002, 10009, 'I think i have seen your dog?', 'Lublin', 'Bronowice');
+insert into lost_dog_comment (id, dog_id, author_id, picture_id, text, city, district) values (10002, 10003, 10001, 10010, 'Is that your dog?', 'Lublin', 'LSM');
+insert into lost_dog_comment (id, dog_id, author_id, picture_id, text, city, district) values (10003, 10003, 10002, 0, 'Yeah, it is!!!', 'Lublin', 'LSM');
+
+insert into picture (id, file_name, file_type, data) values (10009, 'comment1', 'text/plain', RAWTOHEX('comment1_file'));
+insert into picture (id, file_name, file_type, data) values (10010, 'comment2', 'text/plain', RAWTOHEX('comment2_file'));
+
 insert into shelter_dog (id, age, breed, color, ears_type, hair_length, name, size, special_mark, tail_length, shelter_id, picture_id) values (10002, 13, 'random', 'brown', 'long', 'short', 'Borys', 'big', 'none', 'short', 10001, 10006);
 insert into shelter_dog (id, age, breed, color, ears_type, hair_length, name, size, special_mark, tail_length, shelter_id, picture_id) values (10001, 12, 'unknown', 'blue', 'long', 'long', 'Pinky', 'big', 'none', 'long', 10001, 10005);
 

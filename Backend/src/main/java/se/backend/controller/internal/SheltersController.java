@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import se.backend.exceptions.types.GenericBadRequestException;
 import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
+import se.backend.model.account.Address;
 import se.backend.model.account.Shelter;
 import se.backend.model.dogs.Lost.LostDog;
 import se.backend.model.dogs.Shelter.ShelterDog;
@@ -34,6 +35,7 @@ import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviors;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviorsAndWithPicture;
 import se.backend.wrapper.shelters.ShelterInformation;
+import se.backend.wrapper.shelters.ShelterRegisterInformation;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -92,6 +94,28 @@ public class SheltersController {
         var result = sheltersService.GetShelters(shelterSpecification, pageable);
 
         return ResponseEntity.ok(new Response<>(String.format("%d shelter(s) found", result.getValue0().size()), true, result.getValue0(), result.getValue1()));
+    }
+
+    @PostMapping(path = "")
+    public ResponseEntity<Response<Object, Object>> RegisterShelter(@RequestHeader HttpHeaders headers,
+                                                                    @RequestPart("name") String name,
+                                                                    @RequestPart("phoneNumber") String phoneNumber,
+                                                                    @RequestPart("email") String email,
+                                                                    @RequestPart("address") Address address) {
+        logHeaders(headers);
+
+        ShelterRegisterInformation shelter = new ShelterRegisterInformation();
+        shelter.setName(name);
+        shelter.setEmail(email);
+        shelter.setPhoneNumber(phoneNumber);
+        shelter.setAddress(address);
+
+        var result = loginService.CreateShelter(shelter);
+
+        if(result != null)
+            throw new GenericBadRequestException(result);
+
+        return ResponseEntity.ok(new Response<>("Shelter registered and waiting for approval", true, null, null));
     }
     //</editor-fold>
 

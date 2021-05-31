@@ -6,4 +6,6 @@ import se.backend.model.account.Shelter;
 import se.backend.model.dogs.Shelter.ShelterDog;
 
 public interface ShelterAccountRepository extends JpaRepository<Shelter,Long>, JpaSpecificationExecutor<Shelter> {
+    boolean existsByAssociatedEmail(String email);
+    boolean existsByName(String name);
 }
