@@ -24,13 +24,13 @@ import {
   isInvalidContactInfo,
 } from "../utilityComponents/validation";
 import { useSelector } from "react-redux";
-import { State } from "../app/reducer";
+import * as Actions from "../app/actions";
 import {
   ErrorInformation,
   IContactInfo,
   initErrorInfo,
 } from "./contactInfoInterface";
-import * as Actions from "../app/actions";
+import { State } from "../app/stateInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

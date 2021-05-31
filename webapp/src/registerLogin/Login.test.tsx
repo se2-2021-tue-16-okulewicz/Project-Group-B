@@ -9,14 +9,9 @@ import Login from "./Login";
 import { isNull } from "lodash";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
-import { reducer, init } from "../app/reducer";
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import { reducer } from "../app/reducer";
+import { Route, BrowserRouter as Router } from "react-router-dom";
+import { initState } from "../app/stateInterfaces";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -59,8 +54,13 @@ it("Test login view elements", () => {
 
 describe("reducer", () => {
   it("should return initial state", () => {
-    const state = reducer(init, { type: "" });
-    expect(state).toEqual({
+    const state = reducer(initState, { type: "" });
+    expect(state).toEqual(initState);
+  });
+});
+
+/*
+{
       contactInfo: null,
       dogs: [],
       shelterdogs: [],
@@ -77,6 +77,6 @@ describe("reducer", () => {
       pages: 0,
       redirect: null,
       settingsRequireRefresh: true,
-    });
-  });
-});
+      shelters: [],
+    }
+    */

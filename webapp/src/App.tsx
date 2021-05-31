@@ -14,23 +14,25 @@ import {
   finishRefreshing,
   logoutThunk,
 } from "./app/actions";
-import { State } from "./app/reducer";
 import { store } from "./app/store";
-import RegisterDogForm from "./registerDog/registerDog";
+import RegisterDogForm from "./dog/registerDog/registerDog";
 import Login from "./registerLogin/Login";
 import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
-import ListWithDogs from "./dogsList/listWithDogs";
+import ListWithDogs from "./dog/dogsList/listWithDogs";
 import config from "./config/config";
 import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
-import Settings from "./settings/settings";
-import EditDogDetails from "./editDogDetails/editDogDetails";
-import EditContactInfo from "./contactInfo/editContactInformation";
-import DogDetails from "./dogDetails/dogDetails";
-import ShelterListWithDogs from "./dogsShelterList/shelterListWithDogs";
-import RegisterShelterDogForm from "./registerShelterDog/registerShelterDog";
+import Settings from "./dog/settings/settings";
+import EditDogDetails from "./dog/editDogDetails/editDogDetails";
+import EditContactInfo from "./contactInfo/editContactInfo";
+import DogDetails from "./dog/dogDetails/dogDetails";
+import ShelterListWithDogs from "./shelter/shelterDogsList/shelterListWithDogs";
+import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
+import ListWithShelters from "./shelter/sheltersList/listWithShelters";
+import ListWithAdoptDogs from "./shelter/adoptDogList/listWithAdoptDogs";
+import { State } from "./app/stateInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,6 +60,7 @@ function Layout() {
   const loading = useSelector((state: State) => state.loading);
   const redirect = useSelector((state: State) => state.redirect);
   const [dogId, setDogId] = useState(0);
+  const [shelterId, setShelterId] = useState(0);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -72,15 +75,19 @@ function Layout() {
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    //store.dispatch(finishRefreshing);
     history.push(`/edit/${id}`);
   }
 
   function redirectToDogDetails(id: number) {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    //store.dispatch(finishRefreshing);
     history.push(`/dog/${id}`);
+  }
+
+  function redirectToShelterDetails(id: number) {
+    //setShelterId(id);
+    //sessionStorage.setItem("shelterId", JSON.stringify(id as number));
+    history.push(`/shelter/${id}`);
   }
 
   const errorOnClose = () => {
@@ -121,17 +128,24 @@ function Layout() {
           <EditContactInfo />
           <Footer />
         </Route>
-        <Route path="/shelter">
+        <Route path="/shelterdogs">
           <ShelterListWithDogs
             redirectToDogDetailsOrEdit={(id: number) =>
               redirectToDogDetails(id)
             }
           />
         </Route>
-        <Route path="/listDogs">
+        <Route path="/dogs">
           <ListWithDogs
             redirectToDogDetailsOrEdit={(id: number) =>
               redirectToDogDetails(id)
+            }
+          />
+        </Route>
+        <Route path="/shelters">
+          <ListWithShelters
+            redirectToShelterDetails={(id: number) =>
+              redirectToShelterDetails(id)
             }
           />
         </Route>
@@ -141,6 +155,9 @@ function Layout() {
               redirectToDogDetailsOrEdit(id)
             }
           />
+        </Route>
+        <Route path={`/shelter/:id`}>
+          <ListWithAdoptDogs />
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />

@@ -15,6 +15,7 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
+import { IShelter } from "../shelter/shelterInterfaces";
 
 /*TODO: fix any*/
 
@@ -264,7 +265,7 @@ export const fetchShelterDogsThunk = createAsyncThunk<
   { filters: IFilters; shelterId: number; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<IShelterDog[], Number> }
 >(
-  "fetchShelterDogs",
+  "fetchShelterDogsThunk",
   async (
     userAndCookies: {
       filters: IFilters;
@@ -279,7 +280,7 @@ export const fetchShelterDogsThunk = createAsyncThunk<
         userAndCookies.shelterId,
         userAndCookies.cookies
       );
-
+    //console.log(response);
     if (response.response.successful !== true) {
       return rejectWithValue(
         response as RequestResponse<IShelterDog[], number>
@@ -287,6 +288,33 @@ export const fetchShelterDogsThunk = createAsyncThunk<
     }
 
     return response as RequestResponse<IShelterDog[], number>;
+  }
+);
+
+export const fetchSheltersThunk = createAsyncThunk<
+  RequestResponse<IShelter[], Number>,
+  { filters: IFilters; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelter[], Number> }
+>(
+  "fetchShelterDogs",
+  async (
+    filtersAndCookies: {
+      filters: IFilters;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IShelter[], Number> =
+      await Fetching.fetchShelters(
+        filtersAndCookies.filters,
+        filtersAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<IShelter[], number>);
+    }
+
+    return response as RequestResponse<IShelter[], number>;
   }
 );
 
@@ -304,6 +332,20 @@ export const fetchOneDogThunk = createAsyncThunk<
     );
   }
   return response as RequestResponse<ILostDogWithPicture, undefined>;
+});
+
+export const fetchOneShelterThunk = createAsyncThunk<
+  RequestResponse<IShelter, undefined>,
+  { id: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelter, undefined> }
+>("fetchOneShelter", async (item: IFilters, { rejectWithValue }) => {
+  const response: RequestResponse<IShelter, undefined> =
+    await Fetching.fetchOneShelter(item.id, item.cookies);
+
+  if (response.response.successful !== true) {
+    return rejectWithValue(response as RequestResponse<IShelter, undefined>);
+  }
+  return response as RequestResponse<IShelter, undefined>;
 });
 
 export const registerRegularUserThunk = createAsyncThunk<
