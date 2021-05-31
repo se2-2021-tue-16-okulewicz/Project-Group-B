@@ -196,7 +196,7 @@ public class DogsController {
                                                            @PathVariable("dogId") long dogId) {
         logHeaders(headers);
 
-        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Regular));
         if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
