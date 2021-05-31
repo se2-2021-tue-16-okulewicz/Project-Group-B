@@ -65,7 +65,6 @@ export async function login(
   );
 }
 
-
 export async function fetchDogs(
   filters: { [name: string]: any },
   Authorization: { [name: string]: any }

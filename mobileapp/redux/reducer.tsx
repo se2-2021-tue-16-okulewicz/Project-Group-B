@@ -22,7 +22,10 @@ import {
 } from "../components/dogs/dog/dogClasses";
 import { SpecialMarkTypes } from "../components/dogs/dog/dogArrays";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
-import { IFilterSort, initFilterProps } from "../components/helper/filtersInterface";
+import {
+  IFilterSort,
+  initFilterProps,
+} from "../components/helper/filtersInterface";
 
 export type Error = {
   hasError: boolean;
@@ -66,7 +69,7 @@ const init: State = {
   dogDetails: initDogDetails,
   dogBehaviours: [],
   picture: initPic,
-  filters: initFilterProps
+  filters: initFilterProps,
 };
 
 export const reducer = createReducer(init, {
@@ -257,13 +260,13 @@ export const reducer = createReducer(init, {
       ["meta", "arg", "filters", "size"],
       config.defaultFilters.size
     );
-    
+
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
 
     //newState.cars = state.cars.concat(action.payload.body);
-    newState.dogs =state.dogs.concat(payload.payload.response.data);
+    newState.dogs = state.dogs.concat(payload.payload.response.data);
     console.log(newState.dogs.length);
     newState.loadingDogs = false;
     // if response is shorter than default size - it means end is reached.

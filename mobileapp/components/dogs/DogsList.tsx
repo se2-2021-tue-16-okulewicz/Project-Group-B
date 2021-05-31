@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
   Button,
   Modal,
-  Pressable
+  Pressable,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
@@ -25,7 +25,11 @@ import { useState } from "react";
 import Filters from "../helper/Filters";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faSlidersH, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { IFilters, IFilterSort, initFilterProps } from "../helper/filtersInterface";
+import {
+  IFilters,
+  IFilterSort,
+  initFilterProps,
+} from "../helper/filtersInterface";
 
 export default function DogsList({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -48,11 +52,8 @@ export default function DogsList({ navigation }: any) {
   //   page: config.defaultFilters.page,
   //   size: config.defaultFilters.size,
   // });
-  const dogFilters = useSelector(
-    (state: State) => state.filters
-  );
+  const dogFilters = useSelector((state: State) => state.filters);
   const [filters, setFilters] = useState<IFilterSort>(dogFilters);
-  
 
   const id = useSelector((state: State) => state.loginInformation?.id);
   const [myDogs, setMyDogs] = useState<ILostDogWithPicture[]>([]);
@@ -95,7 +96,6 @@ export default function DogsList({ navigation }: any) {
       }) //filters
     );
     setFilters({ ...dogFilters, page: filters.page + 1 });
-    
   };
 
   function markDogAsFound(id: number) {
@@ -107,16 +107,14 @@ export default function DogsList({ navigation }: any) {
     );
   }
 
-  function resetFilters(){
+  function resetFilters() {
     store.dispatch(Actions.setFilters(initFilterProps));
   }
 
-  function handleApply(){
+  function handleApply() {
     setModalVisible(false);
     store.dispatch(Actions.setDogsRequireRefresh(true));
-    
   }
-
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={[styles.item]}>
@@ -127,23 +125,32 @@ export default function DogsList({ navigation }: any) {
             <Image
               style={styles.picture}
               source={{
-                uri: `data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer
-                  }`,
+                uri: `data:${dog.picture.fileType};base64,${
+                  dog.picture.data as ArrayBuffer
+                }`,
               }}
-            //source={{uri: dog.picture.uri}}
+              //source={{uri: dog.picture.uri}}
             />
           </View>
           <View style={{ flex: 2 }}>
             {!dog.isFound ? (
-              dog.ownerId !== id ? (<Text style={styles.lostNotOwner}>Lost</Text>) : (
-                <TouchableOpacity style={{
-                  backgroundColor: "#006ee6", borderRadius: 10, padding: 4, shadowOffset: { width: 1, height: 2, },
-                  shadowColor: 'black',
-                  shadowOpacity: 0.5,
-                }} onPress={() => markDogAsFound(dog.id)}>
+              dog.ownerId !== id ? (
+                <Text style={styles.lostNotOwner}>Lost</Text>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#006ee6",
+                    borderRadius: 10,
+                    padding: 4,
+                    shadowOffset: { width: 1, height: 2 },
+                    shadowColor: "black",
+                    shadowOpacity: 0.5,
+                  }}
+                  onPress={() => markDogAsFound(dog.id)}
+                >
                   <Text style={styles.lost}>Claim found</Text>
-                </TouchableOpacity>)
-
+                </TouchableOpacity>
+              )
             ) : (
               <Text style={styles.found}>Found</Text>
             )}
@@ -160,48 +167,81 @@ export default function DogsList({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={bg} style={styles.image}>
-        
-        <Modal visible={modalVisible} style={styles.bottomModal}
+        <Modal
+          visible={modalVisible}
+          style={styles.bottomModal}
           animationType="fade"
           transparent={true}
           onRequestClose={() => {
             setModalVisible(!modalVisible);
           }}
-
         >
           <View style={[styles.centeredView, styles.dimBG]}>
             <View style={styles.modalView}>
-              <View style={{flex:1, flexDirection: "row", marginBottom:25}}>
-                <TouchableOpacity style={{ marginLeft: "95%" }} onPress={() => setModalVisible(false)}>
-                  <FontAwesomeIcon icon={faTimes} size={25} style={{ flex: 2 }} color="#e3e3e3"></FontAwesomeIcon>
+              <View style={{ flex: 1, flexDirection: "row", marginBottom: 25 }}>
+                <TouchableOpacity
+                  style={{ marginLeft: "95%" }}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    size={25}
+                    style={{ flex: 2 }}
+                    color="#e3e3e3"
+                  ></FontAwesomeIcon>
                 </TouchableOpacity>
-                
               </View>
-              <Filters ></Filters>
+              <Filters></Filters>
               <View style={[{ flexDirection: "row" }]}>
                 <TouchableOpacity
-                  style={[styles.modalButtonReset, { flex: 1 }, { margin: "5%" }]}
+                  style={[
+                    styles.modalButtonReset,
+                    { flex: 1 },
+                    { margin: "5%" },
+                  ]}
                   onPress={() => resetFilters()}
                 >
-                  <Text style={[styles.textStyle, { color: "grey" }]}>Reset</Text>
+                  <Text style={[styles.textStyle, { color: "grey" }]}>
+                    Reset
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.modalButtonApply, { flex: 1 }, { margin: "5%" }]}
+                  style={[
+                    styles.modalButtonApply,
+                    { flex: 1 },
+                    { margin: "5%" },
+                  ]}
                   onPress={() => handleApply()}
                 >
                   <Text style={styles.textStyle}>Apply</Text>
                 </TouchableOpacity>
               </View>
-
             </View>
           </View>
         </Modal>
 
-        <View style={{ backgroundColor: "white", width: "100%", padding: 10,  }}>
-          <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => setModalVisible(!modalVisible)}>
-            <Text style={{ color: "#006ee6", alignSelf: "center", fontSize: 20, flex: 5 }}>Configure filters</Text>
-            <FontAwesomeIcon icon={faSlidersH} size={25} style={{ flex: 2 }} color="#006ee6"></FontAwesomeIcon>
+        <View style={{ backgroundColor: "white", width: "100%", padding: 10 }}>
+          <TouchableOpacity
+            style={[{ flexDirection: "row" }]}
+            onPress={() => setModalVisible(!modalVisible)}
+          >
+            <Text
+              style={{
+                color: "#006ee6",
+                alignSelf: "center",
+                fontSize: 20,
+                flex: 5,
+              }}
+            >
+              Configure filters
+            </Text>
+            <FontAwesomeIcon
+              icon={faSlidersH}
+              size={25}
+              style={{ flex: 2 }}
+              color="#006ee6"
+            ></FontAwesomeIcon>
           </TouchableOpacity>
         </View>
         <FlatList
@@ -211,15 +251,16 @@ export default function DogsList({ navigation }: any) {
           onEndReached={fetchMore}
         />
         {isLoading ? (
-          <View >
+          <View>
             <ActivityIndicator size="large" color="white" />
           </View>
         ) : (
-          <View>
-          </View>
+          <View></View>
         )}
         <View style={{ backgroundColor: "white", width: "100%" }}>
-          <Text style={{ color: "#006ee6", alignSelf: "center" }}>Displaying {myDogs.length} dogs</Text>
+          <Text style={{ color: "#006ee6", alignSelf: "center" }}>
+            Displaying {myDogs.length} dogs
+          </Text>
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -230,7 +271,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
-    alignItems: "flex-start"
+    alignItems: "flex-start",
   },
   searchBar: {
     backgroundColor: "#ffffff",
@@ -295,12 +336,12 @@ const styles = StyleSheet.create({
   lost: {
     marginLeft: "33%",
     color: "white",
-    fontSize: 12
+    fontSize: 12,
   },
   bottomModal: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     margin: 0,
-    height: "75%"
+    height: "75%",
   },
   centeredView: {
     flex: 1,
@@ -314,7 +355,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 25,
     alignItems: "center",
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     margin: 0,
     marginTop: "50%",
     height: "100%",
@@ -331,14 +372,14 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     width: 120,
-    backgroundColor: "#e3e3e3"
+    backgroundColor: "#e3e3e3",
   },
   modalButtonApply: {
     borderRadius: 20,
     padding: 10,
     elevation: 2,
     width: 120,
-    backgroundColor: "#006ee6"
+    backgroundColor: "#006ee6",
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -357,6 +398,6 @@ const styles = StyleSheet.create({
     color: "red",
   },
   dimBG: {
-    backgroundColor: 'rgba(0,0,0,0.5)'
-  }
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
 });
