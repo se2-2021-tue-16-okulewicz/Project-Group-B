@@ -16,6 +16,7 @@ import {
 } from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
+import { IFilterSort } from "../components/helper/filtersInterface";
 
 /**
  * Thunk for logging into an account
@@ -102,6 +103,24 @@ export const setDogBehaviours = createAction(
   function prepare(details: BehaviorsTypes[]) {
     return {
       payload: details,
+    };
+  }
+);
+
+export const setFilters = createAction(
+  "setFilters",
+  function prepare(details: IFilterSort) {
+    return {
+      payload: details,
+    };
+  }
+);
+
+export const setDogsRequireRefresh = createAction(
+  "setDogsRequireRefresh",
+  function prepare(refresh: boolean) {
+    return {
+      payload: refresh,
     };
   }
 );
