@@ -32,9 +32,7 @@ import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import { ExitToApp, House, Pets } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import {
-  faCopyright,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../../utilityComponents/utilities";
 import { IShelterDogWithPicture } from "../../dog/dogInterfaces";
 import { State } from "../../app/stateInterfaces";
