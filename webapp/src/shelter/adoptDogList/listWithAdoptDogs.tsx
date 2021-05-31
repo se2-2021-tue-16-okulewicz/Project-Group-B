@@ -403,10 +403,7 @@ export default function ListWithAdoptDogs(props: any) {
           }
         >
           <Toolbar />
-          <ShelterDogGrid
-            dogs={shelterDogs}
-            path={path}
-          />
+          <ShelterDogGrid dogs={shelterDogs} path={path} />
         </InfiniteScroll>
       </Content>
     </Root>

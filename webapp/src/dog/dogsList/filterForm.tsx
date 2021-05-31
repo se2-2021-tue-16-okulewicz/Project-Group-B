@@ -16,7 +16,10 @@ import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { IFilterSort } from "./filterInterface";
 import { clearDogList } from "../../app/actions";
-import { SelectFormControl, DateFormControl } from "../../commoncomponents/formHandlers";
+import {
+  SelectFormControl,
+  DateFormControl,
+} from "../../commoncomponents/formHandlers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
