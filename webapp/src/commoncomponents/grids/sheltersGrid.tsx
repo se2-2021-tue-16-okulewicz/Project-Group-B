@@ -63,27 +63,19 @@ export default function SheltersGrid(props: any) {
       )}
       {shelters.length <= 2 &&
         shelters.length > 0 &&
-        shelters.map(
-          (shelter: IShelter) =>
-            shelter.id && (
-              <GridListTile
+              (<GridListTile
                 key={"shelter.id1"}
                 style={{ height: "300px" }}
                 className="tile"
-              > <CardContent className={shelter.name} style={{width:"400px"}}/></GridListTile>
-            )
+              > <CardContent style={{width:"400px"}}/></GridListTile>
         )}
-      {shelters.length == 1 &&
-        shelters.map(
-          (shelter: IShelter) =>
-            shelter.id && (
+      {shelters.length == 1 && (
               <GridListTile
                 key={"shelter.id2"}
                 style={{ height: "300px" }}
                 className="tile"
-              ><CardContent className={shelter.name} style={{width:"400px"}}/></GridListTile>
-            )
-        )}
+              ><CardContent style={{width:"400px"}}/></GridListTile>
+            )}
     </GridList>
   );
 }

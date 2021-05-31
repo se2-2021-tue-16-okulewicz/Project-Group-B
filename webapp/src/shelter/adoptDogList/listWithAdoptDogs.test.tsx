@@ -42,4 +42,6 @@ it("Rendered list of dogs", () => {
     );
   });
   expect(container?.getElementsByClassName("loader").length).toEqual(0);
+  expect(container?.getElementsByClassName("menuItem").length).toEqual(0);
+  expect(container?.getAttributeNames().length).toEqual(0);
 });

@@ -5,7 +5,7 @@ import {
 } from "./dogInterfaces";
 
 export const otherDog: ILostDogWithPicture = {
-  id: 2,
+  id: 1,
   ownerId: 0,
   pictureId: 0,
   name: "Alex",
@@ -41,6 +41,23 @@ export const sheltertestDog: IShelterDogWithPicture = {
   picture: initPicture,
 };
 
+export const sheltertestDog2: IShelterDogWithPicture = {
+  id: 2,
+  shelterId: 0,
+  pictureId: 0,
+  name: "Alexa",
+  breed: "",
+  age: 0,
+  hairLength: "",
+  color: "",
+  size: "",
+  earsType: "",
+  tailLength: "",
+  specialMark: "",
+  behaviors: [],
+  picture: initPicture,
+};
+
 export const testLostDog: ILostDogWithPicture = {
   id: 2,
   ownerId:3,
@@ -61,6 +78,6 @@ export const testLostDog: ILostDogWithPicture = {
   isFound: false,
 };
 
-export const testDogList = [sheltertestDog];
+export const testDogList = [sheltertestDog, sheltertestDog2];
 
 export const testLostDogList = [testLostDog, otherDog];
