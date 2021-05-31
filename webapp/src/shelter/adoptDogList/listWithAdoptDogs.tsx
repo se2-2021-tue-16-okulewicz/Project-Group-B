@@ -13,7 +13,6 @@ import { useCookies } from "react-cookie";
 import { useRouteMatch, useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
-import { State } from "../../app/reducer";
 import * as Actions from "../../app/actions";
 import Layout, {
   getContent,
@@ -46,9 +45,10 @@ import { IFilters } from "../../utilityComponents/utilities";
 import ContactInfo from "../../contactInfo/contactInformation";
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { IShelterDogWithPicture } from "../../dog/dogInterfaces";
-import ShelterListWithDogs from "../dogsShelterList/shelterListWithDogs";
+import ShelterListWithDogs from "../shelterDogsList/shelterListWithDogs";
 import SheltersGrid from "../../commoncomponents/sheltersGrid";
 import ShelterDogGrid from "../../commoncomponents/shelterDogGrid";
+import { State } from "../../app/stateInterfaces";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);

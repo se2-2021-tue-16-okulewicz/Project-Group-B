@@ -9,7 +9,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
-import { State } from "../../app/reducer";
 import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
 import Layout, {
@@ -32,6 +31,7 @@ import Footer from "../../utilityComponents/Footer";
 import { IFilterSort } from "../../dog/dogsList/filterInterface";
 import { IShelter } from "../shelterInterfaces";
 import SheltersGrid from "../../commoncomponents/sheltersGrid";
+import { State } from "../../app/stateInterfaces";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);

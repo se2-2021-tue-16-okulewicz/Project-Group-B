@@ -7,10 +7,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { isNull } from "lodash";
 import { Provider } from "react-redux";
-import {
-  Route,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import { store } from "../app/store";
 import SheltersGrid from "./sheltersGrid";
 import { exampleShelter, initShelter } from "../shelter/shelterTesting";
@@ -55,5 +52,7 @@ it("Rendered list of shelters", () => {
     container?.getElementsByClassName("tile").length
   ).toBeGreaterThanOrEqual(0);
   //check if dog named alex was rendered
-  expect(container?.getElementsByClassName("The Best Shelter").length).toBeGreaterThanOrEqual(0);
+  expect(
+    container?.getElementsByClassName("The Best Shelter").length
+  ).toBeGreaterThanOrEqual(0);
 });

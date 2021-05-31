@@ -9,7 +9,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
-import { State } from "../../app/reducer";
 import { IShelterDog } from "../../dog/dogInterfaces";
 import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
@@ -19,7 +18,6 @@ import Layout, {
   getHeader,
   Root,
   getSidebarTrigger,
-  getSidebarContent,
   getCollapseBtn,
 } from "@mui-treasury/layout";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -32,17 +30,14 @@ import { clearDogList, logoutThunk } from "../../app/actions";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import Footer from "../../utilityComponents/Footer";
 import { IFilterSort } from "../../dog/dogsList/filterInterface";
-import ShelterGrid from "../../commoncomponents/shelterDogGrid";
 import ShelterDogGrid from "../../commoncomponents/shelterDogGrid";
+import { State } from "../../app/stateInterfaces";
 
-const SidebarTrigger = getSidebarTrigger(styled);
-const DrawerSidebar = getDrawerSidebar(styled);
-const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
 
 const scheme = Layout();
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     menuItem: {
       minWidth: "100%",
@@ -188,12 +183,6 @@ export default function ShelterListWithDogs(props: any) {
   }*/
   //clears dog list, when page is refreshed or changed
 
-  function redirectToDogDetailsOrEdit(id: number) {
-    setDogId(id);
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    props.redirectToDogDetailsOrEdit(id);
-    //history.push(`${path}/${id}`);
-  }
 
   useEffect(() => {
     if (initialRefresh) {

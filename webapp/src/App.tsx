@@ -14,7 +14,6 @@ import {
   finishRefreshing,
   logoutThunk,
 } from "./app/actions";
-import { State } from "./app/reducer";
 import { store } from "./app/store";
 import RegisterDogForm from "./dog/registerDog/registerDog";
 import Login from "./registerLogin/Login";
@@ -29,10 +28,11 @@ import Settings from "./dog/settings/settings";
 import EditDogDetails from "./dog/editDogDetails/editDogDetails";
 import EditContactInfo from "./contactInfo/editContactInformation";
 import DogDetails from "./dog/dogDetails/dogDetails";
-import ShelterListWithDogs from "./shelter/dogsShelterList/shelterListWithDogs";
+import ShelterListWithDogs from "./shelter/shelterDogsList/shelterListWithDogs";
 import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
 import ListWithShelters from "./shelter/sheltersList/listWithShelters";
 import ListWithAdoptDogs from "./shelter/adoptDogList/listWithAdoptDogs";
+import { State } from "./app/stateInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

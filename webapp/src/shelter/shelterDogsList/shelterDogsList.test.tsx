@@ -4,18 +4,13 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act, createRenderer } from "react-dom/test-utils";
-import ListWithDogs from "./shelterListWithDogs";
+import { act } from "react-dom/test-utils";
 import { isNull } from "lodash";
-import { Button } from "@material-ui/core";
 import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import {
-  Redirect,
   Route,
   BrowserRouter as Router,
-  Switch,
-  useHistory,
 } from "react-router-dom";
 import ShelterListWithDogs from "./shelterListWithDogs";
 

@@ -1,36 +1,8 @@
 import {
   BreedTypes,
-  BehaviorsTypes,
   ColorTypes,
-  EarsTypes,
-  HairTypes,
   SizeTypes,
-  SpecialMarkTypes,
-  TailTypes,
 } from "../dogEnums";
-import { IFilters } from "../../utilityComponents/utilities";
-
-/*export interface IFilterSort {
-  page?: number;
-  size?: number;
-  sort?: string;
-  filter?:{
-  ownerId?: number;
-  name?: string;
-  breed?: BreedTypes | "";
-  age?: number;
-  hairLength?: HairTypes | "";
-  color?: ColorTypes | "";
-  size?: SizeTypes | "";
-  dateLostAfter?: Date | null;
-  dateLostBefore?: Date | null;
-  earsType?: EarsTypes | "";
-  tailLength?: TailTypes | "";
-  specialMark?: SpecialMarkTypes | "";
-  behaviors?: BehaviorsTypes[];
-  location?: { city?: string; district?: string };
-  isFound?: boolean;}
-}*/
 
 export interface IFilterSort {
   page?: number;

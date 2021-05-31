@@ -10,7 +10,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
-import { State } from "../../app/reducer";
 import { ILostDogWithPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
@@ -35,6 +34,7 @@ import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import Footer from "../../utilityComponents/Footer";
 import FilterForm from "./filterForm";
 import { IFilterSort } from "./filterInterface";
+import { State } from "../../app/stateInterfaces";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);

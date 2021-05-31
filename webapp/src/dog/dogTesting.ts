@@ -1,7 +1,6 @@
-import { initLostDogWithPictureProps, initPicture } from "./dogClasses";
+import { initPicture } from "./dogClasses";
 import {
   ILostDogWithPicture,
-  IShelterDog,
   IShelterDogWithPicture,
 } from "./dogInterfaces";
 

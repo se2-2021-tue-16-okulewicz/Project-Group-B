@@ -5,7 +5,6 @@ import {
   BottomNavigationAction,
   Divider,
   Grid,
-  Icon,
   MenuItem,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -13,7 +12,6 @@ import { useCookies } from "react-cookie";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
-import { State } from "../../app/reducer";
 import { ILostDogWithPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import Layout, {
@@ -25,7 +23,6 @@ import Layout, {
   getSidebarContent,
   getCollapseBtn,
 } from "@mui-treasury/layout";
-import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../../config/config";
@@ -34,18 +31,16 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import SendIcon from "@material-ui/icons/Send";
 import { clearDogList, logoutThunk } from "../../app/actions";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
-import { ExitToApp, HouseRounded, Pets } from "@material-ui/icons";
+import { ExitToApp, Pets } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import {
   faCopyright,
-  faDog,
-  faHandHolding,
-  faHandPeace,
 } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../../utilityComponents/utilities";
 import ContactInfo from "../../contactInfo/contactInformation";
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
+import { State } from "../../app/stateInterfaces";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
