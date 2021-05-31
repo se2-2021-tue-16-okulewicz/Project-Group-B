@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./imageUploadForm.css"
+import "./imageUploadForm.css";
 import { InputLabel } from "@material-ui/core";
 const types = ["image/jpg", "image/jpeg", "image/png"];
 

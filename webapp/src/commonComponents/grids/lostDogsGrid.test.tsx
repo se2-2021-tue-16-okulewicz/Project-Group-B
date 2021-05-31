@@ -34,7 +34,12 @@ it("Rendered list of dog cards", () => {
       <Provider store={store}>
         <Router>
           <Route path="/">
-            <LostDogsGrid dogs={testLostDogList} id={-1} cookies={{}} path={""} />
+            <LostDogsGrid
+              dogs={testLostDogList}
+              id={-1}
+              cookies={{}}
+              path={""}
+            />
           </Route>
         </Router>
       </Provider>,

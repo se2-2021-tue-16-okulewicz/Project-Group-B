@@ -296,7 +296,7 @@ export default function FilterForm(props: any) {
               endAdornment: (
                 <InputAdornment position="end">
                   {lostDogFields.filter?.ageFrom
-                    ? "Year" + (lostDogFields.filter?.ageFrom !==1 ? "s" : "")
+                    ? "Year" + (lostDogFields.filter?.ageFrom !== 1 ? "s" : "")
                     : ""}
                 </InputAdornment>
               ),
@@ -319,7 +319,7 @@ export default function FilterForm(props: any) {
               endAdornment: (
                 <InputAdornment position="end">
                   {lostDogFields.filter?.ageTo
-                    ? "Year" + (lostDogFields.filter?.ageTo !==1 ? "s" : "")
+                    ? "Year" + (lostDogFields.filter?.ageTo !== 1 ? "s" : "")
                     : ""}
                 </InputAdornment>
               ),
