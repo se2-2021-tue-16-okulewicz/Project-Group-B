@@ -196,6 +196,42 @@ public class SheltersControllerTest {
     }
 
     @Test
+    public void DeleteDogTest() throws Exception {
+
+        //Deleting dog
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/shelters/10001/dogs/10001")
+                        .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data", is(true)));
+
+        //Deleting not existing dog
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/shelters/10001/dogs/20001")
+                        .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("message", is("Failed to delete dog with id: 20001")));
+
+        //Unauthorized - delete as regular user
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/shelters/10001/dogs/10002")
+                        .header(LoginService.authorizationHeader, "regularTestToken")
+        ).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Unauthorized - delete dog from other shelter
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/shelters/10001/dogs/10004")
+                        .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+    }
+
+    @Test
     public void RegisterShelterTest() throws Exception {
         MockMultipartFile loginValid = new MockMultipartFile("name", "", "text/plain", "Name".getBytes());
         MockMultipartFile loginShort = new MockMultipartFile("name", "", "text/plain", "Na".getBytes());
