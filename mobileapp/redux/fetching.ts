@@ -65,19 +65,34 @@ export async function login(
   );
 }
 
+
 export async function fetchDogs(
   filters: { [name: string]: any },
   Authorization: { [name: string]: any }
 ): Promise<RequestResponse<ILostDogWithPicture[], number>> {
-  const filtersString = Object.keys(filters)
-    .map((filterName) => {
-      const value = String(filters[filterName]).trim();
-      if (filterName != "size") {
-        return value ? `${filterName}=${value}` : "";
-      }
-    })
-    .filter((x) => x !== "")
-    .join("&");
+  const filtersString =
+    filters === undefined
+      ? ""
+      : Object.keys(filters)
+          .map((filterName) => {
+            if (typeof filters[filterName] === "object") {
+              let sub = filters[filterName];
+              const subFilters = Object.keys(sub)
+                .map((subname) => {
+                  const name = filterName + "." + subname.split("_").join(".");
+                  const value = String(sub[subname]).trim();
+                  return value && value != "null" ? `${name}=${value}` : "";
+                })
+                .filter((x) => x !== "")
+                .join("&");
+              return subFilters ? subFilters : "";
+            } else {
+              const value = String(filters[filterName]).trim();
+              return value && value != "null" ? `${filterName}=${value}` : "";
+            }
+          })
+          .filter((x) => x !== "")
+          .join("&");
 
   return getResponse(
     axios.get(
