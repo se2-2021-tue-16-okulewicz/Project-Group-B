@@ -5,12 +5,7 @@ import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import { useCookies } from "react-cookie";
 import { IShelter } from "../../shelter/shelterInterfaces";
-import {
-  Box,
-  CardContent,
-  Checkbox,
-  Typography,
-} from "@material-ui/core";
+import { Box, CardContent, Checkbox, Typography } from "@material-ui/core";
 
 export default function SheltersInfoGrid(props: any) {
   const shelters = props.shelters as IShelter[]; // eslint-disable-next-line

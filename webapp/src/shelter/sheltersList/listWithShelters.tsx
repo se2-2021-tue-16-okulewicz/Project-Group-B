@@ -11,11 +11,7 @@ import styled from "styled-components";
 import { store } from "../../app/store";
 import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
-import Layout, {
-  getContent,
-  getHeader,
-  Root,
-} from "@mui-treasury/layout";
+import Layout, { getContent, getHeader, Root } from "@mui-treasury/layout";
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
@@ -173,7 +169,6 @@ export default function ListWithShelters(props: any) {
         },600000)
   }*/
   //clears dog list, when page is refreshed or changed
-
 
   useEffect(() => {
     if (initialRefresh) {
