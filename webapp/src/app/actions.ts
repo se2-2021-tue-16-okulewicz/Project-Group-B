@@ -343,9 +343,7 @@ export const fetchOneShelterThunk = createAsyncThunk<
     await Fetching.fetchOneShelter(item.id, item.cookies);
 
   if (response.response.successful !== true) {
-    return rejectWithValue(
-      response as RequestResponse<IShelter, undefined>
-    );
+    return rejectWithValue(response as RequestResponse<IShelter, undefined>);
   }
   return response as RequestResponse<IShelter, undefined>;
 });

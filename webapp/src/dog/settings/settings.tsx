@@ -35,9 +35,7 @@ import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import { ExitToApp, Pets } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import {
-  faCopyright,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 import { IFilters } from "../../utilityComponents/utilities";
 import ContactInfo from "../../contactInfo/contactInformation";
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
@@ -287,15 +285,13 @@ export default function Settings(props: any) {
     <Root scheme={scheme}>
       <CssBaseline />
       <Header className={classes.header}>
-        <BottomNavigation showLabels style={{ height: "100%"}}>
+        <BottomNavigation showLabels style={{ height: "100%" }}>
           <BottomNavigationAction
             disabled={true}
             label="SETTINGS"
             classes={{ label: classes.title }}
-
           />
         </BottomNavigation>
-
       </Header>
       <DrawerSidebar sidebarId="unique_id">
         <CollapseBtn />
@@ -329,7 +325,7 @@ export default function Settings(props: any) {
               color="primary"
               onClick={onShelterClicked}
             >
-              <Pets/>
+              <Pets />
               <Grid item xs={1} />
               Lost Dogs
             </MenuItem>

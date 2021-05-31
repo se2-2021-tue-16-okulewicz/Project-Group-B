@@ -1,8 +1,5 @@
 import { initPicture } from "./dogClasses";
-import {
-  ILostDogWithPicture,
-  IShelterDogWithPicture,
-} from "./dogInterfaces";
+import { ILostDogWithPicture, IShelterDogWithPicture } from "./dogInterfaces";
 
 export const otherDog: ILostDogWithPicture = {
   id: 1,
@@ -60,7 +57,7 @@ export const sheltertestDog2: IShelterDogWithPicture = {
 
 export const testLostDog: ILostDogWithPicture = {
   id: 2,
-  ownerId:3,
+  ownerId: 3,
   pictureId: 0,
   name: "Alexa",
   breed: "",

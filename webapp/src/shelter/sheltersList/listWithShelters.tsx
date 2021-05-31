@@ -268,12 +268,12 @@ export default function ListWithShelters(props: any) {
           <Grid item xs={3}>
             <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
-                  showLabel={true}
-                  classes={{ label: classes.action, root: classes.action }}
-                  onClick={onLostDogsClicked}
-                  label="Lost Dogs"
-                  icon={<Pets/>}
-                />
+                showLabel={true}
+                classes={{ label: classes.action, root: classes.action }}
+                onClick={onLostDogsClicked}
+                label="Lost Dogs"
+                icon={<Pets />}
+              />
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
@@ -305,14 +305,16 @@ export default function ListWithShelters(props: any) {
           }
         >
           <Toolbar />
-          <SheltersGrid shelters={shelters} path={path} redirectToShelter={(id: number) =>
-              {
-                history.push(`/shelter/${id}`);
-              }
-            }/>
+          <SheltersGrid
+            shelters={shelters}
+            path={path}
+            redirectToShelter={(id: number) => {
+              history.push(`/shelter/${id}`);
+            }}
+          />
           {!displayLoader && !refreshRequired && (
-          <Footer position={shelters.length > 3 ? "list" : "footer"} />
-        )}
+            <Footer position={shelters.length > 3 ? "list" : "footer"} />
+          )}
         </InfiniteScroll>
       </Content>
     </Root>

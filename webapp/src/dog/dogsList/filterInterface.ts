@@ -1,8 +1,4 @@
-import {
-  BreedTypes,
-  ColorTypes,
-  SizeTypes,
-} from "../dogEnums";
+import { BreedTypes, ColorTypes, SizeTypes } from "../dogEnums";
 
 export interface IFilterSort {
   page?: number;

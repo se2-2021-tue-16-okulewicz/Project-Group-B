@@ -157,8 +157,7 @@ function Layout() {
           />
         </Route>
         <Route path={`/shelter/:id`}>
-          <ListWithAdoptDogs
-          />
+          <ListWithAdoptDogs />
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />
