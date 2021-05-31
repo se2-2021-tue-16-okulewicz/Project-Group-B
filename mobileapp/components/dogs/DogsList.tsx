@@ -20,6 +20,7 @@ import { State } from "../../redux/reducer";
 import * as Actions from "../../redux/actions";
 import config from "../../config/config";
 import { useState } from "react";
+import Searchbar from "../helper/Searchbar";
 
 export default function DogsList({ navigation }: any) {
   const bg = require("../../assets/images/dog-bg.png");
@@ -61,12 +62,14 @@ export default function DogsList({ navigation }: any) {
       setFilters({ ...filters, page: config.defaultFilters.page });
     } // eslint-disable-next-line
     let tmp = dogsList;
-    setMyDogs(tmp.filter((dog) => dog.ownerId == id));
+    setMyDogs(dogsList);
+    //setMyDogs(tmp.filter((dog) => dog.ownerId == id));
   }, [refreshRequired]);
 
   React.useEffect(() => {
     let tmp = dogsList;
-    setMyDogs(tmp.filter((dog) => dog.ownerId == id));
+    setMyDogs(dogsList);
+    //setMyDogs(tmp.filter((dog) => dog.ownerId == id));
   }, [dogsList]);
   /**
    * Is invoked after reaching bottom of the page.
@@ -114,14 +117,15 @@ export default function DogsList({ navigation }: any) {
             //source={{uri: dog.picture.uri}}
           />
           </View>
-          {/* <Text>{dog.picture.id + " " + dog.picture.fileName + " " + dog.picture.fileType + " " + dog.picture.data}</Text> */}
           <View style={{flex:2}}>
           {!dog.isFound ? (
+            dog.ownerId !== id ?(<Text style={styles.lostNotOwner}>Lost</Text>) :(
             <TouchableOpacity style={{backgroundColor:"#006ee6", borderRadius:10, padding: 4, shadowOffset:{  width: 1,  height: 2,  },
             shadowColor: 'black',
             shadowOpacity: 0.5,}} onPress={() => markDogAsFound(dog.id)}>
               <Text style={styles.lost}>Claim found</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>)
+            
           ) : (
             <Text style={styles.found}>Found</Text>
           )}
@@ -138,6 +142,7 @@ export default function DogsList({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={bg} style={styles.image}>
+        <Searchbar></Searchbar>
       <FlatList
               data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
               renderItem={({ item }) => renderListItem(item, navigation)}
@@ -160,6 +165,9 @@ export default function DogsList({ navigation }: any) {
             /> */}
           </View>
         )}
+        <View style={{backgroundColor:"white", width:"100%"}}>
+        <Text style={{color:"#006ee6", alignSelf: "center"}}>Displaying {myDogs.length} dogs</Text>
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -226,6 +234,10 @@ const styles = StyleSheet.create({
   found: {
     marginLeft: "33%",
     color: "green",
+  },
+  lostNotOwner: {
+    marginLeft: "33%",
+    color: "grey",
   },
   lost: {
     marginLeft: "33%",
