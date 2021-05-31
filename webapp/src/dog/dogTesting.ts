@@ -41,4 +41,26 @@ export const sheltertestDog: IShelterDogWithPicture = {
   picture: initPicture,
 };
 
-export const testDogList = [sheltertestDog, otherDog];
+export const testLostDog: ILostDogWithPicture = {
+  id: 2,
+  ownerId:3,
+  pictureId: 0,
+  name: "Alexa",
+  breed: "",
+  age: 0,
+  hairLength: "",
+  color: "",
+  size: "",
+  earsType: "",
+  tailLength: "",
+  specialMark: "",
+  behaviors: [],
+  picture: initPicture,
+  location: { city: "", district: "" },
+  dateLost: new Date(2012, 1, 1, 0, 0, 0, 0),
+  isFound: false,
+};
+
+export const testDogList = [sheltertestDog];
+
+export const testLostDogList = [testLostDog, otherDog];

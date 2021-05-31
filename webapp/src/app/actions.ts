@@ -265,7 +265,7 @@ export const fetchShelterDogsThunk = createAsyncThunk<
   { filters: IFilters; shelterId: number; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<IShelterDog[], Number> }
 >(
-  "fetchShelterDogs",
+  "fetchShelterDogsThunk",
   async (
     userAndCookies: {
       filters: IFilters;
@@ -280,7 +280,7 @@ export const fetchShelterDogsThunk = createAsyncThunk<
         userAndCookies.shelterId,
         userAndCookies.cookies
       );
-
+    //console.log(response);
     if (response.response.successful !== true) {
       return rejectWithValue(
         response as RequestResponse<IShelterDog[], number>

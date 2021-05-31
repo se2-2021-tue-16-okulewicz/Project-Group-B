@@ -222,7 +222,6 @@ export default function ListWithDogs(props: any) {
     }
   }, [initialRefresh]);
 
-  console.log(refreshRequired);
   useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0
@@ -353,14 +352,12 @@ export default function ListWithDogs(props: any) {
         >
           <Toolbar />
           <BottomNavigation />
-          {
-            <FilterForm
+          <FilterForm
               filters={filters}
               updateFilters={(
                 updatedFilters: React.ChangeEvent<{ value: unknown }>
               ) => updateFilters(updatedFilters)}
-            />
-          }
+          />
         </Drawer>
       )}
       <Content>

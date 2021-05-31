@@ -32,7 +32,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import SendIcon from "@material-ui/icons/Send";
 import { clearDogList, logoutThunk } from "../../app/actions";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
-import { ExitToApp, HouseRounded, Pets } from "@material-ui/icons";
+import { ExitToApp, House, HouseRounded, Pets } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -50,6 +50,7 @@ import SheltersGrid from "../../commonComponents/grids/sheltersGrid";
 import ShelterDogGrid from "../../commonComponents/grids/shelterDogGrid";
 import { State } from "../../app/stateInterfaces";
 import { IShelter } from "../shelterInterfaces";
+import { initShelter } from "../shelterTesting";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
@@ -130,6 +131,8 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: "1.75em",
       fontFamily: "Comfortaa",
       fontWeight: "normal",
+      display:"stretch",
+      minWidth:"300px"
     },
   })
 );
@@ -171,18 +174,18 @@ export default function ListWithAdoptDogs(props: any) {
   const history = useHistory();
   const location = useLocation();
   const {path} = useRouteMatch();
-  const shelterId = location.pathname.split("/shelter/")[1];
+  const shelterId = Number(location.pathname.split("/shelter/")[1]);
   const [displayLoader, setDisplayLoader] = useState(true);
   const loading = useSelector((state: State) => state.loading as boolean);
-  //const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
-  const shelterInfo = useSelector(
-    (state:State) => state.shelter as IShelter
-  )
+
   const shelterDogs = useSelector(
-    (state: State) => state.dogs as IShelterDogWithPicture[]
+    (state: State) => state.shelterdogs as IShelterDogWithPicture[]
   );
+
+  const shelters = useSelector(
+    (state: State) => state.shelters).filter((shelter:IShelter)=> shelter.id == shelterId)[0] as IShelter;
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
@@ -200,14 +203,14 @@ export default function ListWithAdoptDogs(props: any) {
     sessionStorage.removeItem("listVisible");
     sessionStorage.clear();
   }
-  const onDogsListClicked = () => {
 
-  };
-  const onInfoClicked = () => {
-  };
   const onLostDogsCLicked = () => {
     store.dispatch(clearDogList());
     history.push("/dogs");
+  };
+  const onShelterClicked = () => {
+    store.dispatch(clearDogList());
+    history.push("/shelters");
   };
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });
@@ -228,27 +231,27 @@ export default function ListWithAdoptDogs(props: any) {
 
   // fetch and append page 0
   useEffect(() => {
-    if (refreshRequired && !lastPage && -1>1) {
+    if (refreshRequired && !lastPage && shelterId) {
       try {
         store.dispatch(
-          Actions.fetchOneShelterThunk({
-            id: Number(shelterId),
+          Actions.fetchSheltersThunk({
+            filters: {
+              ...filters,
+              page: filters.page,
+            },
             cookies: cookies,
           }) //filters
         );
         store.dispatch(
           Actions.fetchShelterDogsThunk({
-            filters: filters,
+            filters: {
+              ...filters,
+              page: filters.page,
+            },
             shelterId: Number(shelterId),
             cookies: cookies,
           }) //filters
         );
-        /*store.dispatch(
-          Actions.fetchContactInfoThunk({
-            userId: cookies[config.cookies.userId],
-            cookies: cookies,
-          })
-        );*/
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {
@@ -262,11 +265,12 @@ export default function ListWithAdoptDogs(props: any) {
   const fetchMore = () => {
     try {
       store.dispatch(
-        Actions.fetchDogsThunk({
+        Actions.fetchShelterDogsThunk({
           filters: {
             ...filters,
             page: filters.page,
           },
+          shelterId: Number(shelterId),
           cookies: cookies,
         }) //filters
       );
@@ -279,12 +283,6 @@ export default function ListWithAdoptDogs(props: any) {
     }
   };
 
-  function redirectToDogDetailsOrEdit(id: number) {
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    sessionStorage.removeItem("editDogFields");
-    props.redirectToDogDetailsOrEdit(id);
-  }
-
   return (
     <Root scheme={scheme}>
       <CssBaseline />
@@ -292,7 +290,7 @@ export default function ListWithAdoptDogs(props: any) {
         <BottomNavigation showLabels>
           <BottomNavigationAction
             disabled={true}
-            label="SETTINGS"
+            label={shelters ? shelters.name.toUpperCase():"SETTINGS"}
             classes={{ label: classes.title }}
           />
         </BottomNavigation>
@@ -315,6 +313,16 @@ export default function ListWithAdoptDogs(props: any) {
             </MenuItem>
             <MenuItem
               className={classes.menuItem}
+              data-testid="shelterButton"
+              color="primary"
+              onClick={onShelterClicked}
+            >
+              <House/>
+              <Grid item xs={1} />
+              Shelter
+            </MenuItem>
+            <MenuItem
+              className={classes.menuItem}
               data-testid="logoutsButton"
               disabled={cookies["userType"] === undefined}
               color="primary"
@@ -324,6 +332,25 @@ export default function ListWithAdoptDogs(props: any) {
               <Grid item xs={1} />
               Logout
             </MenuItem>
+            <Divider
+              className={classes.menuItem}
+              style={{ display: "flex", marginBottom: "10%" }}
+            />
+            {shelters != null && shelters.address != null ?
+            <span>{shelters.address.street+" "+shelters.address.buildingNumber+", "+shelters.address.postCode+" "+
+            shelters.address.city}</span> :""}
+            <Divider
+              className={classes.menuItem}
+              style={{ display: "flex", marginBottom: "10%" }}
+            />
+            {shelters != null ?
+            <span>{shelters.email}</span>:""}
+            <Divider
+              className={classes.menuItem}
+              style={{ display: "flex", marginBottom: "10%" }}
+            />
+            {shelters != null ?
+            <span>{shelters.phoneNumber.substr(0,3)+"-"+shelters.phoneNumber.substr(3,3)+"-"+shelters.phoneNumber.substr(6,3)}</span>:""}
             <Divider
               className={classes.menuItem}
               style={{ display: "flex", marginBottom: "10%" }}
@@ -366,6 +393,7 @@ export default function ListWithAdoptDogs(props: any) {
               (!displayLoader && <></>)
             }
           >
+            <Toolbar />
             <ShelterDogGrid
               dogs={shelterDogs}
               path={path}

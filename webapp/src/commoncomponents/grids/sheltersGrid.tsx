@@ -36,8 +36,8 @@ export default function SheltersGrid(props: any) {
             style={{ height: "300px",display:"stretch"}}
             className="tile"
             >
-              <Box className={shelter.name} style={{ overflow: 'hidden', minWidth:"400px",backgroundColor:"white",  height:"90%", }}>
-                <Typography align="center" style={{fontSize: "4em", height:"inherit", width:"auto",
+              <Box className={shelter.name} style={{ overflow: 'hidden',backgroundColor:"white",  height:"90%", }}>
+                <Typography align="center" style={{fontSize: "4vw", height:"inherit", width:"auto",
                  fontFamily: "Bungee Shade", wordWrap: 'break-word' ,color:"slategray", verticalAlign:"center",  display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   {shelter.name}
                 </Typography>

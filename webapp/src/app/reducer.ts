@@ -302,6 +302,7 @@ export const reducer = createReducer(initState, {
       ["meta", "arg", "filters", "size"],
       config.defaultFilters.size
     );
+
     if (state.shelterdogs != null || pageNumber != 0) {
       newState.shelterdogs = state.shelterdogs
         .concat(payload.payload.response.data as IShelterDog[])

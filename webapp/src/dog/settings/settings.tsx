@@ -6,6 +6,7 @@ import {
   Divider,
   Grid,
   MenuItem,
+  Toolbar,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
@@ -286,13 +287,15 @@ export default function Settings(props: any) {
     <Root scheme={scheme}>
       <CssBaseline />
       <Header className={classes.header}>
-        <BottomNavigation showLabels>
+        <BottomNavigation showLabels style={{ height: "100%"}}>
           <BottomNavigationAction
             disabled={true}
             label="SETTINGS"
             classes={{ label: classes.title }}
+
           />
         </BottomNavigation>
+
       </Header>
       <DrawerSidebar sidebarId="unique_id">
         <CollapseBtn />

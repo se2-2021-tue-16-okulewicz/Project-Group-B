@@ -135,7 +135,6 @@ scheme.configureHeader((builder) => {
 
 export default function ShelterListWithDogs(props: any) {
   const { path } = useRouteMatch();
-  console.log(path.split("/")[2]);
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
   const [dogId, setDogId] = useState(0);
@@ -147,7 +146,6 @@ export default function ShelterListWithDogs(props: any) {
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
-  console.log(refreshRequired);
   const [initialRefresh, setInitialRefresh] = useState(true);
   const [isUpdateFilters, setIsUpdateFilters] = useState(false);
   const [filters, setFilters] = useState<IFilterSort>({
@@ -255,7 +253,7 @@ export default function ShelterListWithDogs(props: any) {
             <BottomNavigation showLabels>
               <BottomNavigationAction
                 disabled={true}
-                label="LOST DOGS"
+                label="SHELTER"
                 classes={{ label: classes.title }}
               />
             </BottomNavigation>

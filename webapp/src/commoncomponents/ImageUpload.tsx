@@ -8,7 +8,6 @@ const ImageUpload = (props: any) => {
   const [newImage, setNewImage] = useState(false);
 
   const handleChange = (event: any) => {
-    console.log(event.target.files[0].type);
     if (types.includes(event.target.files[0].type)) {
       let newFile = event.target.files[0];
       setFile(newFile);

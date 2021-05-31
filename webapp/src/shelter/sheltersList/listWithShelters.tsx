@@ -142,7 +142,6 @@ export default function ListWithShelters(props: any) {
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
-  console.log(refreshRequired);
   const [initialRefresh, setInitialRefresh] = useState(true);
   const [isUpdateFilters, setIsUpdateFilters] = useState(false);
   const [filters, setFilters] = useState<IFilterSort>({
@@ -307,9 +306,9 @@ export default function ListWithShelters(props: any) {
         >
           <Toolbar />
           <SheltersGrid shelters={shelters} path={path} redirectToShelter={(id: number) =>
-              { console.log(id);
+              {
                 history.push(`/shelter/${id}`);
-                history.go(0);}
+              }
             }/>
           {!displayLoader && !refreshRequired && (
           <Footer position={shelters.length > 3 ? "list" : "footer"} />
