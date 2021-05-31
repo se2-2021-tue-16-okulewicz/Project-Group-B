@@ -5,11 +5,11 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
+import RegisterDogForm from "./registerDog";
 import { isNull } from "lodash";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import { store } from "../app/store";
 import { Route, BrowserRouter as Router } from "react-router-dom";
-import ContactInfo from "./contactInformation";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -27,33 +27,34 @@ afterEach(() => {
   }
 });
 
-it("Test editing the contact information", () => {
+it("Rendered register form button", () => {
   act(() => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/settings">
-            <ContactInfo />
+          <Route path="/addDog">
+            <RegisterDogForm />
           </Route>
         </Router>
       </Provider>,
       container
     );
   });
-
   expect(
-    container?.getElementsByClassName("LowerText").length
+    container?.getElementsByClassName("mainForm").length
   ).toBeGreaterThanOrEqual(0);
-
+  expect(container?.childElementCount).toBeGreaterThanOrEqual(0);
   expect(
-    container?.getElementsByClassName("AccountListWrapper").length
+    container?.getElementsByClassName("cardContent").length
   ).toBeGreaterThanOrEqual(0);
-
   expect(
-    container?.getElementsByTagName("button").length
+    container?.getElementsByClassName("formControl").length
   ).toBeGreaterThanOrEqual(0);
+});
 
-  expect(
-    container?.getElementsByClassName("MuiFormControl-root").length
-  ).toBeGreaterThanOrEqual(0);
+it("test only register button", () => {
+  act(() => {
+    render(<RegisterDogForm />, container);
+  });
+  const myRegisterClicked = jest.fn();
 });

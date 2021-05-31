@@ -4,12 +4,19 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import { act, createRenderer } from "react-dom/test-utils";
+import EditDogDetails from "./editDogDetails";
 import { isNull } from "lodash";
+import { Button } from "@material-ui/core";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import { store } from "../app/store";
-import { Route, BrowserRouter as Router } from "react-router-dom";
-import ContactInfo from "./contactInformation";
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  useHistory,
+} from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -27,33 +34,24 @@ afterEach(() => {
   }
 });
 
-it("Test editing the contact information", () => {
+it("Rendered list of dogs", () => {
   act(() => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/settings">
-            <ContactInfo />
-          </Route>
+          <Route
+            path={`/settings/edit/dog/:id`}
+            children={<EditDogDetails cookies={{}} dogId={-1} />}
+          />
         </Router>
       </Provider>,
       container
     );
   });
-
   expect(
-    container?.getElementsByClassName("LowerText").length
+    container?.getElementsByClassName("mainForm").length
   ).toBeGreaterThanOrEqual(0);
-
   expect(
-    container?.getElementsByClassName("AccountListWrapper").length
-  ).toBeGreaterThanOrEqual(0);
-
-  expect(
-    container?.getElementsByTagName("button").length
-  ).toBeGreaterThanOrEqual(0);
-
-  expect(
-    container?.getElementsByClassName("MuiFormControl-root").length
+    container?.getElementsByClassName("classes.formControl").length
   ).toBeGreaterThanOrEqual(0);
 });

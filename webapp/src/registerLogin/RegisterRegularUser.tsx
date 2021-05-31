@@ -29,7 +29,7 @@ import {
   isStringValidPhoneNumeber,
   isStringValidPassword,
 } from "../utilityComponents/validation";
-import { internalState } from "../utilityComponents/utilities";
+import { IRegisterInfo } from "../utilityComponents/utilities";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,7 +67,7 @@ export default function RegisterRegularUser() {
   const classes = useStyles();
   const history = useHistory(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  const [values, setValues] = useState<internalState>({
+  const [values, setValues] = useState<IRegisterInfo>({
     username: "",
     email: "",
     phone: "",
@@ -95,7 +95,7 @@ export default function RegisterRegularUser() {
   };
 
   const handleChange =
-    (prop: keyof internalState) =>
+    (prop: keyof IRegisterInfo) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setValues({ ...values, [prop]: event.target.value });
     };
@@ -118,7 +118,7 @@ export default function RegisterRegularUser() {
 
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
-      history.push("/listDogs");
+      history.push("/dogs");
     } // eslint-disable-next-line
   }, []);
 

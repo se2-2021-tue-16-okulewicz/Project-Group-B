@@ -6,10 +6,11 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { isNull } from "lodash";
+import LostDogsGrid from "./lostDogsGrid";
+import { testDogList, testLostDogList } from "../../dog/dogTesting";
 import { Provider } from "react-redux";
-import { store } from "../app/store";
 import { Route, BrowserRouter as Router } from "react-router-dom";
-import ContactInfo from "./contactInformation";
+import { store } from "../../app/store";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -27,33 +28,29 @@ afterEach(() => {
   }
 });
 
-it("Test editing the contact information", () => {
+it("Rendered list of dog cards", () => {
   act(() => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/settings">
-            <ContactInfo />
+          <Route path="/">
+            <LostDogsGrid
+              dogs={testLostDogList}
+              id={-1}
+              cookies={{}}
+              path={""}
+            />
           </Route>
         </Router>
       </Provider>,
       container
     );
   });
-
+  //expect(container).toMatchSnapshot();
+  //container?.getElementsByTagName("registerButton")
   expect(
-    container?.getElementsByClassName("LowerText").length
-  ).toBeGreaterThanOrEqual(0);
-
-  expect(
-    container?.getElementsByClassName("AccountListWrapper").length
-  ).toBeGreaterThanOrEqual(0);
-
-  expect(
-    container?.getElementsByTagName("button").length
-  ).toBeGreaterThanOrEqual(0);
-
-  expect(
-    container?.getElementsByClassName("MuiFormControl-root").length
-  ).toBeGreaterThanOrEqual(0);
+    container?.getElementsByClassName("tile").length
+  ).toBeGreaterThanOrEqual(testLostDogList.length);
+  //check if dog named alex was rendered
+  expect(container?.getElementsByClassName("Alex").length).toEqual(1);
 });

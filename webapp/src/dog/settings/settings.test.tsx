@@ -5,11 +5,11 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
+import Settings from "./settings";
 import { isNull } from "lodash";
+import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import { store } from "../app/store";
 import { Route, BrowserRouter as Router } from "react-router-dom";
-import ContactInfo from "./contactInformation";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -27,33 +27,18 @@ afterEach(() => {
   }
 });
 
-it("Test editing the contact information", () => {
+it("Rendered list of dogs", () => {
   act(() => {
     render(
       <Provider store={store}>
         <Router>
           <Route path="/settings">
-            <ContactInfo />
+            <Settings />
           </Route>
         </Router>
       </Provider>,
       container
     );
   });
-
-  expect(
-    container?.getElementsByClassName("LowerText").length
-  ).toBeGreaterThanOrEqual(0);
-
-  expect(
-    container?.getElementsByClassName("AccountListWrapper").length
-  ).toBeGreaterThanOrEqual(0);
-
-  expect(
-    container?.getElementsByTagName("button").length
-  ).toBeGreaterThanOrEqual(0);
-
-  expect(
-    container?.getElementsByClassName("MuiFormControl-root").length
-  ).toBeGreaterThanOrEqual(0);
+  expect(container?.getElementsByClassName("loader").length).toEqual(0);
 });

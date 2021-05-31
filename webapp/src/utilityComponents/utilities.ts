@@ -9,7 +9,7 @@ export interface IFilters {
   [name: string]: any;
 }
 
-export interface internalState {
+export interface IRegisterInfo {
   username: string;
   email: string;
   phone: string;

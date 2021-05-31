@@ -20,7 +20,7 @@ import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { clearLoginInformation, loginThunk } from "../app/actions";
-import { State } from "../app/reducer";
+import { State } from "../app/stateInterfaces";
 import { store } from "../app/store";
 import config from "../config/config";
 import "./Login.css";
@@ -109,10 +109,10 @@ export default function Login() {
       setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
-      if (loginInfo?.userType == "Shelter") {
-        history.push("/shelter");
+      if (loginInfo?.userType === "Shelter") {
+        history.push("/shelterdogs");
       } else {
-        history.push("/listDogs");
+        history.push("/dogs");
       }
     } // eslint-disable-next-line
   }, [loginInfo]);
@@ -120,10 +120,10 @@ export default function Login() {
   //THIS makes the web app skip the log in
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
-      if (cookies[config.cookies.userType] == "Shelter") {
-        history.push("/shelter");
+      if (cookies[config.cookies.userType] === "Shelter") {
+        history.push("/shelterdogs");
       } else {
-        history.push("/listDogs");
+        history.push("/dogs");
       }
     } // eslint-disable-next-line
   }, []);
