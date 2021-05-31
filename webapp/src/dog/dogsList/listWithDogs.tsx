@@ -26,7 +26,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../../config/config";
-import ImageGrid from "../../commonComponents/grids/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ExitToApp, House, Pets, Search, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../app/actions";
@@ -35,6 +34,7 @@ import Footer from "../../utilityComponents/Footer";
 import FilterForm from "./filterForm";
 import { IFilterSort } from "./filterInterface";
 import { State } from "../../app/stateInterfaces";
+import ImageGrid from "../../commonComponents/grids/imageGrid";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);

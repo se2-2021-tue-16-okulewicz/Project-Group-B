@@ -30,8 +30,8 @@ import { clearDogList, logoutThunk } from "../../app/actions";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import Footer from "../../utilityComponents/Footer";
 import { IFilterSort } from "../../dog/dogsList/filterInterface";
-import ShelterDogGrid from "../../commonComponents/grids/shelterDogGrid";
 import { State } from "../../app/stateInterfaces";
+import ShelterDogGrid from "../../commonComponents/grids/shelterDogGrid";
 
 const Content = getContent(styled);
 const Header = getHeader(styled);

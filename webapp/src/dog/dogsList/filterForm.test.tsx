@@ -10,9 +10,8 @@ import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import FilterForm from "./filterForm";
-import { IFilterSort, initFilterProps } from "./filterInterface";
-import { InputFormControl } from "../../commonComponents/formHandlers";
 import config from "../../config/config";
+import { InputFormControl } from "../../commonComponents/formHandlers";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {

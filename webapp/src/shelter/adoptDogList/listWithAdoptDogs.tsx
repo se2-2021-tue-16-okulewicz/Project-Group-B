@@ -27,7 +27,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../../config/config";
-import ImageGrid from "../../commonComponents/grids/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SendIcon from "@material-ui/icons/Send";
 import { clearDogList, logoutThunk } from "../../app/actions";
@@ -46,11 +45,10 @@ import ContactInfo from "../../contactInfo/contactInformation";
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { IShelterDogWithPicture } from "../../dog/dogInterfaces";
 import ShelterListWithDogs from "../shelterDogsList/shelterListWithDogs";
-import SheltersGrid from "../../commonComponents/grids/sheltersGrid";
-import ShelterDogGrid from "../../commonComponents/grids/shelterDogGrid";
 import { State } from "../../app/stateInterfaces";
 import { IShelter } from "../shelterInterfaces";
 import { initShelter } from "../shelterTesting";
+import ShelterDogGrid from "../../commonComponents/grids/shelterDogGrid";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
@@ -416,9 +414,6 @@ export default function ListWithAdoptDogs(props: any) {
           <ShelterDogGrid
             dogs={shelterDogs}
             path={path}
-            /*redirectToDogDetailsOrEdit={(id: number) =>
-                redirectToDogDetailsOrEdit(id)
-              }*/
           />
         </InfiniteScroll>
       </Content>

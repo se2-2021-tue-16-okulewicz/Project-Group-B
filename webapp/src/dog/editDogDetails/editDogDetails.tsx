@@ -17,7 +17,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
 import DateFnsUtils from "@date-io/date-fns";
-import ImageUpload from "../../commonComponents/ImageUpload";
 import {
   ColorTypes,
   HairTypes,
@@ -40,6 +39,7 @@ import { base64StringToBlob } from "blob-util";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 import { State } from "../../app/stateInterfaces";
+import ImageUpload from "../../commonComponents/ImageUpload";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>

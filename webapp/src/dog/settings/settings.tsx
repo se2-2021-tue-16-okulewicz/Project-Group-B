@@ -27,7 +27,6 @@ import Layout, {
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../../config/config";
-import ImageGrid from "../../commonComponents/grids/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SendIcon from "@material-ui/icons/Send";
 import { clearDogList, logoutThunk } from "../../app/actions";
@@ -40,6 +39,7 @@ import { IFilters } from "../../utilityComponents/utilities";
 import ContactInfo from "../../contactInfo/contactInformation";
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { State } from "../../app/stateInterfaces";
+import ImageGrid from "../../commonComponents/grids/imageGrid";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
