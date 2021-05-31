@@ -51,38 +51,34 @@ export default function ShelterDogGrid(props: any) {
             </GridListTile>
           )
       )}
-      {dogs.length <= 2 &&
-        dogs.length > 0 && dogs[0] && dogs[0].picture &&
-         (
-              <GridListTile
-                key={"dog.id1"}
-                style={{ height: "300px" }}
-                className="tile"
-              >
-                <img
-                  style={{ visibility: "hidden", height: "300px" }}
-                  src={`data:${dogs[0].picture.fileType};base64,${
-                    dogs[0].picture.data as ArrayBuffer
-                  }`}
-                />
-              </GridListTile>
-        )}
-      {dogs.length == 1 &&
-            dogs[0] && dogs[0].picture && (
-              <GridListTile
-                key={"dog.id2"}
-                style={{ height: "300px" }}
-                className="tile"
-              >
-                <img
-                  style={{ visibility: "hidden", height: "300px" }}
-                  src={`data:${dogs[0].picture.fileType};base64,${
-                    dogs[0].picture.data as ArrayBuffer
-                  }`}
-                />
-              </GridListTile>
-            )
-        }
+      {dogs.length <= 2 && dogs.length > 0 && dogs[0] && dogs[0].picture && (
+        <GridListTile
+          key={"dog.id1"}
+          style={{ height: "300px" }}
+          className="tile"
+        >
+          <img
+            style={{ visibility: "hidden", height: "300px" }}
+            src={`data:${dogs[0].picture.fileType};base64,${
+              dogs[0].picture.data as ArrayBuffer
+            }`}
+          />
+        </GridListTile>
+      )}
+      {dogs.length == 1 && dogs[0] && dogs[0].picture && (
+        <GridListTile
+          key={"dog.id2"}
+          style={{ height: "300px" }}
+          className="tile"
+        >
+          <img
+            style={{ visibility: "hidden", height: "300px" }}
+            src={`data:${dogs[0].picture.fileType};base64,${
+              dogs[0].picture.data as ArrayBuffer
+            }`}
+          />
+        </GridListTile>
+      )}
     </GridList>
   );
 }

@@ -96,21 +96,25 @@ export default function SheltersGrid(props: any) {
             </GridListTile>
           )
       )}
-      {shelters.length <= 2 &&
-        shelters.length > 0 &&
-              (<GridListTile
-                key={"shelter.id1"}
-                style={{ height: "300px" }}
-                className="tile"
-              > <CardContent style={{width:"400px"}}/></GridListTile>
-        )}
+      {shelters.length <= 2 && shelters.length > 0 && (
+        <GridListTile
+          key={"shelter.id1"}
+          style={{ height: "300px" }}
+          className="tile"
+        >
+          {" "}
+          <CardContent style={{ width: "400px" }} />
+        </GridListTile>
+      )}
       {shelters.length == 1 && (
-              <GridListTile
-                key={"shelter.id2"}
-                style={{ height: "300px" }}
-                className="tile"
-              ><CardContent style={{width:"400px"}}/></GridListTile>
-            )}
+        <GridListTile
+          key={"shelter.id2"}
+          style={{ height: "300px" }}
+          className="tile"
+        >
+          <CardContent style={{ width: "400px" }} />
+        </GridListTile>
+      )}
     </GridList>
   );
 }
