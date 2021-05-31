@@ -41,10 +41,10 @@ import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { State } from "../../app/reducer";
 import { base64StringToBlob } from "blob-util";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
+import { State } from "../../app/stateInterfaces";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>

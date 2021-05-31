@@ -22,7 +22,7 @@ import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { State } from "../../app/reducer";
+import { State } from "../../app/stateInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

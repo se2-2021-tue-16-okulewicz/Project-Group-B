@@ -20,7 +20,7 @@ import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { clearLoginInformation, loginThunk } from "../app/actions";
-import { State } from "../app/reducer";
+import { State } from "../app/stateInterfaces";
 import { store } from "../app/store";
 import config from "../config/config";
 import "./Login.css";

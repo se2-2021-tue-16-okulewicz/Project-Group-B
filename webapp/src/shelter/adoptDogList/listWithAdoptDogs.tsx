@@ -228,14 +228,18 @@ export default function ListWithAdoptDogs(props: any) {
 
   // fetch and append page 0
   useEffect(() => {
-    if (refreshRequired && !lastPage) {
+    if (refreshRequired && !lastPage && -1>1) {
       try {
         store.dispatch(
-          Actions.fetchSheltersThunk({
-            filters: {
-              ...filters,
-              page: config.defaultFilters.page,
-            },
+          Actions.fetchOneShelterThunk({
+            id: Number(shelterId),
+            cookies: cookies,
+          }) //filters
+        );
+        store.dispatch(
+          Actions.fetchShelterDogsThunk({
+            filters: filters,
+            shelterId: Number(shelterId),
             cookies: cookies,
           }) //filters
         );

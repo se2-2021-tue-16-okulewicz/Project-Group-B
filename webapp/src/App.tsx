@@ -26,7 +26,7 @@ import config from "./config/config";
 import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
 import Settings from "./dog/settings/settings";
 import EditDogDetails from "./dog/editDogDetails/editDogDetails";
-import EditContactInfo from "./contactInfo/editContactInformation";
+import EditContactInfo from "./contactInfo/editContactInfo";
 import DogDetails from "./dog/dogDetails/dogDetails";
 import ShelterListWithDogs from "./shelter/shelterDogsList/shelterListWithDogs";
 import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
