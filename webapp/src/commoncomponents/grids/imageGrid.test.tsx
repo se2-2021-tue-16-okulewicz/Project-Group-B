@@ -9,10 +9,7 @@ import { isNull } from "lodash";
 import ImageGrid from "./imageGrid";
 import { testDogList, testLostDogList } from "../../dog/dogTesting";
 import { Provider } from "react-redux";
-import {
-  Route,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import { store } from "../../app/store";
 
 let container: HTMLDivElement | null = null;

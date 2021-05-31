@@ -7,7 +7,14 @@ import { Delete, Launch } from "@material-ui/icons";
 import InfoIcon from "@material-ui/icons/Info";
 import { useCookies } from "react-cookie";
 import { IShelter } from "../../shelter/shelterInterfaces";
-import { Box, Card, CardActionArea, CardContent, Checkbox, Typography } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  Checkbox,
+  Typography,
+} from "@material-ui/core";
 import { store } from "../../app/store";
 
 export default function SheltersGrid(props: any) {
@@ -32,20 +39,48 @@ export default function SheltersGrid(props: any) {
         (shelter: IShelter) =>
           shelter.id && (
             <GridListTile
-            key={shelter.id}
-            style={{ height: "300px",display:"stretch"}}
-            className="tile"
+              key={shelter.id}
+              style={{ height: "300px", display: "stretch" }}
+              className="tile"
             >
-              <Box className={shelter.name} style={{ overflow: 'hidden',backgroundColor:"white",  height:"90%", }}>
-                <Typography align="center" style={{fontSize: "4vw", height:"inherit", width:"auto",
-                 fontFamily: "Bungee Shade", wordWrap: 'break-word' ,color:"slategray", verticalAlign:"center",  display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <Box
+                className={shelter.name}
+                style={{
+                  overflow: "hidden",
+                  backgroundColor: "white",
+                  height: "90%",
+                }}
+              >
+                <Typography
+                  align="center"
+                  style={{
+                    fontSize: "4vw",
+                    height: "inherit",
+                    width: "auto",
+                    fontFamily: "Bungee Shade",
+                    wordWrap: "break-word",
+                    color: "slategray",
+                    verticalAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
                   {shelter.name}
                 </Typography>
               </Box>
-              <GridListTileBar 
-                style={{height:"20%", backgroundColor:"slategray" }}
+              <GridListTileBar
+                style={{ height: "20%", backgroundColor: "slategray" }}
                 className={shelter.name}
-                title={<span>{shelter.address.city+", "+shelter.address.street+" " +shelter.address.buildingNumber}</span>}
+                title={
+                  <span>
+                    {shelter.address.city +
+                      ", " +
+                      shelter.address.street +
+                      " " +
+                      shelter.address.buildingNumber}
+                  </span>
+                }
                 actionIcon={
                   <IconButton
                     onClick={() => {
@@ -58,7 +93,7 @@ export default function SheltersGrid(props: any) {
                   </IconButton>
                 }
               />
-                  </GridListTile>
+            </GridListTile>
           )
       )}
       {shelters.length <= 2 &&
@@ -70,7 +105,13 @@ export default function SheltersGrid(props: any) {
                 key={"shelter.id1"}
                 style={{ height: "300px" }}
                 className="tile"
-              > <CardContent className={shelter.name} style={{width:"400px"}}/></GridListTile>
+              >
+                {" "}
+                <CardContent
+                  className={shelter.name}
+                  style={{ width: "400px" }}
+                />
+              </GridListTile>
             )
         )}
       {shelters.length == 1 &&
@@ -81,7 +122,12 @@ export default function SheltersGrid(props: any) {
                 key={"shelter.id2"}
                 style={{ height: "300px" }}
                 className="tile"
-              ><CardContent className={shelter.name} style={{width:"400px"}}/></GridListTile>
+              >
+                <CardContent
+                  className={shelter.name}
+                  style={{ width: "400px" }}
+                />
+              </GridListTile>
             )
         )}
     </GridList>

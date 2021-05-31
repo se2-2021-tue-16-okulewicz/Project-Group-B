@@ -181,7 +181,6 @@ export default function ShelterListWithDogs(props: any) {
   }*/
   //clears dog list, when page is refreshed or changed
 
-
   useEffect(() => {
     if (initialRefresh) {
       store.dispatch(clearDogList());
@@ -299,7 +298,7 @@ export default function ShelterListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ShelterDogGrid dogs={shelterDogs}/>
+          <ShelterDogGrid dogs={shelterDogs} />
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
           <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />

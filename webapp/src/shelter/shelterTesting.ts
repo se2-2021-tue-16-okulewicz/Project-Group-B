@@ -5,20 +5,20 @@ export const initAddress: IAddress = {
   street: "",
   postCode: "05-077",
   buildingNumber: 0,
-  additionalAddressLine: ""
- };
+  additionalAddressLine: "",
+};
 
 export const exampleAddress: IAddress = {
- city: "Warsaw",
- street: "Polna",
- postCode: "05-077",
- buildingNumber: 12,
- additionalAddressLine: "line"
+  city: "Warsaw",
+  street: "Polna",
+  postCode: "05-077",
+  buildingNumber: 12,
+  additionalAddressLine: "line",
 };
 
 export const initShelter: IShelter = {
   id: 0,
-  address:initAddress,
+  address: initAddress,
   name: "",
   email: "",
   phoneNumber: "",

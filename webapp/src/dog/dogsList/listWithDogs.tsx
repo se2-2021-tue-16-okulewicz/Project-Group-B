@@ -286,8 +286,8 @@ export default function ListWithDogs(props: any) {
               />
             </BottomNavigation>
           </Grid>
-          <Grid item xs={6} sm={5} md={3} >
-            <BottomNavigation showLabels style={{ height: "100%"}}>
+          <Grid item xs={6} sm={5} md={3}>
+            <BottomNavigation showLabels style={{ height: "100%" }}>
               <BottomNavigationAction
                 showLabel={true}
                 onClick={onRegisterClicked}
@@ -335,9 +335,7 @@ export default function ListWithDogs(props: any) {
                 onClick={onLogOutClicked}
                 icon={<ExitToApp />}
               />
-              <BottomNavigationAction
-                disabled={true}
-              />
+              <BottomNavigationAction disabled={true} />
             </BottomNavigation>
           </Grid>
         </Grid>
@@ -353,10 +351,10 @@ export default function ListWithDogs(props: any) {
           <Toolbar />
           <BottomNavigation />
           <FilterForm
-              filters={filters}
-              updateFilters={(
-                updatedFilters: React.ChangeEvent<{ value: unknown }>
-              ) => updateFilters(updatedFilters)}
+            filters={filters}
+            updateFilters={(
+              updatedFilters: React.ChangeEvent<{ value: unknown }>
+            ) => updateFilters(updatedFilters)}
           />
         </Drawer>
       )}

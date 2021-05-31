@@ -9,11 +9,8 @@ import Login from "./Login";
 import { isNull } from "lodash";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
-import { reducer} from "../app/reducer";
-import {
-  Route,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { reducer } from "../app/reducer";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import { initState } from "../app/stateInterfaces";
 
 let container: HTMLDivElement | null = null;

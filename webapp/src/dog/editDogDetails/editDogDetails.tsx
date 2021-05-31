@@ -28,9 +28,7 @@ import {
   BehaviorsTypes,
   BreedTypes,
 } from "../dogEnums";
-import {
-  initLostDogWithPictureProps,
-} from "../dogClasses";
+import { initLostDogWithPictureProps } from "../dogClasses";
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";

@@ -131,8 +131,8 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: "1.75em",
       fontFamily: "Comfortaa",
       fontWeight: "normal",
-      display:"stretch",
-      minWidth:"300px"
+      display: "stretch",
+      minWidth: "300px",
     },
   })
 );
@@ -173,7 +173,7 @@ scheme.configureEdgeSidebar((builder) => {
 export default function ListWithAdoptDogs(props: any) {
   const history = useHistory();
   const location = useLocation();
-  const {path} = useRouteMatch();
+  const { path } = useRouteMatch();
   const shelterId = Number(location.pathname.split("/shelter/")[1]);
   const [displayLoader, setDisplayLoader] = useState(true);
   const loading = useSelector((state: State) => state.loading as boolean);
@@ -184,8 +184,9 @@ export default function ListWithAdoptDogs(props: any) {
     (state: State) => state.shelterdogs as IShelterDogWithPicture[]
   );
 
-  const shelters = useSelector(
-    (state: State) => state.shelters).filter((shelter:IShelter)=> shelter.id == shelterId)[0] as IShelter;
+  const shelters = useSelector((state: State) => state.shelters).filter(
+    (shelter: IShelter) => shelter.id == shelterId
+  )[0] as IShelter;
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
@@ -290,7 +291,7 @@ export default function ListWithAdoptDogs(props: any) {
         <BottomNavigation showLabels>
           <BottomNavigationAction
             disabled={true}
-            label={shelters ? shelters.name.toUpperCase():"SETTINGS"}
+            label={shelters ? shelters.name.toUpperCase() : "SETTINGS"}
             classes={{ label: classes.title }}
           />
         </BottomNavigation>
@@ -307,7 +308,7 @@ export default function ListWithAdoptDogs(props: any) {
               color="primary"
               onClick={onLostDogsCLicked}
             >
-              <Pets/>
+              <Pets />
               <Grid item xs={1} />
               Lost Dogs
             </MenuItem>
@@ -317,7 +318,7 @@ export default function ListWithAdoptDogs(props: any) {
               color="primary"
               onClick={onShelterClicked}
             >
-              <House/>
+              <House />
               <Grid item xs={1} />
               Shelter
             </MenuItem>
@@ -336,21 +337,39 @@ export default function ListWithAdoptDogs(props: any) {
               className={classes.menuItem}
               style={{ display: "flex", marginBottom: "10%" }}
             />
-            {shelters != null && shelters.address != null ?
-            <span>{shelters.address.street+" "+shelters.address.buildingNumber+", "+shelters.address.postCode+" "+
-            shelters.address.city}</span> :""}
+            {shelters != null && shelters.address != null ? (
+              <span>
+                {shelters.address.street +
+                  " " +
+                  shelters.address.buildingNumber +
+                  ", " +
+                  shelters.address.postCode +
+                  " " +
+                  shelters.address.city}
+              </span>
+            ) : (
+              ""
+            )}
             <Divider
               className={classes.menuItem}
               style={{ display: "flex", marginBottom: "10%" }}
             />
-            {shelters != null ?
-            <span>{shelters.email}</span>:""}
+            {shelters != null ? <span>{shelters.email}</span> : ""}
             <Divider
               className={classes.menuItem}
               style={{ display: "flex", marginBottom: "10%" }}
             />
-            {shelters != null ?
-            <span>{shelters.phoneNumber.substr(0,3)+"-"+shelters.phoneNumber.substr(3,3)+"-"+shelters.phoneNumber.substr(6,3)}</span>:""}
+            {shelters != null ? (
+              <span>
+                {shelters.phoneNumber.substr(0, 3) +
+                  "-" +
+                  shelters.phoneNumber.substr(3, 3) +
+                  "-" +
+                  shelters.phoneNumber.substr(6, 3)}
+              </span>
+            ) : (
+              ""
+            )}
             <Divider
               className={classes.menuItem}
               style={{ display: "flex", marginBottom: "10%" }}
@@ -383,25 +402,25 @@ export default function ListWithAdoptDogs(props: any) {
         </SidebarContent>
       </DrawerSidebar>
       <Content>
-          <InfiniteScroll
-            dataLength={shelterDogs.length}
-            scrollThreshold={0.9}
-            next={fetchMore}
-            hasMore={!lastPage}
-            loader={
-              ((displayLoader || loading) && <LoadingPopup />) ||
-              (!displayLoader && <></>)
-            }
-          >
-            <Toolbar />
-            <ShelterDogGrid
-              dogs={shelterDogs}
-              path={path}
-              /*redirectToDogDetailsOrEdit={(id: number) =>
+        <InfiniteScroll
+          dataLength={shelterDogs.length}
+          scrollThreshold={0.9}
+          next={fetchMore}
+          hasMore={!lastPage}
+          loader={
+            ((displayLoader || loading) && <LoadingPopup />) ||
+            (!displayLoader && <></>)
+          }
+        >
+          <Toolbar />
+          <ShelterDogGrid
+            dogs={shelterDogs}
+            path={path}
+            /*redirectToDogDetailsOrEdit={(id: number) =>
                 redirectToDogDetailsOrEdit(id)
               }*/
-            />
-          </InfiniteScroll>
+          />
+        </InfiniteScroll>
       </Content>
     </Root>
   );

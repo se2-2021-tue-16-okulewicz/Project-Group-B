@@ -4,7 +4,11 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import { IShelterDog, IShelterDogWithPicture } from "../../dog/dogInterfaces";
-import { CheckBoxOutlineBlank, CheckBoxTwoTone, Delete } from "@material-ui/icons";
+import {
+  CheckBoxOutlineBlank,
+  CheckBoxTwoTone,
+  Delete,
+} from "@material-ui/icons";
 import { useCookies } from "react-cookie";
 import { Checkbox } from "@material-ui/core";
 

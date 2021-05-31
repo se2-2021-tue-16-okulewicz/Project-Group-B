@@ -8,10 +8,7 @@ import { act } from "react-dom/test-utils";
 import { isNull } from "lodash";
 import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import {
-  Route,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import ListWithShelters from "./listWithShelters";
 
 let container: HTMLDivElement | null = null;

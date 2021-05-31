@@ -23,7 +23,7 @@ const Footer = (props: any) => {
   };
 
   return (
-    <footer className={props.position?props.position:"footer"}>
+    <footer className={props.position ? props.position : "footer"}>
       <div className="footer-container">
         <button
           className="LogoutButton"

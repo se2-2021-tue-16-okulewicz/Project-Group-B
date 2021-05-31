@@ -34,11 +34,11 @@ export default function ImageGrid(props: any) {
           dog.picture && (
             <GridListTile
               key={dog.id}
-              style={{ minHeight: "300px", display:"stretch" }}
+              style={{ minHeight: "300px", display: "stretch" }}
               className="tile"
             >
               <img
-                style={{ minHeight: "300px", display:"stretch" }}
+                style={{ minHeight: "300px", display: "stretch" }}
                 src={`data:${dog.picture.fileType};base64,${
                   dog.picture.data as ArrayBuffer
                 }`}
