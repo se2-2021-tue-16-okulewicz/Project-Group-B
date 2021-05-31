@@ -14,6 +14,7 @@ export type Error = {
   export type State = {
     dogs: ILostDogWithPicture[] | any; //if these are not any, the clear actions throw an error (only for dogs with pictures)
     shelterdogs: IShelterDog[] | any;
+    shelter: IShelter | any;
     shelters: IShelter[] | any;
     editedDog: ILostDogWithPicture | any; //
     dogsLastPage: boolean | null;
@@ -32,6 +33,7 @@ export type Error = {
     shelters: [],
     shelterdogs: [],
     editedDog: null,
+    shelter: null,
     dogsLastPage: false,
     dogsRequireRefresh: true,
     settingsRequireRefresh: true,

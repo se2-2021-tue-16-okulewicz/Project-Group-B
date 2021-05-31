@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import FilterForm from "./filterForm";
 import { IFilterSort, initFilterProps } from "./filterInterface";
-import { InputFormControl } from "../../commoncomponents/formHandlers";
+import { InputFormControl } from "../../commonComponents/formHandlers";
 import config from "../../config/config";
 
 let container: HTMLDivElement | null = null;

@@ -291,7 +291,7 @@ export const fetchShelterDogsThunk = createAsyncThunk<
   }
 );
 
-export const fetchShelters = createAsyncThunk<
+export const fetchSheltersThunk = createAsyncThunk<
   RequestResponse<IShelter[], Number>,
   { filters: IFilters; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<IShelter[], Number> }
@@ -332,6 +332,22 @@ export const fetchOneDogThunk = createAsyncThunk<
     );
   }
   return response as RequestResponse<ILostDogWithPicture, undefined>;
+});
+
+export const fetchOneShelterThunk = createAsyncThunk<
+  RequestResponse<IShelter, undefined>,
+  { id: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelter, undefined> }
+>("fetchOneShelter", async (item: IFilters, { rejectWithValue }) => {
+  const response: RequestResponse<IShelter, undefined> =
+    await Fetching.fetchOneShelter(item.id, item.cookies);
+
+  if (response.response.successful !== true) {
+    return rejectWithValue(
+      response as RequestResponse<IShelter, undefined>
+    );
+  }
+  return response as RequestResponse<IShelter, undefined>;
 });
 
 export const registerRegularUserThunk = createAsyncThunk<

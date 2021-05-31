@@ -30,7 +30,7 @@ import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import Footer from "../../utilityComponents/Footer";
 import { IFilterSort } from "../../dog/dogsList/filterInterface";
 import { IShelter } from "../shelterInterfaces";
-import SheltersGrid from "../../commoncomponents/sheltersGrid";
+import SheltersGrid from "../../commonComponents/sheltersGrid";
 import { State } from "../../app/stateInterfaces";
 
 const SidebarTrigger = getSidebarTrigger(styled);
@@ -204,7 +204,7 @@ export default function ListWithShelters(props: any) {
       // fetch and append page 0
       try {
         store.dispatch(
-          Actions.fetchShelters({
+          Actions.fetchSheltersThunk({
             filters: {
               ...filters,
               page: filters.page,
@@ -229,7 +229,7 @@ export default function ListWithShelters(props: any) {
       setFetching(true);
       try {
         store.dispatch(
-          Actions.fetchShelters({
+          Actions.fetchSheltersThunk({
             filters: {
               ...filters,
               page: filters.page,

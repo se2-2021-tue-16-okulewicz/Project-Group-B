@@ -19,7 +19,7 @@ import { clearDogList } from "../../app/actions";
 import {
   SelectFormControl,
   DateFormControl,
-} from "../../commoncomponents/formHandlers";
+} from "../../commonComponents/formHandlers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

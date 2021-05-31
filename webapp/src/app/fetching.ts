@@ -182,6 +182,22 @@ export async function fetchOneDog(
   );
 }
 
+export async function fetchOneShelter(
+  id: Number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<IShelter, undefined>> {
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/shelters/${id}`,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
 export async function addDog(
   dog: ILostDog,
   picture: IPicture,

@@ -26,7 +26,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../../config/config";
-import ImageGrid from "../../commoncomponents/imageGrid";
+import ImageGrid from "../../commonComponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ExitToApp, House, Pets, Search, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../app/actions";

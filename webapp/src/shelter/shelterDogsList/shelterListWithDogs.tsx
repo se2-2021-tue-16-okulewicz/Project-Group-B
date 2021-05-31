@@ -30,7 +30,7 @@ import { clearDogList, logoutThunk } from "../../app/actions";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import Footer from "../../utilityComponents/Footer";
 import { IFilterSort } from "../../dog/dogsList/filterInterface";
-import ShelterDogGrid from "../../commoncomponents/shelterDogGrid";
+import ShelterDogGrid from "../../commonComponents/shelterDogGrid";
 import { State } from "../../app/stateInterfaces";
 
 const Content = getContent(styled);

@@ -27,7 +27,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../../config/config";
-import ImageGrid from "../../commoncomponents/imageGrid";
+import ImageGrid from "../../commonComponents/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SendIcon from "@material-ui/icons/Send";
 import { clearDogList, logoutThunk } from "../../app/actions";
@@ -46,9 +46,10 @@ import ContactInfo from "../../contactInfo/contactInformation";
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { IShelterDogWithPicture } from "../../dog/dogInterfaces";
 import ShelterListWithDogs from "../shelterDogsList/shelterListWithDogs";
-import SheltersGrid from "../../commoncomponents/sheltersGrid";
-import ShelterDogGrid from "../../commoncomponents/shelterDogGrid";
+import SheltersGrid from "../../commonComponents/sheltersGrid";
+import ShelterDogGrid from "../../commonComponents/shelterDogGrid";
 import { State } from "../../app/stateInterfaces";
+import { IShelter } from "../shelterInterfaces";
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
@@ -176,17 +177,16 @@ export default function ListWithAdoptDogs(props: any) {
   //const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
+  const shelterInfo = useSelector(
+    (state:State) => state.shelter as IShelter
+  )
   const shelterDogs = useSelector(
     (state: State) => state.dogs as IShelterDogWithPicture[]
-  );
-  const contactInfo = useSelector(
-    (state: State) => state.contactInfo as IContactInfo
   );
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
   );
   const [pageRefresh, setPageRefresh] = useState(true);
-  const pages = useSelector((state: State) => state.pages as number);
   const classes = useStyles();
 
   const [filters, setFilters] = useState<IFilters>({
@@ -231,7 +231,7 @@ export default function ListWithAdoptDogs(props: any) {
     if (refreshRequired && !lastPage) {
       try {
         store.dispatch(
-          Actions.fetchDogsThunk({
+          Actions.fetchSheltersThunk({
             filters: {
               ...filters,
               page: config.defaultFilters.page,
