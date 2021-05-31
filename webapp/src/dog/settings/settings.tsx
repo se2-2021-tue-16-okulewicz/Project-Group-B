@@ -40,6 +40,7 @@ import ContactInfo from "../../contactInfo/contactInformation";
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { State } from "../../app/stateInterfaces";
 import ImageGrid from "../../commonComponents/grids/imageGrid";
+
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);

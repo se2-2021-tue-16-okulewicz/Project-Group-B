@@ -3,26 +3,11 @@
  */
 
 import React from "react";
-import ReactDOM, { render, unmountComponentAtNode } from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 import {
   act,
-  createRenderer,
-  renderIntoDocument,
-  Simulate,
 } from "react-dom/test-utils";
 import { isNull } from "lodash";
-import { Button, TextField } from "@material-ui/core";
-import ImageGrid from "./grids/imageGrid";
-import { testDogList } from "../dog/dogTesting";
-import { Provider } from "react-redux";
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from "react-router-dom";
-import { store } from "../app/store";
 import {
   DateFormControl,
   InputFormControl,
