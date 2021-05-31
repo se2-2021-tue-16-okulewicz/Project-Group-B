@@ -34,7 +34,7 @@ import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import ImageUpload from "../../dog/registerDog/ImageUpload";
+import ImageUpload from "../../commonComponents/ImageUpload";
 import config from "../../config/config";
 
 const useStyles = makeStyles((theme: Theme) =>

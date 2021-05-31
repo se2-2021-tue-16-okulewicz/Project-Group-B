@@ -12,13 +12,12 @@ import {
   Select,
   TextField,
 } from "@material-ui/core";
-import "../registerDog/ImageUpload.css";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
 import DateFnsUtils from "@date-io/date-fns";
-import ImageUpload from "../registerDog/ImageUpload";
+import ImageUpload from "../../commonComponents/ImageUpload";
 import {
   ColorTypes,
   HairTypes,
@@ -30,9 +29,7 @@ import {
   BreedTypes,
 } from "../dogEnums";
 import {
-  initLostDogProps,
   initLostDogWithPictureProps,
-  initPicture,
 } from "../dogClasses";
 import { ILostDog, IPicture, ILostDogWithPicture } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";

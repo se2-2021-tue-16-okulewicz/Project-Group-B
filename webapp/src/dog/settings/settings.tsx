@@ -26,7 +26,7 @@ import Layout, {
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../../config/config";
-import ImageGrid from "../../commonComponents/imageGrid";
+import ImageGrid from "../../commonComponents/grids/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SendIcon from "@material-ui/icons/Send";
 import { clearDogList, logoutThunk } from "../../app/actions";

@@ -12,7 +12,7 @@ import {
 } from "react-dom/test-utils";
 import { isNull } from "lodash";
 import { Button, TextField } from "@material-ui/core";
-import ImageGrid from "./imageGrid";
+import ImageGrid from "./grids/imageGrid";
 import { testDogList } from "../dog/dogTesting";
 import { Provider } from "react-redux";
 import {

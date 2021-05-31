@@ -3,26 +3,13 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
-import InfoIcon from "@material-ui/icons/Info";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import { Edit } from "@material-ui/icons";
-import { store } from "../app/store";
-import { fetchOneDogThunk } from "../app/actions";
+import { IShelterDog, IShelterDogWithPicture } from "../../dog/dogInterfaces";
+import { Delete } from "@material-ui/icons";
 import { useCookies } from "react-cookie";
 
-export default function ImageGrid(props: any) {
-  const dogs = props.dogs as ILostDogWithPicture[]; // eslint-disable-next-line
+export default function ShelterDogGrid(props: any) {
+  const dogs = props.dogs as IShelterDogWithPicture[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  const redirectToDogDetailsOrEdit = (id: number) => {
-    store.dispatch(
-      fetchOneDogThunk({
-        id: id as number,
-        cookies: cookies,
-      })
-    );
-    props.redirectToDogDetailsOrEdit(id);
-  };
-
   return (
     <GridList
       cols={3}
@@ -30,7 +17,7 @@ export default function ImageGrid(props: any) {
       style={{ margin: "0", width: "100%", display: "flex" }}
     >
       {dogs.map(
-        (dog: ILostDogWithPicture) =>
+        (dog: IShelterDogWithPicture) =>
           dog.picture && (
             <GridListTile
               key={dog.id}
@@ -46,20 +33,13 @@ export default function ImageGrid(props: any) {
               <GridListTileBar
                 className={dog.name}
                 title={dog.name}
-                subtitle={
-                  <span>
-                    {dog.isFound ? "Found" : "Lost in " + dog.location.city}
-                  </span>
-                }
+                subtitle={<span>{dog.breed}</span>}
                 actionIcon={
                   <IconButton
                     aria-label={`info about ${dog.name}`}
                     style={{ color: "rgba(255, 255, 255, 0.54)" }}
-                    onClick={() => {
-                      redirectToDogDetailsOrEdit(dog.id as number);
-                    }}
                   >
-                    {props.path === "/dogs" ? <InfoIcon /> : <Edit />}
+                    <Delete />
                   </IconButton>
                 }
               />
@@ -69,10 +49,11 @@ export default function ImageGrid(props: any) {
       {dogs.length <= 2 &&
         dogs.length > 0 &&
         dogs.map(
-          (dog: ILostDogWithPicture) =>
-            dog.picture && (
+          (dog: IShelterDogWithPicture) =>
+            dog.picture &&
+            dog == dogs[0] && (
               <GridListTile
-                key={dog.id + 1}
+                key={dog.name + "dog.id1"}
                 style={{ height: "300px" }}
                 className="tile"
               >
@@ -87,10 +68,11 @@ export default function ImageGrid(props: any) {
         )}
       {dogs.length == 1 &&
         dogs.map(
-          (dog: ILostDogWithPicture) =>
-            dog.picture && (
+          (dog: IShelterDogWithPicture) =>
+            dog.picture &&
+            dog == dogs[0] && (
               <GridListTile
-                key={dog.id + 2}
+                key={dog.name + "dog.id2"}
                 style={{ height: "300px" }}
                 className="tile"
               >

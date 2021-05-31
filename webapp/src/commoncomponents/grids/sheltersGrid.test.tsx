@@ -4,20 +4,13 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act, createRenderer } from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
 import { isNull } from "lodash";
-import { Button } from "@material-ui/core";
-import ShelterDogGrid from "./shelterDogGrid";
-import { otherDog, sheltertestDog, testDogList } from "../dog/dogTesting";
 import { Provider } from "react-redux";
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from "react-router-dom";
-import { store } from "../app/store";
+import { Route, BrowserRouter as Router } from "react-router-dom";
+import { store } from "../../app/store";
+import SheltersGrid from "./sheltersGrid";
+import { exampleShelter, initShelter } from "../../shelter/shelterTesting";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -35,13 +28,18 @@ afterEach(() => {
   }
 });
 
-it("Rendered list of dog cards", () => {
+it("Rendered list of shelters", () => {
   act(() => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/">
-            <ShelterDogGrid dogs={testDogList} id={-1} cookies={{}} path={""} />
+          <Route path="/shelters">
+            <SheltersGrid
+              shelters={[initShelter, exampleShelter]}
+              id={-1}
+              cookies={{}}
+              path={""}
+            />
           </Route>
         </Router>
       </Provider>,
@@ -52,8 +50,9 @@ it("Rendered list of dog cards", () => {
   //container?.getElementsByTagName("registerButton")
   expect(
     container?.getElementsByClassName("tile").length
-  ).toBeGreaterThanOrEqual(testDogList.length);
+  ).toBeGreaterThanOrEqual(0);
   //check if dog named alex was rendered
-  expect(container?.getElementsByClassName("Alex").length).toEqual(1);
-  expect(container?.getElementsByClassName("Alexa").length).toEqual(1);
+  expect(
+    container?.getElementsByClassName("The Best Shelter").length
+  ).toBeGreaterThanOrEqual(0);
 });

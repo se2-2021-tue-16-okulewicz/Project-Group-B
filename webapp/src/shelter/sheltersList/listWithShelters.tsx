@@ -30,7 +30,7 @@ import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import Footer from "../../utilityComponents/Footer";
 import { IFilterSort } from "../../dog/dogsList/filterInterface";
 import { IShelter } from "../shelterInterfaces";
-import SheltersGrid from "../../commonComponents/sheltersGrid";
+import SheltersGrid from "../../commonComponents/grids/sheltersGrid";
 import { State } from "../../app/stateInterfaces";
 
 const SidebarTrigger = getSidebarTrigger(styled);

@@ -6,9 +6,9 @@ import IconButton from "@material-ui/core/IconButton";
 import { Delete, Launch } from "@material-ui/icons";
 import InfoIcon from "@material-ui/icons/Info";
 import { useCookies } from "react-cookie";
-import { IShelter } from "../shelter/shelterInterfaces";
+import { IShelter } from "../../shelter/shelterInterfaces";
 import { Box, Card, CardActionArea, CardContent, Checkbox, Typography } from "@material-ui/core";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 
 export default function SheltersGrid(props: any) {
   const shelters = props.shelters as IShelter[]; // eslint-disable-next-line

@@ -26,7 +26,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
 import config from "../../config/config";
-import ImageGrid from "../../commonComponents/imageGrid";
+import ImageGrid from "../../commonComponents/grids/imageGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ExitToApp, House, Pets, Search, Settings } from "@material-ui/icons";
 import { clearDogList, logoutThunk } from "../../app/actions";
@@ -288,7 +288,7 @@ export default function ListWithDogs(props: any) {
             </BottomNavigation>
           </Grid>
           <Grid item xs={6} sm={5} md={3} >
-            <BottomNavigation showLabels style={{ height: "100%", width:"300px" }}>
+            <BottomNavigation showLabels style={{ height: "100%"}}>
               <BottomNavigationAction
                 showLabel={true}
                 onClick={onRegisterClicked}

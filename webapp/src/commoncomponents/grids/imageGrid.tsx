@@ -3,13 +3,26 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
-import { IShelterDog, IShelterDogWithPicture } from "../dog/dogInterfaces";
-import { Delete } from "@material-ui/icons";
+import InfoIcon from "@material-ui/icons/Info";
+import { ILostDogWithPicture } from "../../dog/dogInterfaces";
+import { Edit } from "@material-ui/icons";
+import { store } from "../../app/store";
+import { fetchOneDogThunk } from "../../app/actions";
 import { useCookies } from "react-cookie";
 
-export default function ShelterDogGrid(props: any) {
-  const dogs = props.dogs as IShelterDogWithPicture[]; // eslint-disable-next-line
+export default function ImageGrid(props: any) {
+  const dogs = props.dogs as ILostDogWithPicture[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
+  const redirectToDogDetailsOrEdit = (id: number) => {
+    store.dispatch(
+      fetchOneDogThunk({
+        id: id as number,
+        cookies: cookies,
+      })
+    );
+    props.redirectToDogDetailsOrEdit(id);
+  };
+
   return (
     <GridList
       cols={3}
@@ -17,14 +30,15 @@ export default function ShelterDogGrid(props: any) {
       style={{ margin: "0", width: "100%", display: "flex" }}
     >
       {dogs.map(
-        (dog: IShelterDogWithPicture) =>
+        (dog: ILostDogWithPicture) =>
           dog.picture && (
             <GridListTile
               key={dog.id}
-              style={{ height: "300px" }}
+              style={{ minHeight: "300px", display:"stretch" }}
               className="tile"
             >
               <img
+                style={{ minHeight: "300px", display:"stretch" }}
                 src={`data:${dog.picture.fileType};base64,${
                   dog.picture.data as ArrayBuffer
                 }`}
@@ -33,13 +47,20 @@ export default function ShelterDogGrid(props: any) {
               <GridListTileBar
                 className={dog.name}
                 title={dog.name}
-                subtitle={<span>{dog.breed}</span>}
+                subtitle={
+                  <span>
+                    {dog.isFound ? "Found" : "Lost in " + dog.location.city}
+                  </span>
+                }
                 actionIcon={
                   <IconButton
                     aria-label={`info about ${dog.name}`}
                     style={{ color: "rgba(255, 255, 255, 0.54)" }}
+                    onClick={() => {
+                      redirectToDogDetailsOrEdit(dog.id as number);
+                    }}
                   >
-                    <Delete />
+                    {props.path === "/dogs" ? <InfoIcon /> : <Edit />}
                   </IconButton>
                 }
               />
@@ -49,11 +70,10 @@ export default function ShelterDogGrid(props: any) {
       {dogs.length <= 2 &&
         dogs.length > 0 &&
         dogs.map(
-          (dog: IShelterDogWithPicture) =>
-            dog.picture &&
-            dog == dogs[0] && (
+          (dog: ILostDogWithPicture) =>
+            dog.picture && (
               <GridListTile
-                key={dog.name + "dog.id1"}
+                key={dog.id + 1}
                 style={{ height: "300px" }}
                 className="tile"
               >
@@ -68,11 +88,10 @@ export default function ShelterDogGrid(props: any) {
         )}
       {dogs.length == 1 &&
         dogs.map(
-          (dog: IShelterDogWithPicture) =>
-            dog.picture &&
-            dog == dogs[0] && (
+          (dog: ILostDogWithPicture) =>
+            dog.picture && (
               <GridListTile
-                key={dog.name + "dog.id2"}
+                key={dog.id + 2}
                 style={{ height: "300px" }}
                 className="tile"
               >
