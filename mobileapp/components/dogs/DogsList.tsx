@@ -131,10 +131,10 @@ export default function DogsList({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <ImageBackground source={bg} style={styles.image}>
         {isLoading ? (
-          <Text>Loading...</Text>
+          <Text style={styles.textContainer}> Loading... </Text>
         ) : (
           <View>
-            <Text>Displaying dogs: {myDogs.length}</Text>
+            <Text style={styles.textContainer}> Displaying dogs: {myDogs.length} </Text>
 
             <FlatList
               data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
@@ -149,6 +149,15 @@ export default function DogsList({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  textContainer: {
+    backgroundColor: 'white', 
+    borderRadius: 10, 
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 5,
+    marginBottom: 5,
+  },
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
