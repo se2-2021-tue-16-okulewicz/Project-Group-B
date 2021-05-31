@@ -3,21 +3,16 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
-import { Delete, Launch } from "@material-ui/icons";
-import InfoIcon from "@material-ui/icons/Info";
 import { useCookies } from "react-cookie";
 import { IShelter } from "../../shelter/shelterInterfaces";
 import {
   Box,
-  Card,
-  CardActionArea,
   CardContent,
   Checkbox,
   Typography,
 } from "@material-ui/core";
-import { store } from "../../app/store";
 
-export default function SheltersGrid(props: any) {
+export default function SheltersInfoGrid(props: any) {
   const shelters = props.shelters as IShelter[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const redirectToShelter = (id: number) => {

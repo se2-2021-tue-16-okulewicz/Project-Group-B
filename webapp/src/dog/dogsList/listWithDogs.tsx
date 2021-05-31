@@ -34,17 +34,13 @@ import Footer from "../../utilityComponents/Footer";
 import FilterForm from "./filterForm";
 import { IFilterSort } from "./filterInterface";
 import { State } from "../../app/stateInterfaces";
-import ImageGrid from "../../commonComponents/grids/imageGrid";
+import LostDogsGrid from "../../commonComponents/grids/lostDogsGrid";
 
-const SidebarTrigger = getSidebarTrigger(styled);
-const DrawerSidebar = getDrawerSidebar(styled);
-const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
-const SidebarContent = getSidebarContent(styled);
 
 const scheme = Layout();
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     menuItem: {
       minWidth: "100%",
@@ -369,7 +365,7 @@ export default function ListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ImageGrid
+          <LostDogsGrid
             dogs={dogs}
             path={path}
             redirectToDogDetailsOrEdit={(id: number) =>

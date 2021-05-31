@@ -14,10 +14,6 @@ import {
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
-import { IFilterSort, initFilterProps } from "../dog/dogsList/filterInterface";
-import { Console } from "node:console";
-import { FilterCenterFocusSharp, FilterNone } from "@material-ui/icons";
-import { filter } from "lodash";
 import { IShelter } from "../shelter/shelterInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
@@ -85,7 +81,7 @@ export async function fetchShelterDogs(
       : Object.keys(filters)
           .map((filterName) => {
             const value = String(filters[filterName]).trim();
-            return value && value != "null" ? `${filterName}=${value}` : "";
+            return value && value !=="null" ? `${filterName}=${value}` : "";
           })
           .filter((x) => x !== "")
           .join("&");
@@ -111,7 +107,7 @@ export async function fetchShelters(
       : Object.keys(filters)
           .map((filterName) => {
             const value = String(filters[filterName]).trim();
-            return value && value != "null" ? `${filterName}=${value}` : "";
+            return value && value !=="null" ? `${filterName}=${value}` : "";
           })
           .filter((x) => x !== "")
           .join("&");
@@ -142,14 +138,14 @@ export async function fetchDogs(
                 .map((subname) => {
                   const name = filterName + "." + subname.split("_").join(".");
                   const value = String(sub[subname]).trim();
-                  return value && value != "null" ? `${name}=${value}` : "";
+                  return value && value !=="null" ? `${name}=${value}` : "";
                 })
                 .filter((x) => x !== "")
                 .join("&");
               return subFilters ? subFilters : "";
             } else {
               const value = String(filters[filterName]).trim();
-              return value && value != "null" ? `${filterName}=${value}` : "";
+              return value && value !=="null" ? `${filterName}=${value}` : "";
             }
           })
           .filter((x) => x !== "")

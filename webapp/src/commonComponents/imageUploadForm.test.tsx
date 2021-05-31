@@ -5,9 +5,9 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import ImageUpload from "./ImageUpload";
 import { isNull } from "lodash";
 import { fireEvent } from "@testing-library/dom";
+import ImageUploadForm from "./imageUploadForm";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -27,7 +27,7 @@ afterEach(() => {
 
 it("Render upload image part of dog register", () => {
   act(() => {
-    render(<ImageUpload />, container);
+    render(<ImageUploadForm />, container);
   });
   //fireEvent.change(input, {target:{value=""}});
   expect(container?.getElementsByClassName("imageContainer").length).toBe(1);

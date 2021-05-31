@@ -19,7 +19,7 @@ import { clearDogList } from "../../app/actions";
 import {
   SelectFormControl,
   DateFormControl,
-} from "../../commoncomponents/formHandlers";
+} from "../../commonComponents/dogFormsHandlers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -82,7 +82,7 @@ export default function FilterForm(props: any) {
   };
 
   function calendarHandler(date: MaterialUiPickersDate, name: string): void {
-    if (date == new Date(1900, 1, 1, 0, 0, 0, 0) || date == null) {
+    if (date === new Date(1900, 1, 1, 0, 0, 0, 0) || date === null) {
       let newField = {
         ...lostDogFields,
         filter: { ...lostDogFields.filter, [name]: null },
@@ -90,7 +90,7 @@ export default function FilterForm(props: any) {
       setLostDogFields(newField);
     } else if (date) {
       const month = (
-        (date?.getDate().toString().length == 1 ? "0" : "") +
+        (date?.getDate().toString().length === 1 ? "0" : "") +
         (date ? date.toLocaleDateString() : "")
       )
         .split(".")
@@ -118,7 +118,7 @@ export default function FilterForm(props: any) {
   };
 
   const updateOrder = (e: React.ChangeEvent<{ name?: string; value: any }>) => {
-    if (typeof e.target.value == "string") {
+    if (typeof e.target.value === "string") {
       setOrder(e.target.value);
     }
   };
@@ -131,7 +131,7 @@ export default function FilterForm(props: any) {
 
   const onSortClicked = () => {
     setLostDogFields(props.filters);
-    if (sort != "" && order != "") {
+    if (sort !== "" && order !== "") {
       lostDogFields.sort = sort + "," + order;
     }
     props.updateFilters(lostDogFields);
@@ -296,7 +296,7 @@ export default function FilterForm(props: any) {
               endAdornment: (
                 <InputAdornment position="end">
                   {lostDogFields.filter?.ageFrom
-                    ? "Year" + (lostDogFields.filter?.ageFrom != 1 ? "s" : "")
+                    ? "Year" + (lostDogFields.filter?.ageFrom !==1 ? "s" : "")
                     : ""}
                 </InputAdornment>
               ),
@@ -319,7 +319,7 @@ export default function FilterForm(props: any) {
               endAdornment: (
                 <InputAdornment position="end">
                   {lostDogFields.filter?.ageTo
-                    ? "Year" + (lostDogFields.filter?.ageTo != 1 ? "s" : "")
+                    ? "Year" + (lostDogFields.filter?.ageTo !==1 ? "s" : "")
                     : ""}
                 </InputAdornment>
               ),

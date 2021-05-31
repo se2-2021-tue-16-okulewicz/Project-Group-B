@@ -5,7 +5,7 @@ import {
   BottomNavigationAction,
   Grid,
 } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
@@ -14,11 +14,8 @@ import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
 import Layout, {
   getContent,
-  getDrawerSidebar,
   getHeader,
   Root,
-  getSidebarTrigger,
-  getCollapseBtn,
 } from "@mui-treasury/layout";
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -31,7 +28,7 @@ import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import Footer from "../../utilityComponents/Footer";
 import { IFilterSort } from "../../dog/dogsList/filterInterface";
 import { State } from "../../app/stateInterfaces";
-import ShelterDogGrid from "../../commonComponents/grids/shelterDogGrid";
+import ShelterDogsGrid from "../../commonComponents/grids/shelterDogsGrid";
 
 const Content = getContent(styled);
 const Header = getHeader(styled);
@@ -298,7 +295,7 @@ export default function ShelterListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ShelterDogGrid dogs={shelterDogs} />
+          <ShelterDogsGrid dogs={shelterDogs} />
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
           <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />

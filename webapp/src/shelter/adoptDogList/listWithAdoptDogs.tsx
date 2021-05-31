@@ -39,9 +39,8 @@ import { IFilters } from "../../utilityComponents/utilities";
 import { IShelterDogWithPicture } from "../../dog/dogInterfaces";
 import { State } from "../../app/stateInterfaces";
 import { IShelter } from "../shelterInterfaces";
-import ShelterDogGrid from "../../commonComponents/grids/shelterDogGrid";
+import ShelterDogsGrid from "../../commonComponents/grids/shelterDogsGrid";
 
-const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
@@ -160,7 +159,7 @@ scheme.configureEdgeSidebar((builder) => {
     });
 });
 
-export default function ListWithAdoptDogs(props: any) {
+export default function ListWithAdoptDogs() {
   const history = useHistory();
   const location = useLocation();
   const { path } = useRouteMatch();
@@ -175,7 +174,7 @@ export default function ListWithAdoptDogs(props: any) {
   );
 
   const shelters = useSelector((state: State) => state.shelters).filter(
-    (shelter: IShelter) => shelter.id == shelterId
+    (shelter: IShelter) => shelter.id === shelterId
   )[0] as IShelter;
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh as boolean
@@ -403,7 +402,7 @@ export default function ListWithAdoptDogs(props: any) {
           }
         >
           <Toolbar />
-          <ShelterDogGrid dogs={shelterDogs} path={path} />
+          <ShelterDogsGrid dogs={shelterDogs} path={path} />
         </InfiniteScroll>
       </Content>
     </Root>

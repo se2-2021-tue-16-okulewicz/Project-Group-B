@@ -36,7 +36,7 @@ import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { ValidateFetchedDog } from "../../utilityComponents/validation";
-import ImageUpload from "../../commonComponents/ImageUpload";
+import ImageUpload from "../../commonComponents/imageUploadForm";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

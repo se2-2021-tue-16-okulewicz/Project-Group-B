@@ -6,7 +6,6 @@ import {
   Divider,
   Grid,
   MenuItem,
-  Toolbar,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useCookies } from "react-cookie";
@@ -39,7 +38,7 @@ import { IFilters } from "../../utilityComponents/utilities";
 import ContactInfo from "../../contactInfo/contactInformation";
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { State } from "../../app/stateInterfaces";
-import ImageGrid from "../../commonComponents/grids/imageGrid";
+import LostDogsGrid from "../../commonComponents/grids/lostDogsGrid";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -384,7 +383,7 @@ export default function Settings(props: any) {
               (!displayLoader && <></>)
             }
           >
-            <ImageGrid
+            <LostDogsGrid
               dogs={dogs}
               path={path}
               redirectToDogDetailsOrEdit={(id: number) =>

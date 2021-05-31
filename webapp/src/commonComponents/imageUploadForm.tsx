@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./ImageUpload.css";
+import "./imageUploadForm.css"
 import { InputLabel } from "@material-ui/core";
 const types = ["image/jpg", "image/jpeg", "image/png"];
 
-const ImageUpload = (props: any) => {
+const ImageUploadForm = (props: any) => {
   const [file, setFile] = useState(null);
   const [newImage, setNewImage] = useState(false);
 
@@ -45,4 +45,4 @@ const ImageUpload = (props: any) => {
   );
 };
 
-export default ImageUpload;
+export default ImageUploadForm;

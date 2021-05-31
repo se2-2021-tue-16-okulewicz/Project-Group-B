@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import FilterForm from "./filterForm";
 import config from "../../config/config";
-import { InputFormControl } from "../../commonComponents/formHandlers";
+import { InputFormControl } from "../../commonComponents/dogFormsHandlers";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {

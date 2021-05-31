@@ -5,7 +5,7 @@ import {
   BottomNavigationAction,
   Grid,
 } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
@@ -13,11 +13,8 @@ import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
 import Layout, {
   getContent,
-  getDrawerSidebar,
   getHeader,
   Root,
-  getSidebarTrigger,
-  getCollapseBtn,
 } from "@mui-treasury/layout";
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -31,16 +28,13 @@ import Footer from "../../utilityComponents/Footer";
 import { IFilterSort } from "../../dog/dogsList/filterInterface";
 import { IShelter } from "../shelterInterfaces";
 import { State } from "../../app/stateInterfaces";
-import SheltersGrid from "../../commonComponents/grids/sheltersGrid";
+import SheltersInfoGrid from "../../commonComponents/grids/sheltersInfoGrid";
 
-const SidebarTrigger = getSidebarTrigger(styled);
-const DrawerSidebar = getDrawerSidebar(styled);
-const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
 const Header = getHeader(styled);
 
 const scheme = Layout();
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     menuItem: {
       minWidth: "100%",
@@ -154,10 +148,6 @@ export default function ListWithShelters(props: any) {
   const classes = useStyles();
   const { path } = useRouteMatch();
 
-  const onRegisterClicked = () => {
-    store.dispatch(clearDogList());
-    history.push("/addShelterDog");
-  };
   const onSettingsClicked = () => {
     //store.dispatch(clearDogList());
     //history.push("/settings");
@@ -184,12 +174,6 @@ export default function ListWithShelters(props: any) {
   }*/
   //clears dog list, when page is refreshed or changed
 
-  function redirectToShelterDetails(id: number) {
-    //setDogId(id);
-    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    props.redirectToShelterDetails(id);
-    //history.push(`${path}/${id}`);
-  }
 
   useEffect(() => {
     if (initialRefresh) {
@@ -305,7 +289,7 @@ export default function ListWithShelters(props: any) {
           }
         >
           <Toolbar />
-          <SheltersGrid
+          <SheltersInfoGrid
             shelters={shelters}
             path={path}
             redirectToShelter={(id: number) => {

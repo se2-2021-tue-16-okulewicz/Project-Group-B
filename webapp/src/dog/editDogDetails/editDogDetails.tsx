@@ -39,7 +39,7 @@ import { base64StringToBlob } from "blob-util";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 import { State } from "../../app/stateInterfaces";
-import ImageUpload from "../../commonComponents/ImageUpload";
+import ImageUpload from "../../commonComponents/imageUploadForm";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>
@@ -119,11 +119,11 @@ const EditDogDetails = (props: any) => {
         setEditDogFields(
           JSON.parse(sessionStorage.getItem("editDogFields") as string)
         );
-      } else if (editedDog && editedDog.id == dogId) {
+      } else if (editedDog && editedDog.id === dogId) {
         setEditDogFields(editedDog);
         sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
       }
-      if (!editedDog || (editedDog && editedDog.id != dogId)) {
+      if (!editedDog || (editedDog && editedDog.id !== dogId)) {
         store.dispatch(
           Actions.fetchOneDogThunk({
             id: dogId as number,
@@ -151,7 +151,7 @@ const EditDogDetails = (props: any) => {
 
   useEffect(() => {
     if (!pageRefresh && editedDog) {
-      if (!temp || (temp && temp.id != dogId)) {
+      if (!temp || (temp && temp.id !== dogId)) {
         sessionStorage.setItem(
           "editDogFields",
           JSON.stringify(editedDog as ILostDogWithPicture)
