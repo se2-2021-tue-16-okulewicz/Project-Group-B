@@ -16,7 +16,11 @@ import {
 } from "../dog/dogClasses";
 import config from "../config/config";
 import { RequestResponse } from "./response";
-import { ILostDogWithPicture, IShelterDog, IShelterDogWithPicture } from "../dog/dogInterfaces";
+import {
+  ILostDogWithPicture,
+  IShelterDog,
+  IShelterDogWithPicture,
+} from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import {
   initLoginProps,

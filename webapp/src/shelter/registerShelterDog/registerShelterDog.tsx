@@ -87,18 +87,18 @@ export default function RegisterShelterDogForm() {
   );
 
   useEffect(() => {
-    if(refreshRequired && submitted){
+    if (refreshRequired && submitted) {
       store.dispatch(Actions.clearDogList());
       clearStorage();
       setSubmitted(false);
       history.push("/shelterdogs");
       history.go(0);
     }
-    if(!refreshRequired && submitted){
+    if (!refreshRequired && submitted) {
       setSubmitted(false);
     }
     // eslint-disable-next-line
-}, [refreshRequired]);
+  }, [refreshRequired]);
 
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
@@ -131,8 +131,7 @@ export default function RegisterShelterDogForm() {
       registerDog(lostDogFields, picture);
     } catch (err) {
       console.error("Failed to save the dog: ", err);
-    }
-    finally{
+    } finally {
       setSubmitted(true);
     }
   };

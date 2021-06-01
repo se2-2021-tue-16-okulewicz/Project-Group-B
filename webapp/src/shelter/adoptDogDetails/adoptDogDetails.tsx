@@ -65,13 +65,17 @@ export const AdoptDogDetails = (props: any) => {
   const history = useHistory();
   const location = useLocation();
   const { path } = useRouteMatch();
-  const shelterId = props.shelterId? props.shelterId : Number(location.pathname.split("/")[2]);
-  const dogId =  props.dogId? props.dogId : Number(location.pathname.split("/")[4]);
+  const shelterId = props.shelterId
+    ? props.shelterId
+    : Number(location.pathname.split("/")[2]);
+  const dogId = props.dogId
+    ? props.dogId
+    : Number(location.pathname.split("/")[4]);
 
   const dog = useSelector(
     (state: State) => state.shelterDog as IShelterDogWithPicture
   );
-  
+
   const [pageRefresh, setPageRefresh] = useState(true);
   useEffect(() => {
     if (pageRefresh) {
@@ -296,7 +300,7 @@ export const AdoptDogDetails = (props: any) => {
               <MenuItem aria-label="None" value="" />
               {Object.values(BehaviorsTypes)
                 .filter((k) => isNaN(Number(k)))
-                .map((type: string|BehaviorsTypes) => (
+                .map((type: string | BehaviorsTypes) => (
                   <MenuItem key={type} value={type}>
                     {type}
                   </MenuItem>
@@ -318,4 +322,3 @@ export const AdoptDogDetails = (props: any) => {
     </Grid>
   );
 };
-

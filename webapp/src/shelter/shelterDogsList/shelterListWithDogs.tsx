@@ -175,7 +175,7 @@ export default function ShelterListWithDogs(props: any) {
       );
     } catch (err) {
       console.error("Failed to fetch the dogs: ", err);
-    }     
+    }
   }
 
   //refetches page every [10] minutes, only if there were changes in the list
@@ -303,9 +303,13 @@ export default function ShelterListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ShelterDogsGrid dogs={shelterDogs} delete={true} redirectToDogDetailsOrDelete={(id: number) =>
+          <ShelterDogsGrid
+            dogs={shelterDogs}
+            delete={true}
+            redirectToDogDetailsOrDelete={(id: number) =>
               redirectToDogDetailsOrDelete(id)
-            }/>
+            }
+          />
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
           <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />

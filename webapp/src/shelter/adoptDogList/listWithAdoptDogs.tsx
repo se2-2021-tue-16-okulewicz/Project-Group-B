@@ -404,9 +404,13 @@ export default function ListWithAdoptDogs() {
           }
         >
           <Toolbar />
-          <ShelterDogsGrid dogs={shelterDogs} path={path} redirectToDogDetailsOrDelete={(id: number) =>
+          <ShelterDogsGrid
+            dogs={shelterDogs}
+            path={path}
+            redirectToDogDetailsOrDelete={(id: number) =>
               redirectToDogDetailsOrDelete(id)
-            }/>
+            }
+          />
         </InfiniteScroll>
       </Content>
     </Root>

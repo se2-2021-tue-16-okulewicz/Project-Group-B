@@ -68,15 +68,12 @@ export const deleteOneShelterDogThunk = createAsyncThunk<
       );
 
     if (response.response.successful !== true) {
-      return rejectWithValue(
-        response as RequestResponse<undefined, undefined>
-      );
+      return rejectWithValue(response as RequestResponse<undefined, undefined>);
     }
 
     return response as RequestResponse<undefined, undefined>;
   }
 );
-
 
 export const fetchContactInfoThunk = createAsyncThunk<
   RequestResponse<IContactInfo, undefined>,

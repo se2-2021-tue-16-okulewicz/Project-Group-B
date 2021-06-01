@@ -503,10 +503,6 @@ export const reducer = createReducer(initState, {
     return newState;
   },
 
-
-
-
-
   [Actions.fetchOneShelterDogThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<undefined, undefined>>
@@ -537,7 +533,8 @@ export const reducer = createReducer(initState, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.shelterDog = payload.payload.response.data as IShelterDogWithPicture;
+    newState.shelterDog = payload.payload.response
+      .data as IShelterDogWithPicture;
     newState.shelterDog.picture.data = (
       payload.payload.response.data as IShelterDogWithPicture
     ).picture.data as string;
