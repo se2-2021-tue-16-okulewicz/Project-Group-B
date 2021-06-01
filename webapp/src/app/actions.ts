@@ -367,7 +367,7 @@ export const fetchOneShelterDogThunk = createAsyncThunk<
   RequestResponse<IShelterDogWithPicture, undefined>,
   { shelterId: number; id: number; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
->("fetchOneDog", async (item: IFilters, { rejectWithValue }) => {
+>("fetchOneShelterDog", async (item: IFilters, { rejectWithValue }) => {
   const response: RequestResponse<IShelterDogWithPicture, undefined> =
     await Fetching.fetchOneShelterDog(item.shelterId, item.id, item.cookies);
 

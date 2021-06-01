@@ -291,6 +291,7 @@ const EditDogDetails = (props: any) => {
     }
     setIsNewPicture(true);
   };
+  console.log(editedDog);
   return (
     <Grid container>
       {pageRefresh && <LoadingPopup />}

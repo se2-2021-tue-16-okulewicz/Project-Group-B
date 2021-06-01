@@ -20,9 +20,10 @@ import Chip from "@material-ui/core/Chip";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
+import { DogComment } from "./comment";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,9 +66,10 @@ const DogDetails = (props: any) => {
   const dog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPicture
   );
+  const location = useLocation();
   const dogId = props.dogId
     ? props.dogId
-    : JSON.parse(sessionStorage.getItem("dogId") as string);
+    : Number(location.pathname.split("/dog/")[1]);
   const [pageRefresh, setPageRefresh] = useState(true);
   useEffect(() => {
     if (pageRefresh) {
@@ -350,8 +352,22 @@ const DogDetails = (props: any) => {
           </FormControl>
         </Grid>
       )}
+     {!pageRefresh && dog && ( <Grid
+    className="grid"
+    container
+    item
+    sm={12}
+    md={4}
+    direction="column"
+    alignContent="stretch"
+  >
+    <DogComment name={""}/>
+  </Grid> )}
     </Grid>
+    
+    
   );
 };
 
 export default DogDetails;
+

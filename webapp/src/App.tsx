@@ -80,8 +80,6 @@ function Layout() {
   }
 
   function redirectToShelterDetails(id: number) {
-    //setShelterId(id);
-    //sessionStorage.setItem("shelterId", JSON.stringify(id as number));
     history.push(`/shelter/${id}`);
   }
 
@@ -171,7 +169,7 @@ function Layout() {
           <Footer />
         </Route>
         <Route path={`/dog/:id`}>
-          <DogDetails dogId={dogId} />
+          <DogDetails />
           <Footer />
         </Route>
         <Redirect to="/" />
