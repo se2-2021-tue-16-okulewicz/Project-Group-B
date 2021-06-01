@@ -1,4 +1,4 @@
-import { IAddress } from "../shelter/shelterInterfaces"
+import { IAddress } from "../shelter/shelterInterfaces";
 
 export interface IFiltersAndCookies {
   filters: IFilters;

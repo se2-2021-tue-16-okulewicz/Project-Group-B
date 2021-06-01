@@ -9,7 +9,11 @@ import {
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
-import { IFilters, IFiltersAndCookies, IShelterInfo } from "../utilityComponents/utilities";
+import {
+  IFilters,
+  IFiltersAndCookies,
+  IShelterInfo,
+} from "../utilityComponents/utilities";
 import {
   ILoginInformation,
   ILoginResults,
@@ -410,8 +414,6 @@ export const registerShelterUserThunk = createAsyncThunk<
     return response as RequestResponse<null, undefined>;
   }
 );
-
-
 
 export const registerRegularUserThunk = createAsyncThunk<
   RequestResponse<ILoginResults, undefined>,
