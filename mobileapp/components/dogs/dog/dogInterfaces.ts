@@ -17,6 +17,11 @@ export interface IPicture {
   //data: string;
 }
 
+export interface IComment {
+  id: number;
+  text: string;
+}
+
 export interface Picture {
   id: number;
   fileName: string;
@@ -55,6 +60,10 @@ export interface IImage {
 
 export interface ILostDogWithPicture extends ILostDog {
   picture: IPicture;
+}
+
+export interface ILostDogWithPictureAndComment extends ILostDogWithPicture {
+  comment: IComment;
 }
 
 export interface IDogCharacteristics {
