@@ -74,7 +74,7 @@ export async function fetchShelterDogs(
   filters: { [name: string]: any },
   shelterId: number,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<IShelterDog[], Number>> {
+): Promise<RequestResponse<IShelterDogWithPicture[], Number>> {
   const filtersString =
     filters === undefined
       ? ""
@@ -169,6 +169,56 @@ export async function fetchOneDog(
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${id}`,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
+export async function fetchOneShelterDog(
+  shelterId: Number,
+  id: Number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<IShelterDogWithPicture, undefined>> {
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs/${id}`,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
+export async function deleteOneShelterDog(
+  shelterId: Number,
+  dogId: Number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<undefined, undefined>> {
+  let formData = new FormData();
+
+  formData.append(
+    "shelterId",
+    new Blob([JSON.stringify(shelterId)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  formData.append(
+    "dogId",
+    new Blob([JSON.stringify(dogId)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  return getResponse(
+    axios.delete(
+      `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs/${dogId}`,
       {
         headers: {
           Authorization: getToken(cookies),

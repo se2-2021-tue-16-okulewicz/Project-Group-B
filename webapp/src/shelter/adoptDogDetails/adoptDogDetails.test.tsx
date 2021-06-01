@@ -4,12 +4,13 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import { act, createRenderer } from "react-dom/test-utils";
 import { isNull } from "lodash";
+import { Button } from "@material-ui/core";
 import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import { Route, BrowserRouter as Router } from "react-router-dom";
-import RegisterShelterDogForm from "./registerShelterDog";
+import { Route, BrowserRouter as Router, useHistory } from "react-router-dom";
+import { AdoptDogDetails } from "./adoptDogDetails";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -32,22 +33,19 @@ it("Rendered register form button", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/addShelterDog">
-            <RegisterShelterDogForm />
-          </Route>
+          <Route
+            path={`/`}
+            children={<AdoptDogDetails dogId={-1} shelterId={-1} />}
+          />
         </Router>
       </Provider>,
       container
     );
   });
   expect(
-    container?.getElementsByClassName("mainForm").length
-  ).toBeGreaterThanOrEqual(0);
-  expect(container?.childElementCount).toBeGreaterThanOrEqual(0);
-  expect(
-    container?.getElementsByClassName("cardContent").length
+    container?.getElementsByClassName("grid").length
   ).toBeGreaterThanOrEqual(0);
   expect(
-    container?.getElementsByClassName("formControl").length
+    container?.getElementsByClassName("classes.formControl").length
   ).toBeGreaterThanOrEqual(0);
 });

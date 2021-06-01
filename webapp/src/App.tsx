@@ -1,5 +1,6 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { makeStyles, Theme, createStyles } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { Provider, useSelector } from "react-redux";
 import {
   Redirect,
@@ -8,31 +9,26 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import {
-  clearError,
-  clearRedirect,
-  finishRefreshing,
-  logoutThunk,
-} from "./app/actions";
+import { clearRedirect, logoutThunk, clearError } from "./app/actions";
+import { State } from "./app/stateInterfaces";
 import { store } from "./app/store";
+import config from "./config/config";
+import EditContactInfo from "./contactInfo/EditContactInfo";
+import DogDetails from "./dog/dogDetails/dogDetails";
+import ListWithDogs from "./dog/dogsList/listWithDogs";
+import EditDogDetails from "./dog/editDogDetails/editDogDetails";
 import RegisterDogForm from "./dog/registerDog/registerDog";
+import Settings from "./dog/settings/settings";
 import Login from "./registerLogin/Login";
+import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
+import { AdoptDogDetails } from "./shelter/adoptDogDetails/adoptDogDetails";
+import ListWithAdoptDogs from "./shelter/adoptDogList/listWithAdoptDogs";
+import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
+import ShelterListWithDogs from "./shelter/shelterDogsList/shelterListWithDogs";
+import ListWithShelters from "./shelter/sheltersList/listWithShelters";
 import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
-import { useCookies } from "react-cookie";
-import ListWithDogs from "./dog/dogsList/listWithDogs";
-import config from "./config/config";
-import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
-import Settings from "./dog/settings/settings";
-import EditDogDetails from "./dog/editDogDetails/editDogDetails";
-import EditContactInfo from "./contactInfo/editContactInfo";
-import DogDetails from "./dog/dogDetails/dogDetails";
-import ShelterListWithDogs from "./shelter/shelterDogsList/shelterListWithDogs";
-import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
-import ListWithShelters from "./shelter/sheltersList/listWithShelters";
-import ListWithAdoptDogs from "./shelter/adoptDogList/listWithAdoptDogs";
-import { State } from "./app/stateInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -60,7 +56,6 @@ function Layout() {
   const loading = useSelector((state: State) => state.loading);
   const redirect = useSelector((state: State) => state.redirect);
   const [dogId, setDogId] = useState(0);
-  const [shelterId, setShelterId] = useState(0);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -156,8 +151,12 @@ function Layout() {
             }
           />
         </Route>
-        <Route path={`/shelter/:id`}>
+        <Route path={`/shelter/:shelterid`}>
           <ListWithAdoptDogs />
+        </Route>
+        <Route path={`/adoptdogs/:shelterId/dogs/:dogId`}>
+          <AdoptDogDetails />
+          <Footer />
         </Route>
         <Route path="/addDog">
           <RegisterDogForm />

@@ -1,5 +1,5 @@
 import "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import {
   Button,
@@ -37,6 +37,8 @@ import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { ValidateFetchedDog } from "../../utilityComponents/validation";
 import ImageUpload from "../../commonComponents/imageUploadForm";
+import { useSelector } from "react-redux";
+import { State } from "../../app/stateInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function RegisterDogForm() {
+export default function RegisterDogForm(props: any) {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
@@ -80,9 +82,26 @@ export default function RegisterDogForm() {
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
   );
-
+  const refreshRequired = useSelector(
+    (state: State) => state.dogsRequireRefresh as boolean
+  );
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (refreshRequired && submitted) {
+      store.dispatch(Actions.clearDogList());
+      clearStorage();
+      setSubmitted(false);
+      history.push("/dogs");
+      history.go(0);
+    }
+    if (!refreshRequired && submitted) {
+      setSubmitted(false);
+    }
+    // eslint-disable-next-line
+  }, [refreshRequired]);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     let newField = { ...lostDogFields, [e.target.name]: e.target.value };
@@ -124,13 +143,11 @@ export default function RegisterDogForm() {
   const onSubmitClicked = () => {
     try {
       registerDog(lostDogFields, picture);
-      store.dispatch(Actions.clearDogList());
-      clearStorage();
     } catch (err) {
       console.error("Failed to save the dog: ", err);
+    } finally {
+      setSubmitted(true);
     }
-    history.push("/dogs");
-    history.go(0);
   };
 
   const onCancelClick = () => {
@@ -140,7 +157,6 @@ export default function RegisterDogForm() {
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
-    dog = ValidateFetchedDog(dog);
     store.dispatch(
       Actions.addDogThunk({
         dog: dog,
