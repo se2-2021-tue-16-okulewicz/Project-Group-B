@@ -127,10 +127,8 @@ scheme.configureHeader((builder) => {
 /*TODO: remove filtering in frontend (folder dontdelete)*/
 
 export default function ShelterListWithDogs(props: any) {
-  const { path } = useRouteMatch();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
-  const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
 
   const shelterDogs = useSelector(

@@ -1,5 +1,5 @@
 import "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import {
   Button,
@@ -36,6 +36,8 @@ import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import config from "../../config/config";
 import ImageUpload from "../../commonComponents/imageUploadForm";
+import { useSelector } from "react-redux";
+import { State } from "../../app/stateInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,6 +81,24 @@ export default function RegisterShelterDogForm() {
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
       : initLostDogProps
   );
+  const [submitted, setSubmitted] = useState(false);
+  const refreshRequired = useSelector(
+    (state: State) => state.dogsRequireRefresh as boolean
+  );
+
+  useEffect(() => {
+    if(refreshRequired && submitted){
+      store.dispatch(Actions.clearDogList());
+      clearStorage();
+      setSubmitted(false);
+      history.push("/shelterdogs");
+      history.go(0);
+    }
+    if(!refreshRequired && submitted){
+      setSubmitted(false);
+    }
+    // eslint-disable-next-line
+}, [refreshRequired]);
 
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
@@ -109,13 +129,12 @@ export default function RegisterShelterDogForm() {
   const onSubmitClicked = () => {
     try {
       registerDog(lostDogFields, picture);
-      store.dispatch(Actions.clearDogList());
-      clearStorage();
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     }
-    history.push("/shelterdogs");
-    history.go(0);
+    finally{
+      setSubmitted(true);
+    }
   };
 
   const onCancelClick = () => {

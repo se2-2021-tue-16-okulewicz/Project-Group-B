@@ -125,7 +125,6 @@ scheme.configureHeader((builder) => {
 export default function ListWithShelters(props: any) {
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const [displayLoader, setDisplayLoader] = useState(false);
-  const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
 
   const shelters = useSelector((state: State) => state.shelters as IShelter[]);
