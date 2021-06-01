@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function RegisterDogForm() {
+export default function RegisterDogForm(props: any) {
   //if enable is session storage is null, the form has just been opened
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line

@@ -51,10 +51,3 @@ it("Rendered register form button", () => {
     container?.getElementsByClassName("formControl").length
   ).toBeGreaterThanOrEqual(0);
 });
-
-it("test only register button", () => {
-  act(() => {
-    render(<RegisterShelterDogForm />, container);
-  });
-  const myRegisterClicked = jest.fn();
-});

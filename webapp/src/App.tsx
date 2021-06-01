@@ -51,7 +51,6 @@ function Layout() {
   const loading = useSelector((state: State) => state.loading);
   const redirect = useSelector((state: State) => state.redirect);
   const [dogId, setDogId] = useState(0);
-  const [shelterId, setShelterId] = useState(0);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
