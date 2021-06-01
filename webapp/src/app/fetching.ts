@@ -545,10 +545,10 @@ export async function registerShelterUser(
   formData.append(
     "address",
     new Blob([JSON.stringify(newUserInfo.address)], {
-        type: "application/json",
-      }),
-      ""
-    );
+      type: "application/json",
+    }),
+    ""
+  );
   formData.append(
     "phoneNumber",
     new Blob([newUserInfo.phoneNumber], {

@@ -353,10 +353,7 @@ const DogDetails = (props: any) => {
         </Grid>
       )}
     </Grid>
-    
-    
   );
 };
 
 export default DogDetails;
-

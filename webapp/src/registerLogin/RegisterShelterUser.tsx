@@ -22,7 +22,10 @@ import { useHistory } from "react-router-dom";
 import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
-import { registerRegularUserThunk, registerShelterUserThunk } from "../app/actions";
+import {
+  registerRegularUserThunk,
+  registerShelterUserThunk,
+} from "../app/actions";
 import {
   isStringValidUsername,
   isStringValidEmail,
@@ -90,18 +93,18 @@ export default function RegisterShelterUser() {
       setValues({ ...values, [prop]: event.target.value });
     };
 
-    const addressHandler = (
-      e: React.ChangeEvent<{ name?: string; value: any }>
-    ) => {
-      let newField = {
-        ...values,
-        address: {
-          ...values.address,
-          [e.target.name as string]: e.target.value,
-        },
-      };
-      setValues(newField);
+  const addressHandler = (
+    e: React.ChangeEvent<{ name?: string; value: any }>
+  ) => {
+    let newField = {
+      ...values,
+      address: {
+        ...values.address,
+        [e.target.name as string]: e.target.value,
+      },
     };
+    setValues(newField);
+  };
 
   const onRegisterClicked = () => {
     //temporary before adding endpoint for fetching user's data
@@ -163,7 +166,7 @@ export default function RegisterShelterUser() {
                   type={"number"}
                   value={values.address.buildingNumber}
                   name="buildingNumber"
-                  onChange={addressHandler} 
+                  onChange={addressHandler}
                   error={!isStringValidNumber(values.address.buildingNumber)}
                   helperText="Should be a number"
                 />
@@ -200,7 +203,13 @@ export default function RegisterShelterUser() {
                   value={values.address.additionalAddressLine}
                   name="additionalAddressLine"
                   onChange={addressHandler}
-                  error={!isStringValidUsername(values.address.additionalAddressLine ? values.address.additionalAddressLine : "....")}
+                  error={
+                    !isStringValidUsername(
+                      values.address.additionalAddressLine
+                        ? values.address.additionalAddressLine
+                        : "...."
+                    )
+                  }
                   helperText="Should have between 3 and 32 characters"
                 />
               </div>
