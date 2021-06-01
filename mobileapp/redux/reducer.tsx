@@ -22,6 +22,10 @@ import {
 } from "../components/dogs/dog/dogClasses";
 import { SpecialMarkTypes } from "../components/dogs/dog/dogArrays";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
+import {
+  IFilterSort,
+  initFilterProps,
+} from "../components/helper/filtersInterface";
 
 export type Error = {
   hasError: boolean;
@@ -44,6 +48,7 @@ export type State = {
   dogBehaviours: BehaviorsTypes[];
   //currentDog: ILostDogWithPicture | null;
   picture: Picture;
+  filters: IFilterSort;
 };
 
 const init: State = {
@@ -64,13 +69,13 @@ const init: State = {
   dogDetails: initDogDetails,
   dogBehaviours: [],
   picture: initPic,
+  filters: initFilterProps,
 };
 
 export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
-    console.log("log info cleared");
     return newState;
   },
 
@@ -87,7 +92,6 @@ export const reducer = createReducer(init, {
   [Actions.setImage.type]: (state: State, payload: PayloadAction<string>) => {
     let newState = _.cloneDeep(state);
     newState.image = payload.payload;
-    //console.log(newState.image);
     return newState;
   },
 
@@ -97,8 +101,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.picture = payload.payload;
-    // console.log("object: " + payload.payload.fileName + " " + payload.payload.fileType)
-    //console.log(newState.image);
     return newState;
   },
 
@@ -110,7 +112,6 @@ export const reducer = createReducer(init, {
     newState.dogCharacteristics = payload.payload;
     //newState.currentDog?.picture = payload.payload;
     //newState.picture = payload.payload;
-    //console.log(newState.image);
     return newState;
   },
 
@@ -122,7 +123,6 @@ export const reducer = createReducer(init, {
     newState.dogDetails = payload.payload;
     //newState.currentDog?.picture = payload.payload;
     //newState.picture = payload.payload;
-    //console.log(newState.image);
     return newState;
   },
 
@@ -132,6 +132,31 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.dogBehaviours = payload.payload;
+    //newState.currentDog?.picture = payload.payload;
+    //newState.picture = payload.payload;
+    //console.log(newState.image);
+    return newState;
+  },
+
+  [Actions.setFilters.type]: (
+    state: State,
+    payload: PayloadAction<IFilterSort>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.filters = payload.payload;
+    //newState.currentDog?.picture = payload.payload;
+    //newState.picture = payload.payload;
+    //console.log(newState.image);
+    return newState;
+  },
+
+  [Actions.setDogsRequireRefresh.type]: (
+    state: State,
+    payload: PayloadAction<boolean>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.dogsRequireRefresh = payload.payload;
+    newState.dogs = [];
     //newState.currentDog?.picture = payload.payload;
     //newState.picture = payload.payload;
     //console.log(newState.image);
@@ -235,10 +260,14 @@ export const reducer = createReducer(init, {
       ["meta", "arg", "filters", "size"],
       config.defaultFilters.size
     );
+
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    newState.dogs = payload.payload.response.data;
+
+    //newState.cars = state.cars.concat(action.payload.body);
+    newState.dogs = state.dogs.concat(payload.payload.response.data);
+    console.log(newState.dogs.length);
     newState.loadingDogs = false;
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = newState.dogs.length < pageSize;
@@ -286,6 +315,7 @@ export const reducer = createReducer(init, {
       config.defaultFilters.size
     );
     newState.loadingDogs = false;
+    newState.dogs = [];
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = newState.dogs.length < pageSize;
     newState.dogsRequireRefresh = true;
