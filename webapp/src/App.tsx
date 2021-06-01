@@ -151,10 +151,10 @@ function Layout() {
             }
           />
         </Route>
-        <Route path={`/shelter/:id`}>
+        <Route path={`/shelter/:shelterid`}>
           <ListWithAdoptDogs />
         </Route>
-        <Route path={`/adoptdogs/:sId/dogs/:id`}>
+        <Route path={`/adoptdogs/:shelterId/dogs/:dogId`}>
           <AdoptDogDetails />
           <Footer />
         </Route>
