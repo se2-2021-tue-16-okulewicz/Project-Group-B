@@ -46,6 +46,38 @@ export const markDogAsFoundThunk = createAsyncThunk<
   }
 );
 
+export const deleteOneShelterDogThunk = createAsyncThunk<
+  RequestResponse<undefined, undefined>,
+  { shelterId: number; dogId: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<undefined, undefined> }
+>(
+  "deleteShelterDog",
+  async (
+    userAndCookies: {
+      shelterId: number;
+      dogId: number;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<undefined, undefined> =
+      await Fetching.deleteOneShelterDog(
+        userAndCookies.shelterId,
+        userAndCookies.dogId,
+        userAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<undefined, undefined>
+      );
+    }
+
+    return response as RequestResponse<undefined, undefined>;
+  }
+);
+
+
 export const fetchContactInfoThunk = createAsyncThunk<
   RequestResponse<IContactInfo, undefined>,
   { userId: number; cookies: { [name: string]: any } },

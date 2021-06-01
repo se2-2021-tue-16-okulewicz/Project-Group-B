@@ -166,6 +166,20 @@ export default function ShelterListWithDogs(props: any) {
     history.push("/");
   };
 
+  function redirectToDogDetailsOrDelete(id: number) {
+    try {
+      store.dispatch(
+        Actions.deleteOneShelterDogThunk({
+          shelterId: cookies[config.cookies.userId],
+          dogId: id,
+          cookies: cookies,
+        }) //filters
+      );
+    } catch (err) {
+      console.error("Failed to fetch the dogs: ", err);
+    }     
+  }
+
   //refetches page every [10] minutes, only if there were changes in the list
   /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
         setTimeout(() => {
@@ -189,7 +203,7 @@ export default function ShelterListWithDogs(props: any) {
           Actions.fetchShelterDogsThunk({
             filters: {
               ...filters,
-              page: filters.page,
+              page: config.defaultFilters.page,
             },
             shelterId: cookies[config.cookies.userId],
             cookies: cookies,
@@ -291,7 +305,9 @@ export default function ShelterListWithDogs(props: any) {
           }
         >
           <Toolbar />
-          <ShelterDogsGrid dogs={shelterDogs} />
+          <ShelterDogsGrid dogs={shelterDogs} delete={true} redirectToDogDetailsOrDelete={(id: number) =>
+              redirectToDogDetailsOrDelete(id)
+            }/>
         </InfiniteScroll>
         {!displayLoader && !refreshRequired && (
           <Footer position={shelterDogs.length > 3 ? "list" : "footer"} />

@@ -16,7 +16,7 @@ import {
 } from "../dog/dogClasses";
 import config from "../config/config";
 import { RequestResponse } from "./response";
-import { ILostDogWithPicture, IShelterDog } from "../dog/dogInterfaces";
+import { ILostDogWithPicture, IShelterDog, IShelterDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import {
   initLoginProps,
@@ -123,10 +123,30 @@ test("fetch shelters with the wrong token", async () => {
 });
 
 test("fetch shelter dogs with the wrong token", async () => {
-  const data: RequestResponse<IShelterDog[], Number> =
+  const data: RequestResponse<IShelterDogWithPicture[], Number> =
     await Fetching.fetchShelterDogs(
       {}, //empty filters
       0, //shelter id
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("fetch one shelter dog with the wrong token", async () => {
+  const data: RequestResponse<IShelterDogWithPicture, undefined> =
+    await Fetching.fetchOneShelterDog(
+      0,
+      0, //shelter id
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("delete shelter dogs with the wrong token", async () => {
+  const data: RequestResponse<undefined, undefined> =
+    await Fetching.deleteOneShelterDog(
+      0, //shelter id
+      0, //dog id
       {} //empty token
     );
   expect(data).toEqual(errorObject);

@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { IShelterDogWithPicture } from "../../dog/dogInterfaces";
 import { useCookies } from "react-cookie";
 import { Checkbox } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
 
 export default function ShelterDogsGrid(props: any) {
   const dogs = props.dogs as IShelterDogWithPicture[]; // eslint-disable-next-line
@@ -45,7 +46,7 @@ export default function ShelterDogsGrid(props: any) {
                       redirectToDogDetailsOrDelete(dog.id as number);
                     }}
                   >
-                    <Checkbox />
+                   {props.delete ? <Delete/> : <Checkbox />}
                   </IconButton>
                 }
               />
