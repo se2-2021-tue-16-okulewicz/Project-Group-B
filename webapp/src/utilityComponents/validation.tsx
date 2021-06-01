@@ -35,12 +35,12 @@ export function isStringValidUsername(username: string): boolean {
   return username.length <= 32 && username.length >= 3;
 }
 
-export function isStringValidPostCode(username: string): boolean {
-  return username.length <= 10 && username.length >= 3;
+export function isStringValidPostCode(postcode: string): boolean {
+  return postcode.length <= 10 && postcode.length >= 3;
 }
 
-export function isStringValidNumber(username: number): boolean {
-  return "number" === typeof(username)
+export function isStringValidNumber(input: number): boolean {
+  return "number" === typeof(input)
 }
 
 export function isStringValidPhoneNumeber(phone: string): boolean {
