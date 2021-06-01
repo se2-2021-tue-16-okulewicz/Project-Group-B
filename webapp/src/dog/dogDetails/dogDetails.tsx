@@ -352,22 +352,21 @@ const DogDetails = (props: any) => {
           </FormControl>
         </Grid>
       )}
-     {!pageRefresh && dog && ( <Grid
-    className="grid"
-    container
-    item
-    sm={12}
-    md={4}
-    direction="column"
-    alignContent="stretch"
-  >
-    <DogComment name={""}/>
-  </Grid> )}
+      {!pageRefresh && dog && (
+        <Grid
+          className="grid"
+          container
+          item
+          sm={12}
+          md={4}
+          direction="column"
+          alignContent="stretch"
+        >
+          <DogComment name={""} />
+        </Grid>
+      )}
     </Grid>
-    
-    
   );
 };
 
 export default DogDetails;
-
