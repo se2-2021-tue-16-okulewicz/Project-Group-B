@@ -9,10 +9,7 @@ import ListWithDogs from "./listWithDogs";
 import { isNull } from "lodash";
 import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import {
-  Route,
-  BrowserRouter as Router,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
