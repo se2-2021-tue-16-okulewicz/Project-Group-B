@@ -90,18 +90,18 @@ export default function RegisterDogForm() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    if(refreshRequired && submitted){
+    if (refreshRequired && submitted) {
       store.dispatch(Actions.clearDogList());
       clearStorage();
       setSubmitted(false);
       history.push("/dogs");
       history.go(0);
     }
-    if(!refreshRequired && submitted){
+    if (!refreshRequired && submitted) {
       setSubmitted(false);
     }
     // eslint-disable-next-line
-}, [refreshRequired]);
+  }, [refreshRequired]);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     let newField = { ...lostDogFields, [e.target.name]: e.target.value };
@@ -139,15 +139,13 @@ export default function RegisterDogForm() {
     sessionStorage.removeItem("inputField");
     sessionStorage.clear();
   }
-  
 
   const onSubmitClicked = () => {
     try {
       registerDog(lostDogFields, picture);
     } catch (err) {
       console.error("Failed to save the dog: ", err);
-    }
-    finally{
+    } finally {
       setSubmitted(true);
     }
   };

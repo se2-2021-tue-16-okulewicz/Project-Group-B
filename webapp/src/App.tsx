@@ -2,7 +2,13 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Provider, useSelector } from "react-redux";
-import { Redirect, Route,   BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  useHistory,
+} from "react-router-dom";
 import { clearRedirect, logoutThunk, clearError } from "./app/actions";
 import { State } from "./app/stateInterfaces";
 import { store } from "./app/store";
@@ -23,7 +29,6 @@ import ListWithShelters from "./shelter/sheltersList/listWithShelters";
 import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
-
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

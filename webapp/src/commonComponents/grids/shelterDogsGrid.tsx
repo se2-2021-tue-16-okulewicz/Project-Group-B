@@ -46,7 +46,7 @@ export default function ShelterDogsGrid(props: any) {
                       redirectToDogDetailsOrDelete(dog.id as number);
                     }}
                   >
-                   {props.delete ? <Delete/> : <Checkbox />}
+                    {props.delete ? <Delete /> : <Checkbox />}
                   </IconButton>
                 }
               />

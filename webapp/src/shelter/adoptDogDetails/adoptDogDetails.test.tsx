@@ -33,7 +33,10 @@ it("Rendered register form button", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path={`/`} children={<AdoptDogDetails dogId={-1} shelterId={-1} />} />
+          <Route
+            path={`/`}
+            children={<AdoptDogDetails dogId={-1} shelterId={-1} />}
+          />
         </Router>
       </Provider>,
       container

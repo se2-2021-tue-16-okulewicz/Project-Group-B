@@ -1,5 +1,9 @@
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
-import { ILostDogWithPicture, IShelterDog, IShelterDogWithPicture } from "../dog/dogInterfaces";
+import {
+  ILostDogWithPicture,
+  IShelterDog,
+  IShelterDogWithPicture,
+} from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
 
