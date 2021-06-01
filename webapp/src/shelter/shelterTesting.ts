@@ -3,9 +3,8 @@ import { IAddress, IShelter } from "./shelterInterfaces";
 export const initAddress: IAddress = {
   city: "",
   street: "",
-  postCode: "05-077",
+  postCode: "",
   buildingNumber: 0,
-  additionalAddressLine: "",
 };
 
 export const exampleAddress: IAddress = {

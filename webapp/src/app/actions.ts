@@ -9,7 +9,7 @@ import {
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
-import { IFilters, IFiltersAndCookies } from "../utilityComponents/utilities";
+import { IFilters, IFiltersAndCookies, IShelterInfo } from "../utilityComponents/utilities";
 import {
   ILoginInformation,
   ILoginResults,
@@ -392,6 +392,26 @@ export const fetchOneShelterThunk = createAsyncThunk<
   }
   return response as RequestResponse<IShelter, undefined>;
 });
+
+export const registerShelterUserThunk = createAsyncThunk<
+  RequestResponse<null, undefined>,
+  IShelterInfo,
+  { rejectValue: RequestResponse<null, undefined> }
+>(
+  "registerShelterUser",
+  async (newUserInfo: IShelterInfo, { rejectWithValue }) => {
+    const response: RequestResponse<null, undefined> =
+      await Fetching.registerShelterUser(newUserInfo);
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<null, undefined>);
+    }
+
+    return response as RequestResponse<null, undefined>;
+  }
+);
+
+
 
 export const registerRegularUserThunk = createAsyncThunk<
   RequestResponse<ILoginResults, undefined>,

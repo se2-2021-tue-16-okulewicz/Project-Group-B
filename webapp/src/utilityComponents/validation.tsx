@@ -35,6 +35,14 @@ export function isStringValidUsername(username: string): boolean {
   return username.length <= 32 && username.length >= 3;
 }
 
+export function isStringValidPostCode(username: string): boolean {
+  return username.length <= 10 && username.length >= 3;
+}
+
+export function isStringValidNumber(username: number): boolean {
+  return "number" === typeof(username)
+}
+
 export function isStringValidPhoneNumeber(phone: string): boolean {
   let phoneNumberGarbage = new RegExp("[()\\s-]+", "g");
   let phoneNumber = new RegExp("^((\\+[1-9]?[0-9])|0)?[7-9]?[0-9]{9}$");

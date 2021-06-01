@@ -101,7 +101,9 @@ export default function Login() {
   const goToUserRegister = () => {
     history.push("/register/user");
   };
-  const goToShelterRegister = () => {};
+  const goToShelterRegister = () => {
+    history.push("/register/shelter");
+  };
 
   useEffect(() => {
     if (loginInfo !== null) {

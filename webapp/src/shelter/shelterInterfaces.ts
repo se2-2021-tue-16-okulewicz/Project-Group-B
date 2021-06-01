@@ -11,5 +11,5 @@ export interface IAddress {
   street: string;
   postCode: string;
   buildingNumber: number;
-  additionalAddressLine: string;
+  additionalAddressLine?: string;
 }

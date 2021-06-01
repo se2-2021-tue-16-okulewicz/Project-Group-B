@@ -1,3 +1,5 @@
+import { IAddress } from "../shelter/shelterInterfaces"
+
 export interface IFiltersAndCookies {
   filters: IFilters;
   cookies: {
@@ -17,4 +19,11 @@ export interface IRegisterInfo {
   repeatedPassword: string;
   showPassword: boolean;
   showRepeatedPassword: boolean;
+}
+
+export interface IShelterInfo {
+  name: string;
+  address: IAddress;
+  email: string;
+  phoneNumber: string;
 }
