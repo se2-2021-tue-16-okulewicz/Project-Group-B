@@ -1,11 +1,7 @@
 package se.backend.controller.internal;
 
 import lombok.SneakyThrows;
-import net.kaczmarzyk.spring.data.jpa.domain.Equal;
-import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.StartingWithIgnoreCase;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +19,11 @@ import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.account.Address;
 import se.backend.model.account.Shelter;
-import se.backend.model.dogs.Lost.LostDog;
 import se.backend.model.dogs.Shelter.ShelterDog;
 import se.backend.service.login.LoginService;
-import se.backend.service.lostdogs.LostDogService;
 import se.backend.service.shelters.SheltersService;
 import se.backend.utils.Response;
 import se.backend.wrapper.account.UserType;
-import se.backend.wrapper.dogs.LostDogWithBehaviors;
-import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviors;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviorsAndWithPicture;
 import se.backend.wrapper.shelters.ShelterInformation;
@@ -209,6 +201,23 @@ public class SheltersController {
         }
         else
             return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null, null));
+    }
+
+    @DeleteMapping(path = "{shelterId}/dogs/{dogId}")
+    public ResponseEntity<Response<Boolean, Object>> DeleteLostDog(@RequestHeader HttpHeaders headers,
+                                                                   @PathVariable("dogId") long dogId,
+                                                                   @PathVariable("shelterId") long shelterId) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Shelter));
+        if(!authorization.getValue0() || authorization.getValue1() != shelterId) {
+            throw new UnauthorizedException();
+        }
+
+        if(sheltersService.DeleteDog(dogId, authorization.getValue1()))
+            return ResponseEntity.ok(new Response<>(String.format("Deleted dog with id: %d", dogId), true, true, null));
+        else
+            return ResponseEntity.status(400).body(new Response<>(String.format("Failed to delete dog with id: %d", dogId), false, false, null));
     }
     //</editor-fold>
 }
