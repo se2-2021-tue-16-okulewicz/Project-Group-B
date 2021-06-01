@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Text,
+  TextInput,
   SafeAreaView,
   Image,
   ImageBackground,
@@ -33,6 +34,7 @@ import {
 
 export default function DogsList({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
   const bg = require("../../assets/images/dog-bg.png");
   const pin = require("../../assets/images/pin.png");
   const image = { uri: "../../assets/images/dog-bg.PNG" };
@@ -155,23 +157,42 @@ export default function DogsList({ navigation }: any) {
               <Text style={styles.found}>Found</Text>
             )}
           </View>
-          <View style={{ flex: 2, marginLeft: 15 }}>
+          
+          <View style={{ flex: 2, marginLeft: 15 }}>            
             <TouchableOpacity
                   style={{
                     backgroundColor: "#006ee6",
                     borderRadius: 10,
                     padding: 4,
-                    marginLeft: -10,
+                    marginLeft: -13,
                     shadowOffset: { width: 1, height: 2 },
                     shadowColor: "black",
                     shadowOpacity: 0.5,
                   }}
-                  onPress={() => markDogAsFound(dog.id)}
+                  onPress={() => setModalVisible2(true)}
                 >
-                  <Text style={styles.lost}>Comment </Text>
+                  <Text style={styles.lost}>Comment</Text>
                 </TouchableOpacity>
-          </View>
+          </View>          
         </View>
+        <View style={styles.centeredView2}>
+            <Modal animationType="slide"
+                  transparent={true}
+                  visible={modalVisible2}             
+            >
+              <View style={styles.centeredView2}>
+                <View style={styles.modalView2}>
+                  <Text style={styles.modalText}>comment text</Text>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible2(!modalVisible2)}
+                  >
+                    <Text style={styles.textStyle}>Hide comment</Text>
+                  </Pressable>
+                </View>
+              </View>              
+            </Modal>
+          </View>
 
         <View style={styles.row}>
           <Image style={styles.tinyLogo} source={pin} />
@@ -292,6 +313,32 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 5,
     marginBottom: 5,
+  },
+  modalView2: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  centeredView2: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
   },
   container: {
     flex: 1,
