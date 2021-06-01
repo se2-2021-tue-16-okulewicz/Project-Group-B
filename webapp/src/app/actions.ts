@@ -334,6 +334,22 @@ export const fetchOneDogThunk = createAsyncThunk<
   return response as RequestResponse<ILostDogWithPicture, undefined>;
 });
 
+export const fetchOneShelterDogThunk = createAsyncThunk<
+  RequestResponse<IShelterDogWithPicture, undefined>,
+  { shelterId: number; id: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
+>("fetchOneDog", async (item: IFilters, { rejectWithValue }) => {
+  const response: RequestResponse<IShelterDogWithPicture, undefined> =
+    await Fetching.fetchOneShelterDog(item.shelterId, item.id, item.cookies);
+
+  if (response.response.successful !== true) {
+    return rejectWithValue(
+      response as RequestResponse<IShelterDogWithPicture, undefined>
+    );
+  }
+  return response as RequestResponse<IShelterDogWithPicture, undefined>;
+});
+
 export const fetchOneShelterThunk = createAsyncThunk<
   RequestResponse<IShelter, undefined>,
   { id: number; cookies: { [name: string]: any } },

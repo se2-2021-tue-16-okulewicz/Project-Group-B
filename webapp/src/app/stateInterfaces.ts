@@ -1,5 +1,5 @@
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
-import { ILostDogWithPicture, IShelterDog } from "../dog/dogInterfaces";
+import { ILostDogWithPicture, IShelterDog, IShelterDogWithPicture } from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
 
@@ -17,6 +17,7 @@ export type State = {
   shelter: IShelter | any;
   shelters: IShelter[] | any;
   editedDog: ILostDogWithPicture | any; //
+  shelterDog: IShelterDogWithPicture | any;
   dogsLastPage: boolean | null;
   dogsRequireRefresh: boolean;
   settingsRequireRefresh: boolean;
@@ -33,6 +34,7 @@ export const initState: State = {
   shelters: [],
   shelterdogs: [],
   editedDog: null,
+  shelterDog: null,
   shelter: null,
   dogsLastPage: false,
   dogsRequireRefresh: true,
