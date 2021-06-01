@@ -21,6 +21,7 @@ import RegisterDogForm from "./dog/registerDog/registerDog";
 import Settings from "./dog/settings/settings";
 import Login from "./registerLogin/Login";
 import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
+import RegisterShelterUser from "./registerLogin/RegisterShelterUser";
 import { AdoptDogDetails } from "./shelter/adoptDogDetails/adoptDogDetails";
 import ListWithAdoptDogs from "./shelter/adoptDogList/listWithAdoptDogs";
 import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
@@ -80,8 +81,6 @@ function Layout() {
   }
 
   function redirectToShelterDetails(id: number) {
-    //setShelterId(id);
-    //sessionStorage.setItem("shelterId", JSON.stringify(id as number));
     history.push(`/shelter/${id}`);
   }
 
@@ -117,6 +116,10 @@ function Layout() {
         </Route>
         <Route path="/register/user">
           <RegisterRegularUser />
+          <Footer />
+        </Route>
+        <Route path="/register/shelter">
+          <RegisterShelterUser />
           <Footer />
         </Route>
         <Route path="/info/edit">
@@ -171,7 +174,7 @@ function Layout() {
           <Footer />
         </Route>
         <Route path={`/dog/:id`}>
-          <DogDetails dogId={dogId} />
+          <DogDetails />
           <Footer />
         </Route>
         <Redirect to="/" />

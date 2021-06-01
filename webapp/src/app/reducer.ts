@@ -645,6 +645,39 @@ export const reducer = createReducer(initState, {
     return newState;
   },
 
+  [Actions.registerShelterUserThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.registerShelterUserThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.redirect = "/";
+    newState.loading = false;
+    newState.loginInformation = payload.payload.response.data;
+    return newState;
+  },
+  [Actions.registerShelterUserThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+
   [Actions.registerRegularUserThunk.pending.toString()]: (
     state: State,
     payload: PayloadAction<undefined>

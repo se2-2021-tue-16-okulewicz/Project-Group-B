@@ -16,6 +16,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
+import RegisterShelterUser from "./RegisterShelterUser";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -38,8 +39,8 @@ it("Test register regular user view elements", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/register/user">
-            <RegisterRegularUser />
+          <Route path="/register/shelter">
+            <RegisterShelterUser />
           </Route>
         </Router>
       </Provider>,

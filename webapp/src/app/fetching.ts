@@ -15,6 +15,7 @@ import {
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
+import { IShelterInfo } from "../utilityComponents/utilities";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -520,6 +521,52 @@ export async function registerRegularUser(
   return getResponse(
     axios.post(
       `http://${config.backend.ip}:${config.backend.port}/register`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    )
+  );
+}
+
+export async function registerShelterUser(
+  newUserInfo: IShelterInfo
+): Promise<RequestResponse<null, undefined>> {
+  let formData = new FormData();
+  formData.append(
+    "name",
+    new Blob([newUserInfo.name], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "address",
+    new Blob([JSON.stringify(newUserInfo.address)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  formData.append(
+    "phoneNumber",
+    new Blob([newUserInfo.phoneNumber], {
+      type: "text/plain",
+    }),
+    ""
+  );
+  formData.append(
+    "email",
+    new Blob([newUserInfo.email], {
+      type: "text/plain",
+    }),
+    ""
+  );
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/shelters`,
       formData,
       {
         headers: {
