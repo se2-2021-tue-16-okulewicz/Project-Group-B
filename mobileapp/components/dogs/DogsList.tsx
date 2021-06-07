@@ -35,6 +35,7 @@ import {
 export default function DogsList({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
+  const [text, onChangeText] = React.useState("");
   const bg = require("../../assets/images/dog-bg.png");
   const pin = require("../../assets/images/pin.png");
   const image = { uri: "../../assets/images/dog-bg.PNG" };
@@ -183,11 +184,16 @@ export default function DogsList({ navigation }: any) {
               <View style={styles.centeredView2}>
                 <View style={styles.modalView2}>
                   <Text style={styles.modalText}>comment text</Text>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeText}
+                    value={text}
+                  />
                   <Pressable
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => setModalVisible2(!modalVisible2)}
                   >
-                    <Text style={styles.textStyle}>Hide comment</Text>
+                    <Text style={styles.textStyle}>close</Text>
                   </Pressable>
                 </View>
               </View>              
@@ -313,6 +319,12 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 5,
     marginBottom: 5,
+  },
+  input: {
+    height: 200,
+    width: 300,
+    margin: 2,
+    borderWidth: 1,
   },
   modalView2: {
     margin: 20,

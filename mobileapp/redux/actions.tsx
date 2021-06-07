@@ -11,6 +11,7 @@ import {
   IImage,
   ILostDog,
   ILostDogWithPicture,
+  ILostDogWithPictureAndComment,
   IPicture,
   Picture,
 } from "../components/dogs/dog/dogInterfaces";
@@ -122,6 +123,24 @@ export const setDogsRequireRefresh = createAction(
     return {
       payload: refresh,
     };
+  }
+);
+/*
+Getting dog details
+*/
+export const GetDogDetailsThunk = createAsyncThunk(
+  "GetDogDetails",
+  async (item: any, { rejectWithValue }) => {
+    const response: RequestResponse<ILostDogWithPictureAndComment, undefined> =
+      await Fetching.GetDogDetails(item.filters, item.Authorization);
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<ILostDogWithPictureAndComment, undefined>
+      );
+    }
+
+    return response;
   }
 );
 
