@@ -147,6 +147,7 @@ export default function RegisterDogForm(props: any) {
       console.error("Failed to save the dog: ", err);
     } finally {
       setSubmitted(true);
+      Actions.startRefreshing();
     }
   };
 

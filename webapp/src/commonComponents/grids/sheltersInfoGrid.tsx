@@ -22,22 +22,22 @@ export default function SheltersInfoGrid(props: any) {
   return (
     <GridList
       cols={3}
-      spacing={2}
-      style={{ margin: "0", width: "100%", display: "flex" }}
+      spacing={20}
+      style={{ margin: "0", width: "100%", display: "flex", }}
     >
       {shelters.map(
         (shelter: IShelter) =>
           shelter.id && (
             <GridListTile
               key={shelter.id}
-              style={{ height: "300px", display: "stretch" }}
+              style={{ height: "300px", display: "stretch", }}
               className="tile"
             >
               <Box
                 className={shelter.name}
                 style={{
                   overflow: "hidden",
-                  backgroundColor: "white",
+                  backgroundColor: "slategray",
                   height: "90%",
                 }}
               >
@@ -49,7 +49,7 @@ export default function SheltersInfoGrid(props: any) {
                     width: "auto",
                     fontFamily: "Bungee Shade",
                     wordWrap: "break-word",
-                    color: "slategray",
+                    color: "white",
                     verticalAlign: "center",
                     display: "flex",
                     flexDirection: "column",
