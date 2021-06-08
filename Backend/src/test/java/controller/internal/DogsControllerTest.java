@@ -261,7 +261,10 @@ public class DogsControllerTest {
                 .andExpect(jsonPath("successful", is(true)))
                 .andExpect(jsonPath("data.name", is("Pinky")))
                 .andExpect(jsonPath("data.age", is(12)))
-                .andExpect(jsonPath("data.picture.fileName", is("example1")));
+                .andExpect(jsonPath("data.picture.fileName", is("example1")))
+                .andExpect(jsonPath("data.comments", hasSize(1)))
+                .andExpect(jsonPath("data.comments[0].text", is("I think i have seen your dog?")))
+                .andExpect(jsonPath("data.comments[0].author.name", is("Bill Gates")));
 
         //Getting non-existing dog
         mockMvc.perform(
@@ -286,8 +289,24 @@ public class DogsControllerTest {
         MockMultipartHttpServletRequestBuilder existingDogBuilder;
         MockMultipartHttpServletRequestBuilder nonexistingDogBuilder;
 
+        //Update without picture
+        existingDogBuilder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
+        existingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
 
-        //Proper change
+        mockMvc.perform(existingDogBuilder
+                .file(fullDog)
+                .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("John")))
+                .andExpect(jsonPath("data.age", is(9)))
+                .andExpect(jsonPath("data.ownerId", is(10001)))
+                .andExpect(jsonPath("data.picture.fileName", is("example1")));
+
+        //Proper change (with picture)
         existingDogBuilder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
         existingDogBuilder.with(request -> {
             request.setMethod("PUT");
@@ -351,21 +370,6 @@ public class DogsControllerTest {
         ).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Picture is not valid")))
-                .andExpect(jsonPath("data").value(IsNull.nullValue()));
-
-        //Without picture
-        existingDogBuilder = MockMvcRequestBuilders.multipart("/lostdogs/10001");
-        existingDogBuilder.with(request -> {
-            request.setMethod("PUT");
-            return request;
-        });
-
-        mockMvc.perform(existingDogBuilder
-                        .file(fullDog)
-                        .header(LoginService.authorizationHeader, "regularUserTestToken")
-        ).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("successful", is(false)))
-                .andExpect(jsonPath("message", is("Missing part of a request")))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
 
         //Broken json
@@ -436,5 +440,276 @@ public class DogsControllerTest {
                         .header(LoginService.authorizationHeader, "invalidToken")
         ).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("successful", is(false)));
+    }
+
+    @Test
+    public void AddCommentTest() throws Exception {
+
+        MockMultipartFile validPicture = new MockMultipartFile("picture", "image_name.png", "image/png", validImageData);
+        MockMultipartFile invalidPicture = new MockMultipartFile("picture", "image_name.png", "image/png", "I am not a real picture!!!".getBytes());
+
+        MockMultipartFile validComment = new MockMultipartFile("comment", "", "application/json", "{\"text\": \"I'm a comment!\", \"location\": {\"city\": \"Lublin\", \"district\": \"LSM\"}}".getBytes());
+        MockMultipartFile invalidComment = new MockMultipartFile("comment", "", "application/json", "{\"text\": \"I'm a comment!\", \"location\": {\"city\": \"Lublin\"}}".getBytes());
+
+        //Get dog
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10001")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Pinky")))
+                .andExpect(jsonPath("data.age", is(12)))
+                .andExpect(jsonPath("data.picture.fileName", is("example1")))
+                .andExpect(jsonPath("data.comments", hasSize(1)))
+                .andExpect(jsonPath("data.comments[0].text", is("I think i have seen your dog?")))
+                .andExpect(jsonPath("data.comments[0].author.name", is("Bill Gates")));
+
+        //Add comment unauthorized
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/lostdogs/10001/comments")
+                        .file(validComment)
+                        .file(validPicture)
+                        .header(LoginService.authorizationHeader, "Invalid Token")
+        ).andExpect(status().isUnauthorized());
+
+        //Add comment with picture
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/lostdogs/10001/comments")
+                        .file(validComment)
+                        .file(validPicture)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("data.text", is("I'm a comment!")))
+                .andExpect(jsonPath("data.location.city", is("Lublin")))
+                .andExpect(jsonPath("data.author.name", is("Elon Musk")))
+                .andExpect(jsonPath("data.picture.fileName", is("image_name.png")));
+
+        //Add comment with invalid picture
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/lostdogs/10001/comments")
+                        .file(validComment)
+                        .file(invalidPicture)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isBadRequest());
+
+        //Add invalid comment
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/lostdogs/10001/comments")
+                        .file(invalidComment)
+                        .file(validPicture)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isBadRequest());
+
+        //Add comment without picture
+        mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/lostdogs/10001/comments")
+                        .file(validComment)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("data.text", is("I'm a comment!")))
+                .andExpect(jsonPath("data.location.city", is("Lublin")))
+                .andExpect(jsonPath("data.author.name", is("Elon Musk")))
+                .andExpect(jsonPath("data.picture").value(IsNull.nullValue()));
+
+        //Get dog again
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10001")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Pinky")))
+                .andExpect(jsonPath("data.age", is(12)))
+                .andExpect(jsonPath("data.picture.fileName", is("example1")))
+                .andExpect(jsonPath("data.comments", hasSize(3)));
+    }
+
+    @Test
+    public void UpdateCommentTest() throws Exception {
+        MockMultipartFile validPicture = new MockMultipartFile("picture", "image_name.png", "image/png", validImageData);
+        MockMultipartFile invalidPicture = new MockMultipartFile("picture", "image_name.png", "image/png", "I am not a real picture!!!".getBytes());
+
+        MockMultipartFile validComment = new MockMultipartFile("comment", "", "application/json", "{\"text\": \"I'm a comment!\", \"location\": {\"city\": \"Lublin\", \"district\": \"LSM\"}}".getBytes());
+        MockMultipartFile invalidComment = new MockMultipartFile("comment", "", "application/json", "{\"text\": \"I'm a comment!\", \"location\": {\"city\": \"Lublin\"}}".getBytes());
+
+        MockMultipartHttpServletRequestBuilder builder;
+
+        //Get dog
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10003")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Warus")))
+                .andExpect(jsonPath("data.comments", hasSize(2)))
+                .andExpect(jsonPath("data.comments[0].text", is("Is that your dog?")))
+                .andExpect(jsonPath("data.comments[0].author.name", is("Elon Musk")))
+                .andExpect(jsonPath("data.comments[0].picture.fileName", is("comment2")));
+
+        //Update comment unauthorized
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/10003/comments/10002");
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+        mockMvc.perform(
+                builder
+                        .file(validComment)
+                        .file(validPicture)
+                        .header(LoginService.authorizationHeader, "Invalid Token")
+        ).andExpect(status().isUnauthorized());
+
+        //Update comment nonexisting
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/10003/comments/10007");
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+        mockMvc.perform(
+                builder
+                        .file(validComment)
+                        .file(validPicture)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isBadRequest());
+
+        //Update comment not yours
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/10003/comments/10003");
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+        mockMvc.perform(
+                builder
+                        .file(validComment)
+                        .file(validPicture)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isUnauthorized());
+
+        //update comment without picture
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/10003/comments/10002");
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+        mockMvc.perform(
+                builder
+                        .file(validComment)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("data.text", is("I'm a comment!")))
+                .andExpect(jsonPath("data.location.city", is("Lublin")))
+                .andExpect(jsonPath("data.author.name", is("Elon Musk")))
+                .andExpect(jsonPath("data.picture.fileName", is("comment2")));;
+
+        //Get dog again
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10003")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Warus")))
+                .andExpect(jsonPath("data.comments", hasSize(2)))
+                .andExpect(jsonPath("data.comments[0].text", is("I'm a comment!")))
+                .andExpect(jsonPath("data.comments[0].author.name", is("Elon Musk")))
+                .andExpect(jsonPath("data.comments[0].picture.fileName", is("comment2")));
+
+        //Update comment with picture
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/10003/comments/10002");
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+        mockMvc.perform(
+                builder
+                        .file(validComment)
+                        .file(validPicture)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("data.text", is("I'm a comment!")))
+                .andExpect(jsonPath("data.location.city", is("Lublin")))
+                .andExpect(jsonPath("data.author.name", is("Elon Musk")))
+                .andExpect(jsonPath("data.picture.fileName", is("image_name.png")));
+
+        //Get dog again
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10003")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Warus")))
+                .andExpect(jsonPath("data.comments", hasSize(2)))
+                .andExpect(jsonPath("data.comments[0].text", is("I'm a comment!")))
+                .andExpect(jsonPath("data.comments[0].author.name", is("Elon Musk")))
+                .andExpect(jsonPath("data.comments[0].picture.fileName", is("image_name.png")));
+
+        //Update comment with invalid picture
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/10003/comments/10002");
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+        mockMvc.perform(
+                builder
+                        .file(validComment)
+                        .file(invalidPicture)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isBadRequest());
+
+        //Update comment invalid
+        builder = MockMvcRequestBuilders.multipart("/lostdogs/10003/comments/10002");
+        builder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+        mockMvc.perform(
+                builder
+                        .file(invalidComment)
+                        .file(validPicture)
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void DeleteCommentTest() throws Exception {
+        //Get dog
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10003")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Warus")))
+                .andExpect(jsonPath("data.comments", hasSize(2)));
+
+        //Delete comment unauthorized
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/lostdogs/10003/comments/10002")
+                        .header(LoginService.authorizationHeader, "Invalid Token")
+        ).andExpect(status().isUnauthorized());
+
+        //Delete comment nonexisting
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/lostdogs/10003/comments/10007")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isBadRequest());
+
+        //Delete comment not yours
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/lostdogs/10003/comments/10003")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isUnauthorized());
+
+        //Delete comment properly
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/lostdogs/10003/comments/10002")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk());
+
+        //Get dog again
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/lostdogs/10003")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Warus")))
+                .andExpect(jsonPath("data.comments", hasSize(1)));
     }
 }

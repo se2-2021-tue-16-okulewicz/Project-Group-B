@@ -16,13 +16,18 @@ import {
 } from "../dog/dogClasses";
 import config from "../config/config";
 import { RequestResponse } from "./response";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import {
+  ILostDogWithPicture,
+  IShelterDog,
+  IShelterDogWithPicture,
+} from "../dog/dogInterfaces";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import {
   initLoginProps,
   initRegisterRegularUserProps,
 } from "../registerLogin/registerLogintest";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
+import { IShelter } from "../shelter/shelterInterfaces";
 
 jest.mock("axios");
 
@@ -112,6 +117,42 @@ test("logout without being logged in", async () => {
   const data: RequestResponse<null, undefined> = await Fetching.logout(
     config.cookies
   );
+  expect(data).toEqual(errorObject);
+});
+
+test("fetch shelters with the wrong token", async () => {
+  const data: RequestResponse<IShelter[], Number> =
+    await Fetching.fetchShelters({}, {});
+  expect(data).toEqual(errorObject);
+});
+
+test("fetch shelter dogs with the wrong token", async () => {
+  const data: RequestResponse<IShelterDogWithPicture[], Number> =
+    await Fetching.fetchShelterDogs(
+      {}, //empty filters
+      0, //shelter id
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("fetch one shelter dog with the wrong token", async () => {
+  const data: RequestResponse<IShelterDogWithPicture, undefined> =
+    await Fetching.fetchOneShelterDog(
+      0,
+      0, //shelter id
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("delete shelter dogs with the wrong token", async () => {
+  const data: RequestResponse<undefined, undefined> =
+    await Fetching.deleteOneShelterDog(
+      0, //shelter id
+      0, //dog id
+      {} //empty token
+    );
   expect(data).toEqual(errorObject);
 });
 

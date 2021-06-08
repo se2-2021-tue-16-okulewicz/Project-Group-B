@@ -1,14 +1,25 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { ILostDog, ILostDogWithPicture, IPicture } from "../dog/dogInterfaces";
+import {
+  ILostDog,
+  ILostDogWithPicture,
+  IPicture,
+  IShelterDog,
+  IShelterDogWithPicture,
+} from "../dog/dogInterfaces";
 import type { RequestResponse } from "./response";
 import * as Fetching from "./fetching";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
-import { IFilters, IFiltersAndCookies } from "../utilityComponents/utilities";
+import {
+  IFilters,
+  IFiltersAndCookies,
+  IShelterInfo,
+} from "../utilityComponents/utilities";
 import {
   ILoginInformation,
   ILoginResults,
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
+import { IShelter } from "../shelter/shelterInterfaces";
 
 /*TODO: fix any*/
 
@@ -36,6 +47,35 @@ export const markDogAsFoundThunk = createAsyncThunk<
     }
 
     return response as RequestResponse<null, undefined>;
+  }
+);
+
+export const deleteOneShelterDogThunk = createAsyncThunk<
+  RequestResponse<undefined, undefined>,
+  { shelterId: number; dogId: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<undefined, undefined> }
+>(
+  "deleteShelterDog",
+  async (
+    userAndCookies: {
+      shelterId: number;
+      dogId: number;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<undefined, undefined> =
+      await Fetching.deleteOneShelterDog(
+        userAndCookies.shelterId,
+        userAndCookies.dogId,
+        userAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<undefined, undefined>);
+    }
+
+    return response as RequestResponse<undefined, undefined>;
   }
 );
 
@@ -133,6 +173,44 @@ export const addDogThunk = createAsyncThunk<
   }
 );
 
+export const addShelterDogThunk = createAsyncThunk<
+  RequestResponse<IShelterDogWithPicture, undefined>,
+  {
+    shelterId: number;
+    dog: IShelterDog;
+    picture: IPicture;
+    cookies: { [name: string]: any };
+  },
+  { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
+>(
+  "AddShelterDog",
+  async (
+    dogAndPictureAndCookies: {
+      shelterId: number;
+      dog: IShelterDog;
+      picture: IPicture;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IShelterDogWithPicture, undefined> =
+      await Fetching.addShelterDog(
+        dogAndPictureAndCookies.shelterId,
+        dogAndPictureAndCookies.dog,
+        dogAndPictureAndCookies.picture,
+        dogAndPictureAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<IShelterDogWithPicture, undefined>
+      );
+    }
+
+    return response as RequestResponse<IShelterDogWithPicture, undefined>;
+  }
+);
+
 export const updateDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture, undefined>,
   { dog: ILostDog; cookies: { [name: string]: any }; picture?: IPicture },
@@ -215,6 +293,64 @@ export const fetchDogsThunk = createAsyncThunk<
   return response as RequestResponse<ILostDogWithPicture[], number>;
 });
 
+export const fetchShelterDogsThunk = createAsyncThunk<
+  RequestResponse<IShelterDog[], Number>,
+  { filters: IFilters; shelterId: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelterDog[], Number> }
+>(
+  "fetchShelterDogsThunk",
+  async (
+    userAndCookies: {
+      filters: IFilters;
+      shelterId: number;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IShelterDog[], Number> =
+      await Fetching.fetchShelterDogs(
+        userAndCookies.filters,
+        userAndCookies.shelterId,
+        userAndCookies.cookies
+      );
+    //console.log(response);
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<IShelterDog[], number>
+      );
+    }
+
+    return response as RequestResponse<IShelterDog[], number>;
+  }
+);
+
+export const fetchSheltersThunk = createAsyncThunk<
+  RequestResponse<IShelter[], Number>,
+  { filters: IFilters; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelter[], Number> }
+>(
+  "fetchShelterDogs",
+  async (
+    filtersAndCookies: {
+      filters: IFilters;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IShelter[], Number> =
+      await Fetching.fetchShelters(
+        filtersAndCookies.filters,
+        filtersAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<IShelter[], number>);
+    }
+
+    return response as RequestResponse<IShelter[], number>;
+  }
+);
+
 export const fetchOneDogThunk = createAsyncThunk<
   RequestResponse<ILostDogWithPicture, undefined>,
   { id: number; cookies: { [name: string]: any } },
@@ -230,6 +366,54 @@ export const fetchOneDogThunk = createAsyncThunk<
   }
   return response as RequestResponse<ILostDogWithPicture, undefined>;
 });
+
+export const fetchOneShelterDogThunk = createAsyncThunk<
+  RequestResponse<IShelterDogWithPicture, undefined>,
+  { shelterId: number; id: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
+>("fetchOneShelterDog", async (item: IFilters, { rejectWithValue }) => {
+  const response: RequestResponse<IShelterDogWithPicture, undefined> =
+    await Fetching.fetchOneShelterDog(item.shelterId, item.id, item.cookies);
+
+  if (response.response.successful !== true) {
+    return rejectWithValue(
+      response as RequestResponse<IShelterDogWithPicture, undefined>
+    );
+  }
+  return response as RequestResponse<IShelterDogWithPicture, undefined>;
+});
+
+export const fetchOneShelterThunk = createAsyncThunk<
+  RequestResponse<IShelter, undefined>,
+  { id: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<IShelter, undefined> }
+>("fetchOneShelter", async (item: IFilters, { rejectWithValue }) => {
+  const response: RequestResponse<IShelter, undefined> =
+    await Fetching.fetchOneShelter(item.id, item.cookies);
+
+  if (response.response.successful !== true) {
+    return rejectWithValue(response as RequestResponse<IShelter, undefined>);
+  }
+  return response as RequestResponse<IShelter, undefined>;
+});
+
+export const registerShelterUserThunk = createAsyncThunk<
+  RequestResponse<null, undefined>,
+  IShelterInfo,
+  { rejectValue: RequestResponse<null, undefined> }
+>(
+  "registerShelterUser",
+  async (newUserInfo: IShelterInfo, { rejectWithValue }) => {
+    const response: RequestResponse<null, undefined> =
+      await Fetching.registerShelterUser(newUserInfo);
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<null, undefined>);
+    }
+
+    return response as RequestResponse<null, undefined>;
+  }
+);
 
 export const registerRegularUserThunk = createAsyncThunk<
   RequestResponse<ILoginResults, undefined>,

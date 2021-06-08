@@ -7,9 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
+import se.backend.model.account.Address;
 import se.backend.model.account.UserAccount;
 import se.backend.service.login.LoginService;
 import se.backend.wrapper.account.UserType;
+import se.backend.wrapper.shelters.ShelterRegisterInformation;
 
 import java.util.Collections;
 import java.util.List;
@@ -112,6 +114,58 @@ public class LoginServiceTest {
         result = service.CreateAccount(user1);
         assertEquals("", result.getValue1());
         assertNotNull(result.getValue0());
+    }
+
+    @Test
+    public void CreateShelterTest() {
+        ShelterRegisterInformation shelter = new ShelterRegisterInformation();
+        shelter.setName("Name1");
+        shelter.setEmail("abc@def.ghi");
+        shelter.setPhoneNumber("282619191");
+
+        Address address = new Address();
+        address.setStreet("Street");
+        address.setBuildingNumber("12A");
+        address.setPostCode("20-111");
+        address.setCity("Lublin");
+
+        var result = service.CreateShelter(shelter);
+        assertEquals("Incomplete data", result);
+
+        shelter.setAddress(address);
+        shelter.setName("Na");
+        result = service.CreateShelter(shelter);
+        assertEquals("Shelter name is too short", result);
+
+        shelter.setName("Hope");
+        result = service.CreateShelter(shelter);
+        assertEquals("Name is already used", result);
+
+        shelter.setName("Bill Gates");
+        result = service.CreateShelter(shelter);
+        assertEquals("Name is already used", result);
+
+        shelter.setName("Name1");
+        shelter.setEmail("hopeshelter@mail.com");
+        result = service.CreateShelter(shelter);
+        assertEquals("Email is already used", result);
+
+        shelter.setEmail("b.gates@mail.com");
+        result = service.CreateShelter(shelter);
+        assertEquals("Email is already used", result);
+
+        shelter.setEmail("asasasasas");
+        result = service.CreateShelter(shelter);
+        assertEquals("Email is invalid", result);
+
+        shelter.setEmail("abc@def.ghi");
+        shelter.setPhoneNumber("asasasasas");
+        result = service.CreateShelter(shelter);
+        assertEquals("Phone number is invalid", result);
+
+        shelter.setPhoneNumber("282619191");
+        result = service.CreateShelter(shelter);
+        assertNull(result);
     }
 
     @Test

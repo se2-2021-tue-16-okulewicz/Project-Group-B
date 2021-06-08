@@ -20,7 +20,7 @@ import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { clearLoginInformation, loginThunk } from "../app/actions";
-import { State } from "../app/reducer";
+import { State } from "../app/stateInterfaces";
 import { store } from "../app/store";
 import config from "../config/config";
 import "./Login.css";
@@ -101,7 +101,9 @@ export default function Login() {
   const goToUserRegister = () => {
     history.push("/register/user");
   };
-  const goToShelterRegister = () => {};
+  const goToShelterRegister = () => {
+    history.push("/register/shelter");
+  };
 
   useEffect(() => {
     if (loginInfo !== null) {
@@ -109,14 +111,22 @@ export default function Login() {
       setCookie(config.cookies.userType, loginInfo?.userType, { path: "/" });
       setCookie(config.cookies.userId, loginInfo?.id, { path: "/" });
       store.dispatch(clearLoginInformation());
-      history.push("/listDogs");
+      if (loginInfo?.userType === "Shelter") {
+        history.push("/shelterdogs");
+      } else {
+        history.push("/dogs");
+      }
     } // eslint-disable-next-line
   }, [loginInfo]);
 
   //THIS makes the web app skip the log in
   useEffect(() => {
     if (cookies[config.cookies.userType] !== undefined) {
-      history.push("/listDogs");
+      if (cookies[config.cookies.userType] === "Shelter") {
+        history.push("/shelterdogs");
+      } else {
+        history.push("/dogs");
+      }
     } // eslint-disable-next-line
   }, []);
 

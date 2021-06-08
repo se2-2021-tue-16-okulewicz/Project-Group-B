@@ -2,53 +2,19 @@ import * as Actions from "./actions";
 import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RequestResponse } from "./response";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
+import {
+  ILostDogWithPicture,
+  IShelterDog,
+  IShelterDogWithPicture,
+} from "../dog/dogInterfaces";
 import config from "../config/config";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import { ValidateFetchedDog } from "../utilityComponents/validation";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
+import { IShelter } from "../shelter/shelterInterfaces";
+import { initState, State } from "./stateInterfaces";
 
-export type Error = {
-  hasError: boolean;
-  errorCode: number;
-  erorMessage: string;
-};
-
-/*TODO: change any in the State*/
-
-export type State = {
-  dogs: ILostDogWithPicture[] | any; //if these are not any, the clear actions throw an error (only for dogs with pictures)
-  editedDog: ILostDogWithPicture | any; //
-  dogsLastPage: boolean | null;
-  dogsRequireRefresh: boolean;
-  settingsRequireRefresh: boolean;
-  loading: boolean;
-  error: Error;
-  loginInformation: ILoginResults | null;
-  contactInfo: IContactInfo | null;
-  redirect: string | null;
-  pages: number;
-};
-
-export const init: State = {
-  dogs: [],
-  editedDog: null,
-  dogsLastPage: false,
-  dogsRequireRefresh: true,
-  settingsRequireRefresh: true,
-  loading: false,
-  error: {
-    hasError: false,
-    errorCode: 0,
-    erorMessage: "",
-  },
-  loginInformation: null,
-  contactInfo: null,
-  redirect: null,
-  pages: 0,
-};
-
-export const reducer = createReducer(init, {
+export const reducer = createReducer(initState, {
   [Actions.clearError.type]: (state: State) => {
     let newState = _.cloneDeep(state as State);
     newState.error = {
@@ -75,6 +41,8 @@ export const reducer = createReducer(init, {
   [Actions.clearDogList.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.dogs = [];
+    newState.shelterdogs = [];
+    newState.shelters = [];
     newState.dogsRequireRefresh = true;
     newState.dogsLastPage = false;
     newState.editedDog = null;
@@ -187,6 +155,38 @@ export const reducer = createReducer(init, {
     };
     return newState;
   },
+  [Actions.addShelterDogThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IShelterDogWithPicture, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.dogsRequireRefresh = true;
+    return newState;
+  },
+  [Actions.addShelterDogThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.shelterdogs = [];
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.addShelterDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
   [Actions.updateDogThunk.fulfilled.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
@@ -261,6 +261,138 @@ export const reducer = createReducer(init, {
     //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
     return newState;
   },
+
+  [Actions.fetchDogsThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<undefined, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+
+  [Actions.fetchShelterDogsThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+
+  [Actions.fetchShelterDogsThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IShelterDog[], number>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    const pageNumber = _.get(
+      payload,
+      ["meta", "arg", "filters", "page"],
+      config.defaultFilters.page
+    );
+    const pageSize = _.get(
+      payload,
+      ["meta", "arg", "filters", "size"],
+      config.defaultFilters.size
+    );
+
+    if (state.shelterdogs != null || pageNumber != 0) {
+      newState.shelterdogs = state.shelterdogs
+        .concat(payload.payload.response.data as IShelterDog[])
+        .slice(0, (pageNumber + 1) * pageSize);
+    } else {
+      newState.shelterdogs = (
+        payload.payload.response.data as IShelterDog[]
+      ).slice(0, (pageNumber + 1) * pageSize);
+    }
+    newState.dogsLastPage =
+      (payload.payload.response.data as IShelterDog[]).length < pageSize;
+    newState.pages = pageNumber;
+    newState.dogsRequireRefresh = false;
+    //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
+    return newState;
+  },
+
+  [Actions.fetchShelterDogsThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<undefined, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+
+  [Actions.fetchSheltersThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+
+  [Actions.fetchSheltersThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IShelter[], number>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    const pageNumber = _.get(
+      payload,
+      ["meta", "arg", "filters", "page"],
+      config.defaultFilters.page
+    );
+    const pageSize = _.get(
+      payload,
+      ["meta", "arg", "filters", "size"],
+      config.defaultFilters.size
+    );
+    if (state.shelters != null || pageNumber != 0) {
+      newState.shelters = state.shelters
+        .concat(payload.payload.response.data as IShelter[])
+        .slice(0, (pageNumber + 1) * pageSize);
+    } else {
+      newState.shelters = (payload.payload.response.data as IShelter[]).slice(
+        0,
+        (pageNumber + 1) * pageSize
+      );
+    }
+    newState.dogsLastPage =
+      (payload.payload.response.data as IShelter[]).length < pageSize;
+    newState.pages = pageNumber;
+    newState.dogsRequireRefresh = false;
+    //console.log("pageNumber " + pageNumber + "\nlastpage: " + newState.dogsLastPage + "\nrefresh: " + newState.dogsRequireRefresh);
+    return newState;
+  },
+
+  [Actions.fetchSheltersThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<undefined, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+
   [Actions.updateContactInfoThunk.fulfilled.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<IContactInfo, undefined>>
@@ -294,20 +426,6 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-  [Actions.fetchDogsThunk.rejected.toString()]: (
-    state: State,
-    payload: PayloadAction<RequestResponse<undefined, undefined>>
-  ) => {
-    let newState = _.cloneDeep(state);
-    let errorResponse = payload.payload;
-    newState.loading = false;
-    newState.error = {
-      hasError: true,
-      errorCode: errorResponse ? errorResponse.code : -1,
-      erorMessage: errorResponse ? errorResponse.response.message : "",
-    };
-    return newState;
-  },
   [Actions.fetchOneDogThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<undefined, undefined>>
@@ -344,6 +462,117 @@ export const reducer = createReducer(init, {
     newState.editedDog.picture.data = (
       payload.payload.response.data as ILostDogWithPicture
     ).picture.data as string;
+    newState.dogsRequireRefresh = false;
+    newState.settingsRequireRefresh = false;
+    return newState;
+  },
+
+  [Actions.deleteOneShelterDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<undefined, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+  [Actions.deleteOneShelterDogThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    //newState.settingsRequireRefresh=true;
+    return newState;
+  },
+
+  [Actions.deleteOneShelterDogThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.shelterdogs = [];
+    newState.shelterDog = null;
+    newState.dogsRequireRefresh = true;
+    newState.settingsRequireRefresh = false;
+    return newState;
+  },
+
+  [Actions.fetchOneShelterDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<undefined, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+  [Actions.fetchOneShelterDogThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    //newState.settingsRequireRefresh=true;
+    return newState;
+  },
+
+  [Actions.fetchOneShelterDogThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IShelterDogWithPicture, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.shelterDog = payload.payload.response
+      .data as IShelterDogWithPicture;
+    newState.shelterDog.picture.data = (
+      payload.payload.response.data as IShelterDogWithPicture
+    ).picture.data as string;
+    newState.dogsRequireRefresh = false;
+    newState.settingsRequireRefresh = false;
+    return newState;
+  },
+
+  [Actions.fetchOneShelterThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<undefined, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+  [Actions.fetchOneShelterThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+
+  [Actions.fetchOneShelterThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<IShelter, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.shelter = payload.payload.response.data as IShelter;
     newState.dogsRequireRefresh = false;
     newState.settingsRequireRefresh = false;
     return newState;
@@ -396,6 +625,8 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.loginInformation = null;
+    //newState.dogs = [];
+    //newState.shelterdogs = [];
     return newState;
   },
   [Actions.logoutThunk.rejected.toString()]: (
@@ -406,6 +637,39 @@ export const reducer = createReducer(init, {
     let errorResponse = payload.payload;
     newState.loading = false;
     newState.loginInformation = null;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+
+  [Actions.registerShelterUserThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.registerShelterUserThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.redirect = "/";
+    newState.loading = false;
+    newState.loginInformation = payload.payload.response.data;
+    return newState;
+  },
+  [Actions.registerShelterUserThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
     newState.error = {
       hasError: true,
       errorCode: errorResponse.code,

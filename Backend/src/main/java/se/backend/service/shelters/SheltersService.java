@@ -16,7 +16,6 @@ public interface SheltersService {
 
     /**
      * First value is list of dogs, second value is total amount of pages
-     * @return
      */
     Pair<List<ShelterInformation>, Integer> GetShelters(Specification<Shelter> filters, Pageable page);
 
@@ -28,4 +27,6 @@ public interface SheltersService {
     ShelterDogWithBehaviorsAndWithPicture AddShelterDog(ShelterDogWithBehaviors newDog, Picture picture, long shelterId);
 
     ShelterDogWithBehaviorsAndWithPicture GetDogDetails(long dogId);
+
+    boolean DeleteDog(long dogId, long shelterId);
 }

@@ -13,10 +13,10 @@ import se.backend.dao.PictureRepository;
 import se.backend.dao.ShelterAccountRepository;
 import se.backend.dao.ShelterDogBehaviorRepository;
 import se.backend.dao.ShelterDogRepository;
+import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.account.Shelter;
 import se.backend.model.dogs.DogBehavior;
-import se.backend.model.dogs.Lost.LostDog;
 import se.backend.model.dogs.Shelter.ShelterDog;
 import se.backend.model.dogs.Shelter.ShelterDogBehavior;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviors;
@@ -137,6 +137,31 @@ public class SheltersMainService implements SheltersService{
         returnedDog.setPicture(picture.orElse(new Picture(-1, "", "", new byte[0])));
 
         return returnedDog;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean DeleteDog(long dogId, long shelterId) {
+        if(IsInvalidDogId(dogId))
+            return false;
+
+        var foundDog = shelterDogRepository.findById(dogId);
+        if(foundDog.isEmpty())
+            return false;
+
+        var dog = foundDog.get();
+
+        if(dog.getShelterId() != shelterId)
+            throw new UnauthorizedException();
+
+        var behaviors = dogBehaviorRepository.findAllByDogId(dog.getId());
+        for(var behavior : behaviors) {
+            dogBehaviorRepository.deleteById(behavior.getId());
+        }
+
+        pictureRepository.deleteById(dog.getPictureId());
+        shelterDogRepository.delete(dog);
+        return true;
     }
 
     private boolean IsInvalidDogId(long dogId)
