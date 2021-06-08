@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
-import { ILostDog, ILostDogWithPicture } from "./dog/dogInterfaces";
+import { ILostDog, ILostDogWithPicture, ILostDogWithPictureAndComment } from "./dog/dogInterfaces";
 import { useSelector } from "react-redux";
 import { State } from "../../redux/reducer";
 import * as Actions from "../../redux/actions";
@@ -119,9 +119,19 @@ export default function DogsList({ navigation }: any) {
     store.dispatch(Actions.setDogsRequireRefresh(true));
   }
 
+  const redirectToDetails = (dog: ILostDogWithPicture) => {
+    navigation.navigate("Dog details", {
+      dog: dog}
+    );
+  };
+
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={[styles.item]}>
-      <TouchableOpacity>
+      <TouchableOpacity 
+      onPress={() => {
+        redirectToDetails(dog);
+      }}
+      >
         <Text style={styles.title}>{dog.name}</Text>
         <View style={[{ flexDirection: "row" }]}>
           <View style={{ flex: 5 }}>
@@ -159,7 +169,7 @@ export default function DogsList({ navigation }: any) {
             )}
           </View>
           
-          <View style={{ flex: 2, marginLeft: 15 }}>            
+          {/* <View style={{ flex: 2, marginLeft: 15 }}>            
             <TouchableOpacity
                   style={{
                     backgroundColor: "#006ee6",
@@ -174,9 +184,9 @@ export default function DogsList({ navigation }: any) {
                 >
                   <Text style={styles.lost}>Comment</Text>
                 </TouchableOpacity>
-          </View>          
+          </View>           */}
         </View>
-        <View style={styles.centeredView2}>
+        {/* <View style={styles.centeredView2}>
             <Modal animationType="slide"
                   transparent={true}
                   visible={modalVisible2}             
@@ -198,7 +208,7 @@ export default function DogsList({ navigation }: any) {
                 </View>
               </View>              
             </Modal>
-          </View>
+          </View> */}
 
         <View style={styles.row}>
           <Image style={styles.tinyLogo} source={pin} />
