@@ -1,0 +1,55 @@
+version: "3"
+services:
+    database:
+        image: mysql:8
+        container_name: database
+        networks:
+            - se-b-network
+        volumes:
+            - se-b-volume:/var/lib/mysql
+        restart: always
+        environment:
+            - MYSQL_DATABASE=seBackendDb
+            - MYSQL_ROOT_PASSWORD=jqsgrfls234@
+        ports:
+            - 3307:3306
+        expose:
+            - 3306
+    server:
+        build: ./backend
+        image: "backend:latest"
+        container_name: server
+        command: sh -c "/wait && java -jar se-backend-1.0.jar"
+        ports:
+            - 5050:5050
+        expose:
+            - 5050
+        networks:
+            - se-b-network
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod-mysql
+            - DATABASE_NAME=seBackendDb
+            - DATABASE_USER=root
+            - DATABASE_PASSWORD=jqsgrfls234@
+            - SERVICE_NAME=database
+            - DATABASE_PORT=3306
+            - WAIT_HOSTS=database:3306
+            - WAIT_HOSTS_TIMEOUT=300
+            - WAIT_SLEEP_INTERVAL=15
+            - WAIT_HOST_CONNECT_TIMEOUT=15
+        depends_on:
+            - database
+    webapp:
+        build: ./webapp
+        image: "webapp:latest"
+        container_name: webapp
+        ports:
+            - 80:5000
+        networks:
+            - se-b-network
+        depends_on:
+            - server
+networks:
+    se-b-network:
+volumes:
+    se-b-volume: {}
