@@ -54,24 +54,16 @@ export default function DogsStack({ navigation }: any) {
     React.useState(false);
   const [isDetailsInput, setDetailsInput] = React.useState(false);
 
-  
-
   return (
     <Stack.Navigator initialRouteName="Lost dogs">
       <Stack.Screen
         name="Lost dogs"
         component={DogsList}
         options={({ navigation }) => ({
-            headerLeft: () => null,
-            
-          })}
+          headerLeft: () => null,
+        })}
       />
-      <Stack.Screen
-        name="Dog details"
-        component={DogDetails}
-       
-      />
+      <Stack.Screen name="Dog details" component={DogDetails} />
     </Stack.Navigator>
   );
 }
-
