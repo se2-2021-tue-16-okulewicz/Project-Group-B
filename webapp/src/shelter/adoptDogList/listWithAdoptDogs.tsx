@@ -209,6 +209,10 @@ export default function ListWithAdoptDogs() {
     history.push("/");
   };
 
+  function redirectToDogDetailsOrDelete(id: number) {
+    history.push(`/adoptdogs/${shelterId}/dogs/${id}`);
+  }
+
   //refresh page
   useEffect(() => {
     if (pageRefresh) {
@@ -400,7 +404,13 @@ export default function ListWithAdoptDogs() {
           }
         >
           <Toolbar />
-          <ShelterDogsGrid dogs={shelterDogs} path={path} />
+          <ShelterDogsGrid
+            dogs={shelterDogs}
+            path={path}
+            redirectToDogDetailsOrDelete={(id: number) =>
+              redirectToDogDetailsOrDelete(id)
+            }
+          />
         </InfiniteScroll>
       </Content>
     </Root>

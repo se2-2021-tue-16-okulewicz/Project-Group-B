@@ -5,11 +5,11 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import RegisterDogForm from "./registerDog";
 import { isNull } from "lodash";
 import { store } from "../../app/store";
 import { Provider } from "react-redux";
 import { Route, BrowserRouter as Router } from "react-router-dom";
+import RegisterDogForm from "./registerDog";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -32,7 +32,7 @@ it("Rendered register form button", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/addDog">
+          <Route path="/dogs">
             <RegisterDogForm />
           </Route>
         </Router>
@@ -50,11 +50,4 @@ it("Rendered register form button", () => {
   expect(
     container?.getElementsByClassName("formControl").length
   ).toBeGreaterThanOrEqual(0);
-});
-
-it("test only register button", () => {
-  act(() => {
-    render(<RegisterDogForm />, container);
-  });
-  const myRegisterClicked = jest.fn();
 });

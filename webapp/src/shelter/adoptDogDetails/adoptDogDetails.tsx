@@ -14,16 +14,15 @@ import {
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
-import { BehaviorsTypes } from "../dogEnums";
-import { ILostDogWithPicture } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
-import { DogComment } from "./comment";
+import { IShelterDogWithPicture } from "../../dog/dogInterfaces";
+import { BehaviorsTypes } from "../../dog/dogEnums";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -62,20 +61,28 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const DogDetails = (props: any) => {
-  const dog = useSelector(
-    (state: State) => state.editedDog as ILostDogWithPicture
-  );
+export const AdoptDogDetails = (props: any) => {
+  const history = useHistory();
   const location = useLocation();
+  const { path } = useRouteMatch();
+  const shelterId = props.shelterId
+    ? props.shelterId
+    : Number(location.pathname.split("/")[2]);
   const dogId = props.dogId
     ? props.dogId
-    : Number(location.pathname.split("/dog/")[1]);
+    : Number(location.pathname.split("/")[4]);
+
+  const dog = useSelector(
+    (state: State) => state.shelterDog as IShelterDogWithPicture
+  );
+
   const [pageRefresh, setPageRefresh] = useState(true);
   useEffect(() => {
     if (pageRefresh) {
       try {
         store.dispatch(
-          Actions.fetchOneDogThunk({
+          Actions.fetchOneShelterDogThunk({
+            shelterId: shelterId,
             id: dogId as number,
             cookies: cookies,
           })
@@ -89,14 +96,11 @@ const DogDetails = (props: any) => {
     } // eslint-disable-next-line
   }, [pageRefresh]);
 
-  const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
 
-  const onCancelClick = () => {
-    sessionStorage.removeItem("dogId");
-    sessionStorage.clear();
-    history.push("/dogs");
+  const onShelterClicked = () => {
+    history.push(`/shelter/${shelterId}`);
   };
 
   return (
@@ -237,6 +241,18 @@ const DogDetails = (props: any) => {
               margin="normal"
             />
           </FormControl>
+        </Grid>
+      )}{" "}
+      {!pageRefresh && dog && (
+        <Grid
+          className="grid"
+          container
+          item
+          sm={12}
+          md={4}
+          direction="column"
+          alignContent="stretch"
+        >
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="mark-label">
               Special Mark
@@ -256,55 +272,6 @@ const DogDetails = (props: any) => {
               data-testid="breed-select"
               id="breed"
               value={dog.breed}
-              disabled={true}
-              margin="normal"
-            />
-          </FormControl>
-        </Grid>
-      )}{" "}
-      {!pageRefresh && dog && (
-        <Grid
-          className="grid"
-          container
-          item
-          sm={12}
-          md={4}
-          direction="column"
-          alignContent="stretch"
-        >
-          <FormControl className={classes.formControl}>
-            <InputLabel shrink id="calendar-label">
-              Dog was lost on
-            </InputLabel>
-            <TextField
-              data-testid="date-select"
-              margin="normal"
-              id="date-picker-inline"
-              value={dog.dateLost as Date}
-              name="dateLost"
-              disabled={true}
-            />
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel shrink id="city-label">
-              City
-            </InputLabel>
-            <TextField
-              data-testid="city-input"
-              name="city"
-              value={dog.location.city}
-              disabled={true}
-              margin="normal"
-            />
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel shrink id="district-label">
-              District
-            </InputLabel>
-            <TextField
-              data-testid="district-input"
-              name="district"
-              value={dog.location.district}
               disabled={true}
               margin="normal"
             />
@@ -344,10 +311,10 @@ const DogDetails = (props: any) => {
             <Button
               data-testid="cancel-button"
               variant="contained"
-              onClick={onCancelClick}
+              onClick={onShelterClicked}
               color="primary"
             >
-              Lost Dogs
+              Shelter
             </Button>
           </FormControl>
         </Grid>
@@ -355,5 +322,3 @@ const DogDetails = (props: any) => {
     </Grid>
   );
 };
-
-export default DogDetails;

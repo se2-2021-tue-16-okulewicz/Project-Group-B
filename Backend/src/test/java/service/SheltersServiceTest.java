@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
+import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.account.Shelter;
 import se.backend.model.dogs.Lost.LostDog;
@@ -17,8 +18,8 @@ import se.backend.service.shelters.SheltersService;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest(classes = SEBackend.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -107,5 +108,29 @@ public class SheltersServiceTest {
         //Getting all dogs again
         allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
         assertEquals(allDogs.getValue0().size(), 4);
+    }
+
+    @Test
+    public void DeleteDogTest() {
+        // Checking initial size
+        var allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.getValue0().size(), 4);
+
+        //Delete dog
+        var res = service.DeleteDog(10001, 10001);
+        assertTrue(res);
+
+        //Delete nonexisting dog
+        var res2 = service.DeleteDog(-1, 0);
+        assertFalse(res2);
+
+        //Delete dog from other shelter
+        assertThrows(UnauthorizedException.class, () -> {
+            var res3 = service.DeleteDog(10004, 10001);
+        });
+
+        // Getting all dogs one final time
+        allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.getValue0().size(), 3);
     }
 }

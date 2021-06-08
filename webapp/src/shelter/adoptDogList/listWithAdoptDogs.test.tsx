@@ -33,7 +33,7 @@ it("Rendered list of dogs", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path="/shelter/4">
+          <Route path="/shelter/1">
             <ListWithAdoptDogs />
           </Route>
         </Router>
