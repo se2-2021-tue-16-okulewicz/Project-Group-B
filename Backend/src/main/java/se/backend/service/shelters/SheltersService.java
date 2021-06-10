@@ -29,4 +29,6 @@ public interface SheltersService {
     ShelterDogWithBehaviorsAndWithPicture GetDogDetails(long dogId);
 
     boolean DeleteDog(long dogId, long shelterId);
+
+    ShelterInformation GetOneShelter(long shelterId);
 }

@@ -61,7 +61,7 @@ public class SheltersController {
         this.loginService = loginService;
     }
 
-    //<editor-fold desc=/shelters">
+    //<editor-fold desc="/shelters">
     @GetMapping(path = "")
     public ResponseEntity<Response<Collection<ShelterInformation>, Integer>> GetShelters(
             @RequestHeader HttpHeaders headers,
@@ -108,6 +108,26 @@ public class SheltersController {
             throw new GenericBadRequestException(result);
 
         return ResponseEntity.ok(new Response<>("Shelter registered and waiting for approval", true, null, null));
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="/shelters/{shelterId}"
+    @GetMapping(path ="{shelterId}")
+    public ResponseEntity<Response<ShelterInformation, Object>> GetOneShelter(@RequestHeader HttpHeaders headers,
+                                                                              @PathVariable("shelterId") long shelterId) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0()) {
+            throw new UnauthorizedException();
+        }
+
+        var result = sheltersService.GetOneShelter(shelterId);
+
+        if(result == null)
+            throw new GenericBadRequestException("Shelter does not exist or is inactive");
+
+        return ResponseEntity.ok(new Response<>(String.format("Shelter with id %d found", shelterId), true, result, null));
     }
     //</editor-fold>
 
