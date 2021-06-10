@@ -63,6 +63,18 @@ public class SheltersMainService implements SheltersService{
     }
 
     @Override
+    public ShelterInformation GetOneShelter(long shelterId) {
+        var shelter = shelterRepository.findById(shelterId);
+
+        if(shelter.isEmpty())
+            return null;
+        if(!shelter.get().isActive())
+            return null;
+
+        return shelter.get().ToShelterInformation();
+    }
+
+    @Override
     public Pair<List<ShelterDogWithBehaviorsAndWithPicture>, Integer> GetShelterDogs(Specification<ShelterDog> filters, Pageable page) {
         var dogPage = shelterDogRepository.findAll(filters, page);
         var dogs = dogPage.getContent();

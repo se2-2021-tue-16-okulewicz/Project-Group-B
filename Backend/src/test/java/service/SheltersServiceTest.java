@@ -133,4 +133,15 @@ public class SheltersServiceTest {
         allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
         assertEquals(allDogs.getValue0().size(), 3);
     }
+
+    @Test
+    public void GetOneShelter() {
+        var nonexistingShelter = service.GetOneShelter(1);
+        var inactiveShelter = service.GetOneShelter(10002);
+        var validShelter = service.GetOneShelter(10001);
+
+        assertNull(nonexistingShelter);
+        assertNull(inactiveShelter);
+        assertEquals(validShelter.getName(), "Hope");
+    }
 }

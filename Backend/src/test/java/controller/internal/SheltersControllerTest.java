@@ -68,6 +68,42 @@ public class SheltersControllerTest {
     }
 
     @Test
+    public void GetOneShelter() throws Exception {
+
+        //Invalid token
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/shelters/10001")
+                        .header(LoginService.authorizationHeader, "tokenIsInvalid")
+        ).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Nonexisting shelter
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/shelters/1")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Inactive shelter
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/shelters/10002")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Valid shelter
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/shelters/10001")
+                        .header(LoginService.authorizationHeader, "regularUserTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("Hope")));
+    }
+
+    @Test
     public void GetShelterDogsTest() throws Exception {
         //Get all dogs
         mockMvc.perform(
