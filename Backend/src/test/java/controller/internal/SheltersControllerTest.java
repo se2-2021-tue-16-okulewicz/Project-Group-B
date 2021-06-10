@@ -248,12 +248,19 @@ public class SheltersControllerTest {
         MockMultipartFile addressValid = new MockMultipartFile("address", "", "application/json", "{\"city\": \"Lublin\", \"street\":\"ulica\", \"postCode\":\"20-222\", \"buildingNumber\":\"12/12\"}".getBytes());
         MockMultipartFile addressInvalid = new MockMultipartFile("address", "", "application/json", "{\"city\": \"Lublin\", \"postCode\":\"20-222\", \"buildingNumber\":\"12/12\"}".getBytes());
 
+        MockMultipartFile shortName = new MockMultipartFile("shelter", "", "application/json", "{\"name\":\"Na\",\"email\":\"mail@mail.com\",\"phoneNumber\":\"+48722640200\",\"address\":{\"city\":\"Lublin\",\"street\":\"Ulica\",\"postCode\":\"22-222\",\"buildingNumber\":\"12/12\"}}".getBytes());
+        MockMultipartFile longName = new MockMultipartFile("shelter", "", "application/json", "{\"name\":\"Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"email\":\"mail@mail.com\",\"phoneNumber\":\"+48722640200\",\"address\":{\"city\":\"Lublin\",\"street\":\"Ulica\",\"postCode\":\"22-222\",\"buildingNumber\":\"12/12\"}}".getBytes());
+        MockMultipartFile usedName = new MockMultipartFile("shelter", "", "application/json", "{\"name\":\"Elon Musk\",\"email\":\"mail@mail.com\",\"phoneNumber\":\"+48722640200\",\"address\":{\"city\":\"Lublin\",\"street\":\"Ulica\",\"postCode\":\"22-222\",\"buildingNumber\":\"12/12\"}}".getBytes());
+        MockMultipartFile invalidMail = new MockMultipartFile("shelter", "", "application/json", "{\"name\":\"Name\",\"email\":\"@.\",\"phoneNumber\":\"+48722640200\",\"address\":{\"city\":\"Lublin\",\"street\":\"Ulica\",\"postCode\":\"22-222\",\"buildingNumber\":\"12/12\"}}".getBytes());
+        MockMultipartFile usedMail = new MockMultipartFile("shelter", "", "application/json", "{\"name\":\"Name\",\"email\":\"e.musk@mail.com\",\"phoneNumber\":\"+48722640200\",\"address\":{\"city\":\"Lublin\",\"street\":\"Ulica\",\"postCode\":\"22-222\",\"buildingNumber\":\"12/12\"}}".getBytes());
+        MockMultipartFile invalidPhone = new MockMultipartFile("shelter", "", "application/json", "{\"name\":\"Name\",\"email\":\"mail@mail.com\",\"phoneNumber\":\"Not a phone number\",\"address\":{\"city\":\"Lublin\",\"street\":\"Ulica\",\"postCode\":\"22-222\",\"buildingNumber\":\"12/12\"}}".getBytes());
+        MockMultipartFile incompleteAddress = new MockMultipartFile("shelter", "", "application/json", "{\"name\":\"Name\",\"email\":\"mail@mail.com\",\"phoneNumber\":\"+48722640200\",\"address\":{\"city\":\"Lublin\",\"postCode\":\"22-222\",\"buildingNumber\":\"12/12\"}}".getBytes());
+        MockMultipartFile valid = new MockMultipartFile("shelter", "", "application/json", "{\"name\":\"Name\",\"email\":\"mail@mail.com\",\"phoneNumber\":\"+48722640200\",\"address\":{\"city\":\"Lublin\",\"street\":\"Ulica\",\"postCode\":\"22-222\",\"buildingNumber\":\"12/12\"}}".getBytes());
+
+
         //Missing request part
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginValid)
-                        .file(emailValid)
-                        .file(phoneValid)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Missing part of a request")))
@@ -263,10 +270,7 @@ public class SheltersControllerTest {
         //Name to short
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginShort)
-                        .file(emailValid)
-                        .file(phoneValid)
-                        .file(addressValid)
+                        .file(shortName)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Shelter name is too short")))
@@ -276,10 +280,7 @@ public class SheltersControllerTest {
         //Name to long
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginLong)
-                        .file(emailValid)
-                        .file(phoneValid)
-                        .file(addressValid)
+                        .file(longName)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Shelter name is too long")))
@@ -289,10 +290,7 @@ public class SheltersControllerTest {
         //Name already used
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginRepeat)
-                        .file(emailValid)
-                        .file(phoneValid)
-                        .file(addressValid)
+                        .file(usedName)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Name is already used")))
@@ -302,10 +300,7 @@ public class SheltersControllerTest {
         //Mail invalid
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginValid)
-                        .file(emailInvalid)
-                        .file(phoneValid)
-                        .file(addressValid)
+                        .file(invalidMail)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Email is invalid")))
@@ -315,10 +310,7 @@ public class SheltersControllerTest {
         //Mail already used
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginValid)
-                        .file(emailRepeat)
-                        .file(phoneValid)
-                        .file(addressValid)
+                        .file(usedMail)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Email is already used")))
@@ -328,10 +320,7 @@ public class SheltersControllerTest {
         //Phone invalid
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginValid)
-                        .file(emailValid)
-                        .file(phoneInvalid)
-                        .file(addressValid)
+                        .file(invalidPhone)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Phone number is invalid")))
@@ -341,10 +330,7 @@ public class SheltersControllerTest {
         //Incomplete address
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginValid)
-                        .file(emailValid)
-                        .file(phoneValid)
-                        .file(addressInvalid)
+                        .file(incompleteAddress)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Incomplete data")))
@@ -354,10 +340,7 @@ public class SheltersControllerTest {
         //Valid register
         mockMvc.perform(
                 MockMvcRequestBuilders.multipart("/shelters")
-                        .file(loginValid)
-                        .file(emailValid)
-                        .file(phoneValid)
-                        .file(addressValid)
+                        .file(valid)
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk());
     }
