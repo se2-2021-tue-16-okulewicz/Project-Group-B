@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import se.backend.SEBackend;
 import se.backend.service.login.LoginService;
@@ -199,6 +200,133 @@ public class SheltersControllerTest {
                 .andExpect(jsonPath("successful", is(false)))
                 .andExpect(jsonPath("message", is("Missing part of a request")))
                 .andExpect(jsonPath("data").value(IsNull.nullValue()));
+    }
+
+    @Test
+    public void UpdateDogTest() throws Exception {
+
+        MockMultipartFile fullDog = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"breed\":\"random\",\"color\":\"pink\",\"earsType\":\"nie ma\",\"hairLength\":\"long\",\"name\":\"John\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+        MockMultipartFile dogWithMissingElements = new MockMultipartFile("dog", "", "application/json", "{\"age\":9,\"color\":\"pink\",\"earsType\":\"\",\"hairLength\":\"long\",\"name\":\"\",\"size\":\"big\",\"specialMark\":\"none\",\"tailLength\":\"long\",\"behaviors\":[\"Barks loudly\",\"Wags its tail\"]}".getBytes());
+
+
+        MockMultipartFile validPicture = new MockMultipartFile("picture", "image_name.png", "image/png", validImageData);
+        MockMultipartFile invalidPicture = new MockMultipartFile("picture", "image_name.png", "image/png", "I am not a real picture!!!".getBytes());
+
+        MockMultipartHttpServletRequestBuilder existingDogBuilder;
+        MockMultipartHttpServletRequestBuilder nonexistingDogBuilder;
+
+        //Update without picture
+        existingDogBuilder = MockMvcRequestBuilders.multipart("/shelters/10001/dogs/10001");
+        existingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        mockMvc.perform(existingDogBuilder
+                .file(fullDog)
+                .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("John")))
+                .andExpect(jsonPath("data.age", is(9)))
+                .andExpect(jsonPath("data.shelterId", is(10001)))
+                .andExpect(jsonPath("data.picture.fileName", is("example1")));
+
+        //Proper change (with picture)
+        existingDogBuilder = MockMvcRequestBuilders.multipart("/shelters/10001/dogs/10001");
+        existingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        mockMvc.perform(existingDogBuilder
+                .file(fullDog)
+                .file(validPicture)
+                .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("successful", is(true)))
+                .andExpect(jsonPath("data.name", is("John")))
+                .andExpect(jsonPath("data.age", is(9)))
+                .andExpect(jsonPath("data.shelterId", is(10001)))
+                .andExpect(jsonPath("data.picture.fileName", is("image_name.png")));
+
+        //Unauthorized
+        existingDogBuilder = MockMvcRequestBuilders.multipart("/shelters/10001/dogs/10001");
+        existingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        mockMvc.perform(existingDogBuilder
+                .file(fullDog)
+                .file(validPicture)
+                .header(LoginService.authorizationHeader, "RegularUserTestToken")
+        ).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Unauthorized (other shelter)
+        existingDogBuilder = MockMvcRequestBuilders.multipart("/shelters/10002/dogs/10001");
+        existingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        mockMvc.perform(existingDogBuilder
+                .file(fullDog)
+                .file(validPicture)
+                .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+
+        //Invalid dog
+        existingDogBuilder = MockMvcRequestBuilders.multipart("/shelters/10001/dogs/10001");
+        existingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        mockMvc.perform(existingDogBuilder
+                .file(dogWithMissingElements)
+                .file(validPicture)
+                .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("message", is("Dog does not have complete data")))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Invalid picture
+        existingDogBuilder = MockMvcRequestBuilders.multipart("/shelters/10001/dogs/10001");
+        existingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        mockMvc.perform(existingDogBuilder
+                .file(fullDog)
+                .file(invalidPicture)
+                .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("message", is("Picture is not valid")))
+                .andExpect(jsonPath("data").value(IsNull.nullValue()));
+
+        //Non existing dog
+        nonexistingDogBuilder = MockMvcRequestBuilders.multipart("/shelters/10001/dogs/20001");
+        nonexistingDogBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        mockMvc.perform(nonexistingDogBuilder
+                .file(fullDog)
+                .file(validPicture)
+                .header(LoginService.authorizationHeader, "shelterSecretTestToken")
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("successful", is(false)))
+                .andExpect(jsonPath("message", is("Failed to update dog - No dog with id: 20001 was found")));
     }
 
     @Test

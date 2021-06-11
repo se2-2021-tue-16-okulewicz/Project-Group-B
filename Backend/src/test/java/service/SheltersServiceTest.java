@@ -91,6 +91,55 @@ public class SheltersServiceTest {
     }
 
     @Test
+    public void UpdateDogTest() {
+        // Checking initial size
+        var allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.getValue0().size(), 4);
+        assertEquals(allDogs.getValue1(), 1);
+
+        // Adding dogs
+        ShelterDog newDog1 = new ShelterDog();
+        Picture pic1 = new Picture();
+        newDog1.setName("Name1");
+        pic1.setFileName("exampleFile1");
+        ShelterDogWithBehaviors newDogBeh1 = new ShelterDogWithBehaviors(newDog1);
+
+        var result1 = service.AddShelterDog(newDogBeh1, pic1, 10001);
+
+        // Make changes
+        Picture pic2 = new Picture();
+        result1.setName("Name2");
+        pic2.setFileName("exampleFile2");
+        ShelterDogWithBehaviors newDogBeh2 = new ShelterDogWithBehaviors(result1);
+
+        assertEquals(result1.getId(),newDogBeh2.getId());
+
+        var result2 = service.UpdateDog(result1.getId(), newDogBeh2, pic2, 10001);
+
+
+        assertEquals("Name2", result2.getName());
+        assertEquals(0, result2.getBehaviors().size());
+        assertEquals("exampleFile2", result2.getPicture().getFileName());
+        assertEquals(10001, result2.getShelterId());
+
+        // This dog is not in the database.
+        ShelterDog newDog3 = new ShelterDog();
+        newDog3.setId(9999);
+        newDog3.setName("Name3");
+        ShelterDogWithBehaviors newDogBeh3 = new ShelterDogWithBehaviors(newDog3);
+        Picture pic3 = new Picture();
+        pic3.setFileName("exampleFile3");
+
+        var result3 = service.UpdateDog(newDog3.getId(), newDogBeh3, pic3, 10001);
+
+        assertNull(result3);
+
+        //Getting all dogs again
+        allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(5, allDogs.getValue0().size());
+    }
+
+    @Test
     public void GetDogDetailsTest()
     {
         // Checking initial size
