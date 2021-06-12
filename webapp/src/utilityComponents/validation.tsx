@@ -40,7 +40,7 @@ export function isStringValidPostCode(postcode: string): boolean {
 }
 
 export function isStringValidNumber(input: number): boolean {
-  return "number" === typeof input;
+  return "number" === typeof Number(input);
 }
 
 export function isStringValidPhoneNumeber(phone: string): boolean {

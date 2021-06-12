@@ -92,17 +92,8 @@ public class SheltersController {
 
     @PostMapping(path = "")
     public ResponseEntity<Response<Object, Object>> RegisterShelter(@RequestHeader HttpHeaders headers,
-                                                                    @RequestPart("name") String name,
-                                                                    @RequestPart("phoneNumber") String phoneNumber,
-                                                                    @RequestPart("email") String email,
-                                                                    @RequestPart("address") Address address) {
+                                                                    @RequestPart("shelter") ShelterRegisterInformation shelter) {
         logHeaders(headers);
-
-        ShelterRegisterInformation shelter = new ShelterRegisterInformation();
-        shelter.setName(name);
-        shelter.setEmail(email);
-        shelter.setPhoneNumber(phoneNumber);
-        shelter.setAddress(address);
 
         var result = loginService.CreateShelter(shelter);
 
