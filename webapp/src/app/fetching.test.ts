@@ -28,6 +28,7 @@ import {
 } from "../registerLogin/registerLogintest";
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
+import { initAddress, initShelter } from "../shelter/shelterTesting";
 
 jest.mock("axios");
 
@@ -103,6 +104,17 @@ test("marking the dog as found with a wrong token results in an error", async ()
 test("register with wrong data", async () => {
   const data: RequestResponse<null, undefined> =
     await Fetching.registerRegularUser(initRegisterRegularUserProps);
+  expect(data).toEqual(errorObject);
+});
+
+test("register shelter with wrong data", async () => {
+  const data: RequestResponse<null, undefined> =
+    await Fetching.registerShelterUser({
+      name: "",
+      address: initAddress,
+      email: "",
+      phoneNumber: "1", //phone number too short
+    });
   expect(data).toEqual(errorObject);
 });
 

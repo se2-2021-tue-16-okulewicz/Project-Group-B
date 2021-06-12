@@ -536,30 +536,9 @@ export async function registerShelterUser(
 ): Promise<RequestResponse<null, undefined>> {
   let formData = new FormData();
   formData.append(
-    "name",
-    new Blob([newUserInfo.name], {
-      type: "text/plain",
-    }),
-    ""
-  );
-  formData.append(
-    "address",
-    new Blob([JSON.stringify(newUserInfo.address)], {
+    "shelter",
+    new Blob([JSON.stringify(newUserInfo)], {
       type: "application/json",
-    }),
-    ""
-  );
-  formData.append(
-    "phoneNumber",
-    new Blob([newUserInfo.phoneNumber], {
-      type: "text/plain",
-    }),
-    ""
-  );
-  formData.append(
-    "email",
-    new Blob([newUserInfo.email], {
-      type: "text/plain",
     }),
     ""
   );

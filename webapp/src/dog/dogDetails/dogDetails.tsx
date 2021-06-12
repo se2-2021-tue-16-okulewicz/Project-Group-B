@@ -23,7 +23,6 @@ import { useCookies } from "react-cookie";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
-import { DogComment } from "./comment";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
