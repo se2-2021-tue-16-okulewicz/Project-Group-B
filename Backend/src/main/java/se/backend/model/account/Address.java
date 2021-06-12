@@ -1,6 +1,7 @@
 package se.backend.model.account;
 
 import lombok.Data;
+import se.backend.utils.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,4 +14,5 @@ public class Address {
     private String postCode;
     private String buildingNumber;
     private String additionalAddressLine;
+
 }
