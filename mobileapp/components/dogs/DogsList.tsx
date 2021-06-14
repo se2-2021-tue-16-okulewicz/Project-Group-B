@@ -20,7 +20,7 @@ import { store } from "../../redux/store";
 import {
   ILostDog,
   ILostDogWithPicture,
-  ILostDogWithPictureAndComment,
+  ILostDogWithPictureAndComments,
 } from "./dog/dogInterfaces";
 import { useSelector } from "react-redux";
 import { State } from "../../redux/reducer";
@@ -64,6 +64,11 @@ export default function DogsList({ navigation }: any) {
 
   const id = useSelector((state: State) => state.loginInformation?.id);
   const [myDogs, setMyDogs] = useState<ILostDogWithPicture[]>([]);
+
+  const specificDog = useSelector(
+    (state: State) => state.currentDog as ILostDogWithPictureAndComments
+  );
+  const [theDog, setTheDog] = useState<ILostDogWithPictureAndComments>();
 
   //Fetching cars at the beginning
   React.useEffect(() => {
@@ -114,6 +119,17 @@ export default function DogsList({ navigation }: any) {
     );
   }
 
+  function getDogDetails(id: number) {
+    store.dispatch(
+      Actions.GetDogDetailsThunk({
+        Authorization: Authorization,
+        dogID: id,
+      })
+    );
+    let tmp = specificDog;
+    setTheDog(specificDog);
+  }
+
   function resetFilters() {
     store.dispatch(Actions.setFilters(initFilterProps));
   }
@@ -124,9 +140,11 @@ export default function DogsList({ navigation }: any) {
   }
 
   const redirectToDetails = (dog: ILostDogWithPicture) => {
-    navigation.navigate("Dog details", {
-      dog: dog,
-    });
+    getDogDetails(dog.id);
+
+    // navigation.navigate("Dog details", {
+    //   dog: theDog,
+    // });
   };
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
@@ -172,47 +190,7 @@ export default function DogsList({ navigation }: any) {
               <Text style={styles.found}>Found</Text>
             )}
           </View>
-
-          {/* <View style={{ flex: 2, marginLeft: 15 }}>            
-            <TouchableOpacity
-                  style={{
-                    backgroundColor: "#006ee6",
-                    borderRadius: 10,
-                    padding: 4,
-                    marginLeft: -13,
-                    shadowOffset: { width: 1, height: 2 },
-                    shadowColor: "black",
-                    shadowOpacity: 0.5,
-                  }}
-                  onPress={() => setModalVisible2(true)}
-                >
-                  <Text style={styles.lost}>Comment</Text>
-                </TouchableOpacity>
-          </View>           */}
-        </View>
-        {/* <View style={styles.centeredView2}>
-            <Modal animationType="slide"
-                  transparent={true}
-                  visible={modalVisible2}             
-            >
-              <View style={styles.centeredView2}>
-                <View style={styles.modalView2}>
-                  <Text style={styles.modalText}>comment text</Text>
-                  <TextInput
-                    style={styles.input}
-                    onChangeText={onChangeText}
-                    value={text}
-                  />
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible2(!modalVisible2)}
-                  >
-                    <Text style={styles.textStyle}>close</Text>
-                  </Pressable>
-                </View>
-              </View>              
-            </Modal>
-          </View> */}
+        </View>       
 
         <View style={styles.row}>
           <Image style={styles.tinyLogo} source={pin} />

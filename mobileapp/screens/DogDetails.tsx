@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   Button,
+  FlatList,
 } from "react-native";
 //import Autocomplete from 'react-native-autocomplete-input';
 import * as ImagePicker from "expo-image-picker";
@@ -22,6 +23,8 @@ import {
   IDogCharacteristics,
   IDogDetails,
   ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
+  ICommentWithAuthorAndPicture,
 } from "../components/dogs/dog/dogInterfaces";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
 import { store } from "../redux/store";
@@ -39,6 +42,7 @@ import Bubble from "./Bubble";
 
 export default function DogDetails({ route, navigation }: any) {
   const { dog } = route.params;
+  const comments = dog.comments;
   const [scroll, setScroll] = useState<boolean>(true);
 
   function convertDate(inputFormat: string) {
@@ -48,6 +52,72 @@ export default function DogDetails({ route, navigation }: any) {
     var d = new Date(inputFormat);
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("/");
   }
+
+  const renderListItem = (comment: ICommentWithAuthorAndPicture, navigation: any) => (
+    <View style={[styles.item]}>
+      
+      <Text/>
+
+      
+{/*       
+      <TouchableOpacity
+        onPress={() => {
+          redirectToDetails(dog);
+        }}
+      >
+        <Text style={styles.title}>{dog.name}</Text>
+        <View style={[{ flexDirection: "row" }]}>
+          <View style={{ flex: 5 }}>
+            <Image
+              style={styles.picture}
+              source={{
+                uri: `data:${dog.picture.fileType};base64,${
+                  dog.picture.data as ArrayBuffer
+                }`,
+              }}
+              //source={{uri: dog.picture.uri}}
+            />
+          </View>
+          <View style={{ flex: 2 }}>
+            {!dog.isFound ? (
+              dog.ownerId !== id ? (
+                <Text style={styles.lostNotOwner}>Lost</Text>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#006ee6",
+                    borderRadius: 10,
+                    padding: 4,
+                    shadowOffset: { width: 1, height: 2 },
+                    shadowColor: "black",
+                    shadowOpacity: 0.5,
+                  }}
+                  onPress={() => markDogAsFound(dog.id)}
+                >
+                  <Text style={styles.lost}>Claim found</Text>
+                </TouchableOpacity>
+              )
+            ) : (
+              <Text style={styles.found}>Found</Text>
+            )}
+          </View>
+        </View>       
+
+        <View style={styles.row}>
+          <Image style={styles.tinyLogo} source={pin} />
+          <Text style={styles.subtitle}>{dog.location.city}</Text>
+        </View>
+      </TouchableOpacity> */}
+    </View>
+  );
+
+
+
+
+
+
+
+
 
   return (
     <View style={{ backgroundColor: "#ffffff", borderRadius: 5 }}>
@@ -110,6 +180,16 @@ export default function DogDetails({ route, navigation }: any) {
               //
             })}
           </View>
+          <Text style={{ fontSize: 15, marginTop: "4%", marginLeft: "1%", color: "#006aff" }}>
+            Comments
+          </Text>
+
+          <FlatList
+          data={comments.length > 0 ? comments.slice(0, comments.length) : []}
+          renderItem={({ item }) => renderListItem(item, navigation)}
+          keyExtractor={(item) => item.id.toString()}
+          />
+
           <View style={{ marginBottom: "70%" }}></View>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -150,6 +230,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAF9F8",
     borderColor: "#bbb",
     borderWidth: 1,
+  },
+  item: {
+    backgroundColor: "#ffffff",
+    padding: 10,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    borderRadius: 5,
   },
   itemTextStyle: {
     color: "#222",

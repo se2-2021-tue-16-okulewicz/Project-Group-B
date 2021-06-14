@@ -9,6 +9,7 @@ import {
   ILostDogWithPicture,
   IPicture,
   Picture,
+  ILostDogWithPictureAndComments,
 } from "../components/dogs/dog/dogInterfaces";
 import config from "../config/config";
 import {
@@ -36,6 +37,7 @@ export type Error = {
 export type State = {
   status: string;
   dogs: ILostDogWithPicture[] | any;
+  currentDog: ILostDogWithPictureAndComments | null;
   dogsLastPage: boolean;
   dogsRequireRefresh: boolean;
   loadingDogs: boolean;
@@ -54,6 +56,7 @@ export type State = {
 const init: State = {
   status: "",
   dogs: [],
+  currentDog: null,
   dogsLastPage: false,
   dogsRequireRefresh: true,
   loadingDogs: false,
@@ -236,6 +239,46 @@ export const reducer = createReducer(init, {
     };
     return newState;
   },
+
+
+  [Actions.GetDogDetailsThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPictureAndComments, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.currentDog = payload.payload.response.data;
+    console.log("---------THE DOGE");
+    console.log(payload.payload.response.data);
+    console.log("---------THE DOGE");
+    return newState;
+  },
+  [Actions.GetDogDetailsThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    return newState;
+  },
+  [Actions.GetDogDetailsThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    console.log("rejected: " + payload.payload.response.message);
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+
+    return newState;
+  },
+
+
+
 
   [Actions.fetchDogsThunk.pending.toString()]: (state: State) => {
     let newState = _.cloneDeep(state);

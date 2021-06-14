@@ -11,7 +11,7 @@ import {
   IImage,
   ILostDog,
   ILostDogWithPicture,
-  ILostDogWithPictureAndComment,
+  ILostDogWithPictureAndComments,
   IPicture,
   Picture,
 } from "../components/dogs/dog/dogInterfaces";
@@ -131,12 +131,12 @@ Getting dog details
 export const GetDogDetailsThunk = createAsyncThunk(
   "GetDogDetails",
   async (item: any, { rejectWithValue }) => {
-    const response: RequestResponse<ILostDogWithPictureAndComment, undefined> =
+    const response: RequestResponse<ILostDogWithPictureAndComments, undefined> =
       await Fetching.GetDogDetails(item.filters, item.Authorization);
 
     if (response.response.successful !== true) {
       return rejectWithValue(
-        response as RequestResponse<ILostDogWithPictureAndComment, undefined>
+        response as RequestResponse<ILostDogWithPictureAndComments, undefined>
       );
     }
 
