@@ -24,6 +24,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
 import CommentsList from "../dogComments/commentsList";
+import CommentForm from "../dogComments/commentForm";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -368,21 +369,16 @@ const DogDetails = (props: any) => {
           xs={12}
           alignContent="stretch"
         >
-<CommentsList comments={dog.comments} delete={true} redirectToComment={(id:number)=>{redirectToComment(id)}}></CommentsList>
+<CommentsList comments={dog.comments} delete={false} redirectToComment={(id:number)=>{redirectToComment(id)}}/>
 </Grid>)}
-      {/*!pageRefresh && dog && (
+{!pageRefresh && dog && dog.comments &&(
         <Grid
-          className="grid"
-          container
           item
-          sm={12}
-          md={4}
-          direction="column"
+          xs={12}
           alignContent="stretch"
         >
-          <DogComment name={""} />
-        </Grid>
-      )*/}
+<CommentForm />
+</Grid>)}
     </Grid>
 
   );

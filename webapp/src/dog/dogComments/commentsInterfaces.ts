@@ -2,7 +2,6 @@ import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { IPicture } from "../dogInterfaces";
 
 export interface IComment  {
-  picture?: IPicture;
   authorId: number;
   dogId: number;
   text: string;

@@ -1,4 +1,4 @@
-import { initComment } from "./dogComments/commentsClasses";
+import { initCommentandAuthor } from "./dogComments/commentsClasses";
 import { ILostDog, ILostDogWithPicture, ILostDogWithPictureAndComments, IPicture } from "./dogInterfaces";
 
 export const initPicture: IPicture = {
@@ -65,5 +65,5 @@ export const initLostDogWithPictureAndCommentsProps: ILostDogWithPictureAndComme
   dateLost: new Date(2020, 1, 1, 0, 0, 0, 0),
   isFound: false,
   picture: initPicture,
-  comments:[initComment],
+  comments:[initCommentandAuthor],
 };
