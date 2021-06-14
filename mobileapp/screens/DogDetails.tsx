@@ -41,18 +41,16 @@ import Bubble from "./Bubble";
 // import DatePicker from 'react-native-datepicker';
 
 export default function DogDetails({ route, navigation }: any) {
-  const { dog } = route.params;  
-  
+  const { dog } = route.params;
+
   const Authorization = useSelector(
     (state: State) => state.loginInformation?.token
   );
   const [theDog, setTheDog] = useState<ILostDogWithPictureAndComments>();
-  
+
   const [scroll, setScroll] = useState<boolean>(true);
 
-  const specificDog = useSelector(
-    (state: State) => state?.currentDog
-  );
+  const specificDog = useSelector((state: State) => state?.currentDog);
 
   React.useEffect(() => {
     store.dispatch(
@@ -68,8 +66,6 @@ export default function DogDetails({ route, navigation }: any) {
     console.log(theDog?.name);
   }, [specificDog]);
 
-  
-
   function convertDate(inputFormat: string) {
     function pad(s: any) {
       return s < 10 ? "0" + s : s;
@@ -83,9 +79,9 @@ export default function DogDetails({ route, navigation }: any) {
     navigation: any
   ) => (
     <View style={[styles.item]}>
-    {
-      // Comment item goes here      
-    }
+      {
+        // Comment item goes here
+      }
     </View>
   );
 
