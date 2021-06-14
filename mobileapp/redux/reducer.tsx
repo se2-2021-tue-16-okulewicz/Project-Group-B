@@ -248,6 +248,7 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.currentDog = payload.payload.response.data;
+    newState.dogsRequireRefresh = true;
     console.log("---------THE DOGE");
     console.log(payload.payload.response.data);
     console.log("---------THE DOGE");
@@ -264,7 +265,7 @@ export const reducer = createReducer(init, {
     state: State,
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
-    console.log("rejected: " + payload.payload.response.message);
+    //console.log("rejected: " + payload.payload.response.message);
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
     newState.loading = false;

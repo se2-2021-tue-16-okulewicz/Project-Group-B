@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   KeyboardAvoidingView,
@@ -41,9 +41,34 @@ import Bubble from "./Bubble";
 // import DatePicker from 'react-native-datepicker';
 
 export default function DogDetails({ route, navigation }: any) {
-  const { dog } = route.params;
-  const comments = dog.comments;
+  const { dog } = route.params;  
+  
+  const Authorization = useSelector(
+    (state: State) => state.loginInformation?.token
+  );
+  const [theDog, setTheDog] = useState<ILostDogWithPictureAndComments>();
+  
   const [scroll, setScroll] = useState<boolean>(true);
+
+  const specificDog = useSelector(
+    (state: State) => state?.currentDog
+  );
+
+  React.useEffect(() => {
+    store.dispatch(
+      Actions.GetDogDetailsThunk({
+        Authorization: Authorization,
+        dogID: dog.id,
+      })
+    );
+    let tmp = specificDog;
+    setTheDog(specificDog);
+
+    console.log("CHECK5");
+    console.log(theDog?.name);
+  }, [specificDog]);
+
+  
 
   function convertDate(inputFormat: string) {
     function pad(s: any) {
@@ -55,69 +80,11 @@ export default function DogDetails({ route, navigation }: any) {
 
   const renderListItem = (comment: ICommentWithAuthorAndPicture, navigation: any) => (
     <View style={[styles.item]}>
-      
-      <Text/>
-
-      
-{/*       
-      <TouchableOpacity
-        onPress={() => {
-          redirectToDetails(dog);
-        }}
-      >
-        <Text style={styles.title}>{dog.name}</Text>
-        <View style={[{ flexDirection: "row" }]}>
-          <View style={{ flex: 5 }}>
-            <Image
-              style={styles.picture}
-              source={{
-                uri: `data:${dog.picture.fileType};base64,${
-                  dog.picture.data as ArrayBuffer
-                }`,
-              }}
-              //source={{uri: dog.picture.uri}}
-            />
-          </View>
-          <View style={{ flex: 2 }}>
-            {!dog.isFound ? (
-              dog.ownerId !== id ? (
-                <Text style={styles.lostNotOwner}>Lost</Text>
-              ) : (
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "#006ee6",
-                    borderRadius: 10,
-                    padding: 4,
-                    shadowOffset: { width: 1, height: 2 },
-                    shadowColor: "black",
-                    shadowOpacity: 0.5,
-                  }}
-                  onPress={() => markDogAsFound(dog.id)}
-                >
-                  <Text style={styles.lost}>Claim found</Text>
-                </TouchableOpacity>
-              )
-            ) : (
-              <Text style={styles.found}>Found</Text>
-            )}
-          </View>
-        </View>       
-
-        <View style={styles.row}>
-          <Image style={styles.tinyLogo} source={pin} />
-          <Text style={styles.subtitle}>{dog.location.city}</Text>
-        </View>
-      </TouchableOpacity> */}
+    {
+      // Comment item goes here      
+    }
     </View>
   );
-
-
-
-
-
-
-
-
 
   return (
     <View style={{ backgroundColor: "#ffffff", borderRadius: 5 }}>
@@ -184,11 +151,11 @@ export default function DogDetails({ route, navigation }: any) {
             Comments
           </Text>
 
-          <FlatList
-          data={comments.length > 0 ? comments.slice(0, comments.length) : []}
+          {/* <FlatList
+          data={theDog.comments.length > 0 ? theDog.comments.slice(0, theDog.comments.length) : []}
           renderItem={({ item }) => renderListItem(item, navigation)}
           keyExtractor={(item) => item.id.toString()}
-          />
+          /> */}
 
           <View style={{ marginBottom: "70%" }}></View>
         </KeyboardAvoidingView>

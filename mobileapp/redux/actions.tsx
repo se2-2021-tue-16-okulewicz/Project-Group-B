@@ -132,7 +132,7 @@ export const GetDogDetailsThunk = createAsyncThunk(
   "GetDogDetails",
   async (item: any, { rejectWithValue }) => {
     const response: RequestResponse<ILostDogWithPictureAndComments, undefined> =
-      await Fetching.GetDogDetails(item.filters, item.Authorization);
+      await Fetching.GetDogDetails(item.dogID, item.Authorization);
 
     if (response.response.successful !== true) {
       return rejectWithValue(

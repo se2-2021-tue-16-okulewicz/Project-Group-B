@@ -65,11 +65,6 @@ export default function DogsList({ navigation }: any) {
   const id = useSelector((state: State) => state.loginInformation?.id);
   const [myDogs, setMyDogs] = useState<ILostDogWithPicture[]>([]);
 
-  const specificDog = useSelector(
-    (state: State) => state.currentDog as ILostDogWithPictureAndComments
-  );
-  const [theDog, setTheDog] = useState<ILostDogWithPictureAndComments>();
-
   //Fetching cars at the beginning
   React.useEffect(() => {
     if (refreshRequired) {
@@ -119,17 +114,6 @@ export default function DogsList({ navigation }: any) {
     );
   }
 
-  function getDogDetails(id: number) {
-    store.dispatch(
-      Actions.GetDogDetailsThunk({
-        Authorization: Authorization,
-        dogID: id,
-      })
-    );
-    let tmp = specificDog;
-    setTheDog(specificDog);
-  }
-
   function resetFilters() {
     store.dispatch(Actions.setFilters(initFilterProps));
   }
@@ -140,11 +124,9 @@ export default function DogsList({ navigation }: any) {
   }
 
   const redirectToDetails = (dog: ILostDogWithPicture) => {
-    getDogDetails(dog.id);
-
-    // navigation.navigate("Dog details", {
-    //   dog: theDog,
-    // });
+    navigation.navigate("Dog details", {
+       dog: dog,
+    });
   };
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
