@@ -9,6 +9,10 @@ import {
   SafeAreaView,
   Image,
   ImageBackground,
+  ActivityIndicator,
+  Button,
+  Modal,
+  Pressable,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
@@ -18,8 +22,17 @@ import { State } from "../../redux/reducer";
 import * as Actions from "../../redux/actions";
 import config from "../../config/config";
 import { useState } from "react";
+import Filters from "../helper/Filters";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faSlidersH, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  IFilters,
+  IFilterSort,
+  initFilterProps,
+} from "../helper/filtersInterface";
 
 export default function DogsList({ navigation }: any) {
+  const [modalVisible, setModalVisible] = useState(false);
   const bg = require("../../assets/images/dog-bg.png");
   const pin = require("../../assets/images/pin.png");
   const image = { uri: "../../assets/images/dog-bg.PNG" };
@@ -35,10 +48,13 @@ export default function DogsList({ navigation }: any) {
   const refreshRequired = useSelector(
     (state: State) => state.dogsRequireRefresh
   );
-  const [filters, setFilters] = useState({
-    page: config.defaultFilters.page,
-    size: config.defaultFilters.size,
-  });
+  // const [filters, setFilters] = useState<IFilterSort>({
+  //   page: config.defaultFilters.page,
+  //   size: config.defaultFilters.size,
+  // });
+  const dogFilters = useSelector((state: State) => state.filters);
+  const [filters, setFilters] = useState<IFilterSort>(dogFilters);
+
   const id = useSelector((state: State) => state.loginInformation?.id);
   const [myDogs, setMyDogs] = useState<ILostDogWithPicture[]>([]);
 
@@ -49,7 +65,7 @@ export default function DogsList({ navigation }: any) {
       store.dispatch(
         Actions.fetchDogsThunk({
           filters: {
-            ...filters,
+            ...dogFilters,
             page: config.defaultFilters.page,
           },
           Authorization: Authorization,
@@ -59,12 +75,14 @@ export default function DogsList({ navigation }: any) {
       setFilters({ ...filters, page: config.defaultFilters.page });
     } // eslint-disable-next-line
     let tmp = dogsList;
-    setMyDogs(tmp.filter((dog) => dog.ownerId == id));
+    setMyDogs(dogsList);
+    //setMyDogs(tmp.filter((dog) => dog.ownerId == id));
   }, [refreshRequired]);
 
   React.useEffect(() => {
     let tmp = dogsList;
-    setMyDogs(tmp.filter((dog) => dog.ownerId == id));
+    setMyDogs(dogsList);
+    //setMyDogs(tmp.filter((dog) => dog.ownerId == id));
   }, [dogsList]);
   /**
    * Is invoked after reaching bottom of the page.
@@ -73,11 +91,11 @@ export default function DogsList({ navigation }: any) {
   const fetchMore = () => {
     store.dispatch(
       Actions.fetchDogsThunk({
-        filters: { ...filters, page: filters.page + 1 },
+        filters: { ...dogFilters, page: filters.page + 1 },
         Authorization: Authorization,
       }) //filters
     );
-    setFilters({ ...filters, page: filters.page + 1 });
+    setFilters({ ...dogFilters, page: filters.page + 1 });
   };
 
   function markDogAsFound(id: number) {
@@ -89,37 +107,53 @@ export default function DogsList({ navigation }: any) {
     );
   }
 
-  React.useEffect(() => {
-    if (myDogs[0] !== null) {
-      // console.log("dogs[0].picture.fileType: " + myDogs[0].picture.fileType);
-      // console.log("dogs[0].picture.data: " + myDogs[0].picture.data);
-    }
-  });
+  function resetFilters() {
+    store.dispatch(Actions.setFilters(initFilterProps));
+  }
+
+  function handleApply() {
+    setModalVisible(false);
+    store.dispatch(Actions.setDogsRequireRefresh(true));
+  }
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={[styles.item]}>
       <TouchableOpacity>
         <Text style={styles.title}>{dog.name}</Text>
-        <View style={[{ flexDirection: "row", flex: 1 }]}>
-          <Image
-            style={[styles.picture, {flex: 1}]}
-            source={{
-              uri: `data:${dog.picture.fileType};base64,${dog.picture.data as ArrayBuffer
+        <View style={[{ flexDirection: "row" }]}>
+          <View style={{ flex: 5 }}>
+            <Image
+              style={styles.picture}
+              source={{
+                uri: `data:${dog.picture.fileType};base64,${
+                  dog.picture.data as ArrayBuffer
                 }`,
-            }}
-          //source={{uri: dog.picture.uri}}
-          />
-          <View style={{ justifyContent: "flex-end", alignContent: "flex-end", flex: 2 }}>
-          {/* <Text>{dog.picture.id + " " + dog.picture.fileName + " " + dog.picture.fileType + " " + dog.picture.data}</Text> */}
-          {!dog.isFound ? (
-            
-              <TouchableOpacity style={{ backgroundColor: "yellow"}} onPress={() => markDogAsFound(dog.id)}>
-                <Text style={styles.lost}>Mark as found</Text>
-              </TouchableOpacity>
-            
-          ) : (
-            <Text style={styles.found}>Found</Text>
-          )}
+              }}
+              //source={{uri: dog.picture.uri}}
+            />
+          </View>
+          <View style={{ flex: 2 }}>
+            {!dog.isFound ? (
+              dog.ownerId !== id ? (
+                <Text style={styles.lostNotOwner}>Lost</Text>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#006ee6",
+                    borderRadius: 10,
+                    padding: 4,
+                    shadowOffset: { width: 1, height: 2 },
+                    shadowColor: "black",
+                    shadowOpacity: 0.5,
+                  }}
+                  onPress={() => markDogAsFound(dog.id)}
+                >
+                  <Text style={styles.lost}>Claim found</Text>
+                </TouchableOpacity>
+              )
+            ) : (
+              <Text style={styles.found}>Found</Text>
+            )}
           </View>
         </View>
 
@@ -133,19 +167,101 @@ export default function DogsList({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={bg} style={styles.image}>
-        {isLoading ? (
-          <Text>Loading...</Text>
-        ) : (
-          <View>
-            <Text>Displaying dogs: {myDogs.length}</Text>
+        <Modal
+          visible={modalVisible}
+          style={styles.bottomModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={[styles.centeredView, styles.dimBG]}>
+            <View style={styles.modalView}>
+              <View style={{ flex: 1, flexDirection: "row", marginBottom: 25 }}>
+                <TouchableOpacity
+                  style={{ marginLeft: "95%" }}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    size={25}
+                    style={{ flex: 2 }}
+                    color="#e3e3e3"
+                  ></FontAwesomeIcon>
+                </TouchableOpacity>
+              </View>
+              <Filters></Filters>
+              <View style={[{ flexDirection: "row" }]}>
+                <TouchableOpacity
+                  style={[
+                    styles.modalButtonReset,
+                    { flex: 1 },
+                    { margin: "5%" },
+                  ]}
+                  onPress={() => resetFilters()}
+                >
+                  <Text style={[styles.textStyle, { color: "grey" }]}>
+                    Reset
+                  </Text>
+                </TouchableOpacity>
 
-            <FlatList
-              data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
-              renderItem={({ item }) => renderListItem(item, navigation)}
-              keyExtractor={(item) => item.id.toString()}
-            />
+                <TouchableOpacity
+                  style={[
+                    styles.modalButtonApply,
+                    { flex: 1 },
+                    { margin: "5%" },
+                  ]}
+                  onPress={() => handleApply()}
+                >
+                  <Text style={styles.textStyle}>Apply</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
+        </Modal>
+
+        <View style={{ backgroundColor: "white", width: "100%", padding: 10 }}>
+          <TouchableOpacity
+            style={[{ flexDirection: "row" }]}
+            onPress={() => setModalVisible(!modalVisible)}
+          >
+            <Text
+              style={{
+                color: "#006ee6",
+                alignSelf: "center",
+                fontSize: 20,
+                flex: 5,
+              }}
+            >
+              Configure filters
+            </Text>
+            <FontAwesomeIcon
+              icon={faSlidersH}
+              size={25}
+              style={{ flex: 2 }}
+              color="#006ee6"
+            ></FontAwesomeIcon>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={myDogs.length > 0 ? myDogs.slice(0, myDogs.length) : []}
+          renderItem={({ item }) => renderListItem(item, navigation)}
+          keyExtractor={(item) => item.id.toString()}
+          onEndReached={fetchMore}
+        />
+        {isLoading ? (
+          <View>
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        ) : (
+          <View></View>
         )}
+        <View style={{ backgroundColor: "white", width: "100%" }}>
+          <Text style={{ color: "#006ee6", alignSelf: "center" }}>
+            Displaying {myDogs.length} dogs
+          </Text>
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -155,6 +271,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
+    alignItems: "flex-start",
   },
   searchBar: {
     backgroundColor: "#ffffff",
@@ -212,8 +329,75 @@ const styles = StyleSheet.create({
     marginLeft: "33%",
     color: "green",
   },
+  lostNotOwner: {
+    marginLeft: "33%",
+    color: "grey",
+  },
   lost: {
-    backgroundColor: "yellow",
-    marginLeft: "37%",
+    marginLeft: "33%",
+    color: "white",
+    fontSize: 12,
+  },
+  bottomModal: {
+    justifyContent: "flex-end",
+    margin: 0,
+    height: "75%",
+  },
+  centeredView: {
+    flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
+    // marginTop: 22,
+  },
+  modalView: {
+    width: "100%",
+    backgroundColor: "#f2f2f2",
+    borderRadius: 20,
+    padding: 25,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    margin: 0,
+    marginTop: "50%",
+    height: "100%",
+    paddingBottom: "50%",
+  },
+  modalButton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 120,
+  },
+  modalButtonReset: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 120,
+    backgroundColor: "#e3e3e3",
+  },
+  modalButtonApply: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: 120,
+    backgroundColor: "#006ee6",
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: "red",
+  },
+  dimBG: {
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
 });

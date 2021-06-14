@@ -19,6 +19,7 @@ import se.backend.model.account.UserAccount;
 import se.backend.utils.StringUtils;
 import se.backend.wrapper.account.AuthenticationResults;
 import se.backend.wrapper.account.UserType;
+import se.backend.wrapper.shelters.ShelterRegisterInformation;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
@@ -165,7 +166,13 @@ public class LoginMainService implements LoginService {
         if(userAccountRepository.existsByAssociatedEmail(user.getAssociatedEmail()))
             return new Pair<>(null, "Email is already used");
 
+        if(dogShelterRepository.existsByAssociatedEmail(user.getAssociatedEmail()))
+            return new Pair<>(null, "Email is already used");
+
         if(userAccountRepository.existsByName(user.getName()))
+            return new Pair<>(null, "Name is already used");
+
+        if(dogShelterRepository.existsByName(user.getName()))
             return new Pair<>(null, "Name is already used");
 
         if(!StringUtils.IsStringAPhoneNumber(user.getPhoneNumber()))
@@ -188,6 +195,50 @@ public class LoginMainService implements LoginService {
         var result = userAccountRepository.save(user);
 
         return new Pair<>(result, "");
+    }
+
+    @Override
+    public String CreateShelter(ShelterRegisterInformation shelter) {
+
+        if(!StringUtils.IsValidString(shelter.getPhoneNumber()) ||
+                !StringUtils.IsValidString(shelter.getName()) ||
+                !StringUtils.IsValidString(shelter.getEmail()) ||
+                shelter.getAddress() == null ||
+                !StringUtils.IsValidString(shelter.getAddress().getStreet()) ||
+                !StringUtils.IsValidString(shelter.getAddress().getBuildingNumber()) ||
+                !StringUtils.IsValidString(shelter.getAddress().getCity()) ||
+                !StringUtils.IsValidString(shelter.getAddress().getPostCode()))
+            return "Incomplete data";
+
+        if(!StringUtils.IsStringAnEmail(shelter.getEmail()))
+            return "Email is invalid";
+
+        shelter.setEmail(shelter.getEmail().toLowerCase());
+
+        if(userAccountRepository.existsByAssociatedEmail(shelter.getEmail()))
+            return "Email is already used";
+
+        if(dogShelterRepository.existsByAssociatedEmail(shelter.getEmail()))
+            return "Email is already used";
+
+        if(userAccountRepository.existsByName(shelter.getName()))
+            return "Name is already used";
+
+        if(dogShelterRepository.existsByName(shelter.getName()))
+            return "Name is already used";
+
+        if(!StringUtils.IsStringAPhoneNumber(shelter.getPhoneNumber()))
+            return "Phone number is invalid";
+
+        if(shelter.getName().length() < 3)
+            return "Shelter name is too short";
+
+        if(shelter.getName().length() > 32)
+            return "Shelter name is too long";
+
+        var result = dogShelterRepository.save(shelter.toNewInactiveShelter());
+
+        return null;
     }
 
     @Override

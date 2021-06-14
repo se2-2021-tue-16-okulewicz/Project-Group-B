@@ -19,12 +19,15 @@ import se.backend.exceptions.types.GenericBadRequestException;
 import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.dogs.Lost.LostDog;
+import se.backend.model.dogs.Lost.LostDogComment;
 import se.backend.service.login.LoginService;
 import se.backend.service.lostdogs.LostDogService;
 import se.backend.utils.Response;
 import se.backend.wrapper.account.UserType;
+import se.backend.wrapper.comments.CommentWithAuthorAndPicture;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.LostDogWithBehaviorsAndWithPicture;
+import se.backend.wrapper.dogs.LostDogWithBehaviorsPictureAndComments;
 
 import java.io.IOException;
 import java.util.*;
@@ -64,6 +67,7 @@ public class DogsController {
                     value=15
             ) Pageable pageable,
             @And({
+                    @Spec(path="isIsFound", params="filter.isFound", spec= Equal.class),
                     @Spec(path="breed", params="filter.breed", spec= StartingWithIgnoreCase.class),
                     @Spec(path="age", params="filter.ageFrom" , spec= GreaterThanOrEqual.class),
                     @Spec(path="age", params="filter.ageTo", spec= LessThanOrEqual.class),
@@ -192,7 +196,7 @@ public class DogsController {
                                                            @PathVariable("dogId") long dogId) {
         logHeaders(headers);
 
-        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Regular));
         if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
@@ -204,7 +208,7 @@ public class DogsController {
     }
 
     @GetMapping(path = "/{dogId}")
-    public ResponseEntity<Response<LostDog, Object>> GetLostDogDetails(@RequestHeader HttpHeaders headers,
+    public ResponseEntity<Response<LostDogWithBehaviorsPictureAndComments, Object>> GetLostDogDetails(@RequestHeader HttpHeaders headers,
                                                                @PathVariable("dogId") long dogId) {
         logHeaders(headers);
 
@@ -213,7 +217,7 @@ public class DogsController {
             throw new UnauthorizedException();
         }
 
-        LostDog savedDog = lostDogService.GetDogDetails(dogId);
+        LostDogWithBehaviorsPictureAndComments savedDog = lostDogService.GetDogDetails(dogId);
         if(savedDog != null)
             return ResponseEntity.ok(new Response<>(String.format("Found dog id: %d", savedDog.getId()), true, savedDog, null));
         else
@@ -225,10 +229,10 @@ public class DogsController {
     public ResponseEntity<Response<LostDog, Object>> UpdateDog(@RequestHeader HttpHeaders headers,
                                                        @PathVariable("dogId") long dogId,
                                                        @RequestPart("dog") LostDogWithBehaviors updatedDog,
-                                                       @RequestPart("picture") MultipartFile picture) {
+                                                       @RequestPart(value = "picture", required = false) MultipartFile picture) {
         logHeaders(headers);
 
-        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular));
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Regular));
         if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
@@ -242,13 +246,16 @@ public class DogsController {
             throw new GenericBadRequestException(String.format("Failed to update dog - No dog with id: %d was found" , dogId));
 
         try {
-            var newPicture = new Picture();
-            newPicture.setFileName(picture.getOriginalFilename());
-            newPicture.setFileType(picture.getContentType());
-            newPicture.setData(picture.getBytes());
+            Picture newPicture = null;
+            if(picture != null) {
+                newPicture = new Picture();
+                newPicture.setFileName(picture.getOriginalFilename());
+                newPicture.setFileType(picture.getContentType());
+                newPicture.setData(picture.getBytes());
 
-            if(!newPicture.isValid()) {
-                throw new GenericBadRequestException("Picture is not valid");
+                if(!newPicture.isValid()) {
+                    throw new GenericBadRequestException("Picture is not valid");
+                }
             }
 
             var savedDog = lostDogService.UpdateDog(dogId, updatedDog, newPicture, authorization.getValue1());
@@ -280,6 +287,105 @@ public class DogsController {
             throw new GenericBadRequestException("Failed to mark dog as found");
 
         return ResponseEntity.ok(new Response<>("Dog marked as found", true, null, null));
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="/lostdogs/{digId}/comments">
+    @PostMapping(path = "/{dogId}/comments")
+    public ResponseEntity<Response<CommentWithAuthorAndPicture, Object>> AddComment(@RequestHeader HttpHeaders headers,
+                                                                                    @PathVariable("dogId") long dogId,
+                                                                                    @RequestPart("comment") LostDogComment comment,
+                                                                                    @RequestPart(value = "picture", required = false) MultipartFile picture) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Regular));
+        if(!authorization.getValue0()) {
+            throw new UnauthorizedException();
+        }
+
+        if(!comment.isValid())
+            throw new GenericBadRequestException("Comment missing element(s)");
+
+        try {
+            Picture newPicture = null;
+            if(picture != null) {
+                newPicture = new Picture();
+                newPicture.setFileName(picture.getOriginalFilename());
+                newPicture.setFileType(picture.getContentType());
+                newPicture.setData(picture.getBytes());
+
+                if(!newPicture.isValid()) {
+                    throw new GenericBadRequestException("Picture is not valid");
+                }
+            }
+
+            var addedComment = lostDogService.AddCommentToDog(dogId, comment, newPicture, authorization.getValue1());
+
+            if(addedComment != null)
+                return ResponseEntity.ok(new Response<>(String.format("Added comment id: %d", addedComment.getId()), true, addedComment, null));
+            else
+                throw new GenericBadRequestException("Failed to add comment");
+        } catch (IOException e) {
+            throw new GenericBadRequestException("Failed to get te picture");
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="/lostdogs/{digId}/comments/{commentId}">
+    @PutMapping(path = "/{dogId}/comments/{commentId}")
+    public ResponseEntity<Response<CommentWithAuthorAndPicture, Object>> UpdateComment(@RequestHeader HttpHeaders headers,
+                                                                                    @PathVariable("dogId") long dogId,
+                                                                                    @PathVariable("commentId") long commentId,
+                                                                                    @RequestPart("comment") LostDogComment comment,
+                                                                                    @RequestPart(value = "picture", required = false) MultipartFile picture) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Regular));
+        if(!authorization.getValue0()) {
+            throw new UnauthorizedException();
+        }
+
+        if(!comment.isValid())
+            throw new GenericBadRequestException("Comment missing element(s)");
+
+        try {
+            Picture newPicture = null;
+            if(picture != null) {
+                newPicture = new Picture();
+                newPicture.setFileName(picture.getOriginalFilename());
+                newPicture.setFileType(picture.getContentType());
+                newPicture.setData(picture.getBytes());
+
+                if(!newPicture.isValid()) {
+                    throw new GenericBadRequestException("Picture is not valid");
+                }
+            }
+
+            var updatedComment = lostDogService.EditDogComment(commentId, comment, newPicture, authorization.getValue1());
+
+            if(updatedComment != null)
+                return ResponseEntity.ok(new Response<>(String.format("Updated comment id: %d", updatedComment.getId()), true, updatedComment, null));
+            else
+                throw new GenericBadRequestException("Failed to update comment");
+        } catch (IOException e) {
+            throw new GenericBadRequestException("Failed to get te picture");
+        }
+    }
+
+    @DeleteMapping(path = "/{dogId}/comments/{commentId}")
+    public ResponseEntity<Response<Object, Object>> RemoveComment(@RequestHeader HttpHeaders headers,
+                                                                                       @PathVariable("dogId") long dogId,
+                                                                                       @PathVariable("commentId") long commentId) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Regular));
+        if(!authorization.getValue0()) {
+            throw new UnauthorizedException();
+        }
+
+        var result = lostDogService.DeleteDogComment(commentId, authorization.getValue1(), false);
+
+        return ResponseEntity.ok(new Response<>(String.format("Removed comment id: %d", commentId), true, null, null));
     }
     //</editor-fold>
 }

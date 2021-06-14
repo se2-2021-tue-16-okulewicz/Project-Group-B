@@ -1,5 +1,6 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { makeStyles, Theme, createStyles } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { Provider, useSelector } from "react-redux";
 import {
   Redirect,
@@ -8,26 +9,27 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import {
-  clearError,
-  clearRedirect,
-  finishRefreshing,
-  logoutThunk,
-} from "./app/actions";
-import { State } from "./app/reducer";
+import { clearRedirect, logoutThunk, clearError } from "./app/actions";
+import { State } from "./app/stateInterfaces";
 import { store } from "./app/store";
-import RegisterDogForm from "./registerDog/registerDog";
+import config from "./config/config";
+import EditContactInfo from "./contactInfo/EditContactInfo";
+import DogDetails from "./dog/dogDetails/dogDetails";
+import ListWithDogs from "./dog/dogsList/listWithDogs";
+import EditDogDetails from "./dog/editDogDetails/editDogDetails";
+import RegisterDogForm from "./dog/registerDog/registerDog";
+import Settings from "./dog/settings/settings";
 import Login from "./registerLogin/Login";
+import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
+import RegisterShelterUser from "./registerLogin/RegisterShelterUser";
+import { AdoptDogDetails } from "./shelter/adoptDogDetails/adoptDogDetails";
+import ListWithAdoptDogs from "./shelter/adoptDogList/listWithAdoptDogs";
+import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
+import ShelterListWithDogs from "./shelter/shelterDogsList/shelterListWithDogs";
+import ListWithShelters from "./shelter/sheltersList/listWithShelters";
 import ErrorDialog from "./utilityComponents/ErrorDialog";
 import Footer from "./utilityComponents/Footer";
 import LoadingPopup from "./utilityComponents/LoadingPopup";
-import { useCookies } from "react-cookie";
-import ListWithDogs from "./dogsList/listWithDogs";
-import config from "./config/config";
-import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
-import Settings from "./settings/settings";
-import EditDogDetails from "./editDogDetails/editDogDetails";
-import EditContactInfo from "./contactInfo/EditContactInfo";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,9 +71,19 @@ function Layout() {
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
     sessionStorage.setItem("dogId", JSON.stringify(id as number));
-    store.dispatch(finishRefreshing);
     history.push(`/edit/${id}`);
   }
+
+  function redirectToDogDetails(id: number) {
+    setDogId(id);
+    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    history.push(`/dog/${id}`);
+  }
+
+  function redirectToShelterDetails(id: number) {
+    history.push(`/shelter/${id}`);
+  }
+
   const errorOnClose = () => {
     //We can reach this point after logout from footer and it crashes the app
     if (error.errorCode === 401) {
@@ -106,12 +118,34 @@ function Layout() {
           <RegisterRegularUser />
           <Footer />
         </Route>
+        <Route path="/register/shelter">
+          <RegisterShelterUser />
+          <Footer />
+        </Route>
         <Route path="/info/edit">
           <EditContactInfo />
           <Footer />
         </Route>
-        <Route path="/listDogs">
-          <ListWithDogs />
+        <Route path="/shelterdogs">
+          <ShelterListWithDogs
+            redirectToDogDetailsOrEdit={(id: number) =>
+              redirectToDogDetails(id)
+            }
+          />
+        </Route>
+        <Route path="/dogs">
+          <ListWithDogs
+            redirectToDogDetailsOrEdit={(id: number) =>
+              redirectToDogDetails(id)
+            }
+          />
+        </Route>
+        <Route path="/shelters">
+          <ListWithShelters
+            redirectToShelterDetails={(id: number) =>
+              redirectToShelterDetails(id)
+            }
+          />
         </Route>
         <Route path="/settings">
           <Settings
@@ -120,12 +154,27 @@ function Layout() {
             }
           />
         </Route>
+        <Route path={`/shelter/:shelterid`}>
+          <ListWithAdoptDogs />
+        </Route>
+        <Route path={`/adoptdogs/:shelterId/dogs/:dogId`}>
+          <AdoptDogDetails />
+          <Footer />
+        </Route>
         <Route path="/addDog">
           <RegisterDogForm />
           <Footer />
         </Route>
+        <Route path="/addShelterDog">
+          <RegisterShelterDogForm />
+          <Footer />
+        </Route>
         <Route path={`/edit/:id`}>
           <EditDogDetails dogId={dogId} />
+          <Footer />
+        </Route>
+        <Route path={`/dog/:id`}>
+          <DogDetails />
           <Footer />
         </Route>
         <Redirect to="/" />

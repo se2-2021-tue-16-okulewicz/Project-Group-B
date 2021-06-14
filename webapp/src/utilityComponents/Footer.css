@@ -5,6 +5,13 @@
   width: 100%;
 }
 
+.list {
+  position: absolute;
+  width: inherit;
+  left: 0;
+  right: 0;
+}
+
 a {
   color: inherit;
 }

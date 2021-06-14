@@ -8,7 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.DirtiesContext;
 import se.backend.SEBackend;
+import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
+import se.backend.model.account.Shelter;
 import se.backend.model.dogs.Lost.LostDog;
 import se.backend.model.dogs.Shelter.ShelterDog;
 import se.backend.service.lostdogs.LostDogService;
@@ -16,8 +18,8 @@ import se.backend.service.shelters.SheltersService;
 import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest(classes = SEBackend.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -27,12 +29,11 @@ public class SheltersServiceTest {
     @Autowired
     private SheltersService service;
 
-    private static Specification<LostDog> isFromLublin() {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("location").get("city"), "Lublin");
-    }
-
-    private static Specification<LostDog> isFromWarsaw() {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("location").get("city"), "Warsaw");
+    @Test
+    public void GetShelters() {
+        //Getting all shelters (only active ones!)
+        var shelters = service.GetShelters(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(1, shelters.getValue0().size());
     }
 
     @Test
@@ -90,6 +91,55 @@ public class SheltersServiceTest {
     }
 
     @Test
+    public void UpdateDogTest() {
+        // Checking initial size
+        var allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.getValue0().size(), 4);
+        assertEquals(allDogs.getValue1(), 1);
+
+        // Adding dogs
+        ShelterDog newDog1 = new ShelterDog();
+        Picture pic1 = new Picture();
+        newDog1.setName("Name1");
+        pic1.setFileName("exampleFile1");
+        ShelterDogWithBehaviors newDogBeh1 = new ShelterDogWithBehaviors(newDog1);
+
+        var result1 = service.AddShelterDog(newDogBeh1, pic1, 10001);
+
+        // Make changes
+        Picture pic2 = new Picture();
+        result1.setName("Name2");
+        pic2.setFileName("exampleFile2");
+        ShelterDogWithBehaviors newDogBeh2 = new ShelterDogWithBehaviors(result1);
+
+        assertEquals(result1.getId(),newDogBeh2.getId());
+
+        var result2 = service.UpdateDog(result1.getId(), newDogBeh2, pic2, 10001);
+
+
+        assertEquals("Name2", result2.getName());
+        assertEquals(0, result2.getBehaviors().size());
+        assertEquals("exampleFile2", result2.getPicture().getFileName());
+        assertEquals(10001, result2.getShelterId());
+
+        // This dog is not in the database.
+        ShelterDog newDog3 = new ShelterDog();
+        newDog3.setId(9999);
+        newDog3.setName("Name3");
+        ShelterDogWithBehaviors newDogBeh3 = new ShelterDogWithBehaviors(newDog3);
+        Picture pic3 = new Picture();
+        pic3.setFileName("exampleFile3");
+
+        var result3 = service.UpdateDog(newDog3.getId(), newDogBeh3, pic3, 10001);
+
+        assertNull(result3);
+
+        //Getting all dogs again
+        allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(5, allDogs.getValue0().size());
+    }
+
+    @Test
     public void GetDogDetailsTest()
     {
         // Checking initial size
@@ -107,5 +157,40 @@ public class SheltersServiceTest {
         //Getting all dogs again
         allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
         assertEquals(allDogs.getValue0().size(), 4);
+    }
+
+    @Test
+    public void DeleteDogTest() {
+        // Checking initial size
+        var allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.getValue0().size(), 4);
+
+        //Delete dog
+        var res = service.DeleteDog(10001, 10001);
+        assertTrue(res);
+
+        //Delete nonexisting dog
+        var res2 = service.DeleteDog(-1, 0);
+        assertFalse(res2);
+
+        //Delete dog from other shelter
+        assertThrows(UnauthorizedException.class, () -> {
+            var res3 = service.DeleteDog(10004, 10001);
+        });
+
+        // Getting all dogs one final time
+        allDogs = service.GetShelterDogs(Specification.where(null), PageRequest.of(0, 15));
+        assertEquals(allDogs.getValue0().size(), 3);
+    }
+
+    @Test
+    public void GetOneShelter() {
+        var nonexistingShelter = service.GetOneShelter(1);
+        var inactiveShelter = service.GetOneShelter(10002);
+        var validShelter = service.GetOneShelter(10001);
+
+        assertNull(nonexistingShelter);
+        assertNull(inactiveShelter);
+        assertEquals(validShelter.getName(), "Hope");
     }
 }

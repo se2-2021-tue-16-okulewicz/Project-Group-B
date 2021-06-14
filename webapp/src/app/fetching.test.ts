@@ -16,12 +16,19 @@ import {
 } from "../dog/dogClasses";
 import config from "../config/config";
 import { RequestResponse } from "./response";
-import { ILostDogWithPicture } from "../dog/dogInterfaces";
-import { ILoginResults } from "../registerLogin/loginRegisterInterfaces";
+import {
+  ILostDogWithPicture,
+  IShelterDog,
+  IShelterDogWithPicture,
+} from "../dog/dogInterfaces";
+import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import {
   initLoginProps,
   initRegisterRegularUserProps,
 } from "../registerLogin/registerLogintest";
+import { IContactInfo } from "../contactInfo/contactInfoInterface";
+import { IShelter } from "../shelter/shelterInterfaces";
+import { initAddress, initShelter } from "../shelter/shelterTesting";
 
 jest.mock("axios");
 
@@ -60,8 +67,27 @@ test("updating the dog with a wrong token results in an error", async () => {
   const data: RequestResponse<ILostDogWithPicture, undefined> =
     await Fetching.updateDog(
       initLostDogProps, //dog
-      initPicture,
-      config.cookies
+      config.cookies,
+      initPicture
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("updating the contact info with a wrong token results in an error", async () => {
+  const data: RequestResponse<IContactInfo, undefined> =
+    await Fetching.updateContactInfo(
+      0, //dog id
+      { name: "aaa", email: "a@a.a", phoneNumber: "123456789" } as IContactInfo,
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("getting the contact info with a wrong token results in an error", async () => {
+  const data: RequestResponse<IContactInfo, undefined> =
+    await Fetching.fetchUserInfo(
+      0, //dog id
+      {} //empty token
     );
   expect(data).toEqual(errorObject);
 });
@@ -81,6 +107,17 @@ test("register with wrong data", async () => {
   expect(data).toEqual(errorObject);
 });
 
+test("register shelter with wrong data", async () => {
+  const data: RequestResponse<null, undefined> =
+    await Fetching.registerShelterUser({
+      name: "",
+      address: initAddress,
+      email: "",
+      phoneNumber: "1", //phone number too short
+    });
+  expect(data).toEqual(errorObject);
+});
+
 test("login with wrong data", async () => {
   const data: RequestResponse<ILoginResults, undefined> = await Fetching.login(
     initLoginProps
@@ -92,6 +129,42 @@ test("logout without being logged in", async () => {
   const data: RequestResponse<null, undefined> = await Fetching.logout(
     config.cookies
   );
+  expect(data).toEqual(errorObject);
+});
+
+test("fetch shelters with the wrong token", async () => {
+  const data: RequestResponse<IShelter[], Number> =
+    await Fetching.fetchShelters({}, {});
+  expect(data).toEqual(errorObject);
+});
+
+test("fetch shelter dogs with the wrong token", async () => {
+  const data: RequestResponse<IShelterDogWithPicture[], Number> =
+    await Fetching.fetchShelterDogs(
+      {}, //empty filters
+      0, //shelter id
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("fetch one shelter dog with the wrong token", async () => {
+  const data: RequestResponse<IShelterDogWithPicture, undefined> =
+    await Fetching.fetchOneShelterDog(
+      0,
+      0, //shelter id
+      {} //empty token
+    );
+  expect(data).toEqual(errorObject);
+});
+
+test("delete shelter dogs with the wrong token", async () => {
+  const data: RequestResponse<undefined, undefined> =
+    await Fetching.deleteOneShelterDog(
+      0, //shelter id
+      0, //dog id
+      {} //empty token
+    );
   expect(data).toEqual(errorObject);
 });
 

@@ -7,6 +7,7 @@ import se.backend.model.account.Account;
 import se.backend.model.account.UserAccount;
 import se.backend.wrapper.account.AuthenticationResults;
 import se.backend.wrapper.account.UserType;
+import se.backend.wrapper.shelters.ShelterRegisterInformation;
 
 import java.util.List;
 
@@ -22,6 +23,11 @@ public interface LoginService {
     Pair<UserAccount, String> CreateAccount(UserAccount user);
     boolean UpdateUser(Account user);
     List<Account> GetUsers(String username);
+
+    /**
+     * Null in case of success, error message otherwise
+     */
+    String CreateShelter(ShelterRegisterInformation shelter);
 
     /**
      * First value is boolean - if token has required permissions. Second value is id of the user assigned to this token.
