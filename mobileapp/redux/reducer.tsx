@@ -250,7 +250,7 @@ export const reducer = createReducer(init, {
     newState.loading = false;
     console.log("Before setting the payload");
     console.log(payload.payload.response.data);
-    //newState.currentDog = payload.payload.response.data;  
+    //newState.currentDog = payload.payload.response.data;
     console.log("after setting the payload");
     return newState;
   },

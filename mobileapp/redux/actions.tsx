@@ -135,7 +135,9 @@ export const GetDogDetailsThunk = createAsyncThunk(
       await Fetching.GetDogDetails(item.dogID, item.Authorization);
 
     if (response.response.successful !== true) {
-      return rejectWithValue(response as RequestResponse<ILostDogWithPictureAndComments, undefined>);
+      return rejectWithValue(
+        response as RequestResponse<ILostDogWithPictureAndComments, undefined>
+      );
     }
 
     return response;
