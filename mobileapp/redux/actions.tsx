@@ -125,6 +125,8 @@ export const setDogsRequireRefresh = createAction(
   }
 );
 
+export const reset = createAction("reset");
+
 /*
 Marking lost dog as foud.
 */
