@@ -58,7 +58,7 @@ const init: State = {
   dogs: [],
   currentDog: null,
   dogsLastPage: false,
-  dogsRequireRefresh: false,
+  dogsRequireRefresh: true,
   loadingDogs: false,
   loading: false,
   error: {
@@ -79,12 +79,6 @@ export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
-    return newState;
-  },
-  [Actions.reset.type]: (state: State) => {
-    let newState = init;
-    newState.status = "reset";
-    console.log(newState.error.erorMessage);
     return newState;
   },
 
@@ -254,11 +248,10 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.currentDog = payload.payload.response.data;
-    newState.dogsRequireRefresh = true;
-    console.log("---------THE DOGE");
+    console.log("Before setting the payload");
     console.log(payload.payload.response.data);
-    console.log("---------THE DOGE");
+    //newState.currentDog = payload.payload.response.data;  
+    console.log("after setting the payload");
     return newState;
   },
   [Actions.GetDogDetailsThunk.pending.toString()]: (
@@ -266,6 +259,7 @@ export const reducer = createReducer(init, {
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
+    newState.loading = true;
     return newState;
   },
   [Actions.GetDogDetailsThunk.rejected.toString()]: (

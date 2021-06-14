@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   KeyboardAvoidingView,
@@ -24,7 +24,7 @@ import {
   IDogDetails,
   ILostDogWithPicture,
   ILostDogWithPictureAndComments,
-  ICommentWithAuthorAndPicture,
+  ILostDogComment,
 } from "../components/dogs/dog/dogInterfaces";
 import { BehaviorsTypes } from "../components/dogs/dog/dogEnums";
 import { store } from "../redux/store";
@@ -41,18 +41,19 @@ import Bubble from "./Bubble";
 // import DatePicker from 'react-native-datepicker';
 
 export default function DogDetails({ route, navigation }: any) {
-  const { dog } = route.params;  
+  const { dog } = route.params;
   
   const Authorization = useSelector(
     (state: State) => state.loginInformation?.token
   );
-  const [theDog, setTheDog] = useState<ILostDogWithPictureAndComments>();
-  
   const [scroll, setScroll] = useState<boolean>(true);
 
+  const isLoading = useSelector((state: State) => state.loading);
+
   const specificDog = useSelector(
-    (state: State) => state?.currentDog
+    (state: State) => state.currentDog as ILostDogWithPictureAndComments
   );
+  const [theDog, setTheDog] = useState<ILostDogWithPictureAndComments>();
 
   React.useEffect(() => {
     store.dispatch(
@@ -63,12 +64,8 @@ export default function DogDetails({ route, navigation }: any) {
     );
     let tmp = specificDog;
     setTheDog(specificDog);
-
-    console.log("CHECK5");
-    console.log(theDog?.name);
   }, [specificDog]);
 
-  
 
   function convertDate(inputFormat: string) {
     function pad(s: any) {
@@ -79,13 +76,12 @@ export default function DogDetails({ route, navigation }: any) {
   }
 
   const renderListItem = (
-    comment: ICommentWithAuthorAndPicture,
+    comment: ILostDogComment,
     navigation: any
   ) => (
     <View style={[styles.item]}>
-    {
-      // Comment item goes here      
-    }
+      <Text>{comment.authorId}</Text>
+      <Text>{comment.text}</Text>
     </View>
   );
 

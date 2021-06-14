@@ -19,23 +19,11 @@ export interface IPicture {
 
 export interface ILostDogComment {
   id: number;
-  //location: number;
-  pictureId: number;
+  location: { city: string; district: string };
+  picture: IPicture;
   authorId: number;
   dogId: number;
   text: string;
-}
-
-export interface ICommentAuthor {
-  name: string;
-  email: string;
-  phoneNumber: string;
-  id: number;
-}
-
-export interface ICommentWithAuthorAndPicture extends ILostDogComment {
-  author: ICommentAuthor;
-  picture: IPicture;
 }
 
 export interface Picture {
@@ -79,7 +67,7 @@ export interface ILostDogWithPicture extends ILostDog {
 }
 
 export interface ILostDogWithPictureAndComments extends ILostDogWithPicture {
-  comments: ICommentWithAuthorAndPicture[];
+  comments: ILostDogComment[];
 }
 
 export interface IDogCharacteristics {
