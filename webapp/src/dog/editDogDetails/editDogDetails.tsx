@@ -40,6 +40,10 @@ import LoadingPopup from "../../utilityComponents/LoadingPopup";
 import { useCookies } from "react-cookie";
 import { State } from "../../app/stateInterfaces";
 import ImageUpload from "../../commonComponents/imageUploadForm";
+import CommentEditForm from "../dogComments/commentEditForm";
+import { ICommentWithIdAndAuthor } from "../dogComments/commentsInterfaces";
+import { initComment } from "../dogComments/commentsClasses";
+import CommentsList from "../dogComments/commentsList";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>
@@ -86,6 +90,7 @@ const EditDogDetails = (props: any) => {
   const dogId = props.dogId
     ? props.dogId
     : JSON.parse(sessionStorage.getItem("dogId") as string);
+  const [comment, setComment] = useState(initComment);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -105,6 +110,16 @@ const EditDogDetails = (props: any) => {
     initLostDogWithPictureProps
   );
   const [picture, setPicture] = useState<IPicture>();
+
+  function redirectToComment(comment: ICommentWithIdAndAuthor) {
+    setComment(comment);
+    /*store.dispatch(
+      fetchOneShelter({
+        id: id as number,
+        cookies: cookies,
+      })
+    );*/
+  };
 
   //console.log(temp);
 
@@ -291,7 +306,6 @@ const EditDogDetails = (props: any) => {
     }
     setIsNewPicture(true);
   };
-  console.log(editedDog);
   return (
     <Grid container>
       {pageRefresh && <LoadingPopup />}
@@ -645,6 +659,22 @@ const EditDogDetails = (props: any) => {
               </Button>
             </FormControl>
           </Grid>
+          { editedDog && editedDog.comments &&(
+        <Grid
+          item
+          xs={12}
+          alignContent="stretch"
+        >
+<CommentsList comments={editedDog.comments} delete={true} edit={true} redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToComment(comment)}}/>
+</Grid>)}
+{ comment.location.city != "" &&(
+        <Grid
+          item
+          xs={12}
+          alignContent="stretch"
+        >
+<CommentEditForm dogId={dogId} comment={comment} />
+</Grid>)}
         </Grid>
       )}
     </Grid>

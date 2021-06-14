@@ -11,7 +11,7 @@
  import { Route, BrowserRouter as Router } from "react-router-dom";
 import { initCommentandAuthor } from "./commentsClasses";
 import CommentsList from "./commentsList";
-import CommentForm from "./commentForm";
+import CommentEditForm from "./commentEditForm";
  
  let container: HTMLDivElement | null = null;
  beforeEach(() => {
@@ -34,7 +34,7 @@ import CommentForm from "./commentForm";
      render(
        <Provider store={store}>
          <Router>
-           <Route path={`/dog/0`} children={<CommentForm dogId={0}/>} />
+           <Route path={`/settings/edit/dog/0`} children={<CommentEditForm dogId={0}/>} />
          </Router>
        </Provider>,
        container

@@ -31,6 +31,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function CommentsList(props: any) {
   const comments = props.comments as ICommentWithIdAndAuthor[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
+  const redirectToCommentEdit = (comment: ICommentWithIdAndAuthor)=>{
+    if (props.edit){
+      props.redirectToCommentEdit(comment);
+    }
+  }
   const redirectToComment = (id: number) => {
     props.redirectToComment(id);
   };
@@ -66,6 +71,9 @@ export default function CommentsList(props: any) {
                   {props.delete && <Comment.Action active={props.delete} onClick={() => {
                     redirectToComment(comment.id as number);
                   }}>Delete</Comment.Action>}
+                  {props.edit && <Comment.Action active={props.delete} onClick={() => {
+                    redirectToCommentEdit(comment as ICommentWithIdAndAuthor);
+                  }}>Edit</Comment.Action>}
                   {!props.delete && <Comment.Action active={!props.delete} onClick={() => {
                     window.scrollTo(100000,100000);
                   }}>Reply</Comment.Action>}
