@@ -89,6 +89,16 @@ const DogDetails = (props: any) => {
     } // eslint-disable-next-line
   }, [pageRefresh]);
 
+  function redirectToComment(id: number) {
+    console.log(id);
+    /*store.dispatch(
+      fetchOneShelter({
+        id: id as number,
+        cookies: cookies,
+      })
+    );*/
+  };
+
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -354,12 +364,11 @@ const DogDetails = (props: any) => {
       )}
       {!pageRefresh && dog && dog.comments &&(
         <Grid
-  className={classes.mainForm}
-  container
-  xs={12}
-  alignContent="space-between"
->
-<CommentsList comments={dog.comments}></CommentsList>
+          item
+          xs={12}
+          alignContent="stretch"
+        >
+<CommentsList comments={dog.comments} delete={true} redirectToComment={(id:number)=>{redirectToComment(id)}}></CommentsList>
 </Grid>)}
       {/*!pageRefresh && dog && (
         <Grid

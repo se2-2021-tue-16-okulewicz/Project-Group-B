@@ -1,4 +1,4 @@
-import { ICommentWithId } from "./dogComments/commentsInterfaces";
+import { ICommentWithIdAndAuthor } from "./dogComments/commentsInterfaces";
 import {
   BreedTypes,
   BehaviorsTypes,
@@ -44,7 +44,7 @@ export interface ILostDogWithPicture extends ILostDog {
 
 export interface ILostDogWithPictureAndComments extends ILostDog {
   picture: IPicture;
-  comments: ICommentWithId[];
+  comments: ICommentWithIdAndAuthor[];
 }
 
 export interface IShelterDog extends IDog {

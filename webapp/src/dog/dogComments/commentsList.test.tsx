@@ -33,7 +33,7 @@ import CommentsList from "./commentsList";
      render(
        <Provider store={store}>
          <Router>
-           <Route path={`/`} children={<CommentsList comments={[initComment]} />} />
+           <Route path={`/`} children={<CommentsList comments={[initComment]} delete={false}/>} />
          </Router>
        </Provider>,
        container

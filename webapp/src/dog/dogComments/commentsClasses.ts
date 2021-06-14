@@ -1,5 +1,5 @@
 import { IPicture } from "../dogInterfaces";
-import { ICommentWithId } from "./commentsInterfaces";
+import { IAuthor, ICommentWithIdAndAuthor } from "./commentsInterfaces";
 
 export const initPicture: IPicture = {
   id: 0,
@@ -8,12 +8,20 @@ export const initPicture: IPicture = {
   data: new ArrayBuffer(8),
 };
 
+export const initAuthor: IAuthor = {
+  id:0,
+  name:"",
+  phoneNumber:"",
+  email:"alex@alex.com"
+}
+
 export const initComment: ICommentWithIdAndAuthor = {
   id:0,
-  author:
+  author:initAuthor,
   picture: initPicture,
   authorId: 0,
   dogId: 0,
   text: "",
   location: { city: "", district: "" },
 };
+

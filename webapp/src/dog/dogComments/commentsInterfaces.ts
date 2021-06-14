@@ -1,3 +1,4 @@
+import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { IPicture } from "../dogInterfaces";
 
 export interface IComment  {
@@ -7,7 +8,7 @@ export interface IComment  {
   text: string;
   location: { city: string; district: string };
 }
-export interface ICommentWithId extends IComment {
+export interface ICommentWithIdAndAuthor extends IComment {
   id: number;
   author: IAuthor;
   picture?: IPicture;
