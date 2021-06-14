@@ -5,29 +5,28 @@ import LogOut from "../components/profile/LogOut";
 import navigation from "../navigation";
 import { State } from "../redux/reducer";
 
-export default function ProfileScreen({navigation}: any) {
+export default function ProfileScreen({ navigation }: any) {
   const loginInfo = useSelector((state: State) => state.loginInformation);
   useEffect(() => {
-    if(loginInfo === null){
+    if (loginInfo === null) {
       navigation.navigate("LogInRegister");
     }
-  },[loginInfo])
-  
-    return (
-      <View style={styles.container}>
-        {/* <Text>Hello!</Text> */}
-        <LogOut></LogOut>
-        {/* <Text>Profile Screen</Text> */}
-      </View>
-    );
-  
+  }, [loginInfo]);
+
+  return (
+    <View style={styles.container}>
+      {/* <Text>Hello!</Text> */}
+      <LogOut></LogOut>
+      {/* <Text>Profile Screen</Text> */}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "flex-start",
-    paddingTop: "10%"
+    paddingTop: "10%",
   },
 });
 
