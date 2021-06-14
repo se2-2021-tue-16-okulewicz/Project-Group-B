@@ -22,7 +22,7 @@ export default function SheltersInfoGrid(props: any) {
   return (
     <GridList
       cols={3}
-      spacing={2}
+      spacing={20}
       style={{ margin: "0", width: "100%", display: "flex" }}
     >
       {shelters.map(
@@ -37,7 +37,7 @@ export default function SheltersInfoGrid(props: any) {
                 className={shelter.name}
                 style={{
                   overflow: "hidden",
-                  backgroundColor: "white",
+                  backgroundColor: "slategray",
                   height: "90%",
                 }}
               >
@@ -49,7 +49,7 @@ export default function SheltersInfoGrid(props: any) {
                     width: "auto",
                     fontFamily: "Bungee Shade",
                     wordWrap: "break-word",
-                    color: "slategray",
+                    color: "white",
                     verticalAlign: "center",
                     display: "flex",
                     flexDirection: "column",

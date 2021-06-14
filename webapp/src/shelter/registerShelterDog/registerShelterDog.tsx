@@ -132,7 +132,11 @@ export default function RegisterShelterDogForm() {
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     } finally {
-      setSubmitted(true);
+      store.dispatch(Actions.clearDogList());
+      clearStorage();
+      setSubmitted(false);
+      history.push("/shelterdogs");
+      history.go(0);
     }
   };
 
