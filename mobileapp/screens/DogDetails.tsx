@@ -66,7 +66,6 @@ export default function DogDetails({ route, navigation }: any) {
     setTheDog(specificDog);
   }, [specificDog]);
 
-
   function convertDate(inputFormat: string) {
     function pad(s: any) {
       return s < 10 ? "0" + s : s;

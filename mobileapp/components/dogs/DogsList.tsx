@@ -125,7 +125,7 @@ export default function DogsList({ navigation }: any) {
 
   const redirectToDetails = (dog: ILostDogWithPicture) => {
     navigation.navigate("Dog details", {
-       dog: dog,
+      dog: dog,
     });
   };
 
