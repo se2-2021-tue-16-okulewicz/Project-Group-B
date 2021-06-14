@@ -28,7 +28,12 @@ import {
   BreedTypes,
 } from "../dogEnums";
 import { initLostDogWithPictureProps } from "../dogClasses";
-import { ILostDog, IPicture, ILostDogWithPicture, ILostDogWithPictureAndComments } from "../dogInterfaces";
+import {
+  ILostDog,
+  IPicture,
+  ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
+} from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../../app/actions";
@@ -119,7 +124,7 @@ const EditDogDetails = (props: any) => {
         cookies: cookies,
       })
     );*/
-  };
+  }
 
   //console.log(temp);
 
@@ -136,7 +141,10 @@ const EditDogDetails = (props: any) => {
         );
       } else if (editedDog && editedDog.id === dogId) {
         setEditDogFields(editedDog as ILostDogWithPicture);
-        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog as ILostDogWithPicture));
+        sessionStorage.setItem(
+          "editDogFields",
+          JSON.stringify(editedDog as ILostDogWithPicture)
+        );
       }
       if (!editedDog || (editedDog && editedDog.id !== dogId)) {
         store.dispatch(
@@ -659,22 +667,23 @@ const EditDogDetails = (props: any) => {
               </Button>
             </FormControl>
           </Grid>
-          { editedDog && editedDog.comments &&(
-        <Grid
-          item
-          xs={12}
-          alignContent="stretch"
-        >
-<CommentsList comments={editedDog.comments} delete={true} edit={true} redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToComment(comment)}}/>
-</Grid>)}
-{ comment.location.city != "" &&(
-        <Grid
-          item
-          xs={12}
-          alignContent="stretch"
-        >
-<CommentEditForm dogId={dogId} comment={comment} />
-</Grid>)}
+          {editedDog && editedDog.comments && (
+            <Grid item xs={12} alignContent="stretch">
+              <CommentsList
+                comments={editedDog.comments}
+                delete={true}
+                edit={true}
+                redirectToCommentEdit={(comment: ICommentWithIdAndAuthor) => {
+                  redirectToComment(comment);
+                }}
+              />
+            </Grid>
+          )}
+          {comment.location.city != "" && (
+            <Grid item xs={12} alignContent="stretch">
+              <CommentEditForm dogId={dogId} comment={comment} />
+            </Grid>
+          )}
         </Grid>
       )}
     </Grid>

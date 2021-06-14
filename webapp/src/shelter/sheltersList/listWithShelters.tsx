@@ -280,7 +280,6 @@ export default function ListWithShelters(props: any) {
             (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
           }
         >
-          
           <SheltersInfoGrid
             shelters={shelters}
             path={path}

@@ -364,7 +364,7 @@ export default function ListWithDogs(props: any) {
             (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
           }
         >
-          <BottomNavigation/>
+          <BottomNavigation />
           <LostDogsGrid
             dogs={dogs}
             path={path}

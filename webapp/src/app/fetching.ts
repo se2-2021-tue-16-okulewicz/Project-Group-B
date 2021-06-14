@@ -17,7 +17,10 @@ import {
 } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
 import { IShelterInfo } from "../utilityComponents/utilities";
-import { IComment, ICommentWithIdAndAuthor } from "../dog/dogComments/commentsInterfaces";
+import {
+  IComment,
+  ICommentWithIdAndAuthor,
+} from "../dog/dogComments/commentsInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -289,7 +292,7 @@ export async function addDog(
 export async function addComment(
   comment: IComment,
   cookies: { [name: string]: any },
-  picture?: IPicture,
+  picture?: IPicture
 ): Promise<RequestResponse<ICommentWithIdAndAuthor, undefined>> {
   let formData = new FormData();
 
@@ -300,12 +303,12 @@ export async function addComment(
     }),
     ""
   );
-  if (picture){
-  formData.append(
-    "picture",
-    new Blob([picture.data], { type: picture.fileType }),
-    picture.fileName
-  );
+  if (picture) {
+    formData.append(
+      "picture",
+      new Blob([picture.data], { type: picture.fileType }),
+      picture.fileName
+    );
   }
 
   return getResponse(

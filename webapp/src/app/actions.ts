@@ -21,7 +21,10 @@ import {
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
-import { IComment, ICommentWithIdAndAuthor } from "../dog/dogComments/commentsInterfaces";
+import {
+  IComment,
+  ICommentWithIdAndAuthor,
+} from "../dog/dogComments/commentsInterfaces";
 
 /*TODO: fix any*/
 
@@ -177,7 +180,7 @@ export const addDogThunk = createAsyncThunk<
 
 export const addCommentThunk = createAsyncThunk<
   RequestResponse<ICommentWithIdAndAuthor, undefined>,
-  { comment: IComment;  cookies: { [name: string]: any },picture?: IPicture;},
+  { comment: IComment; cookies: { [name: string]: any }; picture?: IPicture },
   { rejectValue: RequestResponse<ICommentWithIdAndAuthor, undefined> }
 >(
   "AddComment",
@@ -193,7 +196,7 @@ export const addCommentThunk = createAsyncThunk<
       await Fetching.addComment(
         commentAndPictureAndCookies.comment,
         commentAndPictureAndCookies.cookies,
-        commentAndPictureAndCookies.picture,
+        commentAndPictureAndCookies.picture
       );
 
     if (response.response.successful !== true) {
@@ -207,41 +210,41 @@ export const addCommentThunk = createAsyncThunk<
 );
 
 export const addShelterDogThunk = createAsyncThunk<
-    RequestResponse<IShelterDogWithPicture, undefined>,
-    {
+  RequestResponse<IShelterDogWithPicture, undefined>,
+  {
+    shelterId: number;
+    dog: IShelterDog;
+    picture: IPicture;
+    cookies: { [name: string]: any };
+  },
+  { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
+>(
+  "AddShelterDog",
+  async (
+    dogAndPictureAndCookies: {
       shelterId: number;
       dog: IShelterDog;
       picture: IPicture;
       cookies: { [name: string]: any };
     },
-    { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
-  >(
-    "AddShelterDog",
-    async (
-      dogAndPictureAndCookies: {
-        shelterId: number;
-        dog: IShelterDog;
-        picture: IPicture;
-        cookies: { [name: string]: any };
-      },
-      { rejectWithValue }
-    ) => {
-      const response: RequestResponse<IShelterDogWithPicture, undefined> =
-        await Fetching.addShelterDog(
-          dogAndPictureAndCookies.shelterId,
-          dogAndPictureAndCookies.dog,
-          dogAndPictureAndCookies.picture,
-          dogAndPictureAndCookies.cookies
-        );
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IShelterDogWithPicture, undefined> =
+      await Fetching.addShelterDog(
+        dogAndPictureAndCookies.shelterId,
+        dogAndPictureAndCookies.dog,
+        dogAndPictureAndCookies.picture,
+        dogAndPictureAndCookies.cookies
+      );
 
-      if (response.response.successful !== true) {
-        return rejectWithValue(
-          response as RequestResponse<IShelterDogWithPicture, undefined>
-        );
-      }
-
-      return response as RequestResponse<IShelterDogWithPicture, undefined>;
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<IShelterDogWithPicture, undefined>
+      );
     }
+
+    return response as RequestResponse<IShelterDogWithPicture, undefined>;
+  }
 );
 
 export const updateDogThunk = createAsyncThunk<
@@ -271,7 +274,10 @@ export const updateDogThunk = createAsyncThunk<
       );
     }
 
-    return response as RequestResponse<ILostDogWithPictureAndComments, undefined>;
+    return response as RequestResponse<
+      ILostDogWithPictureAndComments,
+      undefined
+    >;
   }
 );
 

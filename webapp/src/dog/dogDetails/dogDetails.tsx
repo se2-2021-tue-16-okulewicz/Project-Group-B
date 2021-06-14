@@ -15,7 +15,10 @@ import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import { BehaviorsTypes } from "../dogEnums";
-import { ILostDogWithPicture, ILostDogWithPictureAndComments } from "../dogInterfaces";
+import {
+  ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
+} from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
@@ -73,7 +76,7 @@ const DogDetails = (props: any) => {
     : Number(location.pathname.split("/dog/")[1]);
   const [pageRefresh, setPageRefresh] = useState(true);
   useEffect(() => {
-    if (pageRefresh) { 
+    if (pageRefresh) {
       try {
         store.dispatch(
           Actions.fetchOneDogThunk({
@@ -98,7 +101,7 @@ const DogDetails = (props: any) => {
         cookies: cookies,
       })
     );*/
-  };
+  }
 
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
@@ -363,24 +366,23 @@ const DogDetails = (props: any) => {
           </FormControl>
         </Grid>
       )}
-      {!pageRefresh && dog && dog.comments &&(
-        <Grid
-          item
-          xs={12}
-          alignContent="stretch"
-        >
-<CommentsList comments={dog.comments} delete={false} redirectToComment={(id:number)=>{redirectToComment(id)}}/>
-</Grid>)}
-{!pageRefresh && dog && dog.comments &&(
-        <Grid
-          item
-          xs={12}
-          alignContent="stretch"
-        >
-<CommentForm dogId={dogId} />
-</Grid>)}
+      {!pageRefresh && dog && dog.comments && (
+        <Grid item xs={12} alignContent="stretch">
+          <CommentsList
+            comments={dog.comments}
+            delete={false}
+            redirectToComment={(id: number) => {
+              redirectToComment(id);
+            }}
+          />
+        </Grid>
+      )}
+      {!pageRefresh && dog && dog.comments && (
+        <Grid item xs={12} alignContent="stretch">
+          <CommentForm dogId={dogId} />
+        </Grid>
+      )}
     </Grid>
-
   );
 };
 

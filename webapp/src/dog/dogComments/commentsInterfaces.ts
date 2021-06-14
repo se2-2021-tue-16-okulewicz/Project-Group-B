@@ -1,7 +1,7 @@
 import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { IPicture } from "../dogInterfaces";
 
-export interface IComment  {
+export interface IComment {
   authorId: number;
   dogId: number;
   text: string;
@@ -17,5 +17,5 @@ export interface ICommentWithIdAndAuthor extends IComment {
   location: { city: string; district: string };
 }
 export interface IAuthor extends IContactInfo {
-  id:number;
+  id: number;
 }
