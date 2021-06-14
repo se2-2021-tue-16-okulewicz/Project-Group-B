@@ -29,6 +29,10 @@ const SignIn = ({ navigation }: any) => {
   const loading = useSelector((state: State) => state.loading);
   const status = useSelector((state: State) => state.status);
 
+  // React.useEffect(() => {
+  //   setUsername("");
+  //   setPassword("");
+  // })
   React.useEffect(() => {
     if (loading) {
       setReady(false);
@@ -36,10 +40,12 @@ const SignIn = ({ navigation }: any) => {
   }, [loading]);
 
   React.useEffect(() => {
-    if (errorMessage !== "") {
+    if (errorMessage !== "" && status !== "reset") {
       setModalVisible(true);
     }
   }, [errorMessage]);
+
+
 
   async function signIn() {
     store.dispatch(
@@ -59,13 +65,16 @@ const SignIn = ({ navigation }: any) => {
   }, [username, password]);
 
   React.useEffect(() => {
-    if (loginInfo != null) {
+    if (loginInfo !== null) {
       if (loginInfo.userType !== "Regular") {
         store.dispatch(Actions.incorrectUserType());
+        console.log("user type modal")
         setModalVisible(true);
         setReady(false);
         return;
       }
+      setUsername("");
+    setPassword("");
       // if(loginInfo.userType === "Regular"){
       // navigation.push("DogsList");
       // }
@@ -88,6 +97,7 @@ const SignIn = ({ navigation }: any) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
+          console.log("on request modal")
           setModalVisible(!modalVisible);
         }}
       >

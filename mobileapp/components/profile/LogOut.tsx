@@ -14,8 +14,9 @@ export default function LogOut({ navigation }: any) {
         (state: State) => state.loginInformation
       );
     function signOut(){
-        store.dispatch(Actions.clearLoginInformation());
-        navigation.navigate("Dogs");
+        //store.dispatch(Actions.clearLoginInformation());
+        store.dispatch(Actions.reset());
+        //navigation.navigate("Dogs");
     }
 
     // React.useEffect(() => {
@@ -25,7 +26,7 @@ export default function LogOut({ navigation }: any) {
     // },[loginInfo])
 
     return (
-        <View style={{ padding: 7 }}>
+        <View style={{ padding: 7, alignContent: "flex-start" }}>
             {/* <Text>Hello</Text> */}
             <View style={styles.row}>
                 <Text style={{flex:7}}>Sign out</Text>
@@ -40,12 +41,12 @@ export default function LogOut({ navigation }: any) {
 const styles = StyleSheet.create({
     row:
     {
-        width: "100%",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        alignItems: "stretch",
         backgroundColor: "white",
-        height: 50,
-        justifyContent: "center"
+        width: "100%",
+        paddingVertical: 15,
+            paddingHorizontal: 10,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center"
     },
 })
