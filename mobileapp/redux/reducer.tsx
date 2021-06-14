@@ -58,7 +58,7 @@ const init: State = {
   dogs: [],
   currentDog: null,
   dogsLastPage: false,
-  dogsRequireRefresh: true,
+  dogsRequireRefresh: false,
   loadingDogs: false,
   loading: false,
   error: {
@@ -79,6 +79,12 @@ export const reducer = createReducer(init, {
   [Actions.clearLoginInformation.type]: (state: State) => {
     let newState = _.cloneDeep(state);
     newState.loginInformation = null;
+    return newState;
+  },
+  [Actions.reset.type]: (state: State) => {
+    let newState = init;
+    newState.status = "reset";
+    console.log(newState.error.erorMessage);
     return newState;
   },
 

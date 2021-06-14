@@ -232,7 +232,7 @@ public class DogsController {
                                                        @RequestPart(value = "picture", required = false) MultipartFile picture) {
         logHeaders(headers);
 
-        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular));
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Regular));
         if(!authorization.getValue0()) {
             throw new UnauthorizedException();
         }
