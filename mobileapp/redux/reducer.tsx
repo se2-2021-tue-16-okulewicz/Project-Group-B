@@ -240,10 +240,11 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
-
   [Actions.GetDogDetailsThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPictureAndComments, undefined>>
+    payload: PayloadAction<
+      RequestResponse<ILostDogWithPictureAndComments, undefined>
+    >
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
@@ -276,9 +277,6 @@ export const reducer = createReducer(init, {
 
     return newState;
   },
-
-
-
 
   [Actions.fetchDogsThunk.pending.toString()]: (state: State) => {
     let newState = _.cloneDeep(state);

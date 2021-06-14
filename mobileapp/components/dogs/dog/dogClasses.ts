@@ -13,7 +13,7 @@ import {
   IDogDetails,
   ILostDog,
   IPicture,
-  Picture,  
+  Picture,
 } from "./dogInterfaces";
 
 export const initPicture: IPicture = {

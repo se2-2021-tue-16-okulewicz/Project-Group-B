@@ -53,13 +53,14 @@ export default function DogDetails({ route, navigation }: any) {
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("/");
   }
 
-  const renderListItem = (comment: ICommentWithAuthorAndPicture, navigation: any) => (
+  const renderListItem = (
+    comment: ICommentWithAuthorAndPicture,
+    navigation: any
+  ) => (
     <View style={[styles.item]}>
-      
-      <Text/>
+      <Text />
 
-      
-{/*       
+      {/*       
       <TouchableOpacity
         onPress={() => {
           redirectToDetails(dog);
@@ -110,14 +111,6 @@ export default function DogDetails({ route, navigation }: any) {
       </TouchableOpacity> */}
     </View>
   );
-
-
-
-
-
-
-
-
 
   return (
     <View style={{ backgroundColor: "#ffffff", borderRadius: 5 }}>
@@ -180,14 +173,21 @@ export default function DogDetails({ route, navigation }: any) {
               //
             })}
           </View>
-          <Text style={{ fontSize: 15, marginTop: "4%", marginLeft: "1%", color: "#006aff" }}>
+          <Text
+            style={{
+              fontSize: 15,
+              marginTop: "4%",
+              marginLeft: "1%",
+              color: "#006aff",
+            }}
+          >
             Comments
           </Text>
 
           <FlatList
-          data={comments.length > 0 ? comments.slice(0, comments.length) : []}
-          renderItem={({ item }) => renderListItem(item, navigation)}
-          keyExtractor={(item) => item.id.toString()}
+            data={comments.length > 0 ? comments.slice(0, comments.length) : []}
+            renderItem={({ item }) => renderListItem(item, navigation)}
+            keyExtractor={(item) => item.id.toString()}
           />
 
           <View style={{ marginBottom: "70%" }}></View>

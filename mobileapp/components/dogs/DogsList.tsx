@@ -190,7 +190,7 @@ export default function DogsList({ navigation }: any) {
               <Text style={styles.found}>Found</Text>
             )}
           </View>
-        </View>       
+        </View>
 
         <View style={styles.row}>
           <Image style={styles.tinyLogo} source={pin} />
