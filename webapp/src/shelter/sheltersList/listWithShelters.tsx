@@ -143,11 +143,6 @@ export default function ListWithShelters(props: any) {
   const classes = useStyles();
   const { path } = useRouteMatch();
 
-  const onSettingsClicked = () => {
-    //store.dispatch(clearDogList());
-    //history.push("/settings");
-  };
-
   const onLostDogsClicked = () => {
     store.dispatch(clearDogList());
     history.push("/dogs");
@@ -225,6 +220,10 @@ export default function ListWithShelters(props: any) {
       }
     }
   };
+  const onSettingsClicked = () => {
+    store.dispatch(clearDogList());
+    history.push("/settings");
+  };
 
   return (
     <Root scheme={scheme}>
@@ -255,7 +254,6 @@ export default function ListWithShelters(props: any) {
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
-                disabled={true}
                 onClick={onSettingsClicked}
                 label="Settings"
                 icon={<Settings />}
@@ -282,7 +280,7 @@ export default function ListWithShelters(props: any) {
             (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
           }
         >
-          <Toolbar />
+          
           <SheltersInfoGrid
             shelters={shelters}
             path={path}

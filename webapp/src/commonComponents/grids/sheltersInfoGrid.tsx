@@ -23,7 +23,7 @@ export default function SheltersInfoGrid(props: any) {
     <GridList
       cols={3}
       spacing={20}
-      style={{ margin: "0", width: "100%", display: "flex" }}
+      style={{ margin: "0", marginTop:"3vh", width: "100%", display: "flex" }}
     >
       {shelters.map(
         (shelter: IShelter) =>
