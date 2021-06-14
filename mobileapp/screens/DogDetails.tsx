@@ -78,7 +78,10 @@ export default function DogDetails({ route, navigation }: any) {
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("/");
   }
 
-  const renderListItem = (comment: ICommentWithAuthorAndPicture, navigation: any) => (
+  const renderListItem = (
+    comment: ICommentWithAuthorAndPicture,
+    navigation: any
+  ) => (
     <View style={[styles.item]}>
     {
       // Comment item goes here      
@@ -147,7 +150,14 @@ export default function DogDetails({ route, navigation }: any) {
               //
             })}
           </View>
-          <Text style={{ fontSize: 15, marginTop: "4%", marginLeft: "1%", color: "#006aff" }}>
+          <Text
+            style={{
+              fontSize: 15,
+              marginTop: "4%",
+              marginLeft: "1%",
+              color: "#006aff",
+            }}
+          >
             Comments
           </Text>
 
