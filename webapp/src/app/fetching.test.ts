@@ -18,6 +18,7 @@ import config from "../config/config";
 import { RequestResponse } from "./response";
 import {
   ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
   IShelterDog,
   IShelterDogWithPicture,
 } from "../dog/dogInterfaces";
@@ -55,7 +56,7 @@ test("fetch the dogs with a wrong token results in an error", async () => {
 });
 
 test("fetching one dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture, undefined> =
+  const data: RequestResponse<ILostDogWithPictureAndComments, undefined> =
     await Fetching.fetchOneDog(
       0, //id
       config.cookies
@@ -64,7 +65,7 @@ test("fetching one dog with a wrong token results in an error", async () => {
 });
 
 test("updating the dog with a wrong token results in an error", async () => {
-  const data: RequestResponse<ILostDogWithPicture, undefined> =
+  const data: RequestResponse<ILostDogWithPictureAndComments, undefined> =
     await Fetching.updateDog(
       initLostDogProps, //dog
       config.cookies,

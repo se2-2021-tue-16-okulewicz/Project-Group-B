@@ -4,6 +4,7 @@ import {
   ILostDogWithPicture,
   IShelterDog,
   IShelterDogWithPicture,
+  ILostDogWithPictureAndComments,
 } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
@@ -166,7 +167,7 @@ export async function fetchDogs(
 export async function fetchOneDog(
   id: Number,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
+): Promise<RequestResponse<ILostDogWithPictureAndComments, undefined>> {
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${id}`,
@@ -329,7 +330,7 @@ export async function updateDog(
   dog: ILostDog,
   cookies: { [name: string]: any },
   picture?: IPicture
-): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
+): Promise<RequestResponse<ILostDogWithPictureAndComments, undefined>> {
   let formData = new FormData();
 
   const privateProperties = ["id", "pictureId", "ownerId"];

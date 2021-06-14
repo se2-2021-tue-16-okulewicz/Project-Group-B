@@ -2,6 +2,7 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   ILostDog,
   ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
   IPicture,
   IShelterDog,
   IShelterDogWithPicture,
@@ -212,9 +213,9 @@ export const addShelterDogThunk = createAsyncThunk<
 );
 
 export const updateDogThunk = createAsyncThunk<
-  RequestResponse<ILostDogWithPicture, undefined>,
+  RequestResponse<ILostDogWithPictureAndComments, undefined>,
   { dog: ILostDog; cookies: { [name: string]: any }; picture?: IPicture },
-  { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
+  { rejectValue: RequestResponse<ILostDogWithPictureAndComments, undefined> }
 >(
   "UpdateDog",
   async (
@@ -226,7 +227,7 @@ export const updateDogThunk = createAsyncThunk<
     },
     { rejectWithValue }
   ) => {
-    const response: RequestResponse<ILostDogWithPicture, undefined> =
+    const response: RequestResponse<ILostDogWithPictureAndComments, undefined> =
       await Fetching.updateDog(
         dogAndPictureAndCookies.dog,
         dogAndPictureAndCookies.cookies,
@@ -235,11 +236,11 @@ export const updateDogThunk = createAsyncThunk<
 
     if (response.response.successful !== true) {
       return rejectWithValue(
-        response as RequestResponse<ILostDogWithPicture, undefined>
+        response as RequestResponse<ILostDogWithPictureAndComments, undefined>
       );
     }
 
-    return response as RequestResponse<ILostDogWithPicture, undefined>;
+    return response as RequestResponse<ILostDogWithPictureAndComments, undefined>;
   }
 );
 
@@ -352,19 +353,19 @@ export const fetchSheltersThunk = createAsyncThunk<
 );
 
 export const fetchOneDogThunk = createAsyncThunk<
-  RequestResponse<ILostDogWithPicture, undefined>,
+  RequestResponse<ILostDogWithPictureAndComments, undefined>,
   { id: number; cookies: { [name: string]: any } },
-  { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
+  { rejectValue: RequestResponse<ILostDogWithPictureAndComments, undefined> }
 >("fetchOneDog", async (item: IFilters, { rejectWithValue }) => {
-  const response: RequestResponse<ILostDogWithPicture, undefined> =
+  const response: RequestResponse<ILostDogWithPictureAndComments, undefined> =
     await Fetching.fetchOneDog(item.id, item.cookies);
 
   if (response.response.successful !== true) {
     return rejectWithValue(
-      response as RequestResponse<ILostDogWithPicture, undefined>
+      response as RequestResponse<ILostDogWithPictureAndComments, undefined>
     );
   }
-  return response as RequestResponse<ILostDogWithPicture, undefined>;
+  return response as RequestResponse<ILostDogWithPictureAndComments, undefined>;
 });
 
 export const fetchOneShelterDogThunk = createAsyncThunk<

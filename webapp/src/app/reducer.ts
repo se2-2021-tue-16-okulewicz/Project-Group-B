@@ -4,6 +4,7 @@ import _ from "lodash";
 import { RequestResponse } from "./response";
 import {
   ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
   IShelterDog,
   IShelterDogWithPicture,
 } from "../dog/dogInterfaces";
@@ -189,7 +190,7 @@ export const reducer = createReducer(initState, {
   },
   [Actions.updateDogThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
+    payload: PayloadAction<RequestResponse<ILostDogWithPictureAndComments, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
@@ -452,15 +453,15 @@ export const reducer = createReducer(initState, {
 
   [Actions.fetchOneDogThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
+    payload: PayloadAction<RequestResponse<ILostDogWithPictureAndComments, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.editedDog = ValidateFetchedDog(
-      payload.payload.response.data as ILostDogWithPicture
+      payload.payload.response.data as ILostDogWithPictureAndComments
     );
     newState.editedDog.picture.data = (
-      payload.payload.response.data as ILostDogWithPicture
+      payload.payload.response.data as ILostDogWithPictureAndComments
     ).picture.data as string;
     newState.dogsRequireRefresh = false;
     newState.settingsRequireRefresh = false;

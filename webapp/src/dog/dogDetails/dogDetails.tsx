@@ -15,7 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import { BehaviorsTypes } from "../dogEnums";
-import { ILostDogWithPicture } from "../dogInterfaces";
+import { ILostDogWithPicture, ILostDogWithPictureAndComments } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
@@ -23,6 +23,7 @@ import { useCookies } from "react-cookie";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
+import CommentsList from "../dogComments/commentsList";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const DogDetails = (props: any) => {
   const dog = useSelector(
-    (state: State) => state.editedDog as ILostDogWithPicture
+    (state: State) => state.editedDog as ILostDogWithPictureAndComments
   );
   const location = useLocation();
   const dogId = props.dogId
@@ -71,7 +72,7 @@ const DogDetails = (props: any) => {
     : Number(location.pathname.split("/dog/")[1]);
   const [pageRefresh, setPageRefresh] = useState(true);
   useEffect(() => {
-    if (pageRefresh) {
+    if (pageRefresh) { 
       try {
         store.dispatch(
           Actions.fetchOneDogThunk({
@@ -351,7 +352,16 @@ const DogDetails = (props: any) => {
           </FormControl>
         </Grid>
       )}
-      {!pageRefresh && dog && (
+      {!pageRefresh && dog && dog.comments &&(
+        <Grid
+  className={classes.mainForm}
+  container
+  xs={12}
+  alignContent="space-between"
+>
+<CommentsList comments={dog.comments}></CommentsList>
+</Grid>)}
+      {/*!pageRefresh && dog && (
         <Grid
           className="grid"
           container
@@ -363,8 +373,9 @@ const DogDetails = (props: any) => {
         >
           <DogComment name={""} />
         </Grid>
-      )}
+      )*/}
     </Grid>
+
   );
 };
 

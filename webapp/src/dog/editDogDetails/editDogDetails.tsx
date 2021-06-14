@@ -28,7 +28,7 @@ import {
   BreedTypes,
 } from "../dogEnums";
 import { initLostDogWithPictureProps } from "../dogClasses";
-import { ILostDog, IPicture, ILostDogWithPicture } from "../dogInterfaces";
+import { ILostDog, IPicture, ILostDogWithPicture, ILostDogWithPictureAndComments } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../../app/actions";
@@ -90,7 +90,7 @@ const EditDogDetails = (props: any) => {
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const editedDog = useSelector(
-    (state: State) => state.editedDog as ILostDogWithPicture
+    (state: State) => state.editedDog as ILostDogWithPictureAndComments
   );
   const [isNewPicture, setIsNewPicture] = useState(false);
   const [pageRefresh, setPageRefresh] = useState(true);
@@ -120,8 +120,8 @@ const EditDogDetails = (props: any) => {
           JSON.parse(sessionStorage.getItem("editDogFields") as string)
         );
       } else if (editedDog && editedDog.id === dogId) {
-        setEditDogFields(editedDog);
-        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog));
+        setEditDogFields(editedDog as ILostDogWithPicture);
+        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog as ILostDogWithPicture));
       }
       if (!editedDog || (editedDog && editedDog.id !== dogId)) {
         store.dispatch(

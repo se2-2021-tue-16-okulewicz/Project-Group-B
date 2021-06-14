@@ -1,6 +1,7 @@
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import {
   ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
   IShelterDog,
   IShelterDogWithPicture,
 } from "../dog/dogInterfaces";
@@ -20,7 +21,7 @@ export type State = {
   shelterdogs: IShelterDog[] | any;
   shelter: IShelter | any;
   shelters: IShelter[] | any;
-  editedDog: ILostDogWithPicture | any; //
+  editedDog: ILostDogWithPictureAndComments | any; //
   shelterDog: IShelterDogWithPicture | any;
   dogsLastPage: boolean | null;
   dogsRequireRefresh: boolean;
