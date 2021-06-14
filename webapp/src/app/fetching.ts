@@ -17,6 +17,7 @@ import {
 } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
 import { IShelterInfo } from "../utilityComponents/utilities";
+import { IComment, ICommentWithIdAndAuthor } from "../dog/dogComments/commentsInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -273,6 +274,43 @@ export async function addDog(
   return getResponse(
     axios.post(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs`,
+      formData,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
+export async function addComment(
+  comment: IComment,
+  cookies: { [name: string]: any },
+  picture?: IPicture,
+): Promise<RequestResponse<ICommentWithIdAndAuthor, undefined>> {
+  let formData = new FormData();
+
+  formData.append(
+    "comment",
+    new Blob([JSON.stringify(comment)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  if (picture){
+  formData.append(
+    "picture",
+    new Blob([picture.data], { type: picture.fileType }),
+    picture.fileName
+  );
+  }
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${comment.dogId}/comments`,
       formData,
       {
         headers: {

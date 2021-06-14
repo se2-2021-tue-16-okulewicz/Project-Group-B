@@ -32,61 +32,8 @@ export default function CommentsList(props: any) {
   const comments = props.comments as ICommentWithIdAndAuthor[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const redirectToComment = (id: number) => {
-    /*store.dispatch(
-      fetchOneShelter({
-        id: id as number,
-        cookies: cookies,
-      })
-    );*/
     props.redirectToComment(id);
   };
-  /*
-      <GridList
-      cols={3}
-      spacing={20}
-      style={{ margin: "0", width: "100%", display: "flex" }}
-    >
-      {shelters.map(
-        (shelter: IShelter) =>
-          shelter.id && (
-              {/*
-<div class="ui comments">
-  <div class="comment">
-    <a class="avatar">
-      <img src="/images/avatar/small/joe.jpg">
-    </a>
-    <div class="content">
-      <a class="author">Tom Lukic</a>
-      <div class="text">
-        This will be great for business reports. I will definitely download this.
-      </div>
-      <div class="actions">
-        <a class="reply">Reply</a>
-        <a class="save">Save</a>
-        <a class="hide">Hide</a>
-        <a>
-          <i class="expand icon"></i>
-          Full-screen
-        </a>
-      </div>
-    </div>
-  </div>
-</div>}
-  */
-  /*} <Comment.Group>
-        <Comment>
-  <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
-  <Comment.Content>
-    <Comment.Author as="a">{props.name}</Comment.Author>
-    <Comment.Metadata>
-      <div>Today at 5:42PM</div>
-    </Comment.Metadata>
-    <Comment.Text>How artistic!</Comment.Text>
-    <Comment.Actions>
-      <Comment.Action>Reply</Comment.Action>
-    </Comment.Actions>
-  </Comment.Content>
-</Comment>*/
   const styleLink = document.createElement("link");
   styleLink.rel = "stylesheet";
   styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -120,7 +67,7 @@ export default function CommentsList(props: any) {
                     redirectToComment(comment.id as number);
                   }}>Delete</Comment.Action>}
                   {!props.delete && <Comment.Action active={!props.delete} onClick={() => {
-                    redirectToComment(comment.id as number);
+                    window.scrollTo(100000,100000);
                   }}>Reply</Comment.Action>}
                 </Comment.Actions>
               </Comment.Content>

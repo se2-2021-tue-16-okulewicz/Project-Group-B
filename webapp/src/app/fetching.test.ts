@@ -30,6 +30,8 @@ import {
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
 import { initAddress, initShelter } from "../shelter/shelterTesting";
+import { ICommentWithIdAndAuthor } from "../dog/dogComments/commentsInterfaces";
+import { initComment } from "../dog/dogComments/commentsClasses";
 
 jest.mock("axios");
 
@@ -43,13 +45,19 @@ const errorObject = {
   },
 };
 
-test("add the dog with a wrong token results in an error", async () => {
+test("adding the dog with a wrong token results in an error", async () => {
   const data: RequestResponse<ILostDogWithPicture, undefined> =
     await Fetching.addDog(initLostDogProps, initPicture, config.cookies);
   expect(data).toEqual(errorObject);
 });
 
-test("fetch the dogs with a wrong token results in an error", async () => {
+test("adding the comment with a wrong token results in an error", async () => {
+  const data: RequestResponse<ICommentWithIdAndAuthor, undefined> =
+    await Fetching.addComment(initComment, config.cookies, initPicture);
+  expect(data).toEqual(errorObject);
+});
+
+test("fetching the dogs with a wrong token results in an error", async () => {
   const data: RequestResponse<ILostDogWithPicture[], number> =
     await Fetching.fetchDogs({}, config.cookies);
   expect(data).toEqual(errorObject);

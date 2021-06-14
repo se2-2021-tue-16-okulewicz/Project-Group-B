@@ -5,9 +5,11 @@ import { ICommentWithIdAndAuthor } from "./commentsInterfaces";
 import { Button, Comment, Divider, Form, Header, } from "semantic-ui-react";
 import config from "../../config/config";
 import { createStyles, Grid, IconButton, Input, InputLabel, makeStyles, Theme, } from "@material-ui/core";
-import { Add, AddAPhotoRounded, CloudUpload, Delete } from "@material-ui/icons";
-import { initCommentandAuthor, initPicture } from "./commentsClasses";
+import { initComment, initCommentandAuthor, initPicture } from "./commentsClasses";
 import { IPicture } from "../dogInterfaces";
+import * as Actions from "../../app/actions";
+import { store } from "../../app/store";
+import { common } from "@material-ui/core/colors";
 const types = ["image/jpg", "image/jpeg", "image/png"];
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,13 +33,43 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/*Actions.fetchSheltersThunk({
+            filters: {
+              ...filters,
+              page: filters.page,
+            },
+            cookies: cookies,
+          }) */
+
 export default function CommentForm(props: any) {
-  const [comment, setComment] = useState(initCommentandAuthor);
+  const [comment, setComment] = useState(initComment);
   const [picture, setPicture] = useState(initPicture);
   const [file, setFile] = useState(null);
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const addComment = () => {
+    if (props.dogId){
+      if(picture.fileType != ""){
+    store.dispatch(
+      Actions.addCommentThunk({
+        comment:{...comment,
+        authorId:cookies[config.cookies.userId],
+        dogId:props.dogId},
+        picture:picture,
+        cookies: cookies,
+      })
+    );}
+    else{
+      store.dispatch(
+        Actions.addCommentThunk({
+          comment:{...comment,
+          authorId:cookies[config.cookies.userId],
+          dogId:props.dogId},
+          cookies: cookies,
+        })
+      );
+    }
+    }
     //props.redirectToComment(id);
   };
   const uploadImage = (event: any) => {
@@ -55,6 +87,20 @@ export default function CommentForm(props: any) {
       }
     }
   };
+
+  const inputsHandler = (e: { target: { name: any; value: any } }) => {
+    let newField = { ...comment, [e.target.name]: e.target.value };
+    setComment(newField);
+  };
+
+  const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
+    let newField = {
+      ...comment,
+      location: { ...comment.location, [e.target.name]: e.target.value },
+    };
+    setComment(newField);
+  };
+
   const styleLink = document.createElement("link");
   styleLink.rel = "stylesheet";
   styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -69,11 +115,11 @@ export default function CommentForm(props: any) {
         <Grid container direction="row" spacing={3} alignContent="space-between">
           <Grid item xs={8} direction="column">
             <Form reply>
-              <Form.TextArea />
+              <Form.TextArea value={comment.text} name="text" onChange={inputsHandler}/>
               <Comment.Text>{"City:"}</Comment.Text>
-              <Form.Input />
+              <Form.Input value={comment.location.city} name="city" onChange={inputArrayHandler}/>
               <Comment.Text>{"District:"}</Comment.Text>
-              <Form.Input />
+              <Form.Input value={comment.location.district} name="district" onChange={inputArrayHandler}/>
               <Button as="label" htmlFor="file" primary type="button" icon="upload" content='Upload Image' size="medium" style={{width:"170px"}}>
               </Button>
               <input accept=".jpg, .jpeg, .png" type="file" id="file" style={{ display: "none" }} onChange={(
@@ -90,7 +136,7 @@ export default function CommentForm(props: any) {
             </Form>
           </Grid>
           <Grid container item xs={4}>
-            {picture && picture.fileName != "" && (<img style={{ width: "inherit", height: "auto", maxHeight: "400px" }}
+            {picture && picture.fileName != "" && (<img style={{ width: "inherit", marginTop:"4%", height: "auto", maxHeight: "400px" }}
               src={URL.createObjectURL(file)} alt=""
             />)}
           </Grid>

@@ -14,6 +14,7 @@ import { ValidateFetchedDog } from "../utilityComponents/validation";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
 import { initState, State } from "./stateInterfaces";
+import { ICommentWithIdAndAuthor } from "../dog/dogComments/commentsInterfaces";
 
 export const reducer = createReducer(initState, {
   [Actions.clearError.type]: (state: State) => {
@@ -143,6 +144,38 @@ export const reducer = createReducer(initState, {
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+  [Actions.addCommentThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ICommentWithIdAndAuthor, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.editedDog.comments = state.editedDog.comments.concat(payload.payload.response.data as ICommentWithIdAndAuthor
+    );
+    return newState;
+  },
+  [Actions.addCommentThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.addCommentThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {

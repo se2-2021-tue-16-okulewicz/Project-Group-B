@@ -377,7 +377,7 @@ const DogDetails = (props: any) => {
           xs={12}
           alignContent="stretch"
         >
-<CommentForm />
+<CommentForm dogId={dogId} />
 </Grid>)}
     </Grid>
 
