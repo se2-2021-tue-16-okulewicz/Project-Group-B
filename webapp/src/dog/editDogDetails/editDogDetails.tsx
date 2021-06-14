@@ -42,7 +42,7 @@ import { State } from "../../app/stateInterfaces";
 import ImageUpload from "../../commonComponents/imageUploadForm";
 import CommentEditForm from "../dogComments/commentEditForm";
 import { ICommentWithIdAndAuthor } from "../dogComments/commentsInterfaces";
-import { initComment } from "../dogComments/commentsClasses";
+import { initComment, initCommentandAuthor } from "../dogComments/commentsClasses";
 import CommentsList from "../dogComments/commentsList";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
@@ -90,7 +90,8 @@ const EditDogDetails = (props: any) => {
   const dogId = props.dogId
     ? props.dogId
     : JSON.parse(sessionStorage.getItem("dogId") as string);
-  const [comment, setComment] = useState(initComment);
+  const [comment, setComment] = useState(initCommentandAuthor);
+  const [oldcomment, setOldComment] = useState(initCommentandAuthor);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -111,14 +112,21 @@ const EditDogDetails = (props: any) => {
   );
   const [picture, setPicture] = useState<IPicture>();
 
-  function redirectToComment(comment: ICommentWithIdAndAuthor) {
-    setComment(comment);
-    /*store.dispatch(
-      fetchOneShelter({
-        id: id as number,
-        cookies: cookies,
-      })
-    );*/
+  function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {
+    if(comment != initCommentandAuthor){
+      setOldComment(comments);
+      setComment(initCommentandAuthor);
+    }
+    else
+    {
+      setComment(comments);
+      setOldComment(initCommentandAuthor);
+    }
+  };
+
+  function cancelComment() {
+      setComment(initCommentandAuthor);
+      setOldComment(initCommentandAuthor);
   };
 
   //console.log(temp);
@@ -665,16 +673,16 @@ const EditDogDetails = (props: any) => {
           xs={12}
           alignContent="stretch"
         >
-<CommentsList comments={editedDog.comments} delete={true} edit={true} redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToComment(comment)}}/>
+<CommentsList comments={editedDog.comments} delete={true} edit={true} cancelComment={()=>{cancelComment();}} redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToCommentEdit(comment);}}/>
 </Grid>)}
-{ comment.location.city != "" &&(
         <Grid
           item
           xs={12}
           alignContent="stretch"
         >
-<CommentEditForm dogId={dogId} comment={comment} />
-</Grid>)}
+{ comment.location.city != ""  && <CommentEditForm dogId={dogId} comment={comment} cancelComment={()=>{cancelComment();}} />}
+{ oldcomment.location.city != ""  && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={()=>{cancelComment();}} />}
+</Grid>
         </Grid>
       )}
     </Grid>

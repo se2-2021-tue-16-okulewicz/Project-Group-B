@@ -25,6 +25,9 @@ import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
 import CommentsList from "../dogComments/commentsList";
 import CommentForm from "../dogComments/commentForm";
+import { ICommentWithIdAndAuthor } from "../dogComments/commentsInterfaces";
+import { initCommentandAuthor } from "../dogComments/commentsClasses";
+import CommentEditForm from "../dogComments/commentEditForm";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,6 +75,10 @@ const DogDetails = (props: any) => {
     ? props.dogId
     : Number(location.pathname.split("/dog/")[1]);
   const [pageRefresh, setPageRefresh] = useState(true);
+  const [comment, setComment] = useState(initCommentandAuthor);
+  const [oldcomment, setOldComment] = useState(initCommentandAuthor);
+  const [add, setAdd] = useState(true);
+  
   useEffect(() => {
     if (pageRefresh) { 
       try {
@@ -92,13 +99,26 @@ const DogDetails = (props: any) => {
 
   function redirectToComment(id: number) {
     console.log(id);
-    /*store.dispatch(
-      fetchOneShelter({
-        id: id as number,
-        cookies: cookies,
-      })
-    );*/
   };
+
+  function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {  
+    setAdd(false);
+    if(comment != initCommentandAuthor){
+      setOldComment(comments);
+      setComment(initCommentandAuthor);
+    }
+    else
+    {
+      setComment(comments);
+      setOldComment(initCommentandAuthor);
+    }
+  };
+
+  function cancelComment() {
+    setComment(initCommentandAuthor);
+    setOldComment(initCommentandAuthor);
+    setAdd(true);
+};
 
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
@@ -367,17 +387,17 @@ const DogDetails = (props: any) => {
         <Grid
           item
           xs={12}
-          alignContent="stretch"
         >
-<CommentsList comments={dog.comments} delete={false} redirectToComment={(id:number)=>{redirectToComment(id)}}/>
+<CommentsList comments={dog.comments} delete={false} edit={false} cancelComment={()=>{cancelComment();}} redirectToComment={(id:number)=>{redirectToComment(id)}}  redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToCommentEdit(comment);}}/>
 </Grid>)}
 {!pageRefresh && dog && dog.comments &&(
         <Grid
           item
           xs={12}
-          alignContent="stretch"
         >
-<CommentForm dogId={dogId} />
+{add && <CommentForm dogId={dogId} /> }
+{ comment.location.city != ""  && <CommentEditForm dogId={dogId} comment={comment} cancelComment={()=>{cancelComment();}} />}
+{ oldcomment.location.city != ""  && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={()=>{cancelComment();}} />}
 </Grid>)}
     </Grid>
 

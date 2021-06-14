@@ -161,6 +161,7 @@ export const reducer = createReducer(initState, {
     state: State,
     payload: PayloadAction<RequestResponse<ICommentWithIdAndAuthor, undefined>>
   ) => {
+    console.log("aa");
     let newState = _.cloneDeep(state);
     newState.loading = false;
     newState.editedDog.comments = state.editedDog.comments.concat(payload.payload.response.data as ICommentWithIdAndAuthor
@@ -176,6 +177,45 @@ export const reducer = createReducer(initState, {
     return newState;
   },
   [Actions.addCommentThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+  [Actions.editCommentThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ICommentWithIdAndAuthor, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    //const index = state.editedDog.comments.findIndex((emp: ICommentWithIdAndAuthor)=> emp.id === (payload.payload.response.data as ICommentWithIdAndAuthor).id),
+    if (state.editedDog.comments && state.editedDog.comments.array){
+    newState.editedDog.comments = state.editedDog.comments.array.forEach((emp: ICommentWithIdAndAuthor) => {
+      if(emp.id == (payload.payload.response.data as ICommentWithIdAndAuthor).id){
+        emp = payload.payload.response.data as ICommentWithIdAndAuthor;
+      }
+      
+    });
+  }
+    return newState;
+  },
+  [Actions.editCommentThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.editCommentThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {

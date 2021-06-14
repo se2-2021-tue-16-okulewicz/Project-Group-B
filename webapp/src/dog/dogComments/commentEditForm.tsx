@@ -43,15 +43,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function CommentEditForm(props: any) {
   const [comment, setComment] = useState(props.comment as ICommentWithIdAndAuthor);
+  console.log(comment);
   const [picture, setPicture] = useState(props.picture?props.picture:initPicture);
   const [file, setFile] = useState(null);
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  const addComment = () => {
+  const editComment = () => {
     if (props.dogId){
       if(picture.fileType != ""){
     store.dispatch(
-      Actions.addCommentThunk({
+      Actions.editCommentThunk({
         comment:{...comment,
         authorId:cookies[config.cookies.userId],
         dogId:props.dogId},
@@ -61,7 +62,7 @@ export default function CommentEditForm(props: any) {
     );}
     else{
       store.dispatch(
-        Actions.addCommentThunk({
+        Actions.editCommentThunk({
           comment:{...comment,
           authorId:cookies[config.cookies.userId],
           dogId:props.dogId},
@@ -72,6 +73,11 @@ export default function CommentEditForm(props: any) {
     }
     //props.redirectToComment(id);
   };
+
+  const cancelComment = () => {
+    props.cancelComment();
+  };
+
   const uploadImage = (event: any) => {
     if (event) {
       if (types.includes(event.target.files[0].type)) {
@@ -109,11 +115,11 @@ export default function CommentEditForm(props: any) {
   return (
     <Comment.Group className={classes.commentForm}>
       <Header as="h3" dividing className={classes.headerForm}>
-        Add Comment
+        Edit Comment
       </Header>
       <Comment class="ui comments" className={classes.mainForm}>
         <Grid container direction="row" spacing={3} alignContent="space-between">
-          <Grid item xs={8} direction="column">
+          <Grid item xs={8}>
             <Form reply>
               <Form.TextArea value={comment.text} name="text" onChange={inputsHandler}/>
               <Comment.Text>{"City:"}</Comment.Text>
@@ -126,11 +132,19 @@ export default function CommentEditForm(props: any) {
                       file: React.ChangeEvent<{ value: unknown }>
                     ) =>uploadImage(file)} />
               <Button
-                content='Add Comment'
+                content='Edit Comment'
                 labelPosition='left'
                 icon='edit'
                 primary
-                onClick={() => { addComment() }}
+                onClick={() => { editComment() }}
+                size="medium"
+                style={{width:"170px"}}/>
+                 <Button
+                content='Cancel'
+                labelPosition='left'
+                icon='cancel'
+                primary
+                onClick={() => { cancelComment() }}
                 size="medium"
                 style={{width:"170px"}}/>
             </Form>

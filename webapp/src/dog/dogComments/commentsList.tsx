@@ -32,9 +32,8 @@ export default function CommentsList(props: any) {
   const comments = props.comments as ICommentWithIdAndAuthor[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const redirectToCommentEdit = (comment: ICommentWithIdAndAuthor)=>{
-    if (props.edit){
       props.redirectToCommentEdit(comment);
-    }
+      window.scrollTo(100000,100000);
   }
   const redirectToComment = (id: number) => {
     props.redirectToComment(id);
@@ -50,16 +49,11 @@ export default function CommentsList(props: any) {
         Comments
       </Header>
       {comments.map((comment: ICommentWithIdAndAuthor) =>
-        <Comment key={comment.id} class="ui comments" className={classes.mainForm}>
-
-          {/*<Comment.Avatar src={comment.picture ? `data:${comment.picture.fileType};base64,${
-                  comment.picture.data as ArrayBuffer}
-                }`: "https://react.semantic-ui.com/images/avatar/small/matt.jpg"} />*/
-          }
+        <Comment key={comment.id} className={classes.mainForm}>
           <Grid container direction="row" spacing={3} alignContent="space-between" style={{ marginBottom: "1%" }}>
             <Grid item xs={1}>
               <Comment.Avatar style={{ height: "inherit", width: "inherit" }} src={`https://semantic-ui.com/images/avatar2/small/${comment.id % 2 ? "elyse" : "kristy"}.png`} /></Grid>
-            <Grid item xs={7} direction="column">
+            <Grid item xs={7}>
               <Comment.Content>
                 <Comment.Author as="a">{comment.author.name}</Comment.Author>
                 <Comment.Metadata>
@@ -68,15 +62,16 @@ export default function CommentsList(props: any) {
                 <Comment.Text>{comment.text}</Comment.Text>
                 <Comment.Text>{"The dog is waiting for you in " + comment.location.city + ", " + comment.location.district + "."}</Comment.Text>
                 <Comment.Actions>
-                  {props.delete && <Comment.Action active={props.delete} onClick={() => {
-                    redirectToComment(comment.id as number);
-                  }}>Delete</Comment.Action>}
-                  {props.edit && <Comment.Action active={props.delete} onClick={() => {
-                    redirectToCommentEdit(comment as ICommentWithIdAndAuthor);
-                  }}>Edit</Comment.Action>}
-                  {!props.delete && <Comment.Action active={!props.delete} onClick={() => {
+                  <Comment.Action primary active={props.delete || comment.authorId == cookies[config.cookies.userId]} onClick={() => {
+                    if (props.delete || comment.authorId == cookies[config.cookies.userId]) {redirectToComment(comment.id as number);}
+                  }}>Delete</Comment.Action>
+                  <Comment.Action active={props.edit || comment.authorId == cookies[config.cookies.userId]} onClick={() => {
+                    if (props.edit || comment.authorId == cookies[config.cookies.userId]){redirectToCommentEdit(comment as ICommentWithIdAndAuthor);}
+                  }}>Edit</Comment.Action>
+                  <Comment.Action active={true} onClick={() => {
                     window.scrollTo(100000,100000);
-                  }}>Reply</Comment.Action>}
+                    props.cancelComment();
+                  }}>Reply</Comment.Action>
                 </Comment.Actions>
               </Comment.Content>
             </Grid>

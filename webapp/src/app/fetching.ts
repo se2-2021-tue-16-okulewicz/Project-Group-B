@@ -323,6 +323,43 @@ export async function addComment(
   );
 }
 
+export async function editComment(
+  comment: ICommentWithIdAndAuthor,
+  cookies: { [name: string]: any },
+  picture?: IPicture,
+): Promise<RequestResponse<ICommentWithIdAndAuthor, undefined>> {
+  let formData = new FormData();
+
+  formData.append(
+    "comment",
+    new Blob([JSON.stringify(comment)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  if (picture){
+  formData.append(
+    "picture",
+    new Blob([picture.data], { type: picture.fileType }),
+    picture.fileName
+  );
+  }
+
+  return getResponse(
+    axios.put(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${comment.dogId}/comments/${comment.id}`,
+      formData,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
 export async function addShelterDog(
   shelterId: number,
   dog: IShelterDog,

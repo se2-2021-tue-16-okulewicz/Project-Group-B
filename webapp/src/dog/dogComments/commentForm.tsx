@@ -113,7 +113,7 @@ export default function CommentForm(props: any) {
       </Header>
       <Comment class="ui comments" className={classes.mainForm}>
         <Grid container direction="row" spacing={3} alignContent="space-between">
-          <Grid item xs={8} direction="column">
+          <Grid item xs={8}>
             <Form reply>
               <Form.TextArea value={comment.text} name="text" onChange={inputsHandler}/>
               <Comment.Text>{"City:"}</Comment.Text>

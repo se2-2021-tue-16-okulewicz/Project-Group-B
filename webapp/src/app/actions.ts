@@ -206,6 +206,37 @@ export const addCommentThunk = createAsyncThunk<
   }
 );
 
+export const editCommentThunk = createAsyncThunk<
+  RequestResponse<ICommentWithIdAndAuthor, undefined>,
+  { comment: ICommentWithIdAndAuthor;  cookies: { [name: string]: any },picture?: IPicture;},
+  { rejectValue: RequestResponse<ICommentWithIdAndAuthor, undefined> }
+>(
+  "AddComment",
+  async (
+    commentAndPictureAndCookies: {
+      comment: ICommentWithIdAndAuthor;
+      picture?: IPicture;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<ICommentWithIdAndAuthor, undefined> =
+      await Fetching.editComment(
+        commentAndPictureAndCookies.comment,
+        commentAndPictureAndCookies.cookies,
+        commentAndPictureAndCookies.picture,
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<ICommentWithIdAndAuthor, undefined>
+      );
+    }
+
+    return response as RequestResponse<ICommentWithIdAndAuthor, undefined>;
+  }
+);
+
 export const addShelterDogThunk = createAsyncThunk<
     RequestResponse<IShelterDogWithPicture, undefined>,
     {
