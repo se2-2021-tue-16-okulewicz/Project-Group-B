@@ -35,7 +35,6 @@ import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import { ValidateFetchedDog } from "../../utilityComponents/validation";
 import ImageUpload from "../../commonComponents/imageUploadForm";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
@@ -76,7 +75,7 @@ export default function RegisterDogForm(props: any) {
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
+  let isInputNotNull = sessionStorage.getItem("lostDogFields") !==null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
     isInputNotNull
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
@@ -95,8 +94,6 @@ export default function RegisterDogForm(props: any) {
     (state: State) => state.error.erorMessage as string
   );
   const [message, setMessage] = useState("");
-
-  console.log(message);
 
   useEffect(() => {
     if (correct) {
@@ -222,7 +219,7 @@ export default function RegisterDogForm(props: any) {
               value={lostDogFields.name}
               onChange={inputsHandler}
               required
-              error={lostDogFields.name=="" && message != ""}
+              error={lostDogFields.name === "" && message !== ""}
             />
           </FormControl>
           <FormControl className={classes.formControl}>
@@ -261,7 +258,7 @@ export default function RegisterDogForm(props: any) {
                   <InputAdornment position="end">Years</InputAdornment>
                 ),
               }}
-              error={!lostDogFields.age && message != ""}
+              error={!lostDogFields.age && message !==""}
               variant="outlined"
             />
           </FormControl>
@@ -276,7 +273,7 @@ export default function RegisterDogForm(props: any) {
               name="color"
               value={lostDogFields.color}
               onChange={selectsHandler}
-              error={!lostDogFields.color && message != ""}
+              error={!lostDogFields.color && message !==""}
               displayEmpty
             >
               <option key={"color-key"} aria-label="None" value="" />
@@ -299,7 +296,7 @@ export default function RegisterDogForm(props: any) {
               value={lostDogFields.hairLength}
               name="hairLength"
               onChange={selectsHandler}
-              error={!lostDogFields.hairLength && message != ""}
+              error={!lostDogFields.hairLength && message !==""}
               displayEmpty
             >
               <option key={"hair-type"} aria-label="None" value="" />
@@ -322,7 +319,7 @@ export default function RegisterDogForm(props: any) {
               name="size"
               value={lostDogFields.size}
               onChange={selectsHandler}
-              error={!lostDogFields.size && message != ""}
+              error={!lostDogFields.size && message !==""}
               displayEmpty
             >
               <option key={"size-type"} aria-label="None" value="" />
@@ -344,7 +341,7 @@ export default function RegisterDogForm(props: any) {
               label="ears"
               name="earsType"
               value={lostDogFields.earsType}
-              error={!lostDogFields.earsType && message != ""}
+              error={!lostDogFields.earsType && message !==""}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -368,7 +365,7 @@ export default function RegisterDogForm(props: any) {
               name="tailLength"
               value={lostDogFields.tailLength}
               onChange={selectsHandler}
-              error={!lostDogFields.tailLength && message != ""}
+              error={!lostDogFields.tailLength && message !==""}
               displayEmpty
             >
               <option key={"tail-type"} aria-label="None" value="" />
@@ -391,7 +388,7 @@ export default function RegisterDogForm(props: any) {
               name="specialMark"
               value={lostDogFields.specialMark}
               onChange={selectsHandler}
-              error={!lostDogFields.specialMark && message != ""}
+              error={!lostDogFields.specialMark && message !==""}
               displayEmpty
             >
               <option key={"mark-type"} aria-label="None" value="" />
@@ -413,7 +410,7 @@ export default function RegisterDogForm(props: any) {
               label="breed "
               name="breed"
               value={lostDogFields.breed}
-              error={!lostDogFields.breed && message != ""}
+              error={!lostDogFields.breed && message !==""}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -447,7 +444,7 @@ export default function RegisterDogForm(props: any) {
               format="yyyy-MM-dd"
               id="date-picker-inline"
               value={lostDogFields.dateLost}
-              error={!lostDogFields.dateLost && message != ""}
+              error={!lostDogFields.dateLost && message !==""}
               maxDate={new Date()}
               name="dateLost"
               onChange={(date: any) => calendarHandler(date)}
@@ -459,7 +456,7 @@ export default function RegisterDogForm(props: any) {
               name="city"
               value={lostDogFields.location.city}
               onChange={inputArrayHandler}
-              error={!lostDogFields.location.city && message != ""}
+              error={!lostDogFields.location.city && message !==""}
               variant="outlined"
             />
           </FormControl>
@@ -468,7 +465,7 @@ export default function RegisterDogForm(props: any) {
               label="District"
               name="district"
               value={lostDogFields.location.district}
-              error={!lostDogFields.location.district && message != ""}
+              error={!lostDogFields.location.district && message !==""}
               onChange={inputArrayHandler}
               variant="outlined"
             />
@@ -483,7 +480,7 @@ export default function RegisterDogForm(props: any) {
               value={lostDogFields.behaviors}
               onChange={selectsHandler}
               input={<OutlinedInput label="Behavior" />}
-              error={lostDogFields.behaviors.length < 1 && message != ""}
+              error={lostDogFields.behaviors.length < 1 && message !==""}
               displayEmpty
               renderValue={(selected: any) => (
                 <div className={classes.chips}>

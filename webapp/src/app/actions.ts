@@ -26,8 +26,6 @@ import {
   ICommentWithIdAndAuthor,
 } from "../dog/dogComments/commentsInterfaces";
 
-/*TODO: fix any*/
-
 export const markDogAsFoundThunk = createAsyncThunk<
   RequestResponse<null, undefined>,
   { dogId: number; cookies: { [name: string]: any } },
@@ -410,7 +408,6 @@ export const fetchShelterDogsThunk = createAsyncThunk<
         userAndCookies.shelterId,
         userAndCookies.cookies
       );
-    //console.log(response);
     if (response.response.successful !== true) {
       return rejectWithValue(
         response as RequestResponse<IShelterDog[], number>

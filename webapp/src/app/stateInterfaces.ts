@@ -15,8 +15,6 @@ export type Error = {
   erorMessage: string;
 };
 
-/*TODO: change any in the State*/
-
 export type State = {
   dogs: ILostDogWithPicture[] | any; 
   comments: ICommentWithIdAndAuthor[] | any;

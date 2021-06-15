@@ -4,17 +4,11 @@ import {
   CardHeader,
   createStyles,
   FormControl,
-  FormHelperText,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
   Link,
   makeStyles,
   TextField,
   Theme,
 } from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
 import React from "react";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -23,20 +17,17 @@ import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
 import {
-  registerRegularUserThunk,
   registerShelterUserThunk,
 } from "../app/actions";
 import {
   isStringValidUsername,
   isStringValidEmail,
   isStringValidPhoneNumeber,
-  isStringValidPassword,
   isStringValidPostCode,
   isStringValidNumber,
 } from "../utilityComponents/validation";
-import { IRegisterInfo, IShelterInfo } from "../utilityComponents/utilities";
+import { IShelterInfo } from "../utilityComponents/utilities";
 import { initAddress } from "../shelter/shelterTesting";
-import { IAddress } from "../shelter/shelterInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,7 +71,8 @@ export default function RegisterShelterUser() {
     email: "",
     phoneNumber: "",
   });
-
+   
+  // eslint-disable-next-line
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {

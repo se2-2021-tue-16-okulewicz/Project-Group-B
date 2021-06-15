@@ -198,15 +198,9 @@ export const reducer = createReducer(initState, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    console.log(payload.payload.response.data as ICommentWithIdAndAuthor);
-    //const index = state.editedDog.comments.findIndex((emp: ICommentWithIdAndAuthor)=> emp.id === (payload.payload.response.data as ICommentWithIdAndAuthor).id),
-      const index = state.editedDog.comments.findIndex((el:ICommentWithIdAndAuthor) => el.id === (payload.payload.response.data as ICommentWithIdAndAuthor).id)
-    /*newState.editedDog.comments = state.editedDog.comments.array.forEach((emp: ICommentWithIdAndAuthor) => {
-      if(emp.id == (payload.payload.response.data as ICommentWithIdAndAuthor).id){
-        emp = payload.payload.response.data as ICommentWithIdAndAuthor;*/
-        if(index < newState.editedDog.comments.length){
-        newState.editedDog.comments[index] = payload.payload.response.data as ICommentWithIdAndAuthor;
-        console.log("found"+index);}
+    const index = state.editedDog.comments.findIndex((el:ICommentWithIdAndAuthor) => el.id === (payload.payload.response.data as ICommentWithIdAndAuthor).id)
+    if(index < newState.editedDog.comments.length){
+        newState.editedDog.comments[index] = payload.payload.response.data as ICommentWithIdAndAuthor;}
       
     return newState;
   },
@@ -322,7 +316,7 @@ export const reducer = createReducer(initState, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    if (state.dogs != null || pageNumber != 0) {
+    if (state.dogs !== null || pageNumber !== 0) {
       newState.dogs = state.dogs
         .concat(payload.payload.response.data as ILostDogWithPicture[])
         .slice(0, (pageNumber + 1) * pageSize);
@@ -382,7 +376,7 @@ export const reducer = createReducer(initState, {
       config.defaultFilters.size
     );
 
-    if (state.shelterdogs != null || pageNumber != 0) {
+    if (state.shelterdogs !== null || pageNumber !== 0) {
       newState.shelterdogs = state.shelterdogs
         .concat(payload.payload.response.data as IShelterDog[])
         .slice(0, (pageNumber + 1) * pageSize);
@@ -439,7 +433,7 @@ export const reducer = createReducer(initState, {
       ["meta", "arg", "filters", "size"],
       config.defaultFilters.size
     );
-    if (state.shelters != null || pageNumber != 0) {
+    if (state.shelters !== null || pageNumber !== 0) {
       newState.shelters = state.shelters
         .concat(payload.payload.response.data as IShelter[])
         .slice(0, (pageNumber + 1) * pageSize);
@@ -523,11 +517,9 @@ export const reducer = createReducer(initState, {
     state: State,
     payload: PayloadAction<undefined>
   ) => {
-    console.log("bb");
     let newState = _.cloneDeep(state);
     newState.loading = true;
     newState.editedDog = null;
-    //newState.settingsRequireRefresh=true;
     return newState;
   },
 

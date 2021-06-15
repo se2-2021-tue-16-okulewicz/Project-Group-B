@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
-import { ICommentWithIdAndAuthor } from "./commentsInterfaces";
-import { Button, Comment, Divider, Dropdown, Form, Header, } from "semantic-ui-react";
+import { Button, Comment, Divider, Form, Header, } from "semantic-ui-react";
 import config from "../../config/config";
-import { createStyles, Grid, IconButton, Input, InputLabel, Link, makeStyles, Theme, } from "@material-ui/core";
-import { initComment, initCommentandAuthor, initPicture } from "./commentsClasses";
+import { createStyles, Grid, makeStyles, Theme, } from "@material-ui/core";
+import { initComment, initPicture } from "./commentsClasses";
 import { IPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
-import { common } from "@material-ui/core/colors";
-import { ArrowDropDown, ArrowDropUp, ArrowRight, ArrowUpward } from "@material-ui/icons";
 const types = ["image/jpg", "image/jpeg", "image/png"];
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -49,7 +46,7 @@ export default function CommentForm(props: any) {
   const [cookies, setCookie, removeCookie] = useCookies();
   const addComment = () => {
     if (props.dogId){
-      if(picture.fileType != ""){
+      if(picture.fileType !== ""){
     store.dispatch(
       Actions.addCommentThunk({
         comment:{...comment,
@@ -145,7 +142,7 @@ export default function CommentForm(props: any) {
             </Form>
           </Grid>
           <Grid container item xs={4}>
-            {picture && picture.fileName != "" && (
+            {picture && picture.fileName !== "" && (
               <img
                 style={{
                   width: "inherit",

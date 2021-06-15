@@ -16,7 +16,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import { BehaviorsTypes } from "../dogEnums";
 import {
-  ILostDogWithPicture,
   ILostDogWithPictureAndComments,
 } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
@@ -31,7 +30,6 @@ import CommentForm from "../dogComments/commentForm";
 import { ICommentWithIdAndAuthor } from "../dogComments/commentsInterfaces";
 import { initCommentandAuthor } from "../dogComments/commentsClasses";
 import CommentEditForm from "../dogComments/commentEditForm";
-import { update } from "lodash";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -111,7 +109,7 @@ const DogDetails = (props: any) => {
 
   function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {  
     setAdd(false);
-    if(comment != initCommentandAuthor){
+    if(comment !== initCommentandAuthor){
       setOldComment(comments);
       setComment(initCommentandAuthor);
     }
@@ -407,8 +405,8 @@ const DogDetails = (props: any) => {
           xs={12}
         >
           {add && <CommentForm dogId={dogId} add={add}/> }
-          { comment.location.city != ""  && <CommentEditForm dogId={dogId} comment={comment} cancelComment={()=>cancelComment()} update={()=>cancelComment()}/>}
-          { oldcomment.location.city != ""  && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={()=>cancelComment()} update={()=>cancelComment()}/>}
+          { comment.location.city !== ""  && <CommentEditForm dogId={dogId} comment={comment} cancelComment={()=>cancelComment()} update={()=>cancelComment()}/>}
+          { oldcomment.location.city !== ""  && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={()=>cancelComment()} update={()=>cancelComment()}/>}
          <CommentsList comments={dog.comments} cancelComment={()=>{cancelComment();}}  redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToCommentEdit(comment);}}  redirectToComment={(id: number) => { redirectToComment(id); }}/>
 </Grid>)}
     </Grid>

@@ -9,7 +9,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import { clearRedirect, logoutThunk, clearError, startRefreshing } from "./app/actions";
+import { clearRedirect, logoutThunk, clearError } from "./app/actions";
 import { State } from "./app/stateInterfaces";
 import { store } from "./app/store";
 import config from "./config/config";
@@ -55,7 +55,7 @@ function App() {
 function Layout() {
   const error = useSelector((state: State) => state.error);
   const loading = useSelector((state: State) => state.loading);
-  const redirect = useSelector((state: State) => state.redirect);
+  const redirect = useSelector((state: State) => state.redirect);// eslint-disable-next-line
   const [dogId, setDogId] = useState(0);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line

@@ -31,8 +31,8 @@ export default function SheltersInfoGrid(props: any) {
               <Grid direction="row" style={{ height: "300px", display: "stretch",  borderLeft:"solid",
                   borderRight:"solid",
                   borderTop:"solid",
-                  borderColor:"slategray", }} container>{props.path != "" ?<Grid item xs={4} style={{  marginTop:"6%",marginBottom:"6%",}}>
-                  <img src={`https://upload.wikimedia.org/wikipedia/commons/a/ae/The_Doghouse.png`} style={{width:"100%", height:"auto", marginTop:"20%", marginBottom:"20%", marginLeft:"3%"}}/></Grid>:""}
+                  borderColor:"slategray", }} container>{props.path  !== "" ?<Grid item xs={4} style={{  marginTop:"6%",marginBottom:"6%",}}>
+                  <img src={`https://upload.wikimedia.org/wikipedia/commons/a/ae/The_Doghouse.png`} alt="" style={{width:"100%", height:"auto", marginTop:"20%", marginBottom:"20%", marginLeft:"3%"}}/></Grid>:""}
              <Grid item xs={8} style={{ marginTop:"6%",marginBottom:"6%",}}>
               <Box
                 className={shelter.name}
@@ -59,7 +59,7 @@ export default function SheltersInfoGrid(props: any) {
                 <Divider
                 style={{ display:"none", marginBottom:"2%", marginTop:"2%"}}
               />
-                    {shelters != null && shelter.address != null ? (
+                    {shelters  !== null && shelter.address  !== null ? (
                       
               <span>
                 
@@ -77,11 +77,11 @@ export default function SheltersInfoGrid(props: any) {
           <Divider
                 style={{ display:"none", marginBottom:"2%", marginTop:"2%"}}
               />
-            {shelters != null ? <span>{shelter.email}</span> : ""}
+            {shelters  !== null ? <span>{shelter.email}</span> : ""}
             <Divider
                 style={{ display:"none", marginBottom:"2%", marginTop:"2%"}}
               />
-            {shelters != null ? (
+            {shelters  !== null ? (
               <span>
                 {shelter.phoneNumber.substr(0, 3) +
                   " " +
@@ -123,7 +123,7 @@ export default function SheltersInfoGrid(props: any) {
           <CardContent style={{ width: "400px" }} />
         </GridListTile>
       )}
-      {shelters.length == 1 && (
+      {shelters.length === 1 && (
         <GridListTile
           key={"shelter.id2"}
           style={{ height: "300px" }}

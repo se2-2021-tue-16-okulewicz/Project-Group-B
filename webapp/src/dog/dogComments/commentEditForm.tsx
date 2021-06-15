@@ -6,21 +6,16 @@ import config from "../../config/config";
 import {
   createStyles,
   Grid,
-  IconButton,
-  Input,
-  InputLabel,
   makeStyles,
   Theme,
 } from "@material-ui/core";
 import {
-  initComment,
   initCommentandAuthor,
   initPicture,
 } from "./commentsClasses";
 import { IPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
-import { common } from "@material-ui/core/colors";
 const types = ["image/jpg", "image/jpeg", "image/png"];
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,7 +55,7 @@ export default function CommentEditForm(props: any) {
   const [cookies, setCookie, removeCookie] = useCookies();
   const editComment = () => {
     if (props.dogId){
-      if(picture.fileType != ""){
+      if(picture.fileType  !== ""){
       store.dispatch(
       Actions.editCommentThunk({
         comment:{...comment,

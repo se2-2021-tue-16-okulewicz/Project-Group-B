@@ -19,7 +19,6 @@ import Layout, {
   getDrawerSidebar,
   getHeader,
   Root,
-  getSidebarTrigger,
   getSidebarContent,
   getCollapseBtn,
 } from "@mui-treasury/layout";
@@ -40,7 +39,6 @@ import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import { State } from "../../app/stateInterfaces";
 import LostDogsGrid from "../../commonComponents/grids/lostDogsGrid";
 
-const SidebarTrigger = getSidebarTrigger(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
@@ -159,8 +157,7 @@ scheme.configureEdgeSidebar((builder) => {
 
 export default function Settings(props: any) {
   const [displayLoader, setDisplayLoader] = useState(true);
-  const loading = useSelector((state: State) => state.loading as boolean);
-  //const [listFetched, setListFetched] = useState(false); // eslint-disable-next-line
+  const loading = useSelector((state: State) => state.loading as boolean);// eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const dogs = useSelector(
@@ -173,7 +170,6 @@ export default function Settings(props: any) {
     (state: State) => state.dogsRequireRefresh as boolean
   );
   const [pageRefresh, setPageRefresh] = useState(true);
-  const pages = useSelector((state: State) => state.pages as number);
   const classes = useStyles();
   const history = useHistory();
   const { path } = useRouteMatch();
@@ -203,7 +199,7 @@ export default function Settings(props: any) {
   };
   const onInfoClicked = () => {
     sessionStorage.setItem("listVisible", JSON.stringify(false));
-    setListVisible(false); /*getContactInfo();*/
+    setListVisible(false);
   };
   const onShelterClicked = () => {
     store.dispatch(clearDogList());
@@ -239,12 +235,6 @@ export default function Settings(props: any) {
             cookies: cookies,
           }) //filters
         );
-        /*store.dispatch(
-          Actions.fetchContactInfoThunk({
-            userId: cookies[config.cookies.userId],
-            cookies: cookies,
-          })
-        );*/
       } catch (err) {
         console.error("Failed to fetch the dogs: ", err);
       } finally {

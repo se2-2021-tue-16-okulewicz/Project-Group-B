@@ -344,7 +344,7 @@ export async function editComment(
     }),
     ""
   );
-  if (comment.picture && comment.picture.id == 0){
+  if (comment.picture && comment.picture.id === 0){
   formData.append(
     "picture",
     new Blob([comment.picture.data], { type: comment.picture.fileType }),
@@ -407,7 +407,6 @@ export async function addShelterDog(
   );
 }
 
-/*TODO: dog update does not need a picture anymore*/
 export async function updateDog(
   dog: ILostDog,
   cookies: { [name: string]: any },

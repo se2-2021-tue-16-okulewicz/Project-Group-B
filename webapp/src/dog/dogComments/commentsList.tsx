@@ -6,11 +6,9 @@ import config from "../../config/config";
 import {
   createStyles,
   Grid,
-  IconButton,
   makeStyles,
   Theme,
 } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
 import { ILostDogWithPictureAndComments } from "../dogInterfaces";
@@ -37,10 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function CommentsList(props: any) {
-  //const comments = props.comments as ICommentWithIdAndAuthor[]; // eslint-disable-next-line
   const dog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPictureAndComments
-  );
+  );// eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const redirectToCommentEdit = (comment: ICommentWithIdAndAuthor)=>{
       props.redirectToCommentEdit(comment);
@@ -67,7 +64,7 @@ export default function CommentsList(props: any) {
               <Comment.Avatar style={{ height: "inherit", width: "inherit" }} src={`https://semantic-ui.com/images/avatar2/small/${comment.id % 2 ? "elyse" : "kristy"}.png`} /></Grid>
             <Grid item xs={7}>
               <Comment.Content>
-                <Comment.Author as="a" style={{color:comment.authorId == cookies[config.cookies.userId]?"black":"darkgray", fontWeight:comment.authorId == cookies[config.cookies.userId]?"bolder":"bold" }}>{comment.author.name}</Comment.Author>
+                <Comment.Author as="a" style={{color:comment.authorId ===   cookies[config.cookies.userId]?"black":"darkgray", fontWeight:comment.authorId ===   cookies[config.cookies.userId]?"bolder":"bold" }}>{comment.author.name}</Comment.Author>
                 <Comment.Metadata>
                   <div>{"from " + comment.location.city}</div>
                 </Comment.Metadata>
@@ -80,11 +77,11 @@ export default function CommentsList(props: any) {
                     "."}
                 </Comment.Text>
                 <Comment.Actions>
-                  <Comment.Action active={comment.authorId == cookies[config.cookies.userId]} onClick={() => {
-                    if (comment.authorId == cookies[config.cookies.userId]) {redirectToComment(comment.id as number);}
+                  <Comment.Action active={comment.authorId ===   cookies[config.cookies.userId]} onClick={() => {
+                    if (comment.authorId ===   cookies[config.cookies.userId]) {redirectToComment(comment.id as number);}
                   }}>Delete</Comment.Action>
-                  <Comment.Action active={comment.authorId == cookies[config.cookies.userId]} onClick={() => {
-                    if (comment.authorId == cookies[config.cookies.userId]){redirectToCommentEdit(comment as ICommentWithIdAndAuthor);}
+                  <Comment.Action active={comment.authorId ===   cookies[config.cookies.userId]} onClick={() => {
+                    if (comment.authorId ===   cookies[config.cookies.userId]){redirectToCommentEdit(comment as ICommentWithIdAndAuthor);}
                   }}>Edit</Comment.Action>
                   <Comment.Action active={true} onClick={() => {
                     window.scrollTo(window.innerWidth,window.innerHeight + 5);

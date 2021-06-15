@@ -120,10 +120,8 @@ scheme.configureHeader((builder) => {
     });
 });
 
-/*TODO: remove filtering in frontend (folder dontdelete)*/
-
 export default function ListWithShelters(props: any) {
-  const lastPage = useSelector((state: State) => state.dogsLastPage);
+  const lastPage = useSelector((state: State) => state.dogsLastPage); // eslint-disable-next-line
   const [displayLoader, setDisplayLoader] = useState(false);
   const [fetching, setFetching] = useState(false);
 
@@ -155,13 +153,6 @@ export default function ListWithShelters(props: any) {
     store.dispatch(logoutThunk(cookies));
     history.push("/");
   };
-
-  //refetches page every [10] minutes, only if there were changes in the list
-  /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
-        setTimeout(() => {
-          setPageRefresh(true);
-        },600000)
-  }*/
   //clears dog list, when page is refreshed or changed
 
   useEffect(() => {
