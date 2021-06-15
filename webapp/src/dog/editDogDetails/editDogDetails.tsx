@@ -97,7 +97,9 @@ const EditDogDetails = (props: any) => {
     (state: State) => state.editedDog as ILostDogWithPictureAndComments
   );
   const location = useLocation();
-  const dogId = props.dogId ? props.dogId : Number(location.pathname.split("/edit/")[1]);
+  const dogId = props.dogId
+    ? props.dogId
+    : Number(location.pathname.split("/edit/")[1]);
   const [comment, setComment] = useState(initCommentandAuthor);
   const [oldcomment, setOldComment] = useState(initCommentandAuthor);
   const history = useHistory();
@@ -109,7 +111,7 @@ const EditDogDetails = (props: any) => {
   const [temp, setTemp] = useState<ILostDogWithPicture>(
     JSON.parse(sessionStorage.getItem("editDogFields") as string)
   );
-  const[ add, setAdd] = useState(true);
+  const [add, setAdd] = useState(true);
   var isInputNotNull = temp !== null;
   const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(
     initLostDogWithPictureProps
@@ -117,38 +119,42 @@ const EditDogDetails = (props: any) => {
   const [picture, setPicture] = useState<IPicture>();
 
   function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {
-    if (comment !==initCommentandAuthor) {
+    if (comment !== initCommentandAuthor) {
       setOldComment(comments);
       setComment(initCommentandAuthor);
-    }
-    else {
+    } else {
       setComment(comments);
       setOldComment(initCommentandAuthor);
     }
     setAdd(false);
-  };
+  }
 
   function redirectToComment(id: number) {
     try {
-      store.dispatch(Actions.deleteOneCommentThunk({commentId:id, dogId:dogId, cookies:cookies}));
+      store.dispatch(
+        Actions.deleteOneCommentThunk({
+          commentId: id,
+          dogId: dogId,
+          cookies: cookies,
+        })
+      );
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     } finally {
-
     }
-  };
+  }
 
   function cancelComment() {
     setComment(initCommentandAuthor);
     setOldComment(initCommentandAuthor);
     setAdd(true);
-  };
+  }
 
   useEffect(() => {
     if (pageRefresh) {
-      if (temp && temp.id !==dogId) {
+      if (temp && temp.id !== dogId) {
         sessionStorage.removeItem("editDogFields");
-        setTemp(initLostDogWithPictureProps);// eslint-disable-next-line
+        setTemp(initLostDogWithPictureProps); // eslint-disable-next-line
         isInputNotNull = false;
       }
       if (isInputNotNull) {
@@ -212,7 +218,7 @@ const EditDogDetails = (props: any) => {
         } as IPicture);
       });
     }
-    if(!pageRefresh && !editedDog){
+    if (!pageRefresh && !editedDog) {
       store.dispatch(
         Actions.fetchOneDogThunk({
           id: dogId as number,
@@ -220,7 +226,7 @@ const EditDogDetails = (props: any) => {
         })
       );
       setPageRefresh(true);
-    }// eslint-disable-next-line
+    } // eslint-disable-next-line
   }, [editedDog]);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
@@ -375,8 +381,9 @@ const EditDogDetails = (props: any) => {
                   {editedDog && !isNewPicture && (
                     <img
                       className={classes.imgFit}
-                      src={`data:${editedDog.picture.fileType};base64,${editedDog.picture.data as ArrayBuffer
-                        }`}
+                      src={`data:${editedDog.picture.fileType};base64,${
+                        editedDog.picture.data as ArrayBuffer
+                      }`}
                       alt={editedDog.picture.fileName}
                     />
                   )}
@@ -691,15 +698,38 @@ const EditDogDetails = (props: any) => {
             </FormControl>
           </Grid>
           {editedDog && editedDog.comments && (
-            <Grid
-              item
-              xs={12}
-              alignContent="stretch"
-            >
-              {add && <CommentForm dogId={dogId} add={add}/> }
-              {comment.location.city !=="" && <CommentEditForm dogId={dogId} comment={comment} cancelComment={() => { cancelComment(); }} />}
-              {oldcomment.location.city !=="" && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={() => { cancelComment(); }} />}
-              <CommentsList comments={editedDog.comments} cancelComment={() => { cancelComment(); }} redirectToCommentEdit={(comment: ICommentWithIdAndAuthor) => { redirectToCommentEdit(comment); }} redirectToComment={(id: number) => { redirectToComment(id); }}/>
+            <Grid item xs={12} alignContent="stretch">
+              {add && <CommentForm dogId={dogId} add={add} />}
+              {comment.location.city !== "" && (
+                <CommentEditForm
+                  dogId={dogId}
+                  comment={comment}
+                  cancelComment={() => {
+                    cancelComment();
+                  }}
+                />
+              )}
+              {oldcomment.location.city !== "" && (
+                <CommentEditForm
+                  dogId={dogId}
+                  comment={oldcomment}
+                  cancelComment={() => {
+                    cancelComment();
+                  }}
+                />
+              )}
+              <CommentsList
+                comments={editedDog.comments}
+                cancelComment={() => {
+                  cancelComment();
+                }}
+                redirectToCommentEdit={(comment: ICommentWithIdAndAuthor) => {
+                  redirectToCommentEdit(comment);
+                }}
+                redirectToComment={(id: number) => {
+                  redirectToComment(id);
+                }}
+              />
             </Grid>
           )}
         </Grid>

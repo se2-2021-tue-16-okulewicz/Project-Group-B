@@ -3,16 +3,8 @@ import { useCookies } from "react-cookie";
 import { ICommentWithIdAndAuthor } from "./commentsInterfaces";
 import { Button, Comment, Divider, Form, Header } from "semantic-ui-react";
 import config from "../../config/config";
-import {
-  createStyles,
-  Grid,
-  makeStyles,
-  Theme,
-} from "@material-ui/core";
-import {
-  initCommentandAuthor,
-  initPicture,
-} from "./commentsClasses";
+import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
+import { initCommentandAuthor, initPicture } from "./commentsClasses";
 import { IPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
@@ -48,33 +40,44 @@ const useStyles = makeStyles((theme: Theme) =>
           }) */
 
 export default function CommentEditForm(props: any) {
-  const [comment, setComment] = useState(props.comment?props.comment as ICommentWithIdAndAuthor:initCommentandAuthor);
-  const [picture, setPicture] = useState(props.picture?props.picture:initPicture);
+  const [comment, setComment] = useState(
+    props.comment
+      ? (props.comment as ICommentWithIdAndAuthor)
+      : initCommentandAuthor
+  );
+  const [picture, setPicture] = useState(
+    props.picture ? props.picture : initPicture
+  );
   const [file, setFile] = useState(null);
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const editComment = () => {
-    if (props.dogId){
-      if(picture.fileType  !== ""){
-      store.dispatch(
-      Actions.editCommentThunk({
-        comment:{...comment,
-        authorId:cookies[config.cookies.userId],
-        dogId:props.dogId, picture:picture,},
-        cookies: cookies,
-      })
-    );}
-    else{
-      store.dispatch(
-        Actions.editCommentThunk({
-          comment:{...comment,
-          authorId:cookies[config.cookies.userId],
-          dogId:props.dogId},
-          cookies: cookies,
-        })
-      );
-    }
-    props.cancelComment();
+    if (props.dogId) {
+      if (picture.fileType !== "") {
+        store.dispatch(
+          Actions.editCommentThunk({
+            comment: {
+              ...comment,
+              authorId: cookies[config.cookies.userId],
+              dogId: props.dogId,
+              picture: picture,
+            },
+            cookies: cookies,
+          })
+        );
+      } else {
+        store.dispatch(
+          Actions.editCommentThunk({
+            comment: {
+              ...comment,
+              authorId: cookies[config.cookies.userId],
+              dogId: props.dogId,
+            },
+            cookies: cookies,
+          })
+        );
+      }
+      props.cancelComment();
     }
   };
 
@@ -123,7 +126,12 @@ export default function CommentEditForm(props: any) {
         Edit Comment
       </Header>
       <Comment class="ui comments" className={classes.mainForm}>
-        <Grid container direction="row" spacing={3} alignContent="space-between">
+        <Grid
+          container
+          direction="row"
+          spacing={3}
+          alignContent="space-between"
+        >
           <Grid item xs={8}>
             <Form reply>
               <Form.TextArea
@@ -163,19 +171,24 @@ export default function CommentEditForm(props: any) {
                 }
               />
               <Button
-                content='Edit Comment'
-                labelPosition='left'
-                icon='edit'
+                content="Edit Comment"
+                labelPosition="left"
+                icon="edit"
                 primary
-                onClick={() => { editComment() }}
+                onClick={() => {
+                  editComment();
+                }}
                 size="medium"
-                style={{width:"170px"}}/>
-                 <Button
-                content='Cancel'
-                labelPosition='left'
-                icon='cancel'
+                style={{ width: "170px" }}
+              />
+              <Button
+                content="Cancel"
+                labelPosition="left"
+                icon="cancel"
                 primary
-                onClick={() => { cancelComment() }}
+                onClick={() => {
+                  cancelComment();
+                }}
                 size="medium"
                 style={{ width: "170px" }}
               />

@@ -59,7 +59,8 @@ export default function ShelterDogsGrid(props: any) {
           style={{ height: "300px" }}
           className="tile"
         >
-          <img alt=""
+          <img
+            alt=""
             style={{ visibility: "hidden", height: "300px" }}
             src={`data:${dogs[0].picture.fileType};base64,${
               dogs[0].picture.data as ArrayBuffer
@@ -73,7 +74,8 @@ export default function ShelterDogsGrid(props: any) {
           style={{ height: "300px" }}
           className="tile"
         >
-          <img alt=""
+          <img
+            alt=""
             style={{ visibility: "hidden", height: "300px" }}
             src={`data:${dogs[0].picture.fileType};base64,${
               dogs[0].picture.data as ArrayBuffer

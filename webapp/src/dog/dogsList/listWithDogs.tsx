@@ -13,11 +13,7 @@ import { store } from "../../app/store";
 import { ILostDogWithPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
-import Layout, {
-  getContent,
-  getHeader,
-  Root,
-} from "@mui-treasury/layout";
+import Layout, { getContent, getHeader, Root } from "@mui-treasury/layout";
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
@@ -137,7 +133,7 @@ scheme.configureHeader((builder) => {
 
 export default function ListWithDogs(props: any) {
   const lastPage = useSelector((state: State) => state.dogsLastPage); // eslint-disable-next-line
-  const [displayLoader, setDisplayLoader] = useState(false);// eslint-disable-next-line
+  const [displayLoader, setDisplayLoader] = useState(false); // eslint-disable-next-line
   const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(true);
@@ -323,7 +319,8 @@ export default function ListWithDogs(props: any) {
       {!isMenuCollapsed && (
         <Drawer
           variant="persistent"
-          BackdropProps={{ invisible: true }} open={!isMenuCollapsed}
+          BackdropProps={{ invisible: true }}
+          open={!isMenuCollapsed}
           className={classes.drawer}
         >
           <Toolbar />

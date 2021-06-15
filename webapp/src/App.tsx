@@ -55,7 +55,7 @@ function App() {
 function Layout() {
   const error = useSelector((state: State) => state.error);
   const loading = useSelector((state: State) => state.loading);
-  const redirect = useSelector((state: State) => state.redirect);// eslint-disable-next-line
+  const redirect = useSelector((state: State) => state.redirect); // eslint-disable-next-line
   const [dogId, setDogId] = useState(0);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line

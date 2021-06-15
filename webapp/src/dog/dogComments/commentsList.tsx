@@ -3,12 +3,7 @@ import { useCookies } from "react-cookie";
 import { ICommentWithIdAndAuthor } from "./commentsInterfaces";
 import { Comment, Divider, Header } from "semantic-ui-react";
 import config from "../../config/config";
-import {
-  createStyles,
-  Grid,
-  makeStyles,
-  Theme,
-} from "@material-ui/core";
+import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
 import { ILostDogWithPictureAndComments } from "../dogInterfaces";
@@ -37,12 +32,12 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function CommentsList(props: any) {
   const dog = useSelector(
     (state: State) => state.editedDog as ILostDogWithPictureAndComments
-  );// eslint-disable-next-line
+  ); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  const redirectToCommentEdit = (comment: ICommentWithIdAndAuthor)=>{
-      props.redirectToCommentEdit(comment);
-      window.scrollTo(window.innerWidth,window.innerHeight + 5);
-  }
+  const redirectToCommentEdit = (comment: ICommentWithIdAndAuthor) => {
+    props.redirectToCommentEdit(comment);
+    window.scrollTo(window.innerWidth, window.innerHeight + 5);
+  };
   const redirectToComment = (id: number) => {
     props.redirectToComment(id);
   };
@@ -57,14 +52,40 @@ export default function CommentsList(props: any) {
       <Header as="h3" dividing className={classes.headerForm}>
         Comments
       </Header>
-      {dog.comments.map((comment: ICommentWithIdAndAuthor) =>
+      {dog.comments.map((comment: ICommentWithIdAndAuthor) => (
         <Comment key={comment.id} className={classes.mainForm}>
-          <Grid container direction="row" spacing={3} alignContent="space-between" style={{ marginBottom: "1%" }}>
+          <Grid
+            container
+            direction="row"
+            spacing={3}
+            alignContent="space-between"
+            style={{ marginBottom: "1%" }}
+          >
             <Grid item xs={1}>
-              <Comment.Avatar style={{ height: "inherit", width: "inherit" }} src={`https://semantic-ui.com/images/avatar2/small/${comment.id % 2 ? "elyse" : "kristy"}.png`} /></Grid>
+              <Comment.Avatar
+                style={{ height: "inherit", width: "inherit" }}
+                src={`https://semantic-ui.com/images/avatar2/small/${
+                  comment.id % 2 ? "elyse" : "kristy"
+                }.png`}
+              />
+            </Grid>
             <Grid item xs={7}>
               <Comment.Content>
-                <Comment.Author as="a" style={{color:comment.authorId ===   cookies[config.cookies.userId]?"black":"darkgray", fontWeight:comment.authorId ===   cookies[config.cookies.userId]?"bolder":"bold" }}>{comment.author.name}</Comment.Author>
+                <Comment.Author
+                  as="a"
+                  style={{
+                    color:
+                      comment.authorId === cookies[config.cookies.userId]
+                        ? "black"
+                        : "darkgray",
+                    fontWeight:
+                      comment.authorId === cookies[config.cookies.userId]
+                        ? "bolder"
+                        : "bold",
+                  }}
+                >
+                  {comment.author.name}
+                </Comment.Author>
                 <Comment.Metadata>
                   <div>{"from " + comment.location.city}</div>
                 </Comment.Metadata>
@@ -108,7 +129,7 @@ export default function CommentsList(props: any) {
           </Grid>
           <Divider className={classes.mainForm} />
         </Comment>
-      )}
+      ))}
     </Comment.Group>
   );
 }

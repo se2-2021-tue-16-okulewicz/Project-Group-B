@@ -6,7 +6,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
 import { IShelterDog } from "../../dog/dogInterfaces";
