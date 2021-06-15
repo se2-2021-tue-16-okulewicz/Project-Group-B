@@ -49,6 +49,7 @@ export default function DogsList({ navigation }: any) {
     (state: State) => state.dogs as ILostDogWithPicture[]
   );
   const isLoading = useSelector((state: State) => state.loadingDogs);
+  const status = useSelector((state: State) => state.status);
   const Authorization = useSelector(
     (state: State) => state.loginInformation?.token
   );
@@ -116,6 +117,7 @@ export default function DogsList({ navigation }: any) {
 
   function resetFilters() {
     store.dispatch(Actions.setFilters(initFilterProps));
+    console.log("reset");
   }
 
   function handleApply() {
