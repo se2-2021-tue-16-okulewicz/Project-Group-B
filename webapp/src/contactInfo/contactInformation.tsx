@@ -49,8 +49,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-/*TODO: create form control component*/
-
 export default function ContactInfo(props: any) {
   const classes = useStyles();
   const history = useHistory(); // eslint-disable-next-line

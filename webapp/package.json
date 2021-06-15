@@ -72,14 +72,17 @@
     "@types/styled-components": "^5.1.9",
     "blob-util": "^2.0.2",
     "identity-obj-proxy": "^3.0.0",
-    "react-infinite-scroll-component": "^6.0.0"
+    "jest-transform-stub": "^2.0.0",
+    "react-infinite-scroll-component": "^6.0.0",
+    "semantic-ui-icon": "^2.3.3"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
     "transform": {
       "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest",
-      "\\./.+\\.(j|t)sx?$": "ts-jest"
+      "\\./.+\\.(j|t)sx?$": "ts-jest",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/fileTransformer.js"
     },
     "transformIgnorePatterns": [
       "node_modules/(?!variables/.*)"

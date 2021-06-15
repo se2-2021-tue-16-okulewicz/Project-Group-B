@@ -6,22 +6,14 @@ import {
   Drawer,
   Grid,
 } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
 import { ILostDogWithPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import { useCookies } from "react-cookie";
-import Layout, {
-  getContent,
-  getDrawerSidebar,
-  getHeader,
-  Root,
-  getSidebarTrigger,
-  getSidebarContent,
-  getCollapseBtn,
-} from "@mui-treasury/layout";
+import Layout, { getContent, getHeader, Root } from "@mui-treasury/layout";
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useSelector } from "react-redux";
@@ -139,11 +131,9 @@ scheme.configureHeader((builder) => {
     });
 });
 
-/*TODO: remove filtering in frontend (folder dontdelete)*/
-
 export default function ListWithDogs(props: any) {
-  const lastPage = useSelector((state: State) => state.dogsLastPage);
-  const [displayLoader, setDisplayLoader] = useState(false);
+  const lastPage = useSelector((state: State) => state.dogsLastPage); // eslint-disable-next-line
+  const [displayLoader, setDisplayLoader] = useState(false); // eslint-disable-next-line
   const [dogId, setDogId] = useState(0);
   const [fetching, setFetching] = useState(false);
   const [isMenuCollapsed, setMenuCollapsed] = useState(true);
@@ -187,28 +177,18 @@ export default function ListWithDogs(props: any) {
     history.push("/");
   };
 
-  //refetches page every [10] minutes, only if there were changes in the list
-  /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
-        setTimeout(() => {
-          setPageRefresh(true);
-
-        },600000)
-  }*/
   //clears dog list, when page is refreshed or changed
   const updateFilters = (event: any) => {
     if (event) {
       setFilters(event);
       store.dispatch(clearDogList());
       setIsUpdateFilters(true);
-      //setMenuCollapsed(true);
     }
   };
 
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
     props.redirectToDogDetailsOrEdit(id);
-    //history.push(`${path}/${id}`);
   }
 
   useEffect(() => {
@@ -340,8 +320,7 @@ export default function ListWithDogs(props: any) {
         <Drawer
           variant="persistent"
           BackdropProps={{ invisible: true }}
-          /*onEscapeKeyDown={()=>{setMenuCollapsed(true)}} 
-        onBackdropClick={()=>{setMenuCollapsed(true)}}*/ open={!isMenuCollapsed}
+          open={!isMenuCollapsed}
           className={classes.drawer}
         >
           <Toolbar />
@@ -364,7 +343,7 @@ export default function ListWithDogs(props: any) {
             (displayLoader && <LoadingPopup />) || (!displayLoader && <></>)
           }
         >
-          <Toolbar />
+          <BottomNavigation />
           <LostDogsGrid
             dogs={dogs}
             path={path}

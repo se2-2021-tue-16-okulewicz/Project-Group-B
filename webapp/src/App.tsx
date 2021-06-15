@@ -55,7 +55,7 @@ function App() {
 function Layout() {
   const error = useSelector((state: State) => state.error);
   const loading = useSelector((state: State) => state.loading);
-  const redirect = useSelector((state: State) => state.redirect);
+  const redirect = useSelector((state: State) => state.redirect); // eslint-disable-next-line
   const [dogId, setDogId] = useState(0);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
@@ -69,14 +69,10 @@ function Layout() {
   }, [redirect]);
 
   function redirectToDogDetailsOrEdit(id: number) {
-    setDogId(id);
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
     history.push(`/edit/${id}`);
   }
 
   function redirectToDogDetails(id: number) {
-    setDogId(id);
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
     history.push(`/dog/${id}`);
   }
 

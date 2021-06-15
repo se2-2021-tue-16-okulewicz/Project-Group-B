@@ -2,6 +2,7 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   ILostDog,
   ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
   IPicture,
   IShelterDog,
   IShelterDogWithPicture,
@@ -20,8 +21,10 @@ import {
   IRegisterRegularUserInformation,
 } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
-
-/*TODO: fix any*/
+import {
+  IComment,
+  ICommentWithIdAndAuthor,
+} from "../dog/dogComments/commentsInterfaces";
 
 export const markDogAsFoundThunk = createAsyncThunk<
   RequestResponse<null, undefined>,
@@ -67,6 +70,35 @@ export const deleteOneShelterDogThunk = createAsyncThunk<
     const response: RequestResponse<undefined, undefined> =
       await Fetching.deleteOneShelterDog(
         userAndCookies.shelterId,
+        userAndCookies.dogId,
+        userAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<undefined, undefined>);
+    }
+
+    return response as RequestResponse<undefined, undefined>;
+  }
+);
+
+export const deleteOneCommentThunk = createAsyncThunk<
+  RequestResponse<undefined, undefined>,
+  { commentId: number; dogId: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<undefined, undefined> }
+>(
+  "deleteComment",
+  async (
+    userAndCookies: {
+      commentId: number;
+      dogId: number;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<undefined, undefined> =
+      await Fetching.deleteOneComment(
+        userAndCookies.commentId,
         userAndCookies.dogId,
         userAndCookies.cookies
       );
@@ -173,6 +205,67 @@ export const addDogThunk = createAsyncThunk<
   }
 );
 
+export const addCommentThunk = createAsyncThunk<
+  RequestResponse<ICommentWithIdAndAuthor, undefined>,
+  { comment: IComment; cookies: { [name: string]: any }; picture?: IPicture },
+  { rejectValue: RequestResponse<ICommentWithIdAndAuthor, undefined> }
+>(
+  "AddComment",
+  async (
+    commentAndPictureAndCookies: {
+      comment: IComment;
+      picture?: IPicture;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<ICommentWithIdAndAuthor, undefined> =
+      await Fetching.addComment(
+        commentAndPictureAndCookies.comment,
+        commentAndPictureAndCookies.cookies,
+        commentAndPictureAndCookies.picture
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<ICommentWithIdAndAuthor, undefined>
+      );
+    }
+
+    return response as RequestResponse<ICommentWithIdAndAuthor, undefined>;
+  }
+);
+
+export const editCommentThunk = createAsyncThunk<
+  RequestResponse<ICommentWithIdAndAuthor, undefined>,
+  { comment: ICommentWithIdAndAuthor; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<ICommentWithIdAndAuthor, undefined> }
+>(
+  "EditComment",
+  async (
+    commentAndPictureAndCookies: {
+      comment: ICommentWithIdAndAuthor;
+      picture?: IPicture;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<ICommentWithIdAndAuthor, undefined> =
+      await Fetching.editComment(
+        commentAndPictureAndCookies.comment,
+        commentAndPictureAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<ICommentWithIdAndAuthor, undefined>
+      );
+    }
+
+    return response as RequestResponse<ICommentWithIdAndAuthor, undefined>;
+  }
+);
+
 export const addShelterDogThunk = createAsyncThunk<
   RequestResponse<IShelterDogWithPicture, undefined>,
   {
@@ -212,21 +305,20 @@ export const addShelterDogThunk = createAsyncThunk<
 );
 
 export const updateDogThunk = createAsyncThunk<
-  RequestResponse<ILostDogWithPicture, undefined>,
+  RequestResponse<ILostDogWithPictureAndComments, undefined>,
   { dog: ILostDog; cookies: { [name: string]: any }; picture?: IPicture },
-  { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
+  { rejectValue: RequestResponse<ILostDogWithPictureAndComments, undefined> }
 >(
   "UpdateDog",
   async (
     dogAndPictureAndCookies: {
       dog: ILostDog;
       cookies: { [name: string]: any };
-
       picture?: IPicture;
     },
     { rejectWithValue }
   ) => {
-    const response: RequestResponse<ILostDogWithPicture, undefined> =
+    const response: RequestResponse<ILostDogWithPictureAndComments, undefined> =
       await Fetching.updateDog(
         dogAndPictureAndCookies.dog,
         dogAndPictureAndCookies.cookies,
@@ -235,11 +327,14 @@ export const updateDogThunk = createAsyncThunk<
 
     if (response.response.successful !== true) {
       return rejectWithValue(
-        response as RequestResponse<ILostDogWithPicture, undefined>
+        response as RequestResponse<ILostDogWithPictureAndComments, undefined>
       );
     }
 
-    return response as RequestResponse<ILostDogWithPicture, undefined>;
+    return response as RequestResponse<
+      ILostDogWithPictureAndComments,
+      undefined
+    >;
   }
 );
 
@@ -313,7 +408,6 @@ export const fetchShelterDogsThunk = createAsyncThunk<
         userAndCookies.shelterId,
         userAndCookies.cookies
       );
-    //console.log(response);
     if (response.response.successful !== true) {
       return rejectWithValue(
         response as RequestResponse<IShelterDog[], number>
@@ -352,19 +446,19 @@ export const fetchSheltersThunk = createAsyncThunk<
 );
 
 export const fetchOneDogThunk = createAsyncThunk<
-  RequestResponse<ILostDogWithPicture, undefined>,
+  RequestResponse<ILostDogWithPictureAndComments, undefined>,
   { id: number; cookies: { [name: string]: any } },
-  { rejectValue: RequestResponse<ILostDogWithPicture, undefined> }
+  { rejectValue: RequestResponse<ILostDogWithPictureAndComments, undefined> }
 >("fetchOneDog", async (item: IFilters, { rejectWithValue }) => {
-  const response: RequestResponse<ILostDogWithPicture, undefined> =
+  const response: RequestResponse<ILostDogWithPictureAndComments, undefined> =
     await Fetching.fetchOneDog(item.id, item.cookies);
 
   if (response.response.successful !== true) {
     return rejectWithValue(
-      response as RequestResponse<ILostDogWithPicture, undefined>
+      response as RequestResponse<ILostDogWithPictureAndComments, undefined>
     );
   }
-  return response as RequestResponse<ILostDogWithPicture, undefined>;
+  return response as RequestResponse<ILostDogWithPictureAndComments, undefined>;
 });
 
 export const fetchOneShelterDogThunk = createAsyncThunk<

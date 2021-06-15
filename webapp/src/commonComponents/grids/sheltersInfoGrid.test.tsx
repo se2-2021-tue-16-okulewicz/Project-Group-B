@@ -11,6 +11,7 @@ import { Route, BrowserRouter as Router } from "react-router-dom";
 import { store } from "../../app/store";
 import SheltersInfoGrid from "./sheltersInfoGrid";
 import { exampleShelter, initShelter } from "../../shelter/shelterTesting";
+import doghouse from "./The_Doghouse.png";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
