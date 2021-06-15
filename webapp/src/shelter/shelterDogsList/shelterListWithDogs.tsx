@@ -143,7 +143,7 @@ export default function ShelterListWithDogs(props: any) {
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
   });
-  const [edit, setEdit] =useState(false);
+  const [edit, setEdit] = useState(true);
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();

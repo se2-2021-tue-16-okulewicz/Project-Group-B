@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2061045a-a290-4d34-9037-9e6626f39c8f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Project-Group-B/Backend/SE-Backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Project-Group-B/Backend/SE-Backend.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,7 +10,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Project-Group-B" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1twqm0lpfup8G4L2g4RcOE2cPo7" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -53,5 +53,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

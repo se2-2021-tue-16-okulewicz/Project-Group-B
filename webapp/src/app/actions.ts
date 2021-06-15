@@ -459,9 +459,6 @@ export const clearDogList = createAction("clearDogList");
 export const startRefreshing = createAction("startRefreshing");
 export const finishRefreshing = createAction("finishRefreshing");
 
-// export function updateShelterDogThunk(arg0: { shelterId: any; dog: IShelterDog; picture: IPicture; cookies: { [name: string]: any; }; }): any {
-//   throw new Error("Function not implemented.");
-// }
 
 export const updateShelterDogThunk = createAsyncThunk<
   RequestResponse<IShelterDogWithPicture, undefined>,

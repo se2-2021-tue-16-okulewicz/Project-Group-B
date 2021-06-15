@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const EditShelterDogDetails = (props: any) => {
   const dogId = props.dogId
     ? props.dogId
-    : JSON.parse(sessionStorage.getItem("shelterDogId") as string);
+    : JSON.parse(sessionStorage.getItem("dogId") as string);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -104,7 +104,7 @@ const EditShelterDogDetails = (props: any) => {
     initShelterDogWithPictureProps
   );
   const [picture, setPicture] = useState<IPicture>();
-  
+
   useEffect(() => {
     if (pageRefresh) {
       if (temp && temp.id != dogId) {
@@ -231,14 +231,6 @@ const EditShelterDogDetails = (props: any) => {
       );
   }
 
-  // function markDogAsFound(dogId: Number) {
-  //   store.dispatch(
-  //     Actions.markDogAsFoundThunk({
-  //       dogId: dogId as number,
-  //       cookies: cookies,
-  //     }) //filters
-  //   );
-  // }
   const handlePicturesChange = (event: any) => {
     if (event) {
       (event as File).arrayBuffer().then((fileBuffer) => {
