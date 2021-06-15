@@ -1,3 +1,4 @@
+import { IContactInfo } from "../../contactInfo/contactInfoInterface";
 import {
   BreedTypes,
   BehaviorsTypes,
@@ -13,8 +14,37 @@ export interface IPicture {
   id: number;
   fileName: string;
   fileType: string;
-  data: ArrayBuffer;
+  data: ArrayBuffer| string;
   //data: string;
+}
+
+export interface IComment {
+  authorId: number;
+  dogId: number;
+  text: string;
+  location: { city: string; district: string };
+}
+export interface ICommentWithIdAndAuthor extends IComment {
+  id: number;
+  author: IAuthor;
+  picture?: IPicture;
+  authorId: number;
+  dogId: number;
+  text: string;
+  location: { city: string; district: string };
+}
+export interface IAuthor extends IContactInfo {
+  id: number;
+}
+
+
+export interface ILostDogComment {
+  id: number;
+  location: { city: string; district: string };
+  picture: IPicture;
+  authorId: number;
+  dogId: number;
+  text: string;
 }
 
 export interface Picture {
@@ -55,6 +85,11 @@ export interface IImage {
 
 export interface ILostDogWithPicture extends ILostDog {
   picture: IPicture;
+}
+
+export interface ILostDogWithPictureAndComments extends ILostDog {
+  picture: IPicture;
+  comments: ICommentWithIdAndAuthor[];
 }
 
 export interface IDogCharacteristics {
