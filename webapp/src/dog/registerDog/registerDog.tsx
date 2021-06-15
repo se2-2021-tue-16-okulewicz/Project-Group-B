@@ -136,7 +136,7 @@ export default function RegisterDogForm(props: any) {
     setLostDogFields(newField);
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
-  
+
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {

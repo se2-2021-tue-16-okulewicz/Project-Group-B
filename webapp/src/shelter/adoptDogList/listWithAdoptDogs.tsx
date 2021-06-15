@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontFamily: "Comfortaa",
       fontWeight: "normal",
       display: "stretch",
-      marginTop:"2px",
+      marginTop: "2px",
       minWidth: "350px",
     },
   })

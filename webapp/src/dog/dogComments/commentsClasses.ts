@@ -1,5 +1,9 @@
 import { IPicture } from "../dogInterfaces";
-import { IAuthor, IComment, ICommentWithIdAndAuthor } from "./commentsInterfaces";
+import {
+  IAuthor,
+  IComment,
+  ICommentWithIdAndAuthor,
+} from "./commentsInterfaces";
 
 export const initPicture: IPicture = {
   id: 0,
@@ -9,11 +13,11 @@ export const initPicture: IPicture = {
 };
 
 export const initAuthor: IAuthor = {
-  id:0,
-  name:"",
-  phoneNumber:"",
-  email:"alex@alex.com"
-}
+  id: 0,
+  name: "",
+  phoneNumber: "",
+  email: "alex@alex.com",
+};
 
 export const initComment: IComment = {
   authorId: 0,
@@ -23,12 +27,11 @@ export const initComment: IComment = {
 };
 
 export const initCommentandAuthor: ICommentWithIdAndAuthor = {
-  id:0,
-  author:initAuthor,
+  id: 0,
+  author: initAuthor,
   picture: initPicture,
   authorId: 0,
   dogId: 0,
   text: "",
   location: { city: "", district: "" },
 };
-

@@ -1,11 +1,22 @@
-
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { ICommentWithIdAndAuthor } from "./commentsInterfaces";
-import { Button, Comment, Divider, Form, Header, } from "semantic-ui-react";
+import { Button, Comment, Divider, Form, Header } from "semantic-ui-react";
 import config from "../../config/config";
-import { createStyles, Grid, IconButton, Input, InputLabel, makeStyles, Theme, } from "@material-ui/core";
-import { initComment, initCommentandAuthor, initPicture } from "./commentsClasses";
+import {
+  createStyles,
+  Grid,
+  IconButton,
+  Input,
+  InputLabel,
+  makeStyles,
+  Theme,
+} from "@material-ui/core";
+import {
+  initComment,
+  initCommentandAuthor,
+  initPicture,
+} from "./commentsClasses";
 import { IPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
@@ -16,20 +27,20 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     mainForm: {
       width: "91vw",
-      borderRadius: "10px"
+      borderRadius: "10px",
       //marginTop: "0.009%",
     },
     commentForm: {
       marginLeft: "2vw",
       marginRight: "2vw",
-      width: "96vw"
+      width: "96vw",
       //marginTop: "0.009%",
     },
     headerForm: {
       width: "91vw",
       marginLeft: "2vw",
       marginRight: "2vw",
-    }
+    },
   })
 );
 
@@ -87,7 +98,7 @@ export default function CommentEditForm(props: any) {
             fileType: event.target.files[0].type,
             data: fileBuffer,
           } as IPicture);
-        })
+        });
       }
     }
   };
@@ -107,7 +118,8 @@ export default function CommentEditForm(props: any) {
 
   const styleLink = document.createElement("link");
   styleLink.rel = "stylesheet";
-  styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
+  styleLink.href =
+    "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
   document.head.appendChild(styleLink);
   const classes = useStyles();
   return (
@@ -119,16 +131,42 @@ export default function CommentEditForm(props: any) {
         <Grid container direction="row" spacing={3} alignContent="space-between">
           <Grid item xs={8}>
             <Form reply>
-              <Form.TextArea value={comment.text} name="text" onChange={inputsHandler}/>
+              <Form.TextArea
+                value={comment.text}
+                name="text"
+                onChange={inputsHandler}
+              />
               <Comment.Text>{"City:"}</Comment.Text>
-              <Form.Input value={comment.location.city} name="city" onChange={inputArrayHandler}/>
+              <Form.Input
+                value={comment.location.city}
+                name="city"
+                onChange={inputArrayHandler}
+              />
               <Comment.Text>{"District:"}</Comment.Text>
-              <Form.Input value={comment.location.district} name="district" onChange={inputArrayHandler}/>
-              <Button as="label" htmlFor="file" primary type="button" icon="upload" content='Upload Image' size="medium" style={{width:"170px"}}>
-              </Button>
-              <input accept=".jpg, .jpeg, .png" type="file" id="file" style={{ display: "none" }} onChange={(
-                      file: React.ChangeEvent<{ value: unknown }>
-                    ) =>uploadImage(file)} />
+              <Form.Input
+                value={comment.location.district}
+                name="district"
+                onChange={inputArrayHandler}
+              />
+              <Button
+                as="label"
+                htmlFor="file"
+                primary
+                type="button"
+                icon="upload"
+                content="Upload Image"
+                size="medium"
+                style={{ width: "170px" }}
+              ></Button>
+              <input
+                accept=".jpg, .jpeg, .png"
+                type="file"
+                id="file"
+                style={{ display: "none" }}
+                onChange={(file: React.ChangeEvent<{ value: unknown }>) =>
+                  uploadImage(file)
+                }
+              />
               <Button
                 content='Edit Comment'
                 labelPosition='left'
@@ -144,18 +182,37 @@ export default function CommentEditForm(props: any) {
                 primary
                 onClick={() => { cancelComment() }}
                 size="medium"
-                style={{width:"170px"}}/>
+                style={{ width: "170px" }}
+              />
             </Form>
           </Grid>
           <Grid container item xs={4}>
-          {comment.picture && comment.picture.data && !file && (<img style={{ width: "inherit", marginTop:"4%", height: "auto", maxHeight: "400px" }}
-                src={`data:${comment.picture.fileType};base64,${comment.picture.data as ArrayBuffer
-                  }`}
+            {comment.picture && comment.picture.data && !file && (
+              <img
+                style={{
+                  width: "inherit",
+                  marginTop: "4%",
+                  height: "auto",
+                  maxHeight: "400px",
+                }}
+                src={`data:${comment.picture.fileType};base64,${
+                  comment.picture.data as ArrayBuffer
+                }`}
                 alt={comment.picture.fileName}
-              />)}
-            { file && (<img style={{ width: "inherit", marginTop:"4%", height: "auto", maxHeight: "400px" }}
-              src={URL.createObjectURL(file)} alt=""
-            />)}
+              />
+            )}
+            {file && (
+              <img
+                style={{
+                  width: "inherit",
+                  marginTop: "4%",
+                  height: "auto",
+                  maxHeight: "400px",
+                }}
+                src={URL.createObjectURL(file)}
+                alt=""
+              />
+            )}
           </Grid>
         </Grid>
         <Divider className={classes.mainForm} />

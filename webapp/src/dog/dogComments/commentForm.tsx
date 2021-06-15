@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { ICommentWithIdAndAuthor } from "./commentsInterfaces";
@@ -17,20 +16,20 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     mainForm: {
       width: "91vw",
-      borderRadius: "10px"
+      borderRadius: "10px",
       //marginTop: "0.009%",
     },
     commentForm: {
       marginLeft: "2vw",
       marginRight: "2vw",
-      width: "96vw"
+      width: "96vw",
       //marginTop: "0.009%",
     },
     headerForm: {
       width: "91vw",
       marginLeft: "2vw",
       marginRight: "2vw",
-    }
+    },
   })
 );
 
@@ -86,7 +85,7 @@ export default function CommentForm(props: any) {
             fileType: event.target.files[0].type,
             data: fileBuffer,
           } as IPicture);
-        })
+        });
       }
     }
   };
@@ -106,7 +105,8 @@ export default function CommentForm(props: any) {
   //const [addFormVisible, setAddFormVisible] = useState(props.add?props.add:true);
   const styleLink = document.createElement("link");
   styleLink.rel = "stylesheet";
-  styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
+  styleLink.href =
+    "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
   document.head.appendChild(styleLink);
   const classes = useStyles();
   return (
@@ -136,15 +136,27 @@ export default function CommentForm(props: any) {
                 labelPosition='left'
                 icon='add'
                 primary
-                onClick={() => { addComment() }}
+                onClick={() => {
+                  addComment();
+                }}
                 size="medium"
-                style={{width:"170px"}}/>
+                style={{ width: "170px" }}
+              />
             </Form>
           </Grid>
           <Grid container item xs={4}>
-            {picture && picture.fileName != "" && (<img style={{ width: "inherit", marginTop:"4%", height: "auto", maxHeight: "400px" }}
-              src={URL.createObjectURL(file)} alt=""
-            />)}
+            {picture && picture.fileName != "" && (
+              <img
+                style={{
+                  width: "inherit",
+                  marginTop: "4%",
+                  height: "auto",
+                  maxHeight: "400px",
+                }}
+                src={URL.createObjectURL(file)}
+                alt=""
+              />
+            )}
           </Grid>
         </Grid>
         <Divider className={classes.mainForm} />

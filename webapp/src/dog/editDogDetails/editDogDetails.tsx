@@ -28,7 +28,12 @@ import {
   BreedTypes,
 } from "../dogEnums";
 import { initLostDogWithPictureProps } from "../dogClasses";
-import { ILostDog, IPicture, ILostDogWithPicture, ILostDogWithPictureAndComments } from "../dogInterfaces";
+import {
+  ILostDog,
+  IPicture,
+  ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
+} from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../../app/actions";
@@ -155,7 +160,10 @@ const EditDogDetails = (props: any) => {
         );
       } else if (editedDog && editedDog.id === dogId) {
         setEditDogFields(editedDog as ILostDogWithPicture);
-        sessionStorage.setItem("editDogFields", JSON.stringify(editedDog as ILostDogWithPicture));
+        sessionStorage.setItem(
+          "editDogFields",
+          JSON.stringify(editedDog as ILostDogWithPicture)
+        );
       }
       if (!editedDog || (editedDog && editedDog.id !== dogId)) {
         store.dispatch(

@@ -165,7 +165,8 @@ export const reducer = createReducer(initState, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.editedDog.comments = state.editedDog.comments.concat(payload.payload.response.data as ICommentWithIdAndAuthor
+    newState.editedDog.comments = state.editedDog.comments.concat(
+      payload.payload.response.data as ICommentWithIdAndAuthor
     );
     return newState;
   },
@@ -265,7 +266,9 @@ export const reducer = createReducer(initState, {
   },
   [Actions.updateDogThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPictureAndComments, undefined>>
+    payload: PayloadAction<
+      RequestResponse<ILostDogWithPictureAndComments, undefined>
+    >
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
@@ -530,7 +533,9 @@ export const reducer = createReducer(initState, {
 
   [Actions.fetchOneDogThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPictureAndComments, undefined>>
+    payload: PayloadAction<
+      RequestResponse<ILostDogWithPictureAndComments, undefined>
+    >
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;

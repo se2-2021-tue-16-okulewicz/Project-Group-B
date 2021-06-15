@@ -15,7 +15,10 @@ import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import { BehaviorsTypes } from "../dogEnums";
-import { ILostDogWithPicture, ILostDogWithPictureAndComments } from "../dogInterfaces";
+import {
+  ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
+} from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
@@ -81,7 +84,7 @@ const DogDetails = (props: any) => {
   const [add, setAdd] = useState(true);
 
   useEffect(() => {
-    if (pageRefresh) { 
+    if (pageRefresh) {
       try {
         store.dispatch(
           Actions.fetchOneDogThunk({
@@ -409,7 +412,6 @@ const DogDetails = (props: any) => {
          <CommentsList comments={dog.comments} cancelComment={()=>{cancelComment();}}  redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToCommentEdit(comment);}}  redirectToComment={(id: number) => { redirectToComment(id); }}/>
 </Grid>)}
     </Grid>
-
   );
 };
 

@@ -1,10 +1,15 @@
-
 import React from "react";
 import { useCookies } from "react-cookie";
 import { ICommentWithIdAndAuthor } from "./commentsInterfaces";
 import { Comment, Divider, Header } from "semantic-ui-react";
 import config from "../../config/config";
-import { createStyles, Grid, IconButton, makeStyles, Theme } from "@material-ui/core";
+import {
+  createStyles,
+  Grid,
+  IconButton,
+  makeStyles,
+  Theme,
+} from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
@@ -14,20 +19,20 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     mainForm: {
       width: "91vw",
-      borderRadius: "10px"
+      borderRadius: "10px",
       //marginTop: "0.009%",
     },
     commentForm: {
       marginLeft: "2vw",
       marginRight: "2vw",
-      width: "96vw"
+      width: "96vw",
       //marginTop: "0.009%",
     },
     headerForm: {
       width: "91vw",
       marginLeft: "2vw",
       marginRight: "2vw",
-    }
+    },
   })
 );
 
@@ -46,7 +51,8 @@ export default function CommentsList(props: any) {
   };
   const styleLink = document.createElement("link");
   styleLink.rel = "stylesheet";
-  styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
+  styleLink.href =
+    "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
   document.head.appendChild(styleLink);
   const classes = useStyles();
   return (
@@ -66,7 +72,13 @@ export default function CommentsList(props: any) {
                   <div>{"from " + comment.location.city}</div>
                 </Comment.Metadata>
                 <Comment.Text>{comment.text}</Comment.Text>
-                <Comment.Text>{"The dog is waiting for you in " + comment.location.city + ", " + comment.location.district + "."}</Comment.Text>
+                <Comment.Text>
+                  {"The dog is waiting for you in " +
+                    comment.location.city +
+                    ", " +
+                    comment.location.district +
+                    "."}
+                </Comment.Text>
                 <Comment.Actions>
                   <Comment.Action active={comment.authorId == cookies[config.cookies.userId]} onClick={() => {
                     if (comment.authorId == cookies[config.cookies.userId]) {redirectToComment(comment.id as number);}
@@ -82,11 +94,19 @@ export default function CommentsList(props: any) {
               </Comment.Content>
             </Grid>
             <Grid container item xs={4}>
-              {comment.picture && comment.picture.data && (<img style={{ width: "inherit", height: "auto", maxHeight: "400px" }}
-                src={`data:${comment.picture.fileType};base64,${comment.picture.data as ArrayBuffer
+              {comment.picture && comment.picture.data && (
+                <img
+                  style={{
+                    width: "inherit",
+                    height: "auto",
+                    maxHeight: "400px",
+                  }}
+                  src={`data:${comment.picture.fileType};base64,${
+                    comment.picture.data as ArrayBuffer
                   }`}
-                alt={comment.picture.fileName}
-              />)}
+                  alt={comment.picture.fileName}
+                />
+              )}
             </Grid>
           </Grid>
           <Divider className={classes.mainForm} />
