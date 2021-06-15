@@ -61,7 +61,7 @@ export default function DogsList({ navigation }: any) {
   const id = useSelector((state: State) => state.loginInformation?.id);
   const [myDogs, setMyDogs] = useState<ILostDogWithPicture[]>([]);
 
-  //Fetching cars at the beginning
+  //Fetching dogs at the beginning
   React.useEffect(() => {
     if (refreshRequired) {
       // fetch and append page 0

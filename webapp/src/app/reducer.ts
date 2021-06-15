@@ -4,6 +4,7 @@ import _ from "lodash";
 import { RequestResponse } from "./response";
 import {
   ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
   IShelterDog,
   IShelterDogWithPicture,
 } from "../dog/dogInterfaces";
@@ -13,6 +14,7 @@ import { ValidateFetchedDog } from "../utilityComponents/validation";
 import { ILoginResults } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
 import { initState, State } from "./stateInterfaces";
+import { ICommentWithIdAndAuthor } from "../dog/dogComments/commentsInterfaces";
 
 export const reducer = createReducer(initState, {
   [Actions.clearError.type]: (state: State) => {
@@ -139,9 +141,83 @@ export const reducer = createReducer(initState, {
     let newState = _.cloneDeep(state);
     newState.dogs = [];
     newState.loading = true;
+    newState.dogsRequireRefresh = false;
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.dogsRequireRefresh = false;
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+  [Actions.addCommentThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ICommentWithIdAndAuthor, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    newState.editedDog.comments = state.editedDog.comments.concat(
+      payload.payload.response.data as ICommentWithIdAndAuthor
+    );
+    return newState;
+  },
+  [Actions.addCommentThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.addCommentThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse.code,
+      erorMessage: errorResponse.response.message,
+    };
+    return newState;
+  },
+  [Actions.editCommentThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ICommentWithIdAndAuthor, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = false;
+    const index = state.editedDog.comments.findIndex(
+      (el: ICommentWithIdAndAuthor) =>
+        el.id === (payload.payload.response.data as ICommentWithIdAndAuthor).id
+    );
+    if (index < newState.editedDog.comments.length) {
+      newState.editedDog.comments[index] = payload.payload.response
+        .data as ICommentWithIdAndAuthor;
+    }
+
+    return newState;
+  },
+  [Actions.editCommentThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<null, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+  [Actions.editCommentThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
@@ -189,7 +265,9 @@ export const reducer = createReducer(initState, {
   },
   [Actions.updateDogThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
+    payload: PayloadAction<
+      RequestResponse<ILostDogWithPictureAndComments, undefined>
+    >
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
@@ -243,7 +321,7 @@ export const reducer = createReducer(initState, {
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
-    if (state.dogs != null || pageNumber != 0) {
+    if (state.dogs !== null || pageNumber !== 0) {
       newState.dogs = state.dogs
         .concat(payload.payload.response.data as ILostDogWithPicture[])
         .slice(0, (pageNumber + 1) * pageSize);
@@ -303,7 +381,7 @@ export const reducer = createReducer(initState, {
       config.defaultFilters.size
     );
 
-    if (state.shelterdogs != null || pageNumber != 0) {
+    if (state.shelterdogs !== null || pageNumber !== 0) {
       newState.shelterdogs = state.shelterdogs
         .concat(payload.payload.response.data as IShelterDog[])
         .slice(0, (pageNumber + 1) * pageSize);
@@ -360,7 +438,7 @@ export const reducer = createReducer(initState, {
       ["meta", "arg", "filters", "size"],
       config.defaultFilters.size
     );
-    if (state.shelters != null || pageNumber != 0) {
+    if (state.shelters !== null || pageNumber !== 0) {
       newState.shelters = state.shelters
         .concat(payload.payload.response.data as IShelter[])
         .slice(0, (pageNumber + 1) * pageSize);
@@ -446,22 +524,28 @@ export const reducer = createReducer(initState, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = true;
-    //newState.settingsRequireRefresh=true;
+    newState.editedDog = null;
     return newState;
   },
 
   [Actions.fetchOneDogThunk.fulfilled.toString()]: (
     state: State,
-    payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
+    payload: PayloadAction<
+      RequestResponse<ILostDogWithPictureAndComments, undefined>
+    >
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
+    newState.editedDog = null;
     newState.editedDog = ValidateFetchedDog(
-      payload.payload.response.data as ILostDogWithPicture
+      payload.payload.response.data as ILostDogWithPictureAndComments
     );
     newState.editedDog.picture.data = (
-      payload.payload.response.data as ILostDogWithPicture
+      payload.payload.response.data as ILostDogWithPictureAndComments
     ).picture.data as string;
+    newState.comments = (
+      payload.payload.response.data as ILostDogWithPictureAndComments
+    ).comments as ICommentWithIdAndAuthor[];
     newState.dogsRequireRefresh = false;
     newState.settingsRequireRefresh = false;
     return newState;
@@ -500,6 +584,39 @@ export const reducer = createReducer(initState, {
     newState.shelterDog = null;
     newState.dogsRequireRefresh = true;
     newState.settingsRequireRefresh = false;
+    return newState;
+  },
+
+  [Actions.deleteOneCommentThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<undefined, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+  [Actions.deleteOneCommentThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<undefined>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.loading = true;
+    return newState;
+  },
+
+  [Actions.deleteOneCommentThunk.fulfilled.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<ILostDogWithPicture, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.editedDog = null;
+    newState.loading = false;
     return newState;
   },
 

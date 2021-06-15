@@ -19,11 +19,13 @@ import se.backend.exceptions.types.UnauthorizedException;
 import se.backend.model.Picture;
 import se.backend.model.account.Address;
 import se.backend.model.account.Shelter;
+import se.backend.model.dogs.Lost.LostDog;
 import se.backend.model.dogs.Shelter.ShelterDog;
 import se.backend.service.login.LoginService;
 import se.backend.service.shelters.SheltersService;
 import se.backend.utils.Response;
 import se.backend.wrapper.account.UserType;
+import se.backend.wrapper.dogs.LostDogWithBehaviors;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviors;
 import se.backend.wrapper.dogs.ShelterDogWithBehaviorsAndWithPicture;
 import se.backend.wrapper.shelters.ShelterInformation;
@@ -61,7 +63,7 @@ public class SheltersController {
         this.loginService = loginService;
     }
 
-    //<editor-fold desc=/shelters">
+    //<editor-fold desc="/shelters">
     @GetMapping(path = "")
     public ResponseEntity<Response<Collection<ShelterInformation>, Integer>> GetShelters(
             @RequestHeader HttpHeaders headers,
@@ -90,17 +92,8 @@ public class SheltersController {
 
     @PostMapping(path = "")
     public ResponseEntity<Response<Object, Object>> RegisterShelter(@RequestHeader HttpHeaders headers,
-                                                                    @RequestPart("name") String name,
-                                                                    @RequestPart("phoneNumber") String phoneNumber,
-                                                                    @RequestPart("email") String email,
-                                                                    @RequestPart("address") Address address) {
+                                                                    @RequestPart("shelter") ShelterRegisterInformation shelter) {
         logHeaders(headers);
-
-        ShelterRegisterInformation shelter = new ShelterRegisterInformation();
-        shelter.setName(name);
-        shelter.setEmail(email);
-        shelter.setPhoneNumber(phoneNumber);
-        shelter.setAddress(address);
 
         var result = loginService.CreateShelter(shelter);
 
@@ -108,6 +101,26 @@ public class SheltersController {
             throw new GenericBadRequestException(result);
 
         return ResponseEntity.ok(new Response<>("Shelter registered and waiting for approval", true, null, null));
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="/shelters/{shelterId}"
+    @GetMapping(path ="{shelterId}")
+    public ResponseEntity<Response<ShelterInformation, Object>> GetOneShelter(@RequestHeader HttpHeaders headers,
+                                                                              @PathVariable("shelterId") long shelterId) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Admin, UserType.Regular, UserType.Shelter));
+        if(!authorization.getValue0()) {
+            throw new UnauthorizedException();
+        }
+
+        var result = sheltersService.GetOneShelter(shelterId);
+
+        if(result == null)
+            throw new GenericBadRequestException("Shelter does not exist or is inactive");
+
+        return ResponseEntity.ok(new Response<>(String.format("Shelter with id %d found", shelterId), true, result, null));
     }
     //</editor-fold>
 
@@ -201,6 +214,53 @@ public class SheltersController {
         }
         else
             return ResponseEntity.status(400).body(new Response<>(String.format("Failed to fetch dog with id: %d", dogId), false, null, null));
+    }
+
+    @SneakyThrows
+    @PutMapping(path = "{shelterId}/dogs/{dogId}")
+    public ResponseEntity<Response<ShelterDogWithBehaviorsAndWithPicture, Object>> UpdateDog(@RequestHeader HttpHeaders headers,
+                                                               @PathVariable("shelterId") long shelterId,
+                                                               @PathVariable("dogId") long dogId,
+                                                               @RequestPart("dog") ShelterDogWithBehaviors updatedDog,
+                                                               @RequestPart(value = "picture", required = false) MultipartFile picture) {
+        logHeaders(headers);
+
+        var authorization = loginService.IsAuthorized(headers, List.of(UserType.Shelter));
+        if(!authorization.getValue0() || authorization.getValue1() != shelterId) {
+            throw new UnauthorizedException();
+        }
+
+        if(!updatedDog.IsValid()) {
+            throw new GenericBadRequestException("Dog does not have complete data");
+        }
+
+        ShelterDog oldDog = sheltersService.GetDogDetails(dogId);
+
+        if(oldDog == null)
+            throw new GenericBadRequestException(String.format("Failed to update dog - No dog with id: %d was found" , dogId));
+
+        try {
+            Picture newPicture = null;
+            if(picture != null) {
+                newPicture = new Picture();
+                newPicture.setFileName(picture.getOriginalFilename());
+                newPicture.setFileType(picture.getContentType());
+                newPicture.setData(picture.getBytes());
+
+                if(!newPicture.isValid()) {
+                    throw new GenericBadRequestException("Picture is not valid");
+                }
+            }
+
+            var savedDog = sheltersService.UpdateDog(dogId, updatedDog, newPicture, shelterId);
+
+            if(savedDog != null)
+                return ResponseEntity.ok(new Response<>(String.format("Saved dog id: %d", savedDog.getId()), true, savedDog, null));
+            else
+                throw new GenericBadRequestException(String.format("Failed to update dog with id: %d", dogId));
+        } catch (IOException e) {
+            throw new GenericBadRequestException("Failed to update the dog");
+        }
     }
 
     @DeleteMapping(path = "{shelterId}/dogs/{dogId}")

@@ -6,7 +6,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { store } from "../../app/store";
 import { IShelterDog } from "../../dog/dogInterfaces";
@@ -124,10 +124,8 @@ scheme.configureHeader((builder) => {
     });
 });
 
-/*TODO: remove filtering in frontend (folder dontdelete)*/
-
 export default function ShelterListWithDogs(props: any) {
-  const lastPage = useSelector((state: State) => state.dogsLastPage);
+  const lastPage = useSelector((state: State) => state.dogsLastPage); // eslint-disable-next-line
   const [displayLoader, setDisplayLoader] = useState(false);
   const [fetching, setFetching] = useState(false);
 
@@ -178,12 +176,6 @@ export default function ShelterListWithDogs(props: any) {
     }
   }
 
-  //refetches page every [10] minutes, only if there were changes in the list
-  /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
-        setTimeout(() => {
-          setPageRefresh(true);
-        },600000)
-  }*/
   //clears dog list, when page is refreshed or changed
 
   useEffect(() => {

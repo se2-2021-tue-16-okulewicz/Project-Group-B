@@ -117,12 +117,6 @@ export default function FilterForm(props: any) {
     setLostDogFields(newField);
   };
 
-  const updateOrder = (e: React.ChangeEvent<{ name?: string; value: any }>) => {
-    if (typeof e.target.value === "string") {
-      setOrder(e.target.value);
-    }
-  };
-
   function clearStorage() {
     sessionStorage.removeItem("lostDogFields");
     sessionStorage.removeItem("inputField");
@@ -141,11 +135,8 @@ export default function FilterForm(props: any) {
   const onSubmitClicked = () => {
     lostDogFields.page = 0;
     props.updateFilters(lostDogFields);
+    clearStorage();
     store.dispatch(clearDogList());
-  };
-
-  const onCancelClick = () => {
-    props.updateFilters(props.filters);
   };
 
   return (

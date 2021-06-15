@@ -144,6 +144,8 @@ export const GetDogDetailsThunk = createAsyncThunk(
   }
 );
 
+export const reset = createAction("reset");
+
 /*
 Marking lost dog as foud.
 */

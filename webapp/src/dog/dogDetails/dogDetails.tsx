@@ -15,7 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import { BehaviorsTypes } from "../dogEnums";
-import { ILostDogWithPicture } from "../dogInterfaces";
+import { ILostDogWithPictureAndComments } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
@@ -23,7 +23,11 @@ import { useCookies } from "react-cookie";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
-import { DogComment } from "./comment";
+import CommentsList from "../dogComments/commentsList";
+import CommentForm from "../dogComments/commentForm";
+import { ICommentWithIdAndAuthor } from "../dogComments/commentsInterfaces";
+import { initCommentandAuthor } from "../dogComments/commentsClasses";
+import CommentEditForm from "../dogComments/commentEditForm";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,13 +68,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const DogDetails = (props: any) => {
   const dog = useSelector(
-    (state: State) => state.editedDog as ILostDogWithPicture
+    (state: State) => state.editedDog as ILostDogWithPictureAndComments
   );
   const location = useLocation();
   const dogId = props.dogId
     ? props.dogId
     : Number(location.pathname.split("/dog/")[1]);
   const [pageRefresh, setPageRefresh] = useState(true);
+  const [comment, setComment] = useState(initCommentandAuthor);
+  const [oldcomment, setOldComment] = useState(initCommentandAuthor);
+  const [add, setAdd] = useState(true);
+
   useEffect(() => {
     if (pageRefresh) {
       try {
@@ -84,17 +92,57 @@ const DogDetails = (props: any) => {
         console.error("Failed to fetch the dog: ", err);
       } finally {
         setPageRefresh(false);
+        setComment(initCommentandAuthor);
+        setOldComment(initCommentandAuthor);
         store.dispatch(Actions.finishRefreshing);
       }
     } // eslint-disable-next-line
   }, [pageRefresh]);
+
+  useEffect(() => {
+    if (!pageRefresh && !dog) {
+      setPageRefresh(true);
+    } // eslint-disable-next-line
+  }, [dog]);
+
+  function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {
+    setAdd(false);
+    if (comment !== initCommentandAuthor) {
+      setOldComment(comments);
+      setComment(initCommentandAuthor);
+    } else {
+      setComment(comments);
+      setOldComment(initCommentandAuthor);
+    }
+  }
+
+  function redirectToComment(id: number) {
+    try {
+      store.dispatch(
+        Actions.deleteOneCommentThunk({
+          commentId: id,
+          dogId: dogId,
+          cookies: cookies,
+        })
+      );
+    } catch (err) {
+      console.error("Failed to fetch the dog: ", err);
+    } finally {
+    }
+  }
+
+  function cancelComment() {
+    setComment(initCommentandAuthor);
+    setOldComment(initCommentandAuthor);
+    setAdd(true);
+  }
 
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
 
   const onCancelClick = () => {
-    sessionStorage.removeItem("dogId");
+    ///sessionStorage.removeItem("dogId");
     sessionStorage.clear();
     history.push("/dogs");
   };
@@ -350,6 +398,39 @@ const DogDetails = (props: any) => {
               Lost Dogs
             </Button>
           </FormControl>
+        </Grid>
+      )}
+      {!pageRefresh && dog && dog.comments && (
+        <Grid item xs={12}>
+          {add && <CommentForm dogId={dogId} add={add} />}
+          {comment.location.city !== "" && (
+            <CommentEditForm
+              dogId={dogId}
+              comment={comment}
+              cancelComment={() => cancelComment()}
+              update={() => cancelComment()}
+            />
+          )}
+          {oldcomment.location.city !== "" && (
+            <CommentEditForm
+              dogId={dogId}
+              comment={oldcomment}
+              cancelComment={() => cancelComment()}
+              update={() => cancelComment()}
+            />
+          )}
+          <CommentsList
+            comments={dog.comments}
+            cancelComment={() => {
+              cancelComment();
+            }}
+            redirectToCommentEdit={(comment: ICommentWithIdAndAuthor) => {
+              redirectToCommentEdit(comment);
+            }}
+            redirectToComment={(id: number) => {
+              redirectToComment(id);
+            }}
+          />
         </Grid>
       )}
     </Grid>

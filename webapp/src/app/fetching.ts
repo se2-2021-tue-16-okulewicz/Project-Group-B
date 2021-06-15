@@ -4,6 +4,7 @@ import {
   ILostDogWithPicture,
   IShelterDog,
   IShelterDogWithPicture,
+  ILostDogWithPictureAndComments,
 } from "../dog/dogInterfaces";
 import type { APIResponse, RequestResponse } from "./response";
 import config from "../config/config";
@@ -16,6 +17,10 @@ import {
 } from "../registerLogin/LoginRegisterInterface";
 import { IShelter } from "../shelter/shelterInterfaces";
 import { IShelterInfo } from "../utilityComponents/utilities";
+import {
+  IComment,
+  ICommentWithIdAndAuthor,
+} from "../dog/dogComments/commentsInterfaces";
 
 const getToken: (cookies: { [name: string]: any }) => string = (cookies: {
   [name: string]: any;
@@ -166,7 +171,7 @@ export async function fetchDogs(
 export async function fetchOneDog(
   id: Number,
   cookies: { [name: string]: any }
-): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
+): Promise<RequestResponse<ILostDogWithPictureAndComments, undefined>> {
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${id}`,
@@ -201,25 +206,26 @@ export async function deleteOneShelterDog(
   dogId: Number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<undefined, undefined>> {
-  let formData = new FormData();
-
-  formData.append(
-    "shelterId",
-    new Blob([JSON.stringify(shelterId)], {
-      type: "application/json",
-    }),
-    ""
-  );
-  formData.append(
-    "dogId",
-    new Blob([JSON.stringify(dogId)], {
-      type: "application/json",
-    }),
-    ""
-  );
   return getResponse(
     axios.delete(
       `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs/${dogId}`,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
+export async function deleteOneComment(
+  commentId: Number,
+  dogId: Number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<undefined, undefined>> {
+  return getResponse(
+    axios.delete(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/comments/${commentId}`,
       {
         headers: {
           Authorization: getToken(cookies),
@@ -284,6 +290,82 @@ export async function addDog(
   );
 }
 
+export async function addComment(
+  comment: IComment,
+  cookies: { [name: string]: any },
+  picture?: IPicture
+): Promise<RequestResponse<ICommentWithIdAndAuthor, undefined>> {
+  let formData = new FormData();
+
+  formData.append(
+    "comment",
+    new Blob([JSON.stringify(comment)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  if (picture) {
+    formData.append(
+      "picture",
+      new Blob([picture.data], { type: picture.fileType }),
+      picture.fileName
+    );
+  }
+
+  return getResponse(
+    axios.post(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${comment.dogId}/comments`,
+      formData,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+}
+
+export async function editComment(
+  comment: ICommentWithIdAndAuthor,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<ICommentWithIdAndAuthor, undefined>> {
+  let formData = new FormData();
+  const privateProperties = ["id", "picture", "author"];
+  const excludePrivateProperties = (key: string, value: any) =>
+    privateProperties.includes(key) ? undefined : value;
+
+  formData.append(
+    "comment",
+    new Blob([JSON.stringify(comment, excludePrivateProperties)], {
+      type: "application/json",
+    }),
+    ""
+  );
+  if (comment.picture && comment.picture.id === 0) {
+    formData.append(
+      "picture",
+      new Blob([comment.picture.data], { type: comment.picture.fileType }),
+      comment.picture.fileName
+    );
+  }
+
+  return getResponse(
+    axios.put(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${comment.dogId}/comments/${comment.id}`,
+      formData,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+  );
+}
+
 export async function addShelterDog(
   shelterId: number,
   dog: IShelterDog,
@@ -324,12 +406,11 @@ export async function addShelterDog(
   );
 }
 
-/*TODO: dog update does not need a picture anymore*/
 export async function updateDog(
   dog: ILostDog,
   cookies: { [name: string]: any },
   picture?: IPicture
-): Promise<RequestResponse<ILostDogWithPicture, undefined>> {
+): Promise<RequestResponse<ILostDogWithPictureAndComments, undefined>> {
   let formData = new FormData();
 
   const privateProperties = ["id", "pictureId", "ownerId"];
@@ -536,30 +617,9 @@ export async function registerShelterUser(
 ): Promise<RequestResponse<null, undefined>> {
   let formData = new FormData();
   formData.append(
-    "name",
-    new Blob([newUserInfo.name], {
-      type: "text/plain",
-    }),
-    ""
-  );
-  formData.append(
-    "address",
-    new Blob([JSON.stringify(newUserInfo.address)], {
+    "shelter",
+    new Blob([JSON.stringify(newUserInfo)], {
       type: "application/json",
-    }),
-    ""
-  );
-  formData.append(
-    "phoneNumber",
-    new Blob([newUserInfo.phoneNumber], {
-      type: "text/plain",
-    }),
-    ""
-  );
-  formData.append(
-    "email",
-    new Blob([newUserInfo.email], {
-      type: "text/plain",
     }),
     ""
   );

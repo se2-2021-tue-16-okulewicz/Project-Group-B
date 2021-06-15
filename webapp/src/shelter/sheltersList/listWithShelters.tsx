@@ -120,10 +120,8 @@ scheme.configureHeader((builder) => {
     });
 });
 
-/*TODO: remove filtering in frontend (folder dontdelete)*/
-
 export default function ListWithShelters(props: any) {
-  const lastPage = useSelector((state: State) => state.dogsLastPage);
+  const lastPage = useSelector((state: State) => state.dogsLastPage); // eslint-disable-next-line
   const [displayLoader, setDisplayLoader] = useState(false);
   const [fetching, setFetching] = useState(false);
 
@@ -143,11 +141,6 @@ export default function ListWithShelters(props: any) {
   const classes = useStyles();
   const { path } = useRouteMatch();
 
-  const onSettingsClicked = () => {
-    //store.dispatch(clearDogList());
-    //history.push("/settings");
-  };
-
   const onLostDogsClicked = () => {
     store.dispatch(clearDogList());
     history.push("/dogs");
@@ -160,13 +153,6 @@ export default function ListWithShelters(props: any) {
     store.dispatch(logoutThunk(cookies));
     history.push("/");
   };
-
-  //refetches page every [10] minutes, only if there were changes in the list
-  /*if(!pageRefresh  && !refreshRequired && lastPage && listFetched){
-        setTimeout(() => {
-          setPageRefresh(true);
-        },600000)
-  }*/
   //clears dog list, when page is refreshed or changed
 
   useEffect(() => {
@@ -225,6 +211,10 @@ export default function ListWithShelters(props: any) {
       }
     }
   };
+  const onSettingsClicked = () => {
+    store.dispatch(clearDogList());
+    history.push("/settings");
+  };
 
   return (
     <Root scheme={scheme}>
@@ -255,7 +245,6 @@ export default function ListWithShelters(props: any) {
               <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
-                disabled={true}
                 onClick={onSettingsClicked}
                 label="Settings"
                 icon={<Settings />}
