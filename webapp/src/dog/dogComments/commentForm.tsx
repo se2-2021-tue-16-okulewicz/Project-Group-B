@@ -110,19 +110,16 @@ export default function CommentForm(props: any) {
     <Comment.Group className={classes.commentForm}>
       <Header as="h3" dividing className={classes.headerForm}>
             Add Comment
-             {/*<Dropdown onClick={() => {
-              setAddFormVisible(!addFormVisible);
-            }} />*/}
       </Header>
      <Comment class="ui comments" className={classes.mainForm}>
         <Grid container direction="row" spacing={3} alignContent="space-between">
           <Grid item xs={8}>
             <Form reply>
-              <Form.TextArea required value={comment.text} name="text" onChange={inputsHandler}/>
+              <Form.TextArea value={comment.text} name="text" onChange={inputsHandler}/>
               <Comment.Text >{"City"}</Comment.Text>
-              <Form.Input required value={comment.location.city} name="city" onChange={inputArrayHandler}/>
+              <Form.Input  value={comment.location.city} name="city" onChange={inputArrayHandler}/>
               <Comment.Text>{"District"}</Comment.Text>
-              <Form.Input required value={comment.location.district} name="district" onChange={inputArrayHandler}/>
+              <Form.Input value={comment.location.district} name="district" onChange={inputArrayHandler}/>
               <Button as="label" htmlFor="file" primary type="button" icon="upload" content='Upload Image' size="medium" style={{width:"170px"}}>
               </Button>
               <input accept=".jpg, .jpeg, .png" type="file" id="file" style={{ display: "none" }} onChange={(
