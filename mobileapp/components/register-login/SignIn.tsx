@@ -45,8 +45,6 @@ const SignIn = ({ navigation }: any) => {
     }
   }, [errorMessage]);
 
-
-
   async function signIn() {
     store.dispatch(
       Actions.loginThunk({ username: username, password: password })
@@ -68,13 +66,13 @@ const SignIn = ({ navigation }: any) => {
     if (loginInfo !== null) {
       if (loginInfo.userType !== "Regular") {
         store.dispatch(Actions.incorrectUserType());
-        console.log("user type modal")
+        console.log("user type modal");
         setModalVisible(true);
         setReady(false);
         return;
       }
       setUsername("");
-    setPassword("");
+      setPassword("");
       // if(loginInfo.userType === "Regular"){
       // navigation.push("DogsList");
       // }
@@ -97,7 +95,7 @@ const SignIn = ({ navigation }: any) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          console.log("on request modal")
+          console.log("on request modal");
           setModalVisible(!modalVisible);
         }}
       >

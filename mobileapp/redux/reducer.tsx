@@ -81,7 +81,7 @@ export const reducer = createReducer(init, {
   [Actions.reset.type]: (state: State) => {
     let newState = init;
     newState.status = "reset";
-    console.log(newState.error.erorMessage)
+    console.log(newState.error.erorMessage);
     return newState;
   },
 
