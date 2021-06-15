@@ -9,7 +9,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import { clearRedirect, logoutThunk, clearError } from "./app/actions";
+import { clearRedirect, logoutThunk, clearError, startRefreshing } from "./app/actions";
 import { State } from "./app/stateInterfaces";
 import { store } from "./app/store";
 import config from "./config/config";
@@ -69,14 +69,10 @@ function Layout() {
   }, [redirect]);
 
   function redirectToDogDetailsOrEdit(id: number) {
-    //setDogId(id);
-    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
     history.push(`/edit/${id}`);
   }
 
   function redirectToDogDetails(id: number) {
-    //setDogId(id);
-    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
     history.push(`/dog/${id}`);
   }
 

@@ -68,7 +68,7 @@ export default function CommentsList(props: any) {
                 <Comment.Text>{comment.text}</Comment.Text>
                 <Comment.Text>{"The dog is waiting for you in " + comment.location.city + ", " + comment.location.district + "."}</Comment.Text>
                 <Comment.Actions>
-                  <Comment.Action primary active={comment.authorId == cookies[config.cookies.userId]} onClick={() => {
+                  <Comment.Action active={comment.authorId == cookies[config.cookies.userId]} onClick={() => {
                     if (comment.authorId == cookies[config.cookies.userId]) {redirectToComment(comment.id as number);}
                   }}>Delete</Comment.Action>
                   <Comment.Action active={comment.authorId == cookies[config.cookies.userId]} onClick={() => {

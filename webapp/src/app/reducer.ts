@@ -141,6 +141,7 @@ export const reducer = createReducer(initState, {
     let newState = _.cloneDeep(state);
     newState.dogs = [];
     newState.loading = true;
+    newState.dogsRequireRefresh = false;
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (
@@ -148,6 +149,7 @@ export const reducer = createReducer(initState, {
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
+    newState.dogsRequireRefresh = false;
     let errorResponse = payload.payload;
     newState.loading = false;
     newState.error = {
