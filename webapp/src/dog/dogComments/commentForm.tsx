@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
-import { Button, Comment, Divider, Form, Header, } from "semantic-ui-react";
+import { Button, Comment, Divider, Form, Header } from "semantic-ui-react";
 import config from "../../config/config";
-import { createStyles, Grid, makeStyles, Theme, } from "@material-ui/core";
+import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { initComment, initPicture } from "./commentsClasses";
 import { IPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
@@ -45,29 +45,33 @@ export default function CommentForm(props: any) {
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const addComment = () => {
-    if (props.dogId){
-      if(picture.fileType !== ""){
-    store.dispatch(
-      Actions.addCommentThunk({
-        comment:{...comment,
-        authorId:cookies[config.cookies.userId],
-        dogId:props.dogId},
-        picture:picture,
-        cookies: cookies,
-      })
-    );}
-    else{
-      store.dispatch(
-        Actions.addCommentThunk({
-          comment:{...comment,
-          authorId:cookies[config.cookies.userId],
-          dogId:props.dogId},
-          cookies: cookies,
-        })
-      );
-    }
-    setComment(initComment);
-    setPicture(initPicture);
+    if (props.dogId) {
+      if (picture.fileType !== "") {
+        store.dispatch(
+          Actions.addCommentThunk({
+            comment: {
+              ...comment,
+              authorId: cookies[config.cookies.userId],
+              dogId: props.dogId,
+            },
+            picture: picture,
+            cookies: cookies,
+          })
+        );
+      } else {
+        store.dispatch(
+          Actions.addCommentThunk({
+            comment: {
+              ...comment,
+              authorId: cookies[config.cookies.userId],
+              dogId: props.dogId,
+            },
+            cookies: cookies,
+          })
+        );
+      }
+      setComment(initComment);
+      setPicture(initPicture);
     }
     //props.redirectToComment(id);
   };
@@ -109,29 +113,63 @@ export default function CommentForm(props: any) {
   return (
     <Comment.Group className={classes.commentForm}>
       <Header as="h3" dividing className={classes.headerForm}>
-            Add Comment
-             {/*<Dropdown onClick={() => {
+        Add Comment
+        {/*<Dropdown onClick={() => {
               setAddFormVisible(!addFormVisible);
             }} />*/}
       </Header>
-     <Comment class="ui comments" className={classes.mainForm}>
-        <Grid container direction="row" spacing={3} alignContent="space-between">
+      <Comment class="ui comments" className={classes.mainForm}>
+        <Grid
+          container
+          direction="row"
+          spacing={3}
+          alignContent="space-between"
+        >
           <Grid item xs={8}>
             <Form reply>
-              <Form.TextArea required value={comment.text} name="text" onChange={inputsHandler}/>
-              <Comment.Text >{"City"}</Comment.Text>
-              <Form.Input required value={comment.location.city} name="city" onChange={inputArrayHandler}/>
+              <Form.TextArea
+                required
+                value={comment.text}
+                name="text"
+                onChange={inputsHandler}
+              />
+              <Comment.Text>{"City"}</Comment.Text>
+              <Form.Input
+                required
+                value={comment.location.city}
+                name="city"
+                onChange={inputArrayHandler}
+              />
               <Comment.Text>{"District"}</Comment.Text>
-              <Form.Input required value={comment.location.district} name="district" onChange={inputArrayHandler}/>
-              <Button as="label" htmlFor="file" primary type="button" icon="upload" content='Upload Image' size="medium" style={{width:"170px"}}>
-              </Button>
-              <input accept=".jpg, .jpeg, .png" type="file" id="file" style={{ display: "none" }} onChange={(
-                      file: React.ChangeEvent<{ value: unknown }>
-                    ) =>uploadImage(file)} />
+              <Form.Input
+                required
+                value={comment.location.district}
+                name="district"
+                onChange={inputArrayHandler}
+              />
               <Button
-                content='Add Comment'
-                labelPosition='left'
-                icon='add'
+                as="label"
+                htmlFor="file"
+                primary
+                type="button"
+                icon="upload"
+                content="Upload Image"
+                size="medium"
+                style={{ width: "170px" }}
+              ></Button>
+              <input
+                accept=".jpg, .jpeg, .png"
+                type="file"
+                id="file"
+                style={{ display: "none" }}
+                onChange={(file: React.ChangeEvent<{ value: unknown }>) =>
+                  uploadImage(file)
+                }
+              />
+              <Button
+                content="Add Comment"
+                labelPosition="left"
+                icon="add"
                 primary
                 onClick={() => {
                   addComment();

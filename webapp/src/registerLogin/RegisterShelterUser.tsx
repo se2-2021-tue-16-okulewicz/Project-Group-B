@@ -16,9 +16,7 @@ import { useHistory } from "react-router-dom";
 import { store } from "../app/store";
 import config from "../config/config";
 import { useCookies } from "react-cookie";
-import {
-  registerShelterUserThunk,
-} from "../app/actions";
+import { registerShelterUserThunk } from "../app/actions";
 import {
   isStringValidUsername,
   isStringValidEmail,
@@ -71,7 +69,7 @@ export default function RegisterShelterUser() {
     email: "",
     phoneNumber: "",
   });
-   
+
   // eslint-disable-next-line
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>

@@ -157,7 +157,7 @@ scheme.configureEdgeSidebar((builder) => {
 
 export default function Settings(props: any) {
   const [displayLoader, setDisplayLoader] = useState(true);
-  const loading = useSelector((state: State) => state.loading as boolean);// eslint-disable-next-line
+  const loading = useSelector((state: State) => state.loading as boolean); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const lastPage = useSelector((state: State) => state.dogsLastPage);
   const dogs = useSelector(

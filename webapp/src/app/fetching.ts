@@ -223,7 +223,6 @@ export async function deleteOneComment(
   dogId: Number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<undefined, undefined>> {
-
   return getResponse(
     axios.delete(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/comments/${commentId}`,
@@ -330,7 +329,7 @@ export async function addComment(
 
 export async function editComment(
   comment: ICommentWithIdAndAuthor,
-  cookies: { [name: string]: any },
+  cookies: { [name: string]: any }
 ): Promise<RequestResponse<ICommentWithIdAndAuthor, undefined>> {
   let formData = new FormData();
   const privateProperties = ["id", "picture", "author"];
@@ -344,12 +343,12 @@ export async function editComment(
     }),
     ""
   );
-  if (comment.picture && comment.picture.id === 0){
-  formData.append(
-    "picture",
-    new Blob([comment.picture.data], { type: comment.picture.fileType }),
-    comment.picture.fileName
-  );
+  if (comment.picture && comment.picture.id === 0) {
+    formData.append(
+      "picture",
+      new Blob([comment.picture.data], { type: comment.picture.fileType }),
+      comment.picture.fileName
+    );
   }
 
   return getResponse(

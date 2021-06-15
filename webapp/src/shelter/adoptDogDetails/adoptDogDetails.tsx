@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const AdoptDogDetails = (props: any) => {
   const history = useHistory();
-  const location = useLocation();// eslint-disable-next-line
+  const location = useLocation(); // eslint-disable-next-line
   const { path } = useRouteMatch();
   const shelterId = props.shelterId
     ? props.shelterId

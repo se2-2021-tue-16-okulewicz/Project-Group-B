@@ -16,7 +16,7 @@ export type Error = {
 };
 
 export type State = {
-  dogs: ILostDogWithPicture[] | any; 
+  dogs: ILostDogWithPicture[] | any;
   comments: ICommentWithIdAndAuthor[] | any;
   shelterdogs: IShelterDog[] | any;
   shelter: IShelter | any;

@@ -238,7 +238,7 @@ export const addCommentThunk = createAsyncThunk<
 
 export const editCommentThunk = createAsyncThunk<
   RequestResponse<ICommentWithIdAndAuthor, undefined>,
-  { comment: ICommentWithIdAndAuthor;  cookies: { [name: string]: any }},
+  { comment: ICommentWithIdAndAuthor; cookies: { [name: string]: any } },
   { rejectValue: RequestResponse<ICommentWithIdAndAuthor, undefined> }
 >(
   "EditComment",
@@ -253,7 +253,7 @@ export const editCommentThunk = createAsyncThunk<
     const response: RequestResponse<ICommentWithIdAndAuthor, undefined> =
       await Fetching.editComment(
         commentAndPictureAndCookies.comment,
-        commentAndPictureAndCookies.cookies,
+        commentAndPictureAndCookies.cookies
       );
 
     if (response.response.successful !== true) {

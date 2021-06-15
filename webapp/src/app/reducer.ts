@@ -198,10 +198,15 @@ export const reducer = createReducer(initState, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    const index = state.editedDog.comments.findIndex((el:ICommentWithIdAndAuthor) => el.id === (payload.payload.response.data as ICommentWithIdAndAuthor).id)
-    if(index < newState.editedDog.comments.length){
-        newState.editedDog.comments[index] = payload.payload.response.data as ICommentWithIdAndAuthor;}
-      
+    const index = state.editedDog.comments.findIndex(
+      (el: ICommentWithIdAndAuthor) =>
+        el.id === (payload.payload.response.data as ICommentWithIdAndAuthor).id
+    );
+    if (index < newState.editedDog.comments.length) {
+      newState.editedDog.comments[index] = payload.payload.response
+        .data as ICommentWithIdAndAuthor;
+    }
+
     return newState;
   },
   [Actions.editCommentThunk.pending.toString()]: (
@@ -538,7 +543,9 @@ export const reducer = createReducer(initState, {
     newState.editedDog.picture.data = (
       payload.payload.response.data as ILostDogWithPictureAndComments
     ).picture.data as string;
-    newState.comments = (payload.payload.response.data as ILostDogWithPictureAndComments).comments as ICommentWithIdAndAuthor[];
+    newState.comments = (
+      payload.payload.response.data as ILostDogWithPictureAndComments
+    ).comments as ICommentWithIdAndAuthor[];
     newState.dogsRequireRefresh = false;
     newState.settingsRequireRefresh = false;
     return newState;

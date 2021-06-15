@@ -15,9 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import { BehaviorsTypes } from "../dogEnums";
-import {
-  ILostDogWithPictureAndComments,
-} from "../dogInterfaces";
+import { ILostDogWithPictureAndComments } from "../dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
@@ -102,39 +100,42 @@ const DogDetails = (props: any) => {
   }, [pageRefresh]);
 
   useEffect(() => {
-    if (!pageRefresh && !dog) { 
-        setPageRefresh(true);
+    if (!pageRefresh && !dog) {
+      setPageRefresh(true);
     } // eslint-disable-next-line
   }, [dog]);
 
-  function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {  
+  function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {
     setAdd(false);
-    if(comment !== initCommentandAuthor){
+    if (comment !== initCommentandAuthor) {
       setOldComment(comments);
       setComment(initCommentandAuthor);
-    }
-    else
-    {
+    } else {
       setComment(comments);
       setOldComment(initCommentandAuthor);
     }
-  };
+  }
 
   function redirectToComment(id: number) {
     try {
-      store.dispatch(Actions.deleteOneCommentThunk({commentId:id, dogId:dogId, cookies:cookies}));
+      store.dispatch(
+        Actions.deleteOneCommentThunk({
+          commentId: id,
+          dogId: dogId,
+          cookies: cookies,
+        })
+      );
     } catch (err) {
       console.error("Failed to fetch the dog: ", err);
     } finally {
-
     }
-  };
+  }
 
   function cancelComment() {
     setComment(initCommentandAuthor);
     setOldComment(initCommentandAuthor);
     setAdd(true);
-};
+  }
 
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
@@ -399,16 +400,39 @@ const DogDetails = (props: any) => {
           </FormControl>
         </Grid>
       )}
-      {!pageRefresh && dog && dog.comments &&(
-        <Grid
-          item
-          xs={12}
-        >
-          {add && <CommentForm dogId={dogId} add={add}/> }
-          { comment.location.city !== ""  && <CommentEditForm dogId={dogId} comment={comment} cancelComment={()=>cancelComment()} update={()=>cancelComment()}/>}
-          { oldcomment.location.city !== ""  && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={()=>cancelComment()} update={()=>cancelComment()}/>}
-         <CommentsList comments={dog.comments} cancelComment={()=>{cancelComment();}}  redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToCommentEdit(comment);}}  redirectToComment={(id: number) => { redirectToComment(id); }}/>
-</Grid>)}
+      {!pageRefresh && dog && dog.comments && (
+        <Grid item xs={12}>
+          {add && <CommentForm dogId={dogId} add={add} />}
+          {comment.location.city !== "" && (
+            <CommentEditForm
+              dogId={dogId}
+              comment={comment}
+              cancelComment={() => cancelComment()}
+              update={() => cancelComment()}
+            />
+          )}
+          {oldcomment.location.city !== "" && (
+            <CommentEditForm
+              dogId={dogId}
+              comment={oldcomment}
+              cancelComment={() => cancelComment()}
+              update={() => cancelComment()}
+            />
+          )}
+          <CommentsList
+            comments={dog.comments}
+            cancelComment={() => {
+              cancelComment();
+            }}
+            redirectToCommentEdit={(comment: ICommentWithIdAndAuthor) => {
+              redirectToCommentEdit(comment);
+            }}
+            redirectToComment={(id: number) => {
+              redirectToComment(id);
+            }}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };
