@@ -18,6 +18,7 @@ import {
   genericPicture,
   initDogDetails,
   initLostDogCharacteristics,
+  initILostDogWithPictureAndComments,
   initPic,
   initPicture,
 } from "../components/dogs/dog/dogClasses";
@@ -27,6 +28,7 @@ import {
   IFilterSort,
   initFilterProps,
 } from "../components/helper/filtersInterface";
+import { ValidateFetchedDog } from "./validation/validation";
 
 export type Error = {
   hasError: boolean;
@@ -37,7 +39,7 @@ export type Error = {
 export type State = {
   status: string;
   dogs: ILostDogWithPicture[] | any;
-  currentDog: ILostDogWithPictureAndComments | null;
+  currentDog: ILostDogWithPictureAndComments | any;
   dogsLastPage: boolean;
   dogsRequireRefresh: boolean;
   loadingDogs: boolean;
@@ -56,6 +58,7 @@ export type State = {
 const init: State = {
   status: "",
   dogs: [],
+  //currentDog: initILostDogWithPictureAndComments,
   currentDog: null,
   dogsLastPage: false,
   dogsRequireRefresh: true,
@@ -240,6 +243,37 @@ export const reducer = createReducer(init, {
     return newState;
   },
 
+  [Actions.GetDogDetailsThunk.rejected.toString()]: (
+    state: State,
+    payload: PayloadAction<RequestResponse<undefined, undefined>>
+  ) => {
+    let newState = _.cloneDeep(state);
+    let errorResponse = payload.payload;
+    console.log("rejected");
+    newState.loading = false;
+    newState.error = {
+      hasError: true,
+      errorCode: errorResponse ? errorResponse.code : -1,
+      erorMessage: errorResponse ? errorResponse.response.message : "",
+    };
+    return newState;
+  },
+  [Actions.GetDogDetailsThunk.pending.toString()]: (
+    state: State,
+    payload: PayloadAction<
+    RequestResponse<ILostDogWithPictureAndComments, undefined>
+  >
+  ) => {
+    let newState = _.cloneDeep(state);
+    newState.currentDog = ValidateFetchedDog(
+    payload.payload.response.data as ILostDogWithPictureAndComments
+  );
+    newState.loading = true;
+    console.log("pending");
+    //newState.settingsRequireRefresh=true;
+    return newState;
+  },
+
   [Actions.GetDogDetailsThunk.fulfilled.toString()]: (
     state: State,
     payload: PayloadAction<
@@ -248,34 +282,22 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    console.log("Before setting the payload");
+    console.log("Fulfilled");
     console.log(payload.payload.response.data);
-    //newState.currentDog = payload.payload.response.data;  
-    console.log("after setting the payload");
-    return newState;
-  },
-  [Actions.GetDogDetailsThunk.pending.toString()]: (
-    state: State,
-    payload: PayloadAction<RequestResponse<null, undefined>>
-  ) => {
-    let newState = _.cloneDeep(state);
-    newState.loading = true;
-    return newState;
-  },
-  [Actions.GetDogDetailsThunk.rejected.toString()]: (
-    state: State,
-    payload: PayloadAction<RequestResponse<null, undefined>>
-  ) => {
-    //console.log("rejected: " + payload.payload.response.message);
-    let newState = _.cloneDeep(state);
-    let errorResponse = payload.payload;
-    newState.loading = false;
-    newState.error = {
-      hasError: true,
-      errorCode: errorResponse.code,
-      erorMessage: errorResponse.response.message,
-    };
 
+
+    newState.currentDog = ValidateFetchedDog(
+      payload.payload.response.data as ILostDogWithPictureAndComments
+    );
+    newState.currentDog.picture.data = (
+      payload.payload.response.data as ILostDogWithPictureAndComments
+    ).picture.data as string;
+
+
+    console.log("Fulfilled 2.0");
+
+    
+    newState.dogsRequireRefresh = false;
     return newState;
   },
 
