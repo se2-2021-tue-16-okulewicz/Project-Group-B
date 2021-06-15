@@ -42,7 +42,7 @@ import Bubble from "./Bubble";
 
 export default function DogDetails({ route, navigation }: any) {
   const { dog } = route.params;
-  
+
   const Authorization = useSelector(
     (state: State) => state.loginInformation?.token
   );
@@ -74,10 +74,7 @@ export default function DogDetails({ route, navigation }: any) {
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("/");
   }
 
-  const renderListItem = (
-    comment: ILostDogComment,
-    navigation: any
-  ) => (
+  const renderListItem = (comment: ILostDogComment, navigation: any) => (
     <View style={[styles.item]}>
       <Text>{comment.authorId}</Text>
       <Text>{comment.text}</Text>
