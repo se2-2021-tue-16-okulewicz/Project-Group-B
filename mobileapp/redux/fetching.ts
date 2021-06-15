@@ -10,6 +10,7 @@ import {
   IImage,
   ILostDog,
   ILostDogWithPicture,
+  ILostDogWithPictureAndComment,
   IPicture,
 } from "../components/dogs/dog/dogInterfaces";
 import { IRegisterRegularUserInformation } from "../components/register-login/loginRegisterInterfaces";
@@ -96,6 +97,22 @@ export async function fetchDogs(
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,
+      {
+        headers: {
+          Authorization: Authorization,
+        },
+      }
+    )
+  );
+}
+
+export async function GetDogDetails(
+  dogId: number,
+  Authorization: { [name: string]: any }
+): Promise<RequestResponse<ILostDogWithPictureAndComment, undefined>> {
+  return getResponse(
+    axios.get(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}`,
       {
         headers: {
           Authorization: Authorization,
