@@ -143,6 +143,7 @@ export default function ShelterListWithDogs(props: any) {
     page: config.defaultFilters.page,
     size: config.defaultFilters.size,
   });
+  const [edit, setEdit] =useState(false);
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
@@ -153,8 +154,16 @@ export default function ShelterListWithDogs(props: any) {
     history.push("/addShelterDog");
   };
   const onSettingsClicked = () => {
-    //store.dispatch(clearDogList());
-    //history.push("/settings");
+    // store.dispatch(clearDogList());
+    // history.push("/settings");
+  };
+  const onEditClicked = () => {
+    if(edit) {
+      setEdit(false);
+    } else {
+      setEdit(true);
+    }
+
   };
   const onLogOutClicked = () => {
     removeCookie(config.cookies.token, { path: "/" });
@@ -164,17 +173,23 @@ export default function ShelterListWithDogs(props: any) {
     history.push("/");
   };
 
-  function redirectToDogDetailsOrDelete(id: number) {
-    try {
-      store.dispatch(
-        Actions.deleteOneShelterDogThunk({
-          shelterId: cookies[config.cookies.userId],
-          dogId: id,
-          cookies: cookies,
-        }) //filters
-      );
-    } catch (err) {
-      console.error("Failed to fetch the dogs: ", err);
+  function redirectToDogDetailsOrEdit(id: number) {
+    if (edit) {
+      sessionStorage.setItem("dogId", JSON.stringify(id as number));
+      sessionStorage.removeItem("editDogFields");
+      props.redirectToDogDetailsOrEdit(id);
+    } else {
+      try {
+        store.dispatch(
+          Actions.deleteOneShelterDogThunk({
+            shelterId: cookies[config.cookies.userId],
+            dogId: id,
+            cookies: cookies,
+          }) //filters
+        );
+      } catch (err) {
+        console.error("Failed to fetch the dogs: ", err);
+      }
     }
   }
 
@@ -273,6 +288,14 @@ export default function ShelterListWithDogs(props: any) {
                 icon={<Pets />}
               />
               <BottomNavigationAction
+                disabled={false}
+                showLabel={true}
+                onClick={onEditClicked}
+                label={edit ? "Remove": "Edit"}
+                classes={{ label: classes.action, root: classes.action }}
+                icon={<Pets />}
+              />
+              <BottomNavigationAction
                 showLabel={true}
                 classes={{ label: classes.action, root: classes.action }}
                 disabled={true}
@@ -307,7 +330,7 @@ export default function ShelterListWithDogs(props: any) {
             dogs={shelterDogs}
             delete={true}
             redirectToDogDetailsOrDelete={(id: number) =>
-              redirectToDogDetailsOrDelete(id)
+              redirectToDogDetailsOrEdit(id)
             }
           />
         </InfiniteScroll>

@@ -27,7 +27,7 @@ import {
   BehaviorsTypes,
   BreedTypes,
 } from "../../dog/dogEnums";
-import { initLostDogWithPictureProps } from "../../dog/dogClasses";
+import { initLostDogWithPictureProps, initShelterDogWithPictureProps } from "../../dog/dogClasses";
 import { ILostDog, IPicture, ILostDogWithPicture, IShelterDog, IShelterDogWithPicture } from "../../dog/dogInterfaces";
 import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
@@ -253,7 +253,6 @@ const EditShelterDogDetails = (props: any) => {
 
   ///////////////////////////////////////////////////////////
   function updateShelterDog(dog: IShelterDog, picture: IPicture) {
-    if (picture) {
       store.dispatch(
         Actions.updateShelterDogThunk({
           shelterId: cookies[config.cookies.userId],
@@ -262,15 +261,6 @@ const EditShelterDogDetails = (props: any) => {
           cookies: cookies,
         }) //filters
       );
-    } else {
-      store.dispatch(
-        Actions.updateShelterDogThunk({
-          dog: dog,
-          cookies: cookies,
-          picture: picture,
-        }) //filters
-      );
-    }
   }
 
   function markDogAsFound(dogId: Number) {
@@ -575,7 +565,7 @@ const EditShelterDogDetails = (props: any) => {
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
-              <Button
+              {/* <Button
                 data-testid="submit-button"
                 variant="contained"
                 onClick={() => onMarkDogClicked()}
@@ -587,7 +577,7 @@ const EditShelterDogDetails = (props: any) => {
                     ? "Dog was found!"
                     : "Mark Dog as Found"
                   : "Dog not fetched"}
-              </Button>
+              </Button> */}
             </FormControl>
             <FormControl className={classes.formControl}>
               <Button
@@ -617,7 +607,4 @@ const EditShelterDogDetails = (props: any) => {
 };
 
 export default EditShelterDogDetails;
-function initShelterDogWithPictureProps<T>(initShelterDogWithPictureProps: any): [any, any] {
-  throw new Error("Function not implemented.");
-}
 

@@ -172,7 +172,7 @@ export const addDogThunk = createAsyncThunk<
     return response as RequestResponse<ILostDogWithPicture, undefined>;
   }
 );
-
+//////////////////////////////////////////////////
 export const addShelterDogThunk = createAsyncThunk<
   RequestResponse<IShelterDogWithPicture, undefined>,
   {
@@ -458,3 +458,45 @@ export const clearRedirect = createAction("clearRedirect");
 export const clearDogList = createAction("clearDogList");
 export const startRefreshing = createAction("startRefreshing");
 export const finishRefreshing = createAction("finishRefreshing");
+
+// export function updateShelterDogThunk(arg0: { shelterId: any; dog: IShelterDog; picture: IPicture; cookies: { [name: string]: any; }; }): any {
+//   throw new Error("Function not implemented.");
+// }
+
+export const updateShelterDogThunk = createAsyncThunk<
+  RequestResponse<IShelterDogWithPicture, undefined>,
+  {
+    shelterId: number;
+    dog: IShelterDog;
+    picture: IPicture;
+    cookies: { [name: string]: any };
+  },
+  { rejectValue: RequestResponse<IShelterDogWithPicture, undefined> }
+>(
+  "UpdateShelterDog",
+  async (
+    dogAndPictureAndCookies: {
+      shelterId: number;
+      dog: IShelterDog;
+      picture: IPicture;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<IShelterDogWithPicture, undefined> =
+    await Fetching.addShelterDog(
+      dogAndPictureAndCookies.shelterId,
+      dogAndPictureAndCookies.dog,
+      dogAndPictureAndCookies.picture,
+      dogAndPictureAndCookies.cookies
+    );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(
+        response as RequestResponse<IShelterDogWithPicture, undefined>
+      );
+    }
+
+    return response as RequestResponse<IShelterDogWithPicture, undefined>;
+  }
+);

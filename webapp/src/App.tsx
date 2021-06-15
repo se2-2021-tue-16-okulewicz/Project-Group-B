@@ -24,6 +24,7 @@ import RegisterRegularUser from "./registerLogin/RegisterRegularUser";
 import RegisterShelterUser from "./registerLogin/RegisterShelterUser";
 import { AdoptDogDetails } from "./shelter/adoptDogDetails/adoptDogDetails";
 import ListWithAdoptDogs from "./shelter/adoptDogList/listWithAdoptDogs";
+import EditShelterDogDetails from "./shelter/editShelterDogDetails/editShelterDogDetails";
 import RegisterShelterDogForm from "./shelter/registerShelterDog/registerShelterDog";
 import ShelterListWithDogs from "./shelter/shelterDogsList/shelterListWithDogs";
 import ListWithShelters from "./shelter/sheltersList/listWithShelters";
@@ -171,6 +172,10 @@ function Layout() {
         </Route>
         <Route path={`/edit/:id`}>
           <EditDogDetails dogId={dogId} />
+          <Footer />
+        </Route>
+        <Route path={`/shelteredit/:id`}>
+          <EditShelterDogDetails dogId={dogId} />
           <Footer />
         </Route>
         <Route path={`/dog/:id`}>
