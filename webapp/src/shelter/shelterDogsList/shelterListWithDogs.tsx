@@ -173,11 +173,11 @@ export default function ShelterListWithDogs(props: any) {
     history.push("/");
   };
 
-  function redirectToDogDetailsOrEdit(id: number) {
+  function redirectToShelterDogEditOrDelete(id: number) {
     if (edit) {
       sessionStorage.setItem("dogId", JSON.stringify(id as number));
       sessionStorage.removeItem("editDogFields");
-      props.redirectToDogDetailsOrEdit(id);
+      props.redirectToShelterDogEditOrDelete(id);
     } else {
       try {
         store.dispatch(
@@ -330,7 +330,7 @@ export default function ShelterListWithDogs(props: any) {
             dogs={shelterDogs}
             delete={true}
             redirectToDogDetailsOrDelete={(id: number) =>
-              redirectToDogDetailsOrEdit(id)
+              redirectToShelterDogEditOrDelete(id)
             }
           />
         </InfiniteScroll>

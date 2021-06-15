@@ -81,6 +81,12 @@ function Layout() {
     history.push(`/dog/${id}`);
   }
 
+  function redirectToShelterDogEditOrDelete(id: number) {
+    setDogId(id);
+    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    history.push(`/shelteredit/${id}`);
+  }
+
   function redirectToShelterDetails(id: number) {
     history.push(`/shelter/${id}`);
   }
@@ -129,8 +135,8 @@ function Layout() {
         </Route>
         <Route path="/shelterdogs">
           <ShelterListWithDogs
-            redirectToDogDetailsOrEdit={(id: number) =>
-              redirectToDogDetails(id)
+            redirectToShelterDogEditOrDelete={(id: number) =>
+              redirectToShelterDogEditOrDelete(id)
             }
           />
         </Route>

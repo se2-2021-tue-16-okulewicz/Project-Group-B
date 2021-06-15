@@ -14,9 +14,7 @@ import {
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import InputLabel from "@material-ui/core/InputLabel";
-import DateFnsUtils from "@date-io/date-fns";
 import {
   ColorTypes,
   HairTypes,
@@ -86,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const EditShelterDogDetails = (props: any) => {
   const dogId = props.dogId
     ? props.dogId
-    : JSON.parse(sessionStorage.getItem("dogId") as string);
+    : JSON.parse(sessionStorage.getItem("shelterDogId") as string);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -98,7 +96,7 @@ const EditShelterDogDetails = (props: any) => {
   const refreshRequired = useSelector(
     (state: State) => state.settingsRequireRefresh as boolean
   );
-  const [temp, setTemp] = useState<ILostDogWithPicture>(
+  const [temp, setTemp] = useState<IShelterDogWithPicture>(
     JSON.parse(sessionStorage.getItem("editDogFields") as string)
   );
   var isInputNotNull = temp !== null;
@@ -106,14 +104,12 @@ const EditShelterDogDetails = (props: any) => {
     initShelterDogWithPictureProps
   );
   const [picture, setPicture] = useState<IPicture>();
-
-  //console.log(temp);
-
+  
   useEffect(() => {
     if (pageRefresh) {
       if (temp && temp.id != dogId) {
         sessionStorage.removeItem("editDogFields");
-        setTemp(initLostDogWithPictureProps);
+        setTemp(initShelterDogWithPictureProps);
         isInputNotNull = false;
       }
       if (isInputNotNull) {
@@ -126,7 +122,8 @@ const EditShelterDogDetails = (props: any) => {
       }
       if (!editedDog || (editedDog && editedDog.id !== dogId)) {
         store.dispatch(
-          Actions.fetchOneDogThunk({
+          Actions.fetchOneShelterDogThunk({
+            shelterId: cookies[config.cookies.userId] as number,
             id: dogId as number,
             cookies: cookies,
           })
@@ -182,20 +179,6 @@ const EditShelterDogDetails = (props: any) => {
     sessionStorage.setItem("editDogFields", JSON.stringify(newField));
   };
 
-  function calendarHandler(date: MaterialUiPickersDate): void {
-    let newField = { ...editDogFields, dateLost: date as Date };
-    setEditDogFields(newField);
-    sessionStorage.setItem("editDogFields", JSON.stringify(newField));
-  }
-
-  // const inputArrayHandler = (e: { target: { name: any; value: any } }) => {
-  //   let newField = {
-  //     ...editDogFields,
-  //     location: { ...editDogFields.location, [e.target.name]: e.target.value },
-  //   };
-  //   setEditDogFields(newField);
-  //   sessionStorage.setItem("editDogFields", JSON.stringify(newField));
-  // };
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
@@ -215,20 +198,6 @@ const EditShelterDogDetails = (props: any) => {
     sessionStorage.clear();
   }
 
-  const onMarkDogClicked = () => {
-    try {
-      markDogAsFound(dogId);
-      store.dispatch(Actions.clearDogList());
-    } catch (err) {
-      console.error("Failed to fetch the dog: ", err);
-    } finally {
-      store.dispatch(Actions.startRefreshing());
-      clearStorage();
-      history.push("/settings");
-      history.go(0);
-    }
-  };
-
   const onSubmitEditClicked = () => {
     try {
       updateShelterDog(editDogFields, picture as IPicture);
@@ -238,7 +207,7 @@ const EditShelterDogDetails = (props: any) => {
     } finally {
       store.dispatch(Actions.startRefreshing);
       clearStorage();
-      history.push("/settings");
+      history.push("/shelterdogs");
       history.go(0);
     }
   };
@@ -246,12 +215,11 @@ const EditShelterDogDetails = (props: any) => {
   const onCancelClick = () => {
     store.dispatch(Actions.clearDogList());
     clearStorage();
-    history.push("/settings");
+    history.push("/shelterdogs");
     window.location.reload();
     //history.go(0);
   };
 
-  ///////////////////////////////////////////////////////////
   function updateShelterDog(dog: IShelterDog, picture: IPicture) {
       store.dispatch(
         Actions.updateShelterDogThunk({
@@ -263,14 +231,14 @@ const EditShelterDogDetails = (props: any) => {
       );
   }
 
-  function markDogAsFound(dogId: Number) {
-    store.dispatch(
-      Actions.markDogAsFoundThunk({
-        dogId: dogId as number,
-        cookies: cookies,
-      }) //filters
-    );
-  }
+  // function markDogAsFound(dogId: Number) {
+  //   store.dispatch(
+  //     Actions.markDogAsFoundThunk({
+  //       dogId: dogId as number,
+  //       cookies: cookies,
+  //     }) //filters
+  //   );
+  // }
   const handlePicturesChange = (event: any) => {
     if (event) {
       (event as File).arrayBuffer().then((fileBuffer) => {
