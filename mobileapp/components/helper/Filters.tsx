@@ -50,6 +50,9 @@ export default function Filters(props: any) {
   );
 
   function parseSort(sort: string) {
+    if(sort ===","){
+      return {type: new String, direction: new String} as ISort;
+    }
     var res = sort.split(",");
     return { type: res[0], direction: res[1] } as ISort;
   }
@@ -95,7 +98,6 @@ export default function Filters(props: any) {
     let newFilters = { ...filters, sort: tmpSort };
     setFilters(newFilters as IFilterSort);
     store.dispatch(Actions.setFilters(newFilters as IFilterSort));
-    //validateFields(newCharacteristics);
   }
   function handleFilterChange({ name, value }: any) {
     let newFilter = { ...filter, [name as string]: value };
