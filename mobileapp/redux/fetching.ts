@@ -87,13 +87,18 @@ export async function fetchDogs(
                 .join("&");
               return subFilters ? subFilters : "";
             } else {
+              if(filterName==="sort"){
+                const value = String(filters[filterName]).trim();
+                if(value==="," || value.includes("null")){
+                  return "";
+                }
+              }
               const value = String(filters[filterName]).trim();
               return value && value != "null" ? `${filterName}=${value}` : "";
             }
           })
           .filter((x) => x !== "")
           .join("&");
-
   return getResponse(
     axios.get(
       `http://${config.backend.ip}:${config.backend.port}/lostdogs?${filtersString}`,

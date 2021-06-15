@@ -81,7 +81,6 @@ export const reducer = createReducer(init, {
   [Actions.reset.type]: (state: State) => {
     let newState = init;
     newState.status = "reset";
-    console.log(newState.error.erorMessage);
     return newState;
   },
 
@@ -127,8 +126,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.dogDetails = payload.payload;
-    //newState.currentDog?.picture = payload.payload;
-    //newState.picture = payload.payload;
     return newState;
   },
 
@@ -138,9 +135,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.dogBehaviours = payload.payload;
-    //newState.currentDog?.picture = payload.payload;
-    //newState.picture = payload.payload;
-    //console.log(newState.image);
     return newState;
   },
 
@@ -150,9 +144,6 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.filters = payload.payload;
-    //newState.currentDog?.picture = payload.payload;
-    //newState.picture = payload.payload;
-    //console.log(newState.image);
     return newState;
   },
 
@@ -163,9 +154,6 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.dogsRequireRefresh = payload.payload;
     newState.dogs = [];
-    //newState.currentDog?.picture = payload.payload;
-    //newState.picture = payload.payload;
-    //console.log(newState.image);
     return newState;
   },
 
@@ -175,7 +163,9 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
+    newState.status="added dog";
     newState.dogsRequireRefresh = true;
+    
     return newState;
   },
   [Actions.addDogThunk.pending.toString()]: (
@@ -183,15 +173,12 @@ export const reducer = createReducer(init, {
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
     let newState = _.cloneDeep(state);
-    //newState.dogs = [];
-    //newState.loading = true;
     return newState;
   },
   [Actions.addDogThunk.rejected.toString()]: (
     state: State,
     payload: PayloadAction<RequestResponse<null, undefined>>
   ) => {
-    // console.log("rejected: " + payload.payload.response.message);
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
     newState.loading = false;
@@ -247,7 +234,6 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     newState.loadingDogs = true;
     newState.dogsRequireRefresh = false;
-    newState.status = "";
     return newState;
   },
 
@@ -266,14 +252,39 @@ export const reducer = createReducer(init, {
       ["meta", "arg", "filters", "size"],
       config.defaultFilters.size
     );
+    console.log(newState.status)
+    if(newState.status==="added dog"){
+      newState.status =""
+      newState.dogs = []
+    }
 
     // dogs obtained from server are appended to current dogs
     // the .slice protects dogs list enormous growth - when fetch
     // is called multiple times (by an error)
 
     //newState.cars = state.cars.concat(action.payload.body);
-    newState.dogs = state.dogs.concat(payload.payload.response.data);
-    console.log(newState.dogs.length);
+    let newDogs: ILostDogWithPicture[] | null = payload.payload.response.data;
+
+    let norepeatIds: number[] = [];
+    let newnorepeatIds: number[] = [];
+    let length = newDogs?.length;
+    let oldLength = state.dogs.length;
+    for(let i = 0; i < oldLength; i++){
+      norepeatIds.push(state.dogs[i].id);
+    }
+    for(let i = 0; i < length; i++){
+      if(!norepeatIds.includes(newDogs[i].id)){
+        newnorepeatIds.push(newDogs[i].id);
+        norepeatIds.push(newDogs[i].id);
+      }
+    }
+    
+
+    let dogs = state.dogs.concat(payload.payload.response.data);
+    dogs = dogs.filter(dog  => newnorepeatIds.includes(dog.id));
+  
+    
+    newState.dogs = state.dogs.concat(dogs);
     newState.loadingDogs = false;
     // if response is shorter than default size - it means end is reached.
     newState.dogsLastPage = newState.dogs.length < pageSize;
