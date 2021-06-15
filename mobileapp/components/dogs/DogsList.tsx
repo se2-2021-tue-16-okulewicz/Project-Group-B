@@ -17,7 +17,11 @@ import {
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
-import { ILostDog, ILostDogWithPicture, ILostDogWithPictureAndComment } from "./dog/dogInterfaces";
+import {
+  ILostDog,
+  ILostDogWithPicture,
+  ILostDogWithPictureAndComment,
+} from "./dog/dogInterfaces";
 import { useSelector } from "react-redux";
 import { State } from "../../redux/reducer";
 import * as Actions from "../../redux/actions";
@@ -121,16 +125,16 @@ export default function DogsList({ navigation }: any) {
 
   const redirectToDetails = (dog: ILostDogWithPicture) => {
     navigation.navigate("Dog details", {
-      dog: dog}
-    );
+      dog: dog,
+    });
   };
 
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={[styles.item]}>
-      <TouchableOpacity 
-      onPress={() => {
-        redirectToDetails(dog);
-      }}
+      <TouchableOpacity
+        onPress={() => {
+          redirectToDetails(dog);
+        }}
       >
         <Text style={styles.title}>{dog.name}</Text>
         <View style={[{ flexDirection: "row" }]}>
@@ -168,7 +172,7 @@ export default function DogsList({ navigation }: any) {
               <Text style={styles.found}>Found</Text>
             )}
           </View>
-          
+
           {/* <View style={{ flex: 2, marginLeft: 15 }}>            
             <TouchableOpacity
                   style={{
@@ -322,9 +326,9 @@ export default function DogsList({ navigation }: any) {
 
 const styles = StyleSheet.create({
   textContainer: {
-    backgroundColor: 'white', 
-    borderRadius: 10, 
-    alignSelf: 'flex-start',
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignSelf: "flex-start",
     marginLeft: 20,
     marginRight: 20,
     marginTop: 5,
@@ -345,22 +349,22 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   centeredView2: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   container: {
     flex: 1,

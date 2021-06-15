@@ -37,8 +37,8 @@ import Bubble from "./Bubble";
 
 // import DatePicker from 'react-native-datepicker';
 
-export default function DogDetails({route, navigation}: any) {
-  const {dog} = route.params;
+export default function DogDetails({ route, navigation }: any) {
+  const { dog } = route.params;
   const [scroll, setScroll] = useState<boolean>(true);
 
   function convertDate(inputFormat: string) {
@@ -48,10 +48,9 @@ export default function DogDetails({route, navigation}: any) {
     var d = new Date(inputFormat);
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("/");
   }
-  
+
   return (
     <View style={{ backgroundColor: "#ffffff", borderRadius: 5 }}>
-      
       {/* <View style={{ marginBottom: "20%" }}></View> */}
       {/* <Image source={{ uri: image }} style={{ width: 200, height: 200 }} /> */}
       <ScrollView
@@ -61,32 +60,29 @@ export default function DogDetails({route, navigation}: any) {
         keyboardShouldPersistTaps="handled"
       >
         <KeyboardAvoidingView>
-        <View style={[styles.row, { height: 300, padding: "1%" }]}>
-        <View style={{ flex: 2, padding: 10,}}>
-          <Image
-            style={{ width: "100%", height: "100%", borderRadius: 0 }}
-            source={{
-              uri: `data:${dog.picture.fileType};base64,${dog.picture.data}`,
-            }}
+          <View style={[styles.row, { height: 300, padding: "1%" }]}>
+            <View style={{ flex: 2, padding: 10 }}>
+              <Image
+                style={{ width: "100%", height: "100%", borderRadius: 0 }}
+                source={{
+                  uri: `data:${dog.picture.fileType};base64,${dog.picture.data}`,
+                }}
+              />
+            </View>
+          </View>
+          <TextField value={dog.location.city} placeholder="City" />
+          <TextField value={dog.location.district} placeholder="District" />
+          <TextField
+            value={convertDate(dog.dateLost)}
+            placeholder="Was lost on"
           />
-        </View>
-      </View>
-      <TextField value={dog.location.city} placeholder="City" />
-      <TextField value={dog.location.district} placeholder="District" />
-      <TextField value={convertDate(dog.dateLost)} placeholder="Was lost on" />
           <View style={styles.row}>
             <View style={{ width: "62%", marginRight: "5%" }}>
-              <TextField
-                value={dog.name}
-                placeholder="Name"
-              ></TextField>
+              <TextField value={dog.name} placeholder="Name"></TextField>
             </View>
 
             <View style={{ width: "20%" }}>
-              <TextField
-                value={dog.age}
-                placeholder="Age"
-              ></TextField>
+              <TextField value={dog.age} placeholder="Age"></TextField>
             </View>
           </View>
 
@@ -96,10 +92,7 @@ export default function DogDetails({route, navigation}: any) {
           <TextField value={dog.hairLength} placeholder="Hair" />
           <TextField value={dog.tailLength} placeholder="Tail" />
           <TextField value={dog.earsType} placeholder="Ears" />
-          <TextField
-            value={dog.specialMark}
-            placeholder="Special mark"
-          />
+          <TextField value={dog.specialMark} placeholder="Special mark" />
           <Text style={{ fontSize: 15, marginLeft: "1%", color: "#006aff" }}>
             Behaviour
           </Text>

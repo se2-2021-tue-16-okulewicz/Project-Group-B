@@ -4,7 +4,7 @@ import DogsStack from "./DogsStack";
 
 export default class DogsScreen extends React.Component {
   render() {
-    return <DogsStack></DogsStack>
+    return <DogsStack></DogsStack>;
     // return <DogsList></DogsList>;
   }
 }
