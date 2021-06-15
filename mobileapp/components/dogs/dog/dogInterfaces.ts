@@ -14,7 +14,7 @@ export interface IPicture {
   id: number;
   fileName: string;
   fileType: string;
-  data: ArrayBuffer | string;
+  data: ArrayBuffer| string;
   //data: string;
 }
 

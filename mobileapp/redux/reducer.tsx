@@ -250,6 +250,7 @@ export const reducer = createReducer(init, {
     let newState = _.cloneDeep(state);
     let errorResponse = payload.payload;
     console.log("rejected");
+    console.log(errorResponse);
     newState.loading = false;
     newState.error = {
       hasError: true,
@@ -263,7 +264,7 @@ export const reducer = createReducer(init, {
     payload: PayloadAction<
     RequestResponse<ILostDogWithPictureAndComments, undefined>
   >
-  ) => {
+  ) => {    
     let newState = _.cloneDeep(state);
     newState.currentDog = ValidateFetchedDog(
     payload.payload.response.data as ILostDogWithPictureAndComments
