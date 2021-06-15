@@ -68,7 +68,7 @@ export default function DogsList({ navigation }: any) {
 
   //Fetching dogs at the beginning
   React.useEffect(() => {
-    if (refreshRequired ) {
+    if (refreshRequired) {
       // fetch and append page 0
       store.dispatch(
         Actions.fetchDogsThunk({
