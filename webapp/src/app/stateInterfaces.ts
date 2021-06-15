@@ -1,6 +1,8 @@
 import { IContactInfo } from "../contactInfo/contactInfoInterface";
+import { ICommentWithIdAndAuthor } from "../dog/dogComments/commentsInterfaces";
 import {
   ILostDogWithPicture,
+  ILostDogWithPictureAndComments,
   IShelterDog,
   IShelterDogWithPicture,
 } from "../dog/dogInterfaces";
@@ -13,14 +15,13 @@ export type Error = {
   erorMessage: string;
 };
 
-/*TODO: change any in the State*/
-
 export type State = {
-  dogs: ILostDogWithPicture[] | any; //if these are not any, the clear actions throw an error (only for dogs with pictures)
+  dogs: ILostDogWithPicture[] | any;
+  comments: ICommentWithIdAndAuthor[] | any;
   shelterdogs: IShelterDog[] | any;
   shelter: IShelter | any;
   shelters: IShelter[] | any;
-  editedDog: ILostDogWithPicture | any; //
+  editedDog: ILostDogWithPictureAndComments | any; //
   shelterDog: IShelterDogWithPicture | any;
   dogsLastPage: boolean | null;
   dogsRequireRefresh: boolean;
@@ -37,6 +38,7 @@ export const initState: State = {
   dogs: [],
   shelters: [],
   shelterdogs: [],
+  comments: [],
   editedDog: null,
   shelterDog: null,
   shelter: null,

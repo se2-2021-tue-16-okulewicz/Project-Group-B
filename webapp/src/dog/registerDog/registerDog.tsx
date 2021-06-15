@@ -35,7 +35,6 @@ import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import { ValidateFetchedDog } from "../../utilityComponents/validation";
 import ImageUpload from "../../commonComponents/imageUploadForm";
 import { useSelector } from "react-redux";
 import { State } from "../../app/stateInterfaces";
@@ -76,7 +75,7 @@ export default function RegisterDogForm(props: any) {
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  let isInputNotNull = sessionStorage.getItem("lostDogFields") != null;
+  let isInputNotNull = sessionStorage.getItem("lostDogFields") !== null;
   const [lostDogFields, setLostDogFields] = useState<ILostDog>(
     isInputNotNull
       ? JSON.parse(sessionStorage.getItem("lostDogFields") as string)
@@ -88,20 +87,29 @@ export default function RegisterDogForm(props: any) {
   sessionStorage.setItem("lostDogFields", JSON.stringify(lostDogFields));
   const [picture, setPicture] = useState<IPicture>(initPicture);
   const [submitted, setSubmitted] = useState(false);
+  const loading = useSelector((state: State) => state.loading as boolean);
+  const correct = useSelector(
+    (state: State) => state.error.erorMessage as string
+  );
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    if (refreshRequired && submitted) {
+    if (correct) {
+      setMessage(correct);
+    }
+    // eslint-disable-next-line
+  }, [correct]);
+
+  useEffect(() => {
+    if (refreshRequired && !loading && submitted) {
       store.dispatch(Actions.clearDogList());
       clearStorage();
-      setSubmitted(false);
+      //setSubmitted(false);
       history.push("/dogs");
       history.go(0);
     }
-    if (!refreshRequired && submitted) {
-      setSubmitted(false);
-    }
     // eslint-disable-next-line
-  }, [refreshRequired]);
+  }, [refreshRequired, loading, submitted]);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
     let newField = { ...lostDogFields, [e.target.name]: e.target.value };
@@ -123,6 +131,7 @@ export default function RegisterDogForm(props: any) {
     setLostDogFields(newField);
     sessionStorage.setItem("inputField", JSON.stringify(newField));
   };
+
   const selectsHandler = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
@@ -142,11 +151,12 @@ export default function RegisterDogForm(props: any) {
 
   const onSubmitClicked = () => {
     try {
+      setSubmitted(true);
       registerDog(lostDogFields, picture);
     } catch (err) {
       console.error("Failed to save the dog: ", err);
     } finally {
-      setSubmitted(true);
+      //Actions.startRefreshing();
     }
   };
 
@@ -154,6 +164,7 @@ export default function RegisterDogForm(props: any) {
     clearStorage();
     store.dispatch(Actions.clearDogList());
     history.push("/dogs");
+    history.go(0);
   };
 
   function registerDog(dog: ILostDog, picture: IPicture) {
@@ -206,6 +217,7 @@ export default function RegisterDogForm(props: any) {
               value={lostDogFields.name}
               onChange={inputsHandler}
               required
+              error={lostDogFields.name === "" && message !== ""}
             />
           </FormControl>
           <FormControl className={classes.formControl}>
@@ -244,6 +256,7 @@ export default function RegisterDogForm(props: any) {
                   <InputAdornment position="end">Years</InputAdornment>
                 ),
               }}
+              error={!lostDogFields.age && message !== ""}
               variant="outlined"
             />
           </FormControl>
@@ -258,6 +271,7 @@ export default function RegisterDogForm(props: any) {
               name="color"
               value={lostDogFields.color}
               onChange={selectsHandler}
+              error={!lostDogFields.color && message !== ""}
               displayEmpty
             >
               <option key={"color-key"} aria-label="None" value="" />
@@ -280,6 +294,7 @@ export default function RegisterDogForm(props: any) {
               value={lostDogFields.hairLength}
               name="hairLength"
               onChange={selectsHandler}
+              error={!lostDogFields.hairLength && message !== ""}
               displayEmpty
             >
               <option key={"hair-type"} aria-label="None" value="" />
@@ -302,6 +317,7 @@ export default function RegisterDogForm(props: any) {
               name="size"
               value={lostDogFields.size}
               onChange={selectsHandler}
+              error={!lostDogFields.size && message !== ""}
               displayEmpty
             >
               <option key={"size-type"} aria-label="None" value="" />
@@ -323,6 +339,7 @@ export default function RegisterDogForm(props: any) {
               label="ears"
               name="earsType"
               value={lostDogFields.earsType}
+              error={!lostDogFields.earsType && message !== ""}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -346,6 +363,7 @@ export default function RegisterDogForm(props: any) {
               name="tailLength"
               value={lostDogFields.tailLength}
               onChange={selectsHandler}
+              error={!lostDogFields.tailLength && message !== ""}
               displayEmpty
             >
               <option key={"tail-type"} aria-label="None" value="" />
@@ -368,6 +386,7 @@ export default function RegisterDogForm(props: any) {
               name="specialMark"
               value={lostDogFields.specialMark}
               onChange={selectsHandler}
+              error={!lostDogFields.specialMark && message !== ""}
               displayEmpty
             >
               <option key={"mark-type"} aria-label="None" value="" />
@@ -389,6 +408,7 @@ export default function RegisterDogForm(props: any) {
               label="breed "
               name="breed"
               value={lostDogFields.breed}
+              error={!lostDogFields.breed && message !== ""}
               onChange={selectsHandler}
               displayEmpty
             >
@@ -422,6 +442,7 @@ export default function RegisterDogForm(props: any) {
               format="yyyy-MM-dd"
               id="date-picker-inline"
               value={lostDogFields.dateLost}
+              error={!lostDogFields.dateLost && message !== ""}
               maxDate={new Date()}
               name="dateLost"
               onChange={(date: any) => calendarHandler(date)}
@@ -433,6 +454,7 @@ export default function RegisterDogForm(props: any) {
               name="city"
               value={lostDogFields.location.city}
               onChange={inputArrayHandler}
+              error={!lostDogFields.location.city && message !== ""}
               variant="outlined"
             />
           </FormControl>
@@ -441,6 +463,7 @@ export default function RegisterDogForm(props: any) {
               label="District"
               name="district"
               value={lostDogFields.location.district}
+              error={!lostDogFields.location.district && message !== ""}
               onChange={inputArrayHandler}
               variant="outlined"
             />
@@ -455,6 +478,7 @@ export default function RegisterDogForm(props: any) {
               value={lostDogFields.behaviors}
               onChange={selectsHandler}
               input={<OutlinedInput label="Behavior" />}
+              error={lostDogFields.behaviors.length < 1 && message !== ""}
               displayEmpty
               renderValue={(selected: any) => (
                 <div className={classes.chips}>

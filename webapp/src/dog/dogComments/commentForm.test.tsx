@@ -4,13 +4,14 @@
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act, createRenderer } from "react-dom/test-utils";
-import DogDetails from "./dogDetails";
+import { act } from "react-dom/test-utils";
 import { isNull } from "lodash";
-import { Button } from "@material-ui/core";
 import { store } from "../../app/store";
 import { Provider } from "react-redux";
-import { Route, BrowserRouter as Router, useHistory } from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
+import { initCommentandAuthor } from "./commentsClasses";
+import CommentsList from "./commentsList";
+import CommentForm from "./commentForm";
 
 let container: HTMLDivElement | null = null;
 beforeEach(() => {
@@ -33,7 +34,7 @@ it("Rendered register form button", () => {
     render(
       <Provider store={store}>
         <Router>
-          <Route path={`/dog/0`} children={<DogDetails dogId={0} />} />
+          <Route path={`/dog/0`} children={<CommentForm dogId={0} />} />
         </Router>
       </Provider>,
       container
