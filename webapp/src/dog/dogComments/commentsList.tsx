@@ -98,16 +98,40 @@ export default function CommentsList(props: any) {
                     "."}
                 </Comment.Text>
                 <Comment.Actions>
-                  <Comment.Action active={comment.authorId ==  cookies[config.cookies.userId]} onClick={() => {
-                    if (comment.authorId == cookies[config.cookies.userId]) {redirectToComment(comment.id as number);}
-                  }}>Delete</Comment.Action>
-                  <Comment.Action active={comment.authorId ==   cookies[config.cookies.userId]} onClick={() => {
-                    if (comment.authorId == cookies[config.cookies.userId]){redirectToCommentEdit(comment as ICommentWithIdAndAuthor);}
-                  }}>Edit</Comment.Action>
-                  <Comment.Action active={true} onClick={() => {
-                    window.scrollTo(window.innerWidth,window.innerHeight + 5);
-                    props.cancelComment();
-                  }}>Reply</Comment.Action>
+                  <Comment.Action
+                    active={comment.authorId == cookies[config.cookies.userId]}
+                    onClick={() => {
+                      if (comment.authorId == cookies[config.cookies.userId]) {
+                        redirectToComment(comment.id as number);
+                      }
+                    }}
+                  >
+                    Delete
+                  </Comment.Action>
+                  <Comment.Action
+                    active={comment.authorId == cookies[config.cookies.userId]}
+                    onClick={() => {
+                      if (comment.authorId == cookies[config.cookies.userId]) {
+                        redirectToCommentEdit(
+                          comment as ICommentWithIdAndAuthor
+                        );
+                      }
+                    }}
+                  >
+                    Edit
+                  </Comment.Action>
+                  <Comment.Action
+                    active={true}
+                    onClick={() => {
+                      window.scrollTo(
+                        window.innerWidth,
+                        window.innerHeight + 5
+                      );
+                      props.cancelComment();
+                    }}
+                  >
+                    Reply
+                  </Comment.Action>
                 </Comment.Actions>
               </Comment.Content>
             </Grid>

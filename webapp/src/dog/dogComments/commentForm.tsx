@@ -113,7 +113,7 @@ export default function CommentForm(props: any) {
   return (
     <Comment.Group className={classes.commentForm}>
       <Header as="h3" dividing className={classes.headerForm}>
-            Add Comment
+        Add Comment
       </Header>
       <Comment class="ui comments" className={classes.mainForm}>
         <Grid
@@ -124,16 +124,42 @@ export default function CommentForm(props: any) {
         >
           <Grid item xs={8}>
             <Form reply>
-              <Form.TextArea value={comment.text} name="text" onChange={inputsHandler}/>
-              <Comment.Text >{"City"}</Comment.Text>
-              <Form.Input  value={comment.location.city} name="city" onChange={inputArrayHandler}/>
+              <Form.TextArea
+                value={comment.text}
+                name="text"
+                onChange={inputsHandler}
+              />
+              <Comment.Text>{"City"}</Comment.Text>
+              <Form.Input
+                value={comment.location.city}
+                name="city"
+                onChange={inputArrayHandler}
+              />
               <Comment.Text>{"District"}</Comment.Text>
-              <Form.Input value={comment.location.district} name="district" onChange={inputArrayHandler}/>
-              <Button as="label" htmlFor="file" primary type="button" icon="upload" content='Upload Image' size="medium" style={{width:"170px"}}>
-              </Button>
-              <input accept=".jpg, .jpeg, .png" type="file" id="file" style={{ display: "none" }} onChange={(
-                      file: React.ChangeEvent<{ value: unknown }>
-                    ) =>uploadImage(file)} />
+              <Form.Input
+                value={comment.location.district}
+                name="district"
+                onChange={inputArrayHandler}
+              />
+              <Button
+                as="label"
+                htmlFor="file"
+                primary
+                type="button"
+                icon="upload"
+                content="Upload Image"
+                size="medium"
+                style={{ width: "170px" }}
+              ></Button>
+              <input
+                accept=".jpg, .jpeg, .png"
+                type="file"
+                id="file"
+                style={{ display: "none" }}
+                onChange={(file: React.ChangeEvent<{ value: unknown }>) =>
+                  uploadImage(file)
+                }
+              />
               <Button
                 content="Add Comment"
                 labelPosition="left"
