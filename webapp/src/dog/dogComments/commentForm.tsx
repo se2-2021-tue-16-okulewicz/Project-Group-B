@@ -114,9 +114,6 @@ export default function CommentForm(props: any) {
     <Comment.Group className={classes.commentForm}>
       <Header as="h3" dividing className={classes.headerForm}>
         Add Comment
-        {/*<Dropdown onClick={() => {
-              setAddFormVisible(!addFormVisible);
-            }} />*/}
       </Header>
       <Comment class="ui comments" className={classes.mainForm}>
         <Grid
@@ -128,21 +125,18 @@ export default function CommentForm(props: any) {
           <Grid item xs={8}>
             <Form reply>
               <Form.TextArea
-                required
                 value={comment.text}
                 name="text"
                 onChange={inputsHandler}
               />
               <Comment.Text>{"City"}</Comment.Text>
               <Form.Input
-                required
                 value={comment.location.city}
                 name="city"
                 onChange={inputArrayHandler}
               />
               <Comment.Text>{"District"}</Comment.Text>
               <Form.Input
-                required
                 value={comment.location.district}
                 name="district"
                 onChange={inputArrayHandler}

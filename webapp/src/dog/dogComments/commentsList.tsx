@@ -99,9 +99,9 @@ export default function CommentsList(props: any) {
                 </Comment.Text>
                 <Comment.Actions>
                   <Comment.Action
-                    active={comment.authorId === cookies[config.cookies.userId]}
+                    active={comment.authorId == cookies[config.cookies.userId]}
                     onClick={() => {
-                      if (comment.authorId === cookies[config.cookies.userId]) {
+                      if (comment.authorId == cookies[config.cookies.userId]) {
                         redirectToComment(comment.id as number);
                       }
                     }}
@@ -109,9 +109,9 @@ export default function CommentsList(props: any) {
                     Delete
                   </Comment.Action>
                   <Comment.Action
-                    active={comment.authorId === cookies[config.cookies.userId]}
+                    active={comment.authorId == cookies[config.cookies.userId]}
                     onClick={() => {
-                      if (comment.authorId === cookies[config.cookies.userId]) {
+                      if (comment.authorId == cookies[config.cookies.userId]) {
                         redirectToCommentEdit(
                           comment as ICommentWithIdAndAuthor
                         );
