@@ -14,7 +14,7 @@ export interface IPicture {
   id: number;
   fileName: string;
   fileType: string;
-  data: ArrayBuffer| string;
+  data: ArrayBuffer | string;
   //data: string;
 }
 
@@ -36,7 +36,6 @@ export interface ICommentWithIdAndAuthor extends IComment {
 export interface IAuthor extends IContactInfo {
   id: number;
 }
-
 
 export interface ILostDogComment {
   id: number;

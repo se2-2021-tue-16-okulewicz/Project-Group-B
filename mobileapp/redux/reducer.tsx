@@ -262,13 +262,13 @@ export const reducer = createReducer(init, {
   [Actions.GetDogDetailsThunk.pending.toString()]: (
     state: State,
     payload: PayloadAction<
-    RequestResponse<ILostDogWithPictureAndComments, undefined>
-  >
-  ) => {    
+      RequestResponse<ILostDogWithPictureAndComments, undefined>
+    >
+  ) => {
     let newState = _.cloneDeep(state);
     newState.currentDog = ValidateFetchedDog(
-    payload.payload.response.data as ILostDogWithPictureAndComments
-  );
+      payload.payload.response.data as ILostDogWithPictureAndComments
+    );
     newState.loading = true;
     console.log("pending");
     //newState.settingsRequireRefresh=true;
@@ -286,7 +286,6 @@ export const reducer = createReducer(init, {
     console.log("Fulfilled");
     console.log(payload.payload.response.data);
 
-
     newState.currentDog = ValidateFetchedDog(
       payload.payload.response.data as ILostDogWithPictureAndComments
     );
@@ -294,10 +293,8 @@ export const reducer = createReducer(init, {
       payload.payload.response.data as ILostDogWithPictureAndComments
     ).picture.data as string;
 
-
     console.log("Fulfilled 2.0");
 
-    
     newState.dogsRequireRefresh = false;
     return newState;
   },

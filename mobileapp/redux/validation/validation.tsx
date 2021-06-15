@@ -1,7 +1,21 @@
-import { IContactInfo, ErrorInformation } from "../../components/contactInfo/contactInfoInterface";
-import { BreedTypes, SpecialMarkTypes, SizeTypes, EarsTypes, HairTypes, ColorTypes, TailTypes } from "../../components/dogs/dog/dogEnums";
-import { ILostDogWithPicture, ILostDog, ILostDogWithPictureAndComments } from "../../components/dogs/dog/dogInterfaces";
-
+import {
+  IContactInfo,
+  ErrorInformation,
+} from "../../components/contactInfo/contactInfoInterface";
+import {
+  BreedTypes,
+  SpecialMarkTypes,
+  SizeTypes,
+  EarsTypes,
+  HairTypes,
+  ColorTypes,
+  TailTypes,
+} from "../../components/dogs/dog/dogEnums";
+import {
+  ILostDogWithPicture,
+  ILostDog,
+  ILostDogWithPictureAndComments,
+} from "../../components/dogs/dog/dogInterfaces";
 
 export function isInvalidContactInfo(info: IContactInfo) {
   return {
@@ -50,7 +64,9 @@ export function isStringValidEmail(email: string): boolean {
 }
 
 //fix enum types
-export function ValidateFetchedDog(dog: ILostDogWithPictureAndComments | ILostDog) {
+export function ValidateFetchedDog(
+  dog: ILostDogWithPictureAndComments | ILostDog
+) {
   dog.breed = ValidateSelectedFeatures(dog.breed);
   dog.breed = Object.values(BreedTypes).includes(dog.breed as BreedTypes)
     ? dog.breed

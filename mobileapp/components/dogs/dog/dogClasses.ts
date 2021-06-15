@@ -59,26 +59,27 @@ export const initLostDogProps: ILostDog = {
   isFound: false,
 };
 
-export const initILostDogWithPictureAndComments: ILostDogWithPictureAndComments = {
-  id: 0,
-  ownerId: 0,
-  pictureId: 0,
-  name: "",
-  breed: "",
-  age: 0,
-  hairLength: "",
-  color: "",
-  size: "",
-  earsType: "",
-  tailLength: "",
-  specialMark: "",
-  behaviors: [],
-  location: { city: "", district: "" },
-  dateLost: "",
-  isFound: false,
-  picture: { id: 0, fileName: "",  fileType: "", data: "", },
-  comments: [],
-};
+export const initILostDogWithPictureAndComments: ILostDogWithPictureAndComments =
+  {
+    id: 0,
+    ownerId: 0,
+    pictureId: 0,
+    name: "",
+    breed: "",
+    age: 0,
+    hairLength: "",
+    color: "",
+    size: "",
+    earsType: "",
+    tailLength: "",
+    specialMark: "",
+    behaviors: [],
+    location: { city: "", district: "" },
+    dateLost: "",
+    isFound: false,
+    picture: { id: 0, fileName: "", fileType: "", data: "" },
+    comments: [],
+  };
 
 export const initLostDogCharacteristics: IDogCharacteristics = {
   name: "",
