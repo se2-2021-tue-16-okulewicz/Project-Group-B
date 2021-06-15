@@ -81,6 +81,35 @@ export const deleteOneShelterDogThunk = createAsyncThunk<
   }
 );
 
+export const deleteOneCommentThunk = createAsyncThunk<
+  RequestResponse<undefined, undefined>,
+  { commentId: number; dogId: number; cookies: { [name: string]: any } },
+  { rejectValue: RequestResponse<undefined, undefined> }
+>(
+  "deleteComment",
+  async (
+    userAndCookies: {
+      commentId: number;
+      dogId: number;
+      cookies: { [name: string]: any };
+    },
+    { rejectWithValue }
+  ) => {
+    const response: RequestResponse<undefined, undefined> =
+      await Fetching.deleteOneComment(
+        userAndCookies.commentId,
+        userAndCookies.dogId,
+        userAndCookies.cookies
+      );
+
+    if (response.response.successful !== true) {
+      return rejectWithValue(response as RequestResponse<undefined, undefined>);
+    }
+
+    return response as RequestResponse<undefined, undefined>;
+  }
+);
+
 export const fetchContactInfoThunk = createAsyncThunk<
   RequestResponse<IContactInfo, undefined>,
   { userId: number; cookies: { [name: string]: any } },
@@ -208,10 +237,10 @@ export const addCommentThunk = createAsyncThunk<
 
 export const editCommentThunk = createAsyncThunk<
   RequestResponse<ICommentWithIdAndAuthor, undefined>,
-  { comment: ICommentWithIdAndAuthor;  cookies: { [name: string]: any },picture?: IPicture;},
+  { comment: ICommentWithIdAndAuthor;  cookies: { [name: string]: any }},
   { rejectValue: RequestResponse<ICommentWithIdAndAuthor, undefined> }
 >(
-  "AddComment",
+  "EditComment",
   async (
     commentAndPictureAndCookies: {
       comment: ICommentWithIdAndAuthor;
@@ -224,7 +253,6 @@ export const editCommentThunk = createAsyncThunk<
       await Fetching.editComment(
         commentAndPictureAndCookies.comment,
         commentAndPictureAndCookies.cookies,
-        commentAndPictureAndCookies.picture,
       );
 
     if (response.response.successful !== true) {

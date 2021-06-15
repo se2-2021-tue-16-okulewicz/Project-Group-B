@@ -33,7 +33,7 @@ import Chip from "@material-ui/core/Chip";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { base64StringToBlob } from "blob-util";
 import LoadingPopup from "../../utilityComponents/LoadingPopup";
@@ -44,6 +44,7 @@ import CommentEditForm from "../dogComments/commentEditForm";
 import { ICommentWithIdAndAuthor } from "../dogComments/commentsInterfaces";
 import { initComment, initCommentandAuthor } from "../dogComments/commentsClasses";
 import CommentsList from "../dogComments/commentsList";
+import CommentForm from "../dogComments/commentForm";
 
 //edit dog almost finished, just need to update what happends when there is no new picture
 const useStyles = makeStyles((theme: Theme) =>
@@ -87,17 +88,17 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const EditDogDetails = (props: any) => {
-  const dogId = props.dogId
-    ? props.dogId
-    : JSON.parse(sessionStorage.getItem("dogId") as string);
+  const editedDog = useSelector(
+    (state: State) => state.editedDog as ILostDogWithPictureAndComments
+  );
+  const location = useLocation();
+  const dogId = props.dogId ? props.dogId : Number(location.pathname.split("/edit/")[1]);
   const [comment, setComment] = useState(initCommentandAuthor);
   const [oldcomment, setOldComment] = useState(initCommentandAuthor);
   const history = useHistory();
   const classes = useStyles(); // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
-  const editedDog = useSelector(
-    (state: State) => state.editedDog as ILostDogWithPictureAndComments
-  );
+
   const [isNewPicture, setIsNewPicture] = useState(false);
   const [pageRefresh, setPageRefresh] = useState(true);
   const refreshRequired = useSelector(
@@ -106,6 +107,7 @@ const EditDogDetails = (props: any) => {
   const [temp, setTemp] = useState<ILostDogWithPicture>(
     JSON.parse(sessionStorage.getItem("editDogFields") as string)
   );
+  const[ add, setAdd] = useState(true);
   var isInputNotNull = temp !== null;
   const [editDogFields, setEditDogFields] = useState<ILostDogWithPicture>(
     initLostDogWithPictureProps
@@ -113,23 +115,32 @@ const EditDogDetails = (props: any) => {
   const [picture, setPicture] = useState<IPicture>();
 
   function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {
-    if(comment != initCommentandAuthor){
+    if (comment != initCommentandAuthor) {
       setOldComment(comments);
       setComment(initCommentandAuthor);
     }
-    else
-    {
+    else {
       setComment(comments);
       setOldComment(initCommentandAuthor);
+    }
+    setAdd(false);
+  };
+
+  function redirectToComment(id: number) {
+    try {
+      store.dispatch(Actions.deleteOneCommentThunk({commentId:id, dogId:dogId, cookies:cookies}));
+    } catch (err) {
+      console.error("Failed to fetch the dog: ", err);
+    } finally {
+
     }
   };
 
   function cancelComment() {
-      setComment(initCommentandAuthor);
-      setOldComment(initCommentandAuthor);
+    setComment(initCommentandAuthor);
+    setOldComment(initCommentandAuthor);
+    setAdd(true);
   };
-
-  //console.log(temp);
 
   useEffect(() => {
     if (pageRefresh) {
@@ -196,6 +207,15 @@ const EditDogDetails = (props: any) => {
         } as IPicture);
       });
     }
+    if(!pageRefresh && !editedDog){
+      store.dispatch(
+        Actions.fetchOneDogThunk({
+          id: dogId as number,
+          cookies: cookies,
+        })
+      );
+      setPageRefresh(true);
+    }
   }, [editedDog]);
 
   const inputsHandler = (e: { target: { name: any; value: any } }) => {
@@ -232,7 +252,6 @@ const EditDogDetails = (props: any) => {
   function clearStorage() {
     sessionStorage.removeItem("editDogFields");
     sessionStorage.removeItem("inputEditField");
-    sessionStorage.removeItem("dogId");
     sessionStorage.removeItem("listFetched");
     sessionStorage.clear();
   }
@@ -316,7 +335,7 @@ const EditDogDetails = (props: any) => {
   };
   return (
     <Grid container>
-      {pageRefresh && <LoadingPopup />}
+      {(pageRefresh || !editDogFields) && <LoadingPopup />}
       {!pageRefresh && (
         <Grid
           className={classes.mainForm}
@@ -351,9 +370,8 @@ const EditDogDetails = (props: any) => {
                   {editedDog && !isNewPicture && (
                     <img
                       className={classes.imgFit}
-                      src={`data:${editedDog.picture.fileType};base64,${
-                        editedDog.picture.data as ArrayBuffer
-                      }`}
+                      src={`data:${editedDog.picture.fileType};base64,${editedDog.picture.data as ArrayBuffer
+                        }`}
                       alt={editedDog.picture.fileName}
                     />
                   )}
@@ -667,22 +685,18 @@ const EditDogDetails = (props: any) => {
               </Button>
             </FormControl>
           </Grid>
-          { editedDog && editedDog.comments &&(
-        <Grid
-          item
-          xs={12}
-          alignContent="stretch"
-        >
-<CommentsList comments={editedDog.comments} delete={true} edit={true} cancelComment={()=>{cancelComment();}} redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToCommentEdit(comment);}}/>
-</Grid>)}
-        <Grid
-          item
-          xs={12}
-          alignContent="stretch"
-        >
-{ comment.location.city != ""  && <CommentEditForm dogId={dogId} comment={comment} cancelComment={()=>{cancelComment();}} />}
-{ oldcomment.location.city != ""  && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={()=>{cancelComment();}} />}
-</Grid>
+          {editedDog && editedDog.comments && (
+            <Grid
+              item
+              xs={12}
+              alignContent="stretch"
+            >
+              {add && <CommentForm dogId={dogId} add={add}/> }
+              {comment.location.city != "" && <CommentEditForm dogId={dogId} comment={comment} cancelComment={() => { cancelComment(); }} />}
+              {oldcomment.location.city != "" && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={() => { cancelComment(); }} />}
+              <CommentsList comments={editedDog.comments} cancelComment={() => { cancelComment(); }} redirectToCommentEdit={(comment: ICommentWithIdAndAuthor) => { redirectToCommentEdit(comment); }} redirectToComment={(id: number) => { redirectToComment(id); }}/>
+            </Grid>
+          )}
         </Grid>
       )}
     </Grid>

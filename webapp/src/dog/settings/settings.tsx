@@ -276,7 +276,7 @@ export default function Settings(props: any) {
   };
 
   function redirectToDogDetailsOrEdit(id: number) {
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
     sessionStorage.removeItem("editDogFields");
     props.redirectToDogDetailsOrEdit(id);
   }

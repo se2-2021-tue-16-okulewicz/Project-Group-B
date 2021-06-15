@@ -2,14 +2,15 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { ICommentWithIdAndAuthor } from "./commentsInterfaces";
-import { Button, Comment, Divider, Form, Header, } from "semantic-ui-react";
+import { Button, Comment, Divider, Dropdown, Form, Header, } from "semantic-ui-react";
 import config from "../../config/config";
-import { createStyles, Grid, IconButton, Input, InputLabel, makeStyles, Theme, } from "@material-ui/core";
+import { createStyles, Grid, IconButton, Input, InputLabel, Link, makeStyles, Theme, } from "@material-ui/core";
 import { initComment, initCommentandAuthor, initPicture } from "./commentsClasses";
 import { IPicture } from "../dogInterfaces";
 import * as Actions from "../../app/actions";
 import { store } from "../../app/store";
 import { common } from "@material-ui/core/colors";
+import { ArrowDropDown, ArrowDropUp, ArrowRight, ArrowUpward } from "@material-ui/icons";
 const types = ["image/jpg", "image/jpeg", "image/png"];
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -69,6 +70,8 @@ export default function CommentForm(props: any) {
         })
       );
     }
+    setComment(initComment);
+    setPicture(initPicture);
     }
     //props.redirectToComment(id);
   };
@@ -100,7 +103,7 @@ export default function CommentForm(props: any) {
     };
     setComment(newField);
   };
-
+  //const [addFormVisible, setAddFormVisible] = useState(props.add?props.add:true);
   const styleLink = document.createElement("link");
   styleLink.rel = "stylesheet";
   styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -109,17 +112,20 @@ export default function CommentForm(props: any) {
   return (
     <Comment.Group className={classes.commentForm}>
       <Header as="h3" dividing className={classes.headerForm}>
-        Add Comment
+            Add Comment
+             {/*<Dropdown onClick={() => {
+              setAddFormVisible(!addFormVisible);
+            }} />*/}
       </Header>
-      <Comment class="ui comments" className={classes.mainForm}>
+     <Comment class="ui comments" className={classes.mainForm}>
         <Grid container direction="row" spacing={3} alignContent="space-between">
           <Grid item xs={8}>
             <Form reply>
-              <Form.TextArea value={comment.text} name="text" onChange={inputsHandler}/>
-              <Comment.Text>{"City:"}</Comment.Text>
-              <Form.Input value={comment.location.city} name="city" onChange={inputArrayHandler}/>
-              <Comment.Text>{"District:"}</Comment.Text>
-              <Form.Input value={comment.location.district} name="district" onChange={inputArrayHandler}/>
+              <Form.TextArea required value={comment.text} name="text" onChange={inputsHandler}/>
+              <Comment.Text >{"City"}</Comment.Text>
+              <Form.Input required value={comment.location.city} name="city" onChange={inputArrayHandler}/>
+              <Comment.Text>{"District"}</Comment.Text>
+              <Form.Input required value={comment.location.district} name="district" onChange={inputArrayHandler}/>
               <Button as="label" htmlFor="file" primary type="button" icon="upload" content='Upload Image' size="medium" style={{width:"170px"}}>
               </Button>
               <input accept=".jpg, .jpeg, .png" type="file" id="file" style={{ display: "none" }} onChange={(
@@ -128,7 +134,7 @@ export default function CommentForm(props: any) {
               <Button
                 content='Add Comment'
                 labelPosition='left'
-                icon='edit'
+                icon='add'
                 primary
                 onClick={() => { addComment() }}
                 size="medium"

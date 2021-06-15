@@ -42,8 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
           }) */
 
 export default function CommentEditForm(props: any) {
-  const [comment, setComment] = useState(props.comment as ICommentWithIdAndAuthor);
-  console.log(comment);
+  const [comment, setComment] = useState(props.comment?props.comment as ICommentWithIdAndAuthor:initCommentandAuthor);
   const [picture, setPicture] = useState(props.picture?props.picture:initPicture);
   const [file, setFile] = useState(null);
   // eslint-disable-next-line
@@ -51,12 +50,11 @@ export default function CommentEditForm(props: any) {
   const editComment = () => {
     if (props.dogId){
       if(picture.fileType != ""){
-    store.dispatch(
+      store.dispatch(
       Actions.editCommentThunk({
         comment:{...comment,
         authorId:cookies[config.cookies.userId],
-        dogId:props.dogId},
-        picture:picture,
+        dogId:props.dogId, picture:picture,},
         cookies: cookies,
       })
     );}
@@ -70,8 +68,8 @@ export default function CommentEditForm(props: any) {
         })
       );
     }
+    props.cancelComment();
     }
-    //props.redirectToComment(id);
   };
 
   const cancelComment = () => {

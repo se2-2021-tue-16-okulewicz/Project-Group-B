@@ -69,14 +69,14 @@ function Layout() {
   }, [redirect]);
 
   function redirectToDogDetailsOrEdit(id: number) {
-    setDogId(id);
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    //setDogId(id);
+    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
     history.push(`/edit/${id}`);
   }
 
   function redirectToDogDetails(id: number) {
-    setDogId(id);
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    //setDogId(id);
+    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
     history.push(`/dog/${id}`);
   }
 

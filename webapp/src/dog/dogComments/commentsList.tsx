@@ -6,6 +6,9 @@ import { Comment, Divider, Header } from "semantic-ui-react";
 import config from "../../config/config";
 import { createStyles, Grid, IconButton, makeStyles, Theme } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
+import { useSelector } from "react-redux";
+import { State } from "../../app/stateInterfaces";
+import { ILostDogWithPictureAndComments } from "../dogInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,11 +32,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function CommentsList(props: any) {
-  const comments = props.comments as ICommentWithIdAndAuthor[]; // eslint-disable-next-line
+  //const comments = props.comments as ICommentWithIdAndAuthor[]; // eslint-disable-next-line
+  const dog = useSelector(
+    (state: State) => state.editedDog as ILostDogWithPictureAndComments
+  );
   const [cookies, setCookie, removeCookie] = useCookies();
   const redirectToCommentEdit = (comment: ICommentWithIdAndAuthor)=>{
       props.redirectToCommentEdit(comment);
-      window.scrollTo(100000,100000);
+      window.scrollTo(window.innerWidth,window.innerHeight + 5);
   }
   const redirectToComment = (id: number) => {
     props.redirectToComment(id);
@@ -48,28 +54,28 @@ export default function CommentsList(props: any) {
       <Header as="h3" dividing className={classes.headerForm}>
         Comments
       </Header>
-      {comments.map((comment: ICommentWithIdAndAuthor) =>
+      {dog.comments.map((comment: ICommentWithIdAndAuthor) =>
         <Comment key={comment.id} className={classes.mainForm}>
           <Grid container direction="row" spacing={3} alignContent="space-between" style={{ marginBottom: "1%" }}>
             <Grid item xs={1}>
               <Comment.Avatar style={{ height: "inherit", width: "inherit" }} src={`https://semantic-ui.com/images/avatar2/small/${comment.id % 2 ? "elyse" : "kristy"}.png`} /></Grid>
             <Grid item xs={7}>
               <Comment.Content>
-                <Comment.Author as="a">{comment.author.name}</Comment.Author>
+                <Comment.Author as="a" style={{color:comment.authorId == cookies[config.cookies.userId]?"black":"darkgray", fontWeight:comment.authorId == cookies[config.cookies.userId]?"bolder":"bold" }}>{comment.author.name}</Comment.Author>
                 <Comment.Metadata>
                   <div>{"from " + comment.location.city}</div>
                 </Comment.Metadata>
                 <Comment.Text>{comment.text}</Comment.Text>
                 <Comment.Text>{"The dog is waiting for you in " + comment.location.city + ", " + comment.location.district + "."}</Comment.Text>
                 <Comment.Actions>
-                  <Comment.Action primary active={props.delete || comment.authorId == cookies[config.cookies.userId]} onClick={() => {
-                    if (props.delete || comment.authorId == cookies[config.cookies.userId]) {redirectToComment(comment.id as number);}
+                  <Comment.Action primary active={comment.authorId == cookies[config.cookies.userId]} onClick={() => {
+                    if (comment.authorId == cookies[config.cookies.userId]) {redirectToComment(comment.id as number);}
                   }}>Delete</Comment.Action>
-                  <Comment.Action active={props.edit || comment.authorId == cookies[config.cookies.userId]} onClick={() => {
-                    if (props.edit || comment.authorId == cookies[config.cookies.userId]){redirectToCommentEdit(comment as ICommentWithIdAndAuthor);}
+                  <Comment.Action active={comment.authorId == cookies[config.cookies.userId]} onClick={() => {
+                    if (comment.authorId == cookies[config.cookies.userId]){redirectToCommentEdit(comment as ICommentWithIdAndAuthor);}
                   }}>Edit</Comment.Action>
                   <Comment.Action active={true} onClick={() => {
-                    window.scrollTo(100000,100000);
+                    window.scrollTo(window.innerWidth,window.innerHeight + 5);
                     props.cancelComment();
                   }}>Reply</Comment.Action>
                 </Comment.Actions>

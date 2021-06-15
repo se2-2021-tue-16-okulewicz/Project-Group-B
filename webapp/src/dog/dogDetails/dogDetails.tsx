@@ -28,6 +28,7 @@ import CommentForm from "../dogComments/commentForm";
 import { ICommentWithIdAndAuthor } from "../dogComments/commentsInterfaces";
 import { initCommentandAuthor } from "../dogComments/commentsClasses";
 import CommentEditForm from "../dogComments/commentEditForm";
+import { update } from "lodash";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -78,7 +79,7 @@ const DogDetails = (props: any) => {
   const [comment, setComment] = useState(initCommentandAuthor);
   const [oldcomment, setOldComment] = useState(initCommentandAuthor);
   const [add, setAdd] = useState(true);
-  
+
   useEffect(() => {
     if (pageRefresh) { 
       try {
@@ -92,14 +93,18 @@ const DogDetails = (props: any) => {
         console.error("Failed to fetch the dog: ", err);
       } finally {
         setPageRefresh(false);
+        setComment(initCommentandAuthor);
+        setOldComment(initCommentandAuthor);
         store.dispatch(Actions.finishRefreshing);
       }
     } // eslint-disable-next-line
   }, [pageRefresh]);
 
-  function redirectToComment(id: number) {
-    console.log(id);
-  };
+  useEffect(() => {
+    if (!pageRefresh && !dog) { 
+        setPageRefresh(true);
+    } // eslint-disable-next-line
+  }, [dog]);
 
   function redirectToCommentEdit(comments: ICommentWithIdAndAuthor) {  
     setAdd(false);
@@ -114,6 +119,16 @@ const DogDetails = (props: any) => {
     }
   };
 
+  function redirectToComment(id: number) {
+    try {
+      store.dispatch(Actions.deleteOneCommentThunk({commentId:id, dogId:dogId, cookies:cookies}));
+    } catch (err) {
+      console.error("Failed to fetch the dog: ", err);
+    } finally {
+
+    }
+  };
+
   function cancelComment() {
     setComment(initCommentandAuthor);
     setOldComment(initCommentandAuthor);
@@ -125,7 +140,7 @@ const DogDetails = (props: any) => {
   const [cookies, setCookie, removeCookie] = useCookies();
 
   const onCancelClick = () => {
-    sessionStorage.removeItem("dogId");
+    ///sessionStorage.removeItem("dogId");
     sessionStorage.clear();
     history.push("/dogs");
   };
@@ -388,16 +403,10 @@ const DogDetails = (props: any) => {
           item
           xs={12}
         >
-<CommentsList comments={dog.comments} delete={false} edit={false} cancelComment={()=>{cancelComment();}} redirectToComment={(id:number)=>{redirectToComment(id)}}  redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToCommentEdit(comment);}}/>
-</Grid>)}
-{!pageRefresh && dog && dog.comments &&(
-        <Grid
-          item
-          xs={12}
-        >
-{add && <CommentForm dogId={dogId} /> }
-{ comment.location.city != ""  && <CommentEditForm dogId={dogId} comment={comment} cancelComment={()=>{cancelComment();}} />}
-{ oldcomment.location.city != ""  && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={()=>{cancelComment();}} />}
+          {add && <CommentForm dogId={dogId} add={add}/> }
+          { comment.location.city != ""  && <CommentEditForm dogId={dogId} comment={comment} cancelComment={()=>cancelComment()} update={()=>cancelComment()}/>}
+          { oldcomment.location.city != ""  && <CommentEditForm dogId={dogId} comment={oldcomment} cancelComment={()=>cancelComment()} update={()=>cancelComment()}/>}
+         <CommentsList comments={dog.comments} cancelComment={()=>{cancelComment();}}  redirectToCommentEdit={(comment:ICommentWithIdAndAuthor)=>{redirectToCommentEdit(comment);}}  redirectToComment={(id: number) => { redirectToComment(id); }}/>
 </Grid>)}
     </Grid>
 

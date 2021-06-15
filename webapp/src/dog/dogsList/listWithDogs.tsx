@@ -206,7 +206,7 @@ export default function ListWithDogs(props: any) {
 
   function redirectToDogDetailsOrEdit(id: number) {
     setDogId(id);
-    sessionStorage.setItem("dogId", JSON.stringify(id as number));
+    //sessionStorage.setItem("dogId", JSON.stringify(id as number));
     props.redirectToDogDetailsOrEdit(id);
     //history.push(`${path}/${id}`);
   }

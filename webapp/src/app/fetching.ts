@@ -203,25 +203,27 @@ export async function deleteOneShelterDog(
   dogId: Number,
   cookies: { [name: string]: any }
 ): Promise<RequestResponse<undefined, undefined>> {
-  let formData = new FormData();
-
-  formData.append(
-    "shelterId",
-    new Blob([JSON.stringify(shelterId)], {
-      type: "application/json",
-    }),
-    ""
-  );
-  formData.append(
-    "dogId",
-    new Blob([JSON.stringify(dogId)], {
-      type: "application/json",
-    }),
-    ""
-  );
   return getResponse(
     axios.delete(
       `http://${config.backend.ip}:${config.backend.port}/shelters/${shelterId}/dogs/${dogId}`,
+      {
+        headers: {
+          Authorization: getToken(cookies),
+        },
+      }
+    )
+  );
+}
+
+export async function deleteOneComment(
+  commentId: Number,
+  dogId: Number,
+  cookies: { [name: string]: any }
+): Promise<RequestResponse<undefined, undefined>> {
+
+  return getResponse(
+    axios.delete(
+      `http://${config.backend.ip}:${config.backend.port}/lostdogs/${dogId}/comments/${commentId}`,
       {
         headers: {
           Authorization: getToken(cookies),
@@ -326,22 +328,24 @@ export async function addComment(
 export async function editComment(
   comment: ICommentWithIdAndAuthor,
   cookies: { [name: string]: any },
-  picture?: IPicture,
 ): Promise<RequestResponse<ICommentWithIdAndAuthor, undefined>> {
   let formData = new FormData();
+  const privateProperties = ["id", "picture", "author"];
+  const excludePrivateProperties = (key: string, value: any) =>
+    privateProperties.includes(key) ? undefined : value;
 
   formData.append(
     "comment",
-    new Blob([JSON.stringify(comment)], {
+    new Blob([JSON.stringify(comment, excludePrivateProperties)], {
       type: "application/json",
     }),
     ""
   );
-  if (picture){
+  if (comment.picture && comment.picture.id == 0){
   formData.append(
     "picture",
-    new Blob([picture.data], { type: picture.fileType }),
-    picture.fileName
+    new Blob([comment.picture.data], { type: comment.picture.fileType }),
+    comment.picture.fileName
   );
   }
 
@@ -353,7 +357,7 @@ export async function editComment(
         headers: {
           Authorization: getToken(cookies),
           Accept: "application/json",
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       }
     )
