@@ -68,7 +68,7 @@ export default function DogsList({ navigation }: any) {
 
   //Fetching dogs at the beginning
   React.useEffect(() => {
-    if (refreshRequired ) {
+    if (refreshRequired) {
       // fetch and append page 0
       store.dispatch(
         Actions.fetchDogsThunk({
@@ -175,7 +175,6 @@ export default function DogsList({ navigation }: any) {
               <Text style={styles.found}>Found</Text>
             )}
           </View>
-
         </View>
 
         <View style={styles.row}>

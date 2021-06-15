@@ -87,9 +87,9 @@ export async function fetchDogs(
                 .join("&");
               return subFilters ? subFilters : "";
             } else {
-              if(filterName==="sort"){
+              if (filterName === "sort") {
                 const value = String(filters[filterName]).trim();
-                if(value==="," || value.includes("null")){
+                if (value === "," || value.includes("null")) {
                   return "";
                 }
               }

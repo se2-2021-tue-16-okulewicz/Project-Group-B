@@ -163,9 +163,9 @@ export const reducer = createReducer(init, {
   ) => {
     let newState = _.cloneDeep(state);
     newState.loading = false;
-    newState.status="added dog";
+    newState.status = "added dog";
     newState.dogsRequireRefresh = true;
-    
+
     return newState;
   },
   [Actions.addDogThunk.pending.toString()]: (
@@ -252,10 +252,10 @@ export const reducer = createReducer(init, {
       ["meta", "arg", "filters", "size"],
       config.defaultFilters.size
     );
-    console.log(newState.status)
-    if(newState.status==="added dog"){
-      newState.status =""
-      newState.dogs = []
+    console.log(newState.status);
+    if (newState.status === "added dog") {
+      newState.status = "";
+      newState.dogs = [];
     }
 
     // dogs obtained from server are appended to current dogs
@@ -269,21 +269,19 @@ export const reducer = createReducer(init, {
     let newnorepeatIds: number[] = [];
     let length = newDogs?.length;
     let oldLength = state.dogs.length;
-    for(let i = 0; i < oldLength; i++){
+    for (let i = 0; i < oldLength; i++) {
       norepeatIds.push(state.dogs[i].id);
     }
-    for(let i = 0; i < length; i++){
-      if(!norepeatIds.includes(newDogs[i].id)){
+    for (let i = 0; i < length; i++) {
+      if (!norepeatIds.includes(newDogs[i].id)) {
         newnorepeatIds.push(newDogs[i].id);
         norepeatIds.push(newDogs[i].id);
       }
     }
-    
 
     let dogs = state.dogs.concat(payload.payload.response.data);
-    dogs = dogs.filter(dog  => newnorepeatIds.includes(dog.id));
-  
-    
+    dogs = dogs.filter((dog) => newnorepeatIds.includes(dog.id));
+
     newState.dogs = state.dogs.concat(dogs);
     newState.loadingDogs = false;
     // if response is shorter than default size - it means end is reached.

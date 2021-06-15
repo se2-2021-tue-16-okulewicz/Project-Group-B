@@ -50,8 +50,8 @@ export default function Filters(props: any) {
   );
 
   function parseSort(sort: string) {
-    if(sort ===","){
-      return {type: new String, direction: new String} as ISort;
+    if (sort === ",") {
+      return { type: new String(), direction: new String() } as ISort;
     }
     var res = sort.split(",");
     return { type: res[0], direction: res[1] } as ISort;
