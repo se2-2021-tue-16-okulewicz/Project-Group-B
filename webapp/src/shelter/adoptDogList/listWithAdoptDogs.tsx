@@ -171,7 +171,6 @@ export default function ListWithAdoptDogs() {
   const shelterDogs = useSelector(
     (state: State) => state.shelterdogs as IShelterDogWithPicture[]
   );
-
   const shelters = useSelector((state: State) => state.shelters).filter(
     (shelter: IShelter) => shelter.id === shelterId
   )[0] as IShelter;
@@ -312,7 +311,7 @@ export default function ListWithAdoptDogs() {
             >
               <House />
               <Grid item xs={1} />
-              Shelter
+              Shelters
             </MenuItem>
             <MenuItem
               className={classes.menuItem}
@@ -354,9 +353,9 @@ export default function ListWithAdoptDogs() {
             {shelters != null ? (
               <span>
                 {shelters.phoneNumber.substr(0, 3) +
-                  "-" +
+                  " " +
                   shelters.phoneNumber.substr(3, 3) +
-                  "-" +
+                  " " +
                   shelters.phoneNumber.substr(6, 3)}
               </span>
             ) : (

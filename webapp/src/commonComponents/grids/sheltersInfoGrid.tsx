@@ -5,72 +5,99 @@ import GridListTileBar from "@material-ui/core/GridListTileBar";
 import IconButton from "@material-ui/core/IconButton";
 import { useCookies } from "react-cookie";
 import { IShelter } from "../../shelter/shelterInterfaces";
-import { Box, CardContent, Checkbox, Typography } from "@material-ui/core";
+import { Box, CardContent, Checkbox, Divider, Grid, Typography } from "@material-ui/core";
 
 export default function SheltersInfoGrid(props: any) {
   const shelters = props.shelters as IShelter[]; // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies();
   const redirectToShelter = (id: number) => {
-    /*store.dispatch(
-      fetchOneShelter({
-        id: id as number,
-        cookies: cookies,
-      })
-    );*/
     props.redirectToShelter(id);
   };
   return (
     <GridList
       cols={3}
       spacing={20}
-      style={{ margin: "0", marginTop:"3vh", width: "100%", display: "flex" }}
+      style={{ margin: "0", width: "100%", display: "flex" }}
     >
       {shelters.map(
         (shelter: IShelter) =>
-          shelter.id && (
+          shelter.id &&(
             <GridListTile
               key={shelter.id}
-              style={{ height: "300px", display: "stretch" }}
+              style={{ height: "300px", display: "stretch", }}
               className="tile"
+
             >
+              <Grid direction="row" style={{ height: "300px", display: "stretch",  borderLeft:"solid",
+                  borderRight:"solid",
+                  borderTop:"solid",
+                  borderColor:"slategray", }} container>{props.path != "" ?<Grid item xs={4} style={{  marginTop:"6%",marginBottom:"6%",}}>
+                  <img src={`https://upload.wikimedia.org/wikipedia/commons/a/ae/The_Doghouse.png`} style={{width:"100%", height:"auto", marginTop:"20%", marginBottom:"20%", marginLeft:"3%"}}/></Grid>:""}
+             <Grid item xs={8} style={{ marginTop:"6%",marginBottom:"6%",}}>
               <Box
                 className={shelter.name}
                 style={{
                   overflow: "hidden",
-                  backgroundColor: "slategray",
                   height: "90%",
                 }}
               >
+
                 <Typography
                   align="center"
                   style={{
-                    fontSize: "4vw",
+                    fontSize: "2vw",
                     height: "inherit",
                     width: "auto",
-                    fontFamily: "Bungee Shade",
                     wordWrap: "break-word",
-                    color: "white",
+                    color: "black",
                     verticalAlign: "center",
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "center",
+                    justifyContent:"left"
                   }}
-                >
-                  {shelter.name}
+                >            
+                <Divider
+                style={{ display:"none", marginBottom:"2%", marginTop:"2%"}}
+              />
+                    {shelters != null && shelter.address != null ? (
+                      
+              <span>
+                
+                {shelter.address.street +
+                  " " +
+                  shelter.address.buildingNumber +
+                  ", " +
+                  shelter.address.postCode +
+                  " " +
+                  shelter.address.city}
+              </span>
+            ) : (
+              ""
+            )}
+          <Divider
+                style={{ display:"none", marginBottom:"2%", marginTop:"2%"}}
+              />
+            {shelters != null ? <span>{shelter.email}</span> : ""}
+            <Divider
+                style={{ display:"none", marginBottom:"2%", marginTop:"2%"}}
+              />
+            {shelters != null ? (
+              <span>
+                {shelter.phoneNumber.substr(0, 3) +
+                  " " +
+                  shelter.phoneNumber.substr(3, 3) +
+                  " " +
+                  shelter.phoneNumber.substr(6, 3)}
+              </span>
+            ) : (
+              ""
+            )}
                 </Typography>
-              </Box>
+              </Box> </Grid></Grid>
               <GridListTileBar
-                style={{ height: "20%", backgroundColor: "slategray" }}
+                style={{ height: "20%", backgroundColor:"gray" }}
                 className={shelter.name}
-                title={
-                  <span>
-                    {shelter.address.city +
-                      ", " +
-                      shelter.address.street +
-                      " " +
-                      shelter.address.buildingNumber}
-                  </span>
-                }
+                title={ shelter.name}
                 actionIcon={
                   <IconButton
                     onClick={() => {
@@ -79,7 +106,7 @@ export default function SheltersInfoGrid(props: any) {
                     aria-label={`info about ${shelter.name}`}
                     style={{ color: "rgba(255, 255, 255, 0.54)" }}
                   >
-                    <Checkbox />
+                    <Checkbox style={{color:"white"}}/>
                   </IconButton>
                 }
               />
