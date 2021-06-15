@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Text,
+  TextInput,
   SafeAreaView,
   Image,
   ImageBackground,
@@ -16,7 +17,11 @@ import {
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "../../redux/store";
-import { ILostDog, ILostDogWithPicture } from "./dog/dogInterfaces";
+import {
+  ILostDog,
+  ILostDogWithPicture,
+  ILostDogWithPictureAndComment,
+} from "./dog/dogInterfaces";
 import { useSelector } from "react-redux";
 import { State } from "../../redux/reducer";
 import * as Actions from "../../redux/actions";
@@ -33,6 +38,8 @@ import {
 
 export default function DogsList({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
+  const [text, onChangeText] = React.useState("");
   const bg = require("../../assets/images/dog-bg.png");
   const pin = require("../../assets/images/pin.png");
   const image = { uri: "../../assets/images/dog-bg.PNG" };
@@ -116,9 +123,19 @@ export default function DogsList({ navigation }: any) {
     store.dispatch(Actions.setDogsRequireRefresh(true));
   }
 
+  const redirectToDetails = (dog: ILostDogWithPicture) => {
+    navigation.navigate("Dog details", {
+      dog: dog,
+    });
+  };
+
   const renderListItem = (dog: ILostDogWithPicture, navigation: any) => (
     <View style={[styles.item]}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          redirectToDetails(dog);
+        }}
+      >
         <Text style={styles.title}>{dog.name}</Text>
         <View style={[{ flexDirection: "row" }]}>
           <View style={{ flex: 5 }}>
@@ -155,7 +172,47 @@ export default function DogsList({ navigation }: any) {
               <Text style={styles.found}>Found</Text>
             )}
           </View>
+
+          {/* <View style={{ flex: 2, marginLeft: 15 }}>            
+            <TouchableOpacity
+                  style={{
+                    backgroundColor: "#006ee6",
+                    borderRadius: 10,
+                    padding: 4,
+                    marginLeft: -13,
+                    shadowOffset: { width: 1, height: 2 },
+                    shadowColor: "black",
+                    shadowOpacity: 0.5,
+                  }}
+                  onPress={() => setModalVisible2(true)}
+                >
+                  <Text style={styles.lost}>Comment</Text>
+                </TouchableOpacity>
+          </View>           */}
         </View>
+        {/* <View style={styles.centeredView2}>
+            <Modal animationType="slide"
+                  transparent={true}
+                  visible={modalVisible2}             
+            >
+              <View style={styles.centeredView2}>
+                <View style={styles.modalView2}>
+                  <Text style={styles.modalText}>comment text</Text>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeText}
+                    value={text}
+                  />
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible2(!modalVisible2)}
+                  >
+                    <Text style={styles.textStyle}>close</Text>
+                  </Pressable>
+                </View>
+              </View>              
+            </Modal>
+          </View> */}
 
         <View style={styles.row}>
           <Image style={styles.tinyLogo} source={pin} />
@@ -268,6 +325,47 @@ export default function DogsList({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  textContainer: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignSelf: "flex-start",
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  input: {
+    height: 200,
+    width: 300,
+    margin: 2,
+    borderWidth: 1,
+  },
+  modalView2: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  centeredView2: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
